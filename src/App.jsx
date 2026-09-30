@@ -1,14 +1,15 @@
-
-import './App.css'
-
+import { Outlet } from 'react-router-dom'
+import Sidebar from './components/Sidebar'
 
 function App() {
- 
-
-  return<>
-
-    </>
-  
+  return (
+    <div className="flex">
+      <Sidebar />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+    </div>
+  )
 }
 
 export default App
