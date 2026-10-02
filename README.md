@@ -1,16 +1,36 @@
-# React + Vite
+# GameSense
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + JavaScript + Vite 기반 게임 지출 분석 대시보드.
 
-Currently, two official plugins are available:
+## 실행
+```sh
+npm install
+npm run dev
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 검증
+```sh
+npm run build
+npm run lint
+node --test tests/spendingMetrics.test.js
+```
 
-## React Compiler
+## 화면과 기능
+- / : 누적 구매 지표, 기간별 지출, 소비 인사이트, 구매 게임 이용 현황
+- /analysis : 소비 분석과 계산 기준
+- /library : 전체 라이브러리 검색, 필터, 정렬, 구매 상세
+- 라이트·다크·시스템 테마, 선택 저장 및 시스템 설정 변경 반영
+- 모바일 메뉴, 반응형 구매 카드, 키보드 조작 가능한 상세 대화상자
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 데이터
+실제 계정과 연결되지 않은 데모입니다. src/mocks/dashboardMock.js의 기준일은 2026-09-30이며 '이번 달'은 이 기준일의 월입니다.
+금액은 원, 시간은 시간 단위입니다. amount: null은 금액 미확인, hours: null은 시간 미확인입니다.
+게임 이미지는 외부 표지 대신 자체 스타일의 이니셜 타일을 사용합니다.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+src/api/dashboardApi.js를 실제 API로 교체할 수 있습니다. 서버 계약 확정 전 불필요한 인증 설정이나 요청은 포함하지 않았습니다.
+누적 지표는 조회 기간에 영향받지 않습니다. 기간별 차트와 목록은 구매일로 필터링합니다.
+순지출 = 결제 금액 - 환불 금액(최소 0). 평균은 순지출이 양수인 게임 기준입니다.
+시간당 비용은 금액과 시간을 모두 확인할 수 있는 유료 게임의 순지출 합계 / 누적 시간 합계입니다.
+미플레이 게임 금액은 포함하며, 총 시간이 0이면 계산 전으로 표시합니다. 무료 및 금액 미확인 게임은 유료 평균에서 제외합니다.
+번들 배분과 환불 시점별 현금흐름은 실제 데이터 계약 확정 후 확장할 항목입니다.
+소비 인사이트는 규칙 기반이며 AI 서비스와 연결되어 있지 않습니다.
