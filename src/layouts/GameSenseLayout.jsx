@@ -5,12 +5,14 @@ import { useGameSense } from '../contexts/GameSenseContext'
 import { useTheme } from '../hooks/useTheme'
 import GSIcon from '../components/discover/GSIcon'
 import GameDialog from '../components/discover/GameDialog'
+import { profileAvatars } from '../mocks/playerMock'
 import '../styles/gamesense.css'
 
 const primaryLinks = [
   ['/', 'home', 'Home', '홈'], ['/explore', 'compass', 'Explore', '탐색'], ['/genres', 'grid', 'Genres', '장르'],
   ['/trending', 'flame', 'New & Trending', '인기 게임'], ['/upcoming', 'calendar', 'Upcoming', '출시 예정'],
   ['/analysis', 'chart', 'Expenditure Pattern', '소비 패턴'], ['/recommendations', 'spark', 'AI Optimization', '맞춤 추천'],
+  ['/pc-check', 'monitor', 'PC 성능 체크', 'PC 성능 체크'],
 ]
 const libraryLinks = [['/library', 'gamepad', 'My Games', '내 게임'], ['/wishlist', 'heart', 'Wishlist', '위시리스트'], ['/collections', 'folder', 'Collections', '컬렉션']]
 
@@ -22,7 +24,7 @@ function SidebarContent({ onClose }) {
 }
 
 function Header({ onMenu }) {
-  const { query, setQuery, t, language, changeLanguage } = useGameSense()
+  const { query, setQuery, t, language, changeLanguage, player } = useGameSense()
   const { theme, setTheme } = useTheme()
   const navigate = useNavigate()
   const [popover, setPopover] = useState(null)
@@ -40,7 +42,7 @@ function Header({ onMenu }) {
     <div className="gs-header-actions" ref={popoverRef}><div className="gs-theme-switch" role="group" aria-label="화면 테마"><button onClick={() => setTheme('light')} aria-label="라이트 모드" aria-pressed={theme === 'light'} className={theme === 'light' ? 'active' : ''}><GSIcon name="sun" size={20} /></button><button onClick={() => setTheme('dark')} aria-label="다크 모드" aria-pressed={theme === 'dark'} className={theme === 'dark' ? 'active' : ''}><GSIcon name="moon" size={19} /></button></div>
       <div className="gs-popover-wrap gs-language-wrap"><button className="gs-language" aria-label="메뉴 언어 선택" aria-expanded={popover === 'language'} onClick={() => toggle('language')}><GSIcon name="globe" size={20} /><span>{language === 'en' ? 'EN' : 'KO'}</span><GSIcon name="chevron" size={15} /></button>{popover === 'language' && <div className="gs-popover gs-language-menu"><p>메뉴 언어</p>{[['en', 'English'], ['ko', '한국어']].map(([value, label]) => <button key={value} onClick={() => { changeLanguage(value); setPopover(null) }}>{label}{language === value && <GSIcon name="check" size={16} />}</button>)}</div>}</div>
       <div className="gs-popover-wrap"><button className="gs-icon-button gs-notification-button" aria-label="알림" aria-expanded={popover === 'notifications'} onClick={() => toggle('notifications')}><GSIcon name="bell" />{!read && <span className="gs-notification-dot" />}</button>{popover === 'notifications' && <div className="gs-popover gs-notifications"><div className="gs-popover-heading"><strong>알림</strong><button onClick={() => setRead(true)}>{read ? '모두 읽음' : '모두 읽기'}</button></div><div className={read ? 'gs-notice-item is-read' : 'gs-notice-item'}><GSIcon name="spark" /><div><strong>취향에 맞는 게임이 도착했어요</strong><p>새로운 추천 게임을 만나보세요.</p><Link to="/recommendations" onClick={() => { setPopover(null); setRead(true) }}>추천 확인하기 <span>→</span></Link></div></div><small>데모 알림 · 실제 계정 알림이 아닙니다</small></div>}</div>
-      <div className="gs-popover-wrap"><button className="gs-profile" onClick={() => toggle('profile')} aria-label="프로필 메뉴" aria-expanded={popover === 'profile'}><span className="gs-avatar"><img src="/images/avatar.svg" alt="" /></span><span className="gs-profile-label"><strong>Hello, Player</strong><small>Level 12</small></span><GSIcon name="chevron" size={17} /></button>{popover === 'profile' && <div className="gs-popover gs-profile-menu"><strong>Player <span className="gs-tiny-badge">DEMO</span></strong><p>오늘도 즐거운 플레이 되세요.</p><Link to="/library" onClick={() => setPopover(null)}><GSIcon name="gamepad" size={18} />내 라이브러리</Link><Link to="/settings" onClick={() => setPopover(null)}><GSIcon name="settings" size={18} />화면 설정</Link></div>}</div>
+      <NavLink to="/mypage" className="gs-profile gs-profile-link" aria-label="마이페이지 열기" onClick={() => { setPopover(null); setQuery('') }}><span className="gs-avatar"><img src={profileAvatars.find(item => item.id === player.profile.avatar).image} alt="" /></span><span className="gs-profile-label"><strong>Hello, {player.profile.name}</strong><small>Level 12 · Demo</small></span><GSIcon name="chevron" size={17} /></NavLink>
     </div></header>
 }
 

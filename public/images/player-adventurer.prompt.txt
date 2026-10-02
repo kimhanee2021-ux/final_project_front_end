@@ -1,0 +1,4 @@
+Built-in imagegen; no CLI.
+Final asset: C:\Users\user\Documents\GitHub\final_project_front_end\public\images\player-adventurer.png
+
+Create an original anime-inspired painted avatar illustration for a premium dark fantasy gaming profile. Square portrait, head and shoulders of a young adult male adventurer with tousled short black hair, warm ivory skin, thoughtful calm expression, in three-quarter profile looking to the right. Wearing a dark navy cloak and understated fantasy travel armor with a few muted gold trims. Behind him soft misty mountains and a distant castle at dusk under a pale blue and warm golden sky. Refined hand-painted animation background aesthetic, cinematic soft lighting, detailed but elegant, muted dark blue palette, natural anatomy. Head and shoulders centered with generous margin for a circular profile crop. Full-bleed square image, no circle frame, no UI, no text, no logos, no watermark, no resemblance to a specific existing character.
