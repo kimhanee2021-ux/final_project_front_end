@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { ThemeContext } from './ThemeContext'
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    try { const saved = localStorage.getItem('gamesense-theme'); return ['light', 'dark', 'system'].includes(saved) ? saved : 'system' }
-    catch { return 'system' }
+    try { const saved = localStorage.getItem('gamesense-theme'); return ['light', 'dark', 'system'].includes(saved) ? saved : 'dark' }
+    catch { return 'dark' }
   })
   useEffect(() => {
     const media = window.matchMedia('(prefers-color-scheme: dark)')
