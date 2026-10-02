@@ -1,13 +1,18 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>final_project_front_end</title>
+    <meta name="theme-color" content="#7258e8" />
+    <meta name="description" content="게임 구매 금액과 플레이 시간을 함께 분석하는 나만의 소비 대시보드, GameSense." />
+    <title>GameSense — 나의 게임 소비 대시보드</title>
+    <script>
+      try {
+        var preference = localStorage.getItem('gamesense-theme');
+        document.documentElement.dataset.theme = preference === 'dark' || preference === 'light' ? preference : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      } catch (e) { document.documentElement.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+    </script>
   </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+  <body><div id="root"></div><script type="module" src="/src/main.jsx"></script></body>
 </html>

@@ -1,15 +1,11 @@
-import { Outlet } from 'react-router-dom'
-import Sidebar from './components/Sidebar'
-
-function App() {
-  return (
-    <div className="flex">
-      <Sidebar />
-      <main className="flex-1">
-        <Outlet />
-      </main>
-    </div>
-  )
+import { Navigate, Route, Routes } from 'react-router-dom'
+import DashboardLayout from './layouts/DashboardLayout'
+import HomePage from './pages/home/HomePage'
+export default function App() {
+  return <Routes><Route element={<DashboardLayout />}>
+    <Route index element={<HomePage />} />
+    <Route path="analysis" element={<HomePage view="analysis" />} />
+    <Route path="library" element={<HomePage view="library" />} />
+    <Route path="*" element={<Navigate to="/" replace />} />
+  </Route></Routes>
 }
-
-export default App
