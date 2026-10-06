@@ -19,5 +19,20 @@ const paths = {
   refresh: 'M20 7V2 M20 7h-5 M20 7a9 9 0 10 1 8',
 }
 export default function Icon({ name, size = 20, ...props }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}><path d={paths[name] || paths.grid} /></svg>
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d={paths[name] || paths.grid} />
+    </svg>
+  )
 }
