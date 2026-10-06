@@ -5,5 +5,11 @@ import { ThemeProvider } from './contexts/ThemeProvider'
 import './index.css'
 import App from './App'
 createRoot(document.getElementById('root')).render(
-  <StrictMode><ThemeProvider><BrowserRouter><App /></BrowserRouter></ThemeProvider></StrictMode>,
+  <StrictMode>
+    <ThemeProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ThemeProvider>
+  </StrictMode>
 )
