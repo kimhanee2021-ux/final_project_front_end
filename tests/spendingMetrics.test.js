@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { summarize, filterPeriod, monthlySpending, genreSpending } from '../src/utils/spendingMetrics.js'
+import { summarize, filterPeriod, monthlySpending, genreSpending } from '../src/features/dashboard/spendingMetrics.js'
 const game = overrides => ({ amount: 10000, refund: 0, hours: 10, genre: 'RPG', purchasedAt: '2026-09-15', ...overrides })
 test('unknown prices and free or fully refunded games do not distort paid averages', () => {
   const result = summarize([game({}), game({ amount: null, hours: 200 }), game({ amount: 0, hours: 100 }), game({ refund: 10000 })])

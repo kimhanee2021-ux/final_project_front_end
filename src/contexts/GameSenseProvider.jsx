@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { GameSenseContext } from './GameSenseContext'
 import { discoverGames } from '../mocks/discoverMock'
 import usePlayerData from '../hooks/usePlayerData'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from './AuthContext'
+import { authLink } from '../features/auth/authSession'
 
 function readStored(key, fallback, validate) {
   try {
@@ -20,6 +23,9 @@ function save(key, value) {
 }
 
 export default function GameSenseProvider({ children }) {
+  const { isDemoSignedIn } = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
   const playerData = usePlayerData()
   const [wishlist, setWishlist] = useState(() =>
     readStored(
@@ -36,6 +42,11 @@ export default function GameSenseProvider({ children }) {
   const [toast, setToast] = useState(null)
   const notify = message => setToast({ message, id: Date.now() })
   const toggleWishlist = game => {
+    if (!isDemoSignedIn) {
+      setSelectedGame(null)
+      navigate(authLink('login', location.pathname + location.search + location.hash), { state: { loginRequired: true } })
+      return
+    }
     const exists = wishlist.includes(game.id)
     const next = exists ? wishlist.filter(id => id !== game.id) : [...wishlist, game.id]
     setWishlist(next)

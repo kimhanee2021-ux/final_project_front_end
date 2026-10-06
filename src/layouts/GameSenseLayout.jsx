@@ -1,12 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
+import { startTransition, useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import GameSenseProvider from '../contexts/GameSenseProvider'
+import { useAuth } from '../contexts/AuthContext'
+import { authLink } from '../features/auth/authSession'
 import { useGameSense } from '../contexts/GameSenseContext'
 import { useTheme } from '../hooks/useTheme'
 import GSIcon from '../components/discover/GSIcon'
 import GameDialog from '../components/discover/GameDialog'
 import { profileAvatars } from '../mocks/playerMock'
 import '../styles/gamesense.css'
+import '../styles/auth.css'
 
 const primaryLinks = [
   ['/', 'home', 'Home', '홈'],
@@ -25,6 +27,7 @@ const libraryLinks = [
 ]
 
 function SidebarContent({ onClose }) {
+  const { isDemoSignedIn } = useAuth()
   const { t, wishlist, setQuery } = useGameSense()
   const follow = () => {
     setQuery('')
@@ -41,7 +44,7 @@ function SidebarContent({ onClose }) {
       >
         <GSIcon name={icon} size={22} />
         <span>{t(en, ko)}</span>
-        {to === '/wishlist' && wishlist.length > 0 && (
+        {isDemoSignedIn && to === '/wishlist' && wishlist.length > 0 && (
           <span className="gs-nav-count">{wishlist.length}</span>
         )}
       </NavLink>
@@ -86,6 +89,9 @@ function SidebarContent({ onClose }) {
 }
 
 function Header({ onMenu }) {
+  const { isDemoSignedIn, signOut } = useAuth()
+  const location = useLocation()
+  const returnTo = location.pathname + location.search + location.hash
   const { query, setQuery, t, language, changeLanguage, player } = useGameSense()
   const { theme, setTheme } = useTheme()
   const navigate = useNavigate()
@@ -189,7 +195,7 @@ function Header({ onMenu }) {
             </div>
           )}
         </div>
-        <div className="gs-popover-wrap">
+        {isDemoSignedIn && <div className="gs-popover-wrap">
           <button
             className="gs-icon-button gs-notification-button"
             aria-label="알림"
@@ -224,8 +230,8 @@ function Header({ onMenu }) {
               <small>데모 알림 · 실제 계정 알림이 아닙니다</small>
             </div>
           )}
-        </div>
-        <NavLink
+        </div>}
+        {isDemoSignedIn ? <div className="gs-account-session"><NavLink
           to="/mypage"
           className="gs-profile gs-profile-link"
           aria-label="마이페이지 열기"
@@ -236,16 +242,35 @@ function Header({ onMenu }) {
         >
           <span className="gs-avatar">
             <img
-              src={profileAvatars.find(item => item.id === player.profile.avatar).image}
+              src={(profileAvatars.find(item => item.id === player.profile.avatar) || profileAvatars[0]).image}
               alt=""
             />
           </span>
           <span className="gs-profile-label">
             <strong>Hello, {player.profile.name}</strong>
-            <small>Level 12 · Demo</small>
+            <small>데모 체험 중</small>
           </span>
           <GSIcon name="chevron" size={17} />
         </NavLink>
+        <button
+          type="button"
+          className="gs-account-logout"
+          aria-label="로그아웃"
+          title="로그아웃"
+          onClick={() => startTransition(() => {
+            // Keep session and route changes in the same navigation transition.
+            signOut()
+            setPopover(null)
+            setQuery('')
+            navigate('/', { replace: true })
+          })}
+        >
+          <GSIcon name="logout" size={19} />
+        </button>
+        </div> : <nav className="gs-account-entry" aria-label="계정">
+          <Link to={authLink('signup', returnTo)} className="gs-account-signup">회원가입</Link>
+          <Link to={authLink('login', returnTo)} className="gs-account-login">로그인<GSIcon name="arrow" size={16} /></Link>
+        </nav>}
       </div>
     </header>
   )
@@ -343,9 +368,5 @@ function Shell() {
 }
 
 export default function GameSenseLayout() {
-  return (
-    <GameSenseProvider>
-      <Shell />
-    </GameSenseProvider>
-  )
+  return <Shell />
 }
