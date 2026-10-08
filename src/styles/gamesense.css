@@ -310,6 +310,28 @@ body:has(.gs-dialog[open], .gs-mobile-drawer[open]) { overflow: hidden; }
 .gs-settings-options button { display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--gs-raised); padding: 11px 17px; border-radius: 9px; font-size: 12px; border: 1px solid var(--gs-border); white-space: nowrap; }
 .gs-settings-options button.active { color: var(--gs-mint); border-color: var(--gs-mint); background: var(--gs-active); }
 .gs-legacy { padding-top: 26px; }
+.gs-steam-library { margin-bottom: 22px; }
+.gs-steam-library .gs-panel-heading > button { margin-left: auto; }
+.gs-steam-library .gs-panel-heading > svg { color: var(--gs-mint); flex-shrink: 0; }
+.gs-steam-state { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; padding: 16px 2px 4px; color: var(--gs-muted); font-size: 12px; }
+.gs-steam-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px; max-height: 420px; overflow-y: auto; }
+.gs-steam-list li { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--gs-border); border-radius: 10px; background: var(--gs-raised); min-width: 0; }
+.gs-steam-list img, .gs-steam-icon { width: 32px; height: 32px; border-radius: 7px; flex-shrink: 0; }
+.gs-steam-icon { display: grid; place-items: center; background: var(--gs-hover); color: var(--gs-muted); }
+.gs-steam-list li > div { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.gs-steam-list strong { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gs-steam-list small { font-size: 10px; color: var(--gs-muted); }
+.gs-steam-list li > span { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; white-space: nowrap; }
+.gs-steam-list b { font-size: 12px; color: var(--gs-mint); }
+.gs-account-form { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.gs-account-form input { min-width: 0; width: 180px; padding: 10px 12px; border-radius: 9px; border: 1px solid var(--gs-border); background: var(--gs-raised); color: var(--gs-text); font-size: 12px; }
+.gs-account-message { flex-basis: 100%; font-size: 11px; color: var(--gs-muted); }
+.gs-account-message.is-error { color: #ff7d8a; }
+.gs-danger-button { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 25px; border: 1px solid #ff7d8a80; color: #ff7d8a; background: transparent; font-size: 12px; font-weight: 650; }
+@media (max-width: 700px) {
+  .gs-steam-state { flex-direction: column; align-items: flex-start; }
+  .gs-account-form input { width: 100%; }
+}
 @keyframes gs-appear { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 @media (min-width: 1600px) {
   .gs-sidebar { width: 256px; padding-top: 25px; }

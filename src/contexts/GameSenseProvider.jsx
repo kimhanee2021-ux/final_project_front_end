@@ -23,7 +23,7 @@ function save(key, value) {
 }
 
 export default function GameSenseProvider({ children }) {
-  const { isDemoSignedIn } = useAuth()
+  const { isSignedIn, user } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
   const playerData = usePlayerData()
@@ -42,7 +42,7 @@ export default function GameSenseProvider({ children }) {
   const [toast, setToast] = useState(null)
   const notify = message => setToast({ message, id: Date.now() })
   const toggleWishlist = game => {
-    if (!isDemoSignedIn) {
+    if (!isSignedIn) {
       setSelectedGame(null)
       navigate(authLink('login', location.pathname + location.search + location.hash), { state: { loginRequired: true } })
       return
@@ -65,10 +65,15 @@ export default function GameSenseProvider({ children }) {
     save('gamesense-language', value)
   }
   const t = (english, korean) => (language === 'ko' ? korean : english)
+  // 실제 로그인 상태면 화면에 보이는 닉네임은 서버 계정 정보를 따른다.
+  const player = user
+    ? { ...playerData.player, profile: { ...playerData.player.profile, name: user.nickname } }
+    : playerData.player
   return (
     <GameSenseContext.Provider
       value={{
         ...playerData,
+        player,
         wishlist,
         toggleWishlist,
         query,

@@ -5,6 +5,8 @@ import { useGameSense } from '../../contexts/GameSenseContext'
 import { useTheme } from '../../hooks/useTheme'
 import GSIcon from '../../components/discover/GSIcon'
 import { RecentActivity } from '../../components/discover/DashboardWidgets'
+import { useAuth } from '../../contexts/AuthContext'
+import AccountSettings from '../../features/user/components/AccountSettings'
 
 function PageHeading({ title, description }) {
   return (
@@ -134,10 +136,12 @@ export function ActivityPage() {
 export function SettingsPage() {
   const { theme, setTheme } = useTheme()
   const { language, changeLanguage, wishlist } = useGameSense()
+  const { isAuthenticated } = useAuth()
   return (
     <>
       <PageHeading title="Make It Yours" description="당신에게 편안한 GameSense를 만들어보세요." />
       <div className="gs-settings-panel gs-panel">
+        {isAuthenticated && <AccountSettings />}
         <section>
           <div>
             <h2>화면 테마</h2>

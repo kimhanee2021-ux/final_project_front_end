@@ -27,7 +27,7 @@ const libraryLinks = [
 ]
 
 function SidebarContent({ onClose }) {
-  const { isDemoSignedIn } = useAuth()
+  const { isSignedIn } = useAuth()
   const { t, wishlist, setQuery } = useGameSense()
   const follow = () => {
     setQuery('')
@@ -44,7 +44,7 @@ function SidebarContent({ onClose }) {
       >
         <GSIcon name={icon} size={22} />
         <span>{t(en, ko)}</span>
-        {isDemoSignedIn && to === '/wishlist' && wishlist.length > 0 && (
+        {isSignedIn && to === '/wishlist' && wishlist.length > 0 && (
           <span className="gs-nav-count">{wishlist.length}</span>
         )}
       </NavLink>
@@ -89,7 +89,7 @@ function SidebarContent({ onClose }) {
 }
 
 function Header({ onMenu }) {
-  const { isDemoSignedIn, signOut } = useAuth()
+  const { isSignedIn, isAuthenticated, user, signOut } = useAuth()
   const location = useLocation()
   const returnTo = location.pathname + location.search + location.hash
   const { query, setQuery, t, language, changeLanguage, player } = useGameSense()
@@ -195,7 +195,7 @@ function Header({ onMenu }) {
             </div>
           )}
         </div>
-        {isDemoSignedIn && <div className="gs-popover-wrap">
+        {isSignedIn && <div className="gs-popover-wrap">
           <button
             className="gs-icon-button gs-notification-button"
             aria-label="알림"
@@ -231,7 +231,7 @@ function Header({ onMenu }) {
             </div>
           )}
         </div>}
-        {isDemoSignedIn ? <div className="gs-account-session"><NavLink
+        {isSignedIn ? <div className="gs-account-session"><NavLink
           to="/mypage"
           className="gs-profile gs-profile-link"
           aria-label="마이페이지 열기"
@@ -248,7 +248,7 @@ function Header({ onMenu }) {
           </span>
           <span className="gs-profile-label">
             <strong>Hello, {player.profile.name}</strong>
-            <small>데모 체험 중</small>
+            <small>{isAuthenticated ? user.email : '데모 체험 중'}</small>
           </span>
           <GSIcon name="chevron" size={17} />
         </NavLink>
@@ -278,8 +278,15 @@ function Header({ onMenu }) {
 
 function Shell() {
   const mobileMenu = useRef(null)
-  const { pathname } = useLocation()
-  const { toast, setToast } = useGameSense()
+  const { pathname, search } = useLocation()
+  const navigate = useNavigate()
+  const { toast, setToast, notify } = useGameSense()
+  // 스팀 연동 콜백이 끝나면 백엔드가 프론트 루트로 ?steamLinked=true를 붙여 돌려보낸다.
+  useEffect(() => {
+    if (new URLSearchParams(search).get('steamLinked') !== 'true') return
+    notify('스팀 계정을 연동했어요. 보유 게임을 불러올게요.')
+    navigate('/library', { replace: true })
+  }, [search]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }, [pathname])

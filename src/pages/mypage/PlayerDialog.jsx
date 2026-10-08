@@ -9,6 +9,8 @@ import {
   profileCovers,
 } from '../../mocks/playerMock'
 import ActivityTimeline from './ActivityTimeline'
+import { useAuth } from '../../contexts/AuthContext'
+import { getErrorMessage } from '../../utils/apiClient'
 
 const titles = {
   profile: '프로필 수정',
@@ -35,14 +37,28 @@ function FormActions({ onClose, label = '저장하기' }) {
 
 function ProfileForm({ onClose }) {
   const { player, updateProfile, notify } = useGameSense()
+  const { isAuthenticated, user, updateAccount } = useAuth()
   const [draft, setDraft] = useState(player.profile)
   const [error, setError] = useState('')
+  const [saving, setSaving] = useState(false)
   const update = (key, value) => setDraft(previous => ({ ...previous, [key]: value }))
-  const submit = event => {
+  const submit = async event => {
     event.preventDefault()
     if (!draft.name.trim()) {
       setError('닉네임을 입력해주세요.')
       return
+    }
+    // 실제 계정의 닉네임은 서버에 저장한다. 소개·지역은 아직 백엔드 필드가 없어 브라우저에만 저장.
+    if (isAuthenticated && draft.name.trim() !== user.nickname) {
+      setSaving(true)
+      try {
+        await updateAccount({ nickname: draft.name.trim() })
+      } catch (requestError) {
+        setError(getErrorMessage(requestError))
+        return
+      } finally {
+        setSaving(false)
+      }
     }
     updateProfile({
       name: draft.name.trim(),
@@ -95,9 +111,9 @@ function ProfileForm({ onClose }) {
       </label>
       <p className="mp-local-note">
         <GSIcon name="shield" size={15} />
-        변경 사항은 이 브라우저에만 저장됩니다.
+        {isAuthenticated ? '닉네임은 계정에, 소개와 지역은 이 브라우저에 저장됩니다.' : '변경 사항은 이 브라우저에만 저장됩니다.'}
       </p>
-      <FormActions onClose={onClose} />
+      <FormActions onClose={onClose} label={saving ? '저장 중...' : undefined} />
     </form>
   )
 }

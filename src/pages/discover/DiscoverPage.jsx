@@ -10,6 +10,8 @@ import {
   Recommendations,
 } from '../../components/discover/DashboardWidgets'
 import { gameStatuses } from '../../mocks/playerMock'
+import { useAuth } from '../../contexts/AuthContext'
+import SteamLibraryPanel from '../../features/library/components/SteamLibraryPanel'
 
 const slides = [
   {
@@ -134,6 +136,7 @@ const pageTitles = {
 
 export function GameCatalog({ mode = 'home' }) {
   const { query, setQuery, wishlist, t, player } = useGameSense()
+  const { isAuthenticated } = useAuth()
   const [params, setParams] = useSearchParams()
   const genre = genres.includes(params.get('genre')) ? params.get('genre') : 'All'
   const status =
@@ -209,6 +212,7 @@ export function GameCatalog({ mode = 'home' }) {
           </label>
         )}
       </div>
+      {mode === 'library' && isAuthenticated && <SteamLibraryPanel query={query} />}
       <div className="gs-catalog-toolbar">
         <div className="gs-genre-tabs" role="group" aria-label="장르 필터">
           {genres.map(item => (
