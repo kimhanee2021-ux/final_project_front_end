@@ -12,6 +12,7 @@ const primaryLinks = [
   ['/analysis', 'chart', 'Expenditure Pattern', '소비 패턴'],
   ['/recommendations', 'spark', 'AI Optimization', '맞춤 추천'],
   ['/ai-games', 'spark', 'AI 게임 추천', 'AI 게임 추천'],
+  ['/ai-screenshots', 'monitor', '스크린샷 분석', '스크린샷 분석'],
   ['/pc-check', 'monitor', 'PC 성능 체크', 'PC 성능 체크'],
 ]
 const libraryLinks = [

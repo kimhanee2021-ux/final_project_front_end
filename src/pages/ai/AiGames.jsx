@@ -73,7 +73,7 @@ function AiChat({token, loading}) {
   function cancel(){abort.current?.abort(); abort.current=null; pending.current=false; setBusy(false)}
 
   return <section className="ai-page">
-    <header className="ai-header"><div><span className="ai-kicker">PLAY YOUR WAY</span><h1>AI 게임 추천</h1><p>오늘 할 게임부터, 구매 전 고민까지 함께 찾아봐요.</p></div></header>
+    <header className="ai-header"><div><span className="ai-kicker">PLAY YOUR WAY</span><h1>AI 게임 추천</h1><p>오늘 할 게임부터, 구매 전 고민까지 함께 찾아봐요.</p></div><Link to="/ai-screenshots">스크린샷 샘플 분석 ↗</Link></header>
     {error && <p role="alert" className="ai-error">{error}</p>}
     {!token ? <div className="ai-login"><h2>{loading?'로그인 확인 중…':'로그인하고 상담 시작하기'}</h2><p>회원 계정으로 게임 추천과 구매 상담을 이용하세요.</p>{!loading&&<Link className="ai-primary ai-login-link" to={authLink('login','/ai-games')}>로그인</Link>}</div> : <>
       <div className="ai-tabs" role="group" aria-label="상담 종류"><button aria-pressed={mode==='recommend'} disabled={busy} onClick={()=>newChat('recommend')}>게임 추천</button><button aria-pressed={mode==='purchase'} disabled={busy} onClick={()=>newChat('purchase')}>구매 고민 상담</button><button className="ai-reset" disabled={busy} onClick={()=>newChat()}>새 대화</button></div>
