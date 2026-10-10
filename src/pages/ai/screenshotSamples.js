@@ -1,4 +1,3 @@
-// 실제 Steam 이미지에 맞춰 작성한 샘플 설명. 오류 샘플은 문구 예시로 별도 구분.
 export const samples = [
   {
     "id": "play-0",
@@ -464,241 +463,250 @@ export const samples = [
     "id": "error-0",
     "type": "error",
     "game": "Steam",
-    "genre": "플랫폼 오류",
-    "title": "게임 파일을 읽을 수 없습니다",
+    "genre": "실제 플랫폼 오류",
+    "title": "운영체제 지원 오류",
     "isMock": true,
     "screen": [
       "Steam",
-      "게임 파일을 읽을 수 없습니다",
-      "다시 시도하기"
+      "운영체제 지원 오류"
     ],
-    "summary": "설치 파일 손상이나 저장 장치 접근 문제 등 여러 원인이 가능합니다.",
+    "summary": "현재 설치된 운영체제를 지원하지 않는다는 Steam 오류입니다.",
     "details": [
-      "오류 문구 예시: 게임 파일을 읽을 수 없습니다",
-      "이 문구만으로 원인을 확정할 수 없습니다."
+      "오래된 Steam 화면 예시이며 현재 지원 버전은 공식 문서에서 확인해야 합니다."
     ],
     "actions": [
-      "클라이언트에서 게임 파일 무결성을 검사하세요.",
-      "계속 발생하면 정확한 오류 코드와 실행 환경을 공식 지원에 전달하세요."
+      "운영체제 버전과 최신 Steam 지원 조건을 확인하세요.",
+      "지원되는 운영체제에서 Steam을 사용하세요."
     ],
-    "image": null,
-    "imageStatus": "text-example"
+    "image": "/ai-screenshot-samples/steam-os.png",
+    "imageStatus": "real-screenshot",
+    "sourceUrl": "https://help.steampowered.com/en/faqs/view/6A59-B154-BCD9-677D",
+    "platform": "Steam",
+    "uncertainty": "샘플용으로 작성한 설명입니다. 실제 발생 원인과 현재 지원 정책은 공식 지원에서 확인하세요."
   },
   {
     "id": "error-1",
     "type": "error",
-    "game": "Epic Games",
-    "genre": "플랫폼 오류",
-    "title": "게임 실행에 실패했습니다",
+    "game": "Guild Wars 2",
+    "genre": "실제 플랫폼 오류",
+    "title": "오류 7",
     "isMock": true,
     "screen": [
-      "Epic Games",
-      "게임 실행에 실패했습니다",
-      "다시 시도하기"
+      "Guild Wars 2",
+      "오류 7"
     ],
-    "summary": "파일 상태나 실행 환경을 추가로 확인해야 합니다.",
+    "summary": "게임 서버와 연결이 끊어진 오류입니다.",
     "details": [
-      "오류 문구 예시: 게임 실행에 실패했습니다",
-      "이 문구만으로 원인을 확정할 수 없습니다."
+      "화면에 연결 해제 코드 7이 보입니다."
     ],
     "actions": [
-      "공식 지원에서 정확한 오류 문구를 검색하고 파일 검증을 진행하세요.",
-      "계속 발생하면 정확한 오류 코드와 실행 환경을 공식 지원에 전달하세요."
+      "클라이언트를 종료하고 잠시 기다린 뒤 다시 연결하세요.",
+      "공식 서버 상태와 인터넷 연결을 확인하세요."
     ],
-    "image": null,
-    "imageStatus": "text-example"
+    "image": "/ai-screenshot-samples/gw2-7.png",
+    "imageStatus": "real-screenshot",
+    "sourceUrl": "https://help.guildwars2.com/hc/en-us/articles/201863018-Common-Error-Codes",
+    "platform": "ArenaNet",
+    "uncertainty": "샘플용으로 작성한 설명입니다. 실제 발생 원인과 현재 지원 정책은 공식 지원에서 확인하세요."
   },
   {
     "id": "error-2",
     "type": "error",
-    "game": "GOG GALAXY",
-    "genre": "플랫폼 오류",
-    "title": "업데이트를 완료하지 못했습니다",
+    "game": "Guild Wars 2",
+    "genre": "실제 플랫폼 오류",
+    "title": "오류 11",
     "isMock": true,
     "screen": [
-      "GOG GALAXY",
-      "업데이트를 완료하지 못했습니다",
-      "다시 시도하기"
+      "Guild Wars 2",
+      "오류 11"
     ],
-    "summary": "업데이트 공간이나 파일 접근 문제를 확인할 필요가 있습니다.",
+    "summary": "계정 이름 또는 비밀번호를 확인해야 하는 오류입니다.",
     "details": [
-      "오류 문구 예시: 업데이트를 완료하지 못했습니다",
-      "이 문구만으로 원인을 확정할 수 없습니다."
+      "입력 정보 오류와 서버 연결 문제는 이 화면만으로 구별할 수 없습니다."
     ],
     "actions": [
-      "남은 저장 공간과 설치 폴더 접근 상태를 확인하세요.",
-      "계속 발생하면 정확한 오류 코드와 실행 환경을 공식 지원에 전달하세요."
+      "이메일과 키보드 대문자 설정을 확인하세요.",
+      "필요하면 공식 계정 복구 페이지를 이용하세요."
     ],
-    "image": null,
-    "imageStatus": "text-example"
+    "image": "/ai-screenshot-samples/gw2-11.png",
+    "imageStatus": "real-screenshot",
+    "sourceUrl": "https://help.guildwars2.com/hc/en-us/articles/201863018-Common-Error-Codes",
+    "platform": "ArenaNet",
+    "uncertainty": "샘플용으로 작성한 설명입니다. 실제 발생 원인과 현재 지원 정책은 공식 지원에서 확인하세요."
   },
   {
     "id": "error-3",
     "type": "error",
-    "game": "Xbox 앱",
-    "genre": "플랫폼 오류",
-    "title": "로그인 세션이 만료되었습니다",
+    "game": "Guild Wars 2",
+    "genre": "실제 플랫폼 오류",
+    "title": "오류 29",
     "isMock": true,
     "screen": [
-      "Xbox 앱",
-      "로그인 세션이 만료되었습니다",
-      "다시 시도하기"
+      "Guild Wars 2",
+      "오류 29"
     ],
-    "summary": "계정 인증을 다시 진행해야 하는 상황 예시입니다.",
+    "summary": "이미 사용 중인 캐릭터 이름이라는 오류입니다.",
     "details": [
-      "오류 문구 예시: 로그인 세션이 만료되었습니다",
-      "이 문구만으로 원인을 확정할 수 없습니다."
+      "화면의 Example Name은 지원 문서용 예시입니다."
     ],
     "actions": [
-      "앱에서 다시 로그인하고 연결 상태를 확인하세요.",
-      "계속 발생하면 정확한 오류 코드와 실행 환경을 공식 지원에 전달하세요."
+      "다른 캐릭터 이름을 선택하세요."
     ],
-    "image": null,
-    "imageStatus": "text-example"
+    "image": "/ai-screenshot-samples/gw2-29.png",
+    "imageStatus": "real-screenshot",
+    "sourceUrl": "https://help.guildwars2.com/hc/en-us/articles/201863018-Common-Error-Codes",
+    "platform": "ArenaNet",
+    "uncertainty": "샘플용으로 작성한 설명입니다. 실제 발생 원인과 현재 지원 정책은 공식 지원에서 확인하세요."
   },
   {
     "id": "error-4",
     "type": "error",
-    "game": "Battle.net",
-    "genre": "플랫폼 오류",
-    "title": "서버와 연결이 끊겼습니다",
+    "game": "Guild Wars 2",
+    "genre": "실제 플랫폼 오류",
+    "title": "오류 35",
     "isMock": true,
     "screen": [
-      "Battle.net",
-      "서버와 연결이 끊겼습니다",
-      "다시 시도하기"
+      "Guild Wars 2",
+      "오류 35"
     ],
-    "summary": "네트워크 또는 서버 상태 문제일 수 있습니다.",
+    "summary": "같은 계정이 다른 클라이언트에서 접속해 연결이 종료됐습니다.",
     "details": [
-      "오류 문구 예시: 서버와 연결이 끊겼습니다",
-      "이 문구만으로 원인을 확정할 수 없습니다."
+      "화면에 중복 접속 오류 코드 35가 보입니다."
     ],
     "actions": [
-      "공식 서버 상태를 확인한 뒤 연결을 다시 시도하세요.",
-      "계속 발생하면 정확한 오류 코드와 실행 환경을 공식 지원에 전달하세요."
+      "본인의 다른 게임 실행을 종료하세요.",
+      "본인이 접속한 것이 아니라면 공식 계정 보안 안내를 확인하세요."
     ],
-    "image": null,
-    "imageStatus": "text-example"
+    "image": "/ai-screenshot-samples/gw2-35.png",
+    "imageStatus": "real-screenshot",
+    "sourceUrl": "https://help.guildwars2.com/hc/en-us/articles/201863018-Common-Error-Codes",
+    "platform": "ArenaNet",
+    "uncertainty": "샘플용으로 작성한 설명입니다. 실제 발생 원인과 현재 지원 정책은 공식 지원에서 확인하세요."
   },
   {
     "id": "error-5",
     "type": "error",
-    "game": "EA app",
-    "genre": "플랫폼 오류",
-    "title": "다운로드가 일시 중지되었습니다",
+    "game": "Guild Wars 2",
+    "genre": "실제 플랫폼 오류",
+    "title": "오류 42",
     "isMock": true,
     "screen": [
-      "EA app",
-      "다운로드가 일시 중지되었습니다",
-      "다시 시도하기"
+      "Guild Wars 2",
+      "오류 42"
     ],
-    "summary": "연결이나 저장 공간 문제로 다운로드가 멈춘 예시입니다.",
+    "summary": "로그인 서버에 접근하지 못한 오류입니다.",
     "details": [
-      "오류 문구 예시: 다운로드가 일시 중지되었습니다",
-      "이 문구만으로 원인을 확정할 수 없습니다."
+      "네트워크 설정이나 서버 상태 등 여러 가능성이 있습니다."
     ],
     "actions": [
-      "저장 공간을 확인하고 다운로드를 재개하세요.",
-      "계속 발생하면 정확한 오류 코드와 실행 환경을 공식 지원에 전달하세요."
+      "공식 서비스 상태와 인터넷 연결을 확인하세요.",
+      "계속되면 전체 오류 코드를 공식 지원에 전달하세요."
     ],
-    "image": null,
-    "imageStatus": "text-example"
+    "image": "/ai-screenshot-samples/gw2-42.png",
+    "imageStatus": "real-screenshot",
+    "sourceUrl": "https://help.guildwars2.com/hc/en-us/articles/201863018-Common-Error-Codes",
+    "platform": "ArenaNet",
+    "uncertainty": "샘플용으로 작성한 설명입니다. 실제 발생 원인과 현재 지원 정책은 공식 지원에서 확인하세요."
   },
   {
     "id": "error-6",
     "type": "error",
-    "game": "Ubisoft Connect",
-    "genre": "플랫폼 오류",
-    "title": "클라이언트 업데이트가 필요합니다",
+    "game": "Guild Wars 2",
+    "genre": "실제 플랫폼 오류",
+    "title": "오류 1032",
     "isMock": true,
     "screen": [
-      "Ubisoft Connect",
-      "클라이언트 업데이트가 필요합니다",
-      "다시 시도하기"
+      "Guild Wars 2",
+      "오류 1032"
     ],
-    "summary": "실행 전에 클라이언트 업데이트를 요구하는 예시입니다.",
+    "summary": "월드 이전 처리가 진행 중이라는 안내입니다.",
     "details": [
-      "오류 문구 예시: 클라이언트 업데이트가 필요합니다",
-      "이 문구만으로 원인을 확정할 수 없습니다."
+      "화면에 오류 코드 1032와 기다리라는 안내가 보입니다."
     ],
     "actions": [
-      "공식 클라이언트를 업데이트하고 다시 실행하세요.",
-      "계속 발생하면 정확한 오류 코드와 실행 환경을 공식 지원에 전달하세요."
+      "몇 분 기다린 뒤 다시 로그인하세요.",
+      "계속 지연되면 공식 지원에 문의하세요."
     ],
-    "image": null,
-    "imageStatus": "text-example"
+    "image": "/ai-screenshot-samples/gw2-1032.png",
+    "imageStatus": "real-screenshot",
+    "sourceUrl": "https://help.guildwars2.com/hc/en-us/articles/201863018-Common-Error-Codes",
+    "platform": "ArenaNet",
+    "uncertainty": "샘플용으로 작성한 설명입니다. 실제 발생 원인과 현재 지원 정책은 공식 지원에서 확인하세요."
   },
   {
     "id": "error-7",
     "type": "error",
-    "game": "PlayStation",
-    "genre": "플랫폼 오류",
-    "title": "저장 공간이 부족합니다",
+    "game": "Fortnite",
+    "genre": "실제 플랫폼 오류",
+    "title": "네트워크 연결 해제",
     "isMock": true,
     "screen": [
-      "PlayStation",
-      "저장 공간이 부족합니다",
-      "다시 시도하기"
+      "Fortnite",
+      "네트워크 연결 해제"
     ],
-    "summary": "설치에 필요한 여유 공간이 부족한 상황 예시입니다.",
+    "summary": "Fortnite 네트워크 연결이 끊어진 화면입니다.",
     "details": [
-      "오류 문구 예시: 저장 공간이 부족합니다",
-      "이 문구만으로 원인을 확정할 수 없습니다."
+      "이 화면만으로 연결 해제의 원인을 확정할 수 없습니다."
     ],
     "actions": [
-      "저장 공간을 확인하고 필요 없는 설치 파일을 정리하세요.",
-      "계속 발생하면 정확한 오류 코드와 실행 환경을 공식 지원에 전달하세요."
+      "공식 서버 상태를 확인하세요.",
+      "Epic 런처의 파일 검사와 설치 옵션을 공식 문서대로 확인하세요."
     ],
-    "image": null,
-    "imageStatus": "text-example"
+    "image": "/ai-screenshot-samples/epic-network.png",
+    "imageStatus": "real-screenshot",
+    "sourceUrl": "https://www.epicgames.com/help/c-39719500/c-36066936/a25882560",
+    "platform": "Epic Games",
+    "uncertainty": "샘플용으로 작성한 설명입니다. 실제 발생 원인과 현재 지원 정책은 공식 지원에서 확인하세요."
   },
   {
     "id": "error-8",
     "type": "error",
-    "game": "Nintendo Switch",
-    "genre": "플랫폼 오류",
-    "title": "인터넷에 연결할 수 없습니다",
+    "game": "Epic Games",
+    "genre": "실제 플랫폼 오류",
+    "title": "이메일 형식 오류",
     "isMock": true,
     "screen": [
-      "Nintendo Switch",
-      "인터넷에 연결할 수 없습니다",
-      "다시 시도하기"
+      "Epic Games",
+      "이메일 형식 오류"
     ],
-    "summary": "연결 설정이나 서비스 상태를 확인해야 합니다.",
+    "summary": "입력한 이메일 주소가 유효하지 않다는 계정 생성 오류입니다.",
     "details": [
-      "오류 문구 예시: 인터넷에 연결할 수 없습니다",
-      "이 문구만으로 원인을 확정할 수 없습니다."
+      "형식 문제인지 서비스 정책 문제인지는 추가 확인이 필요합니다."
     ],
     "actions": [
-      "기기의 연결 테스트와 공식 서비스 상태를 확인하세요.",
-      "계속 발생하면 정확한 오류 코드와 실행 환경을 공식 지원에 전달하세요."
+      "이메일 오타와 형식을 확인하세요.",
+      "정상 주소도 거절되면 공식 지원에 문의하세요."
     ],
-    "image": null,
-    "imageStatus": "text-example"
+    "image": "/ai-screenshot-samples/epic-email.jpg",
+    "imageStatus": "real-screenshot",
+    "sourceUrl": "https://www.epicgames.com/help/c-32735058/c-Trending_0/a17704984",
+    "platform": "Epic Games",
+    "uncertainty": "샘플용으로 작성한 설명입니다. 실제 발생 원인과 현재 지원 정책은 공식 지원에서 확인하세요."
   },
   {
     "id": "error-9",
     "type": "error",
-    "game": "게임 공통",
-    "genre": "플랫폼 오류",
-    "title": "그래픽 장치를 초기화할 수 없습니다",
+    "game": "Epic Games",
+    "genre": "실제 플랫폼 오류",
+    "title": "중복 복구 요청",
     "isMock": true,
     "screen": [
-      "게임 공통",
-      "그래픽 장치를 초기화할 수 없습니다",
-      "다시 시도하기"
+      "Epic Games",
+      "중복 복구 요청"
     ],
-    "summary": "그래픽 드라이버나 실행 환경 문제 등 여러 가능성이 있습니다.",
+    "summary": "같은 요청을 두 번 전송하려는 것으로 처리된 오류입니다.",
     "details": [
-      "오류 문구 예시: 그래픽 장치를 초기화할 수 없습니다",
-      "이 문구만으로 원인을 확정할 수 없습니다."
+      "비밀번호 복구 화면에서 중복 요청 안내가 보입니다."
     ],
     "actions": [
-      "최소 사양과 공식 그래픽 드라이버 버전을 확인하세요.",
-      "계속 발생하면 정확한 오류 코드와 실행 환경을 공식 지원에 전달하세요."
+      "중복 제출을 멈추고 잠시 후 다시 시도하세요.",
+      "공식 안내에 따라 다른 브라우저나 비공개 창을 확인하세요."
     ],
-    "image": null,
-    "imageStatus": "text-example"
+    "image": "/ai-screenshot-samples/epic-duplicate.png",
+    "imageStatus": "real-screenshot",
+    "sourceUrl": "https://www.epicgames.com/help/cs/epic-games-store-c-202300000001639/account-c-202300000001738/how-do-i-fix-the-it-seems-like-you-are-trying-to-send-this-twice-error-when-logging-into-my-epic-games-account-a202300000011888",
+    "platform": "Epic Games",
+    "uncertainty": "샘플용으로 작성한 설명입니다. 실제 발생 원인과 현재 지원 정책은 공식 지원에서 확인하세요."
   }
 ]
 
@@ -707,3 +715,4 @@ export function validateUpload(file) {
   if (!file.size || file.size > 10 * 1024 * 1024) return '0바이트보다 크고 10MB 이하인 이미지를 선택해주세요.'
   return ''
 }
+

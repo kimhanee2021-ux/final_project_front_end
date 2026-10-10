@@ -14,8 +14,8 @@ function SampleScreen({ sample }) {
   const [failed, setFailed] = useState(false)
   if (!sample.image) return <div className="shot-text-example"><strong>오류 문구 예시</strong><p>{sample.game} · {sample.title}</p><small>실제 오류 스크린샷은 아직 수집되지 않았습니다. 이 예시는 문구와 해석만 확인합니다.</small></div>
   return <figure className="shot-real-image">
-    {failed ? <p role="alert">이미지를 불러오지 못했습니다. 출처에서 원본을 확인해주세요.</p> : <img src={sample.image} alt={`${sample.game} 실제 게임 스크린샷 · ${sample.title}`} onError={() => setFailed(true)}/>}
-    <figcaption>실제 게임 스크린샷 · <a href={sample.sourceUrl} target="_blank" rel="noreferrer">Steam 원본 출처 ↗</a></figcaption>
+    {failed ? <p role="alert">이미지를 불러오지 못했습니다. 출처에서 원본을 확인해주세요.</p> : <img src={sample.image} alt={`${sample.game} 실제 ${sample.type === 'error' ? '오류 화면' : '게임 스크린샷'} · ${sample.title}`} onError={() => setFailed(true)}/>}
+    <figcaption>실제 {sample.type === 'error' ? '오류 화면' : '게임 스크린샷'} · <a href={sample.sourceUrl} target="_blank" rel="noreferrer">{sample.platform || 'Steam'} 원본 출처 ↗</a></figcaption>
   </figure>
 }
 
@@ -116,7 +116,7 @@ function ScreenshotWorkspace({ token, loading }) {
       <button aria-pressed={mode === 'upload'} onClick={() => changeMode('upload')}>내 이미지 업로드</button>
     </div>
     {mode === 'sample' ? <>
-      <p className="shot-notice"><strong>샘플 분석</strong> 실제 게임 스크린샷에 미리 작성한 설명을 붙인 예시입니다. 오류 항목은 문구 예시로 구분하며, 실제 Gemini 분석은 내 이미지 업로드에서 이용하세요.</p>
+      <p className="shot-notice"><strong>샘플 분석</strong> 실제 게임·플랫폼 오류 화면에 미리 작성한 설명을 붙인 예시입니다. 실제 Gemini 분석은 내 이미지 업로드에서 이용하세요.</p>
       <div className="shot-filters"><div role="group" aria-label="샘플 유형">{Object.entries(types).map(([key, label]) => <button key={key} aria-pressed={type === key} onClick={() => { setType(key); choose(samples.find(s => s.type === key)) }}>{label} · 10</button>)}</div><label>게임·샘플 검색<input value={query} onChange={e => setQuery(e.target.value)} placeholder="게임 이름 또는 상황" /></label></div>
       <div className="shot-layout"><div className="shot-list" aria-label="샘플 목록">{filtered.map(sample => <button key={sample.id} aria-pressed={selected.id === sample.id} onClick={() => choose(sample)}><small>{sample.game} · {sample.genre}</small><strong>{sample.title}</strong><span>샘플 분석</span></button>)}{!filtered.length && <p>검색 결과가 없어요. 다른 검색어를 입력해주세요.</p>}</div>
         <div className="shot-workspace"><span className="shot-badge">샘플 분석{!selected.image && ' · 문구 예시'}</span><h2>{selected.game} · {selected.title}</h2><SampleScreen key={selected.id} sample={selected}/>
