@@ -27,7 +27,7 @@ export function makeGame(stage=1,rng=Math.random) {
   stageTarget(stage)
   const template=Math.min(9,Math.floor(rng()*10))
   const board=Array.from({length:20},(_,y)=>Array.from({length:10},(_,x)=>y<16||x===TEMPLATES[template][y-16]||x===TEMPLATES[template][y-16]+1?null:'#526878'))
-  return {stage,template,board,piece:spawn(randomShape(rng)),next:Array.from({length:3},()=>randomShape(rng)),status:'playing',lines:0,score:0,placed:0,fall:0,ground:0}
+  return {stage,template,board,piece:spawn(randomShape(rng)),next:Array.from({length:3},()=>randomShape(rng)),status:'playing',lines:0,score:0,placed:0,fall:0,ground:0,items:[],itemProgress:0,freezeMs:0}
 }
 export function ghost(s) {
   let p=s.piece
@@ -37,16 +37,37 @@ export function ghost(s) {
 function lock(s,rng) {
   if(!fits(s.board,s.piece))return {...s,status:'over'}
   let board=s.board.map(row=>[...row])
+  if(s.piece.bomb) {
+    const {x,y}=s.piece
+    for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)if(board[y+dy]&&x+dx>=0&&x+dx<10)board[y+dy][x+dx]=null
+    return {...s,board,piece:s.bombOriginal,bombOriginal:undefined,ground:0,fall:0}
+  }
   for(const [x,y] of cells(s.piece))board[y][x]=s.piece.color
   const remaining=board.filter(row=>!row.every(Boolean)), cleared=20-remaining.length
   board=[...Array.from({length:cleared},()=>Array(10).fill(null)),...remaining]
   const piece=spawn(s.next[0]), lines=s.lines+cleared
   const status=lines>=stageTarget(s.stage)?(s.stage===50?'complete':'stage-clear'):fits(board,piece)?'playing':'over'
-  return {...s,board,piece,next:[...s.next.slice(1),randomShape(rng)],lines,status,placed:s.placed+1,score:s.score+cleared*cleared*100*s.stage,ground:0,fall:0}
+  const items=[...s.items], progress=s.itemProgress+cleared
+  for(let i=0;i<Math.floor(progress/5);i++)if(items.length<3)items.push(['bomb','freeze','swap'][Math.min(2,Math.floor(rng()*3))])
+  return {...s,board,piece,next:[...s.next.slice(1),randomShape(rng)],lines,status,placed:s.placed+1,score:s.score+cleared*cleared*100*s.stage,ground:0,fall:0,items,itemProgress:progress%5}
+}
+export function activateItem(s,type) {
+  const index=s.items.indexOf(type)
+  if(s.status!=='playing'||index<0||s.piece.bomb)return s
+  let n
+  if(type==='bomb')n={...s,bombOriginal:s.piece,piece:{matrix:[[1]],color:'#ff6262',label:'💣',bomb:true,x:s.piece.x+1,y:s.piece.y}}
+  else if(type==='freeze') { if(s.freezeMs>0)return s;n={...s,freezeMs:5000} }
+  else if(type==='swap') {
+    const p={...s.next[0],x:s.piece.x,y:s.piece.y}
+    if(!fits(s.board,p))return s
+    n={...s,piece:p,next:[{label:s.piece.label,color:s.piece.color,matrix:s.piece.matrix},...s.next.slice(1)],ground:0,fall:0}
+  } else return s
+  if(!fits(n.board,n.piece))return s
+  return {...n,items:s.items.filter((_,i)=>i!==index)}
 }
 export function act(s,action,rng=Math.random) {
   if(s.status!=='playing')return s
-  if(action==='hard') { const p=ghost(s);return lock({...s,piece:p,score:s.score+Math.max(0,p.y-s.piece.y)*2},rng) }
+  if(action==='hard') { const p=ghost(s);return lock({...s,piece:p,score:s.score+(s.piece.bomb?0:Math.max(0,p.y-s.piece.y)*2)},rng) }
   if(action==='lock')return fits(s.board,{...s.piece,y:s.piece.y+1})?s:lock(s,rng)
   let p=s.piece
   if(action==='left'||action==='right')p={...p,x:p.x+(action==='left'?-1:1)}
@@ -63,6 +84,11 @@ export function act(s,action,rng=Math.random) {
 }
 export function advance(s,ms,soft=false,rng=Math.random) {
   if(s.status!=='playing')return s
+  if(s.freezeMs>0) {
+    const frozen=Math.min(ms,s.freezeMs)
+    s={...s,freezeMs:s.freezeMs-frozen};ms-=frozen
+    if(ms===0)return s
+  }
   let n={...s,fall:s.fall+ms}
   const interval=soft?55:dropInterval(s.stage)
   while(n.fall>=interval) { n={...act(n,'down',rng),fall:n.fall-interval} }

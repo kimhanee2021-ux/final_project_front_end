@@ -1,6 +1,33 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { SHAPES, TEMPLATES, stageTarget, dropInterval, makeGame, act, advance, rotate, cells, seoulDate, readRecords } from '../src/pages/blocks/engine.js'
+import { SHAPES, TEMPLATES, stageTarget, dropInterval, makeGame, act, advance, rotate, cells, seoulDate, readRecords, activateItem } from '../src/pages/blocks/engine.js'
+
+test('5줄마다 아이템 지급, 보관은 최대 3개',()=>{
+ let s=makeGame(1,()=>0);s.lines=4;s.itemProgress=4
+ s.board=Array.from({length:20},()=>Array(10).fill(null));s.board[19]=Array(10).fill('#888');s.board[19][0]=null
+ s.piece={matrix:[[1]],color:'#abc',label:'검증',x:0,y:0}
+ s=act(s,'hard',()=>0);assert.deepEqual(s.items,['bomb']);assert.equal(s.itemProgress,0)
+ s.items=['bomb','freeze','swap'];s.itemProgress=4;s.board[19]=Array(10).fill('#888');s.board[19][0]=null;s.piece={matrix:[[1]],color:'#abc',x:0,y:0}
+ s=act(s,'hard',()=>0);assert.equal(s.items.length,3)
+})
+test('폭탄은 주변 칸만 제거하고 목표와 점수는 늘리지 않는다',()=>{
+ let s=makeGame(1,()=>0);s.items=['bomb'];const original=s.piece
+ s=activateItem(s,'bomb');assert.equal(s.piece.label,'💣');assert.equal(s.items.length,0)
+ const count=s.board.flat().filter(Boolean).length,score=s.score
+ s=act(s,'hard',()=>0);assert.ok(s.board.flat().filter(Boolean).length<count);assert.equal(s.lines,0);assert.equal(s.score,score);assert.deepEqual(s.piece,original)
+})
+test('시간 얼리기는 5초 동안 낙하와 고정을 멈추며 정지 중에는 시간이 흐르지 않는다',()=>{
+ let s=makeGame(1,()=>0);s.items=['freeze'];s=activateItem(s,'freeze');assert.equal(s.freezeMs,5000)
+ const y=s.piece.y;s=advance(s,4000);assert.equal(s.piece.y,y);assert.equal(s.freezeMs,1000)
+ const paused={...s,status:'paused'};assert.equal(advance(paused,2000),paused)
+ s=advance(s,1900);assert.equal(s.freezeMs,0);assert.ok(s.piece.y>y)
+})
+test('블록 교환은 첫 번째 대기 블록과 바꾸며 공간이 없으면 소비하지 않는다',()=>{
+ let s=makeGame(1,()=>0);s.items=['swap'];s.next[0]=SHAPES[9]
+ const label=s.piece.label;s=activateItem(s,'swap');assert.equal(s.piece.label,'ㅣ');assert.equal(s.next[0].label,label);assert.equal(s.items.length,0)
+ s.items=['swap'];s.board=Array.from({length:20},()=>Array(10).fill('#888'));assert.equal(activateItem(s,'swap'),s)
+ assert.equal(activateItem({...s,status:'paused'},'bomb').items.length,1)
+})
 
 test('50단계 목표와 5단계 속도 경계', () => {
   assert.equal(stageTarget(1), 10); assert.equal(stageTarget(2), 13); assert.equal(stageTarget(50), 157)
