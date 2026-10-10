@@ -20,6 +20,7 @@ export default function Notices() {
   function logout() {
     sessionStorage.removeItem('noticeToken')
     setToken(''); setUser(null); setResult(null); setSelected(null); setEditing(null)
+    setError(''); setMessage('')
   }
 
   function handleError(error) {
