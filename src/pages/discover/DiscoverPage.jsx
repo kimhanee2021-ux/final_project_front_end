@@ -118,7 +118,6 @@ function Hero() {
 }
 
 const pageTitles = {
-  explore: ['Explore Games', '게임 탐색', '새로운 세계를 발견해보세요.'],
   genres: ['Find Your Genre', '취향별 장르 탐색', '지금 당신이 빠져들고 싶은 세계는 무엇인가요?'],
   trending: [
     'New & Trending',

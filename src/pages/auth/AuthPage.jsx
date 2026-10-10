@@ -13,10 +13,6 @@ const content = {
   'forgot-password': { eyebrow: 'LET’S GET YOU BACK', title: '비밀번호를 잊으셨나요?', subtitle: '가입할 때 사용한 이메일 주소를 입력해주세요.', action: '재설정 링크 받기' },
 }
 
-function GoogleIcon() {
-  return <svg width="21" height="21" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.6 12.23c0-.71-.06-1.39-.18-2.05H12v3.88h5.38a4.61 4.61 0 0 1-2 3.02v2.51h3.24c1.9-1.75 2.98-4.33 2.98-7.36Z" /><path fill="#34A853" d="M12 22c2.7 0 4.96-.9 6.62-2.41l-3.24-2.51c-.9.6-2.04.97-3.38.97-2.61 0-4.82-1.77-5.61-4.15H3.04v2.59A10 10 0 0 0 12 22Z" /><path fill="#FBBC05" d="M6.39 13.9a6 6 0 0 1 0-3.8V7.51H3.04a10 10 0 0 0 0 8.98l3.35-2.59Z" /><path fill="#EA4335" d="M12 5.95c1.47 0 2.79.5 3.83 1.5l2.87-2.87A9.62 9.62 0 0 0 12 2a10 10 0 0 0-8.96 5.51l3.35 2.59C7.18 7.72 9.39 5.95 12 5.95Z" /></svg>
-}
-
 export default function AuthPage({ mode = 'login' }) {
   const copy = content[mode]
   const isSignup = mode === 'signup'
@@ -147,10 +143,6 @@ export default function AuthPage({ mode = 'login' }) {
               {mode === 'login' && <div className="auth-options"><label className="auth-remember"><input type="checkbox" checked={remember} onChange={event => setRemember(event.target.checked)} />로그인 상태 유지</label><Link to={authLink('forgot-password', returnTo)}>비밀번호 찾기</Link></div>}
               <button type="submit" className="auth-primary" disabled={submitting} aria-busy={submitting}>{submitting ? '처리 중...' : copy.action}<GSIcon name="arrow" size={20} /></button>
             </form>
-            {!isReset && <><div className="auth-divider"><span>또는</span></div><div className="auth-socials">
-              <button type="button" onClick={() => setMessage('Steam 계정은 로그인 후 “내 게임” 또는 설정에서 연동할 수 있어요. 먼저 이메일로 로그인해주세요.')}><GSIcon name="steam" size={23} /><span>Steam으로 계속하기</span></button>
-              <button type="button" onClick={() => setMessage('Google 로그인은 준비 중이에요. 계정 연결 없이 아래 데모를 체험할 수 있어요.')}><GoogleIcon /><span>Google로 계속하기</span></button>
-            </div></>}
             <div className="auth-message" role="status" aria-live="polite">{message && <p><GSIcon name="info" size={18} />{message}</p>}</div>
             <p className="auth-switch">{mode === 'login' ? <>아직 계정이 없으신가요? <Link to={authLink('signup', returnTo)}>회원가입</Link></> : <Link to={authLink('login', returnTo)}>로그인으로 돌아가기 <span aria-hidden="true">→</span></Link>}</p>
             <div className="auth-demo"><span>계정 없이 먼저 만나보세요</span><button type="button" onClick={() => { startDemo(remember); navigate(returnTo, { replace: true }) }}>데모 체험하기<GSIcon name="arrow" size={16} /></button><small>데모는 서버 계정 없이 이 브라우저에서만 동작해요.</small></div>

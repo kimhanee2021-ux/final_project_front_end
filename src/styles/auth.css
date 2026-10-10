@@ -44,11 +44,6 @@
 .auth-primary { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 54px; padding: 13px 20px; border-radius: 10px; background: var(--auth-mint); color: #062c23; font-size: 15px; font-weight: 750; transition: background .18s, transform .18s; }
 .auth-primary:hover { background: #69f5d0; }
 .auth-primary:active { transform: translateY(1px); }
-.auth-divider { display: flex; align-items: center; gap: 16px; margin: 22px 0; color: #9aacc0; font-size: 11px; }
-.auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--auth-border); }
-.auth-socials { display: grid; gap: 11px; }
-.auth-socials button { position: relative; display: flex; align-items: center; justify-content: center; gap: 15px; min-height: 49px; padding: 12px 20px; border: 1px solid var(--auth-border); border-radius: 9px; font-size: 13px; background: transparent; transition: background .18s, border-color .18s; }
-.auth-socials button:hover { background: #19242c; border-color: #6b8090; }
 .auth-switch { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; margin-top: 24px; color: var(--auth-muted); font-size: 12px; }
 .auth-switch a { color: #6af6d3; font-weight: 600; text-underline-offset: 4px; }
 .auth-switch a:hover { text-decoration: underline; }

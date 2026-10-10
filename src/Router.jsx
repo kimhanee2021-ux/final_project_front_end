@@ -2,6 +2,7 @@ import { Navigate, createBrowserRouter } from 'react-router-dom'
 import App from './App'
 import GameSenseLayout from './layouts/GameSenseLayout'
 import DiscoverPage, { GameCatalog } from './pages/discover/DiscoverPage'
+import ExplorePage from './pages/explore/ExplorePage'
 import {
   ActivityPage,
   CollectionsPage,
@@ -35,7 +36,8 @@ const router = createBrowserRouter([
         element: <GameSenseLayout />,
         children: [
           { index: true, element: <DiscoverPage /> },
-          ...catalogRoutes(['explore', 'genres', 'trending', 'recommendations']),
+          { path: 'explore', element: <ExplorePage /> },
+          ...catalogRoutes(['genres', 'trending', 'recommendations']),
           { path: 'upcoming', element: <UpcomingPage /> },
           { path: 'pc-check', element: <PerformancePage /> },
           {

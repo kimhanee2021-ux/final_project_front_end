@@ -246,6 +246,18 @@ body:has(.gs-dialog[open], .gs-mobile-drawer[open]) { overflow: hidden; }
 .gs-empty h3 { font-size: 18px; margin-top: 18px; }
 .gs-empty p { margin: 8px 0 23px; color: var(--gs-muted); font-size: 12px; }
 .gs-inline-note { display: flex; align-items: center; gap: 12px; color: var(--gs-muted); font-size: 11px; padding: 18px 0; line-height: 1.8; }
+/* 탐색 탭: 스팀 썸네일(460x215 가로형)에 맞춘 카드 */
+.gs-steam-card { flex-direction: column; }
+.gs-steam-card .gs-cover-button { display: block; flex: none; width: auto; align-self: auto; }
+.gs-steam-card .gs-game-cover { height: auto; max-height: none; aspect-ratio: 460 / 215; }
+.gs-list-view .gs-steam-card { flex-direction: row; }
+.gs-list-view .gs-steam-card .gs-cover-button { flex: 0 0 34%; width: 34%; }
+.gs-list-view .gs-steam-card .gs-game-cover { height: 100%; }
+.gs-steam-price { display: flex; align-items: center; gap: 7px; margin-top: auto; font-size: 12px; }
+.gs-steam-price em { font-style: normal; font-weight: 650; color: #04291f; background: var(--gs-accent); padding: 1px 5px; border-radius: 4px; font-size: 10px; }
+.gs-steam-price strong { font-weight: 600; }
+.gs-genre-tabs button:disabled { opacity: .45; cursor: not-allowed; }
+.gs-load-more { display: flex; justify-content: center; padding: 26px 0 8px; }
 .gs-inline-note > svg { flex-shrink: 0; color: #aa87ef; }
 .gs-dialog { width: 560px; max-width: calc(100% - 32px); max-height: calc(100dvh - 40px); border: 1px solid var(--gs-border); padding: 0; border-radius: 19px; color: var(--gs-text); background: var(--gs-panel); box-shadow: var(--gs-shadow); }
 .gs-dialog::backdrop, .gs-mobile-drawer::backdrop { background: #03080db5; backdrop-filter: blur(7px); }
