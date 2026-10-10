@@ -1,122 +1,14 @@
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { discoverGames, genres, recommendedIds } from '../../mocks/discoverMock'
-import { useGameSense } from '../../contexts/GameSenseContext'
-import GameCard from '../../components/discover/GameCard'
-import GSIcon from '../../components/discover/GSIcon'
-import {
-  PlayPattern,
-  RecentActivity,
-  Recommendations,
-} from '../../components/discover/DashboardWidgets'
-import { gameStatuses } from '../../mocks/playerMock'
-import { useAuth } from '../../contexts/AuthContext'
-import SteamLibraryPanel from '../../features/library/components/SteamLibraryPanel'
+import { discoverGames, genres, recommendedIds } from '../mocks/discoverMock'
+import { useGameSense } from '../../../contexts/GameSenseContext'
+import GameCard from './GameCard'
+import GSIcon from '../../../components/common/GSIcon'
+import { gameStatuses } from '../../player/mocks/playerMock'
+import { useAuth } from '../../auth/context/AuthContext'
+import SteamLibraryPanel from '../../library/components/SteamLibraryPanel'
 
-const slides = [
-  {
-    eyebrow: 'PLAY  EXPLORE  TRACK  IMPROVE',
-    title: (
-      <>
-        Good Games
-        <br />
-        Make a Better You
-      </>
-    ),
-    description: (
-      <>
-        게임은 단순한 놀이가 아니라,
-        <br />
-        당신의 일상을 채우는 또 하나의 경험입니다.
-      </>
-    ),
-    cta: '지금 탐험하기',
-    to: '/explore',
-  },
-  {
-    eyebrow: 'DISCOVER YOUR NEXT FAVORITE',
-    title: (
-      <>
-        A New World.
-        <br />
-        Your Next Story.
-      </>
-    ),
-    description: (
-      <>
-        수많은 세계 속에서 발견하는 나만의 취향.
-        <br />
-        다음으로 사랑하게 될 게임을 만나보세요.
-      </>
-    ),
-    cta: '추천 게임 보기',
-    to: '/recommendations',
-  },
-  {
-    eyebrow: 'LESS GUESSING. MORE PLAYING.',
-    title: (
-      <>
-        Know Your Play.
-        <br />
-        Find Your Balance.
-      </>
-    ),
-    description: (
-      <>
-        나의 플레이와 소비 패턴을 한눈에.
-        <br />더 즐거운 게임 라이프를 시작해 보세요.
-      </>
-    ),
-    cta: '나의 패턴 보기',
-    to: '/analysis',
-  },
-]
-function Hero() {
-  const [index, setIndex] = useState(0)
-  const slide = slides[index]
-  return (
-    <section className={`gs-hero gs-hero-${index}`} aria-label="GameSense 소개">
-      <div className="gs-hero-image" />
-      <div className="gs-hero-copy" key={index}>
-        <p className="gs-hero-eyebrow">{slide.eyebrow}</p>
-        <h1>{slide.title}</h1>
-        <p className="gs-hero-description">{slide.description}</p>
-        <Link className="gs-primary-button" to={slide.to}>
-          {slide.cta}
-          <GSIcon name="arrow" size={18} />
-        </Link>
-      </div>
-      <div className="gs-hero-signature">
-        <span>
-          FIND
-          <br />
-          PLAY
-          <br />
-          ANALYZE
-          <br />
-          GROW
-        </span>
-        <em>
-          with
-          <br />
-          <strong>GameSense</strong>
-        </em>
-      </div>
-      <div className="gs-hero-pagination" role="group" aria-label="배너 선택">
-        {slides.map((item, number) => (
-          <button
-            key={item.eyebrow}
-            className={index === number ? 'active' : ''}
-            aria-label={`배너 ${number + 1}`}
-            aria-pressed={index === number}
-            onClick={() => setIndex(number)}
-          />
-        ))}
-      </div>
-    </section>
-  )
-}
-
+// 홈, 장르, 인기, 추천, 내 게임, 위시리스트가 mode만 바꿔 함께 쓰는 게임 목록 (더미 데이터 기반)
 const pageTitles = {
   genres: ['Find Your Genre', '취향별 장르 탐색', '지금 당신이 빠져들고 싶은 세계는 무엇인가요?'],
   trending: [
@@ -133,7 +25,7 @@ const pageTitles = {
   ],
 }
 
-export function GameCatalog({ mode = 'home' }) {
+export default function GameCatalog({ mode = 'home' }) {
   const { query, setQuery, wishlist, t, player } = useGameSense()
   const { isAuthenticated } = useAuth()
   const [params, setParams] = useSearchParams()
@@ -319,21 +211,5 @@ export function GameCatalog({ mode = 'home' }) {
         </div>
       )}
     </section>
-  )
-}
-
-export default function DiscoverPage() {
-  return (
-    <>
-      <Hero />
-      <div className="gs-dashboard-grid">
-        <GameCatalog />
-        <aside className="gs-dashboard-widgets" aria-label="나의 게임 인사이트">
-          <PlayPattern />
-          <Recommendations />
-          <RecentActivity />
-        </aside>
-      </div>
-    </>
   )
 }

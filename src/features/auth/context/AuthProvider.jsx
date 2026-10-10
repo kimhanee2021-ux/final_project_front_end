@@ -7,10 +7,10 @@ import {
   readDemoSession,
   saveAccessToken,
   saveDemoSession,
-} from '../features/auth/authSession'
-import * as authApi from '../features/auth/api'
-import * as userApi from '../features/user/api'
-import { browserStores, UNAUTHORIZED_EVENT } from '../utils/apiClient'
+} from '../authSession'
+import * as authApi from '../api'
+import * as userApi from '../../user/api'
+import { browserStores, UNAUTHORIZED_EVENT } from '../../../utils/apiClient'
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null)

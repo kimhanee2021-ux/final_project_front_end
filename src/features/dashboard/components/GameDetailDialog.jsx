@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import Icon from '../../../components/common/Icon'
-import GameIdentity from '../../../components/game/GameIdentity'
+import GameIdentity from './GameIdentity'
 import { money, number, dateLabel } from '../../../utils/formatters'
 import { netAmount } from '../spendingMetrics'
 export default function GameDetailDialog({ game, onClose }) {

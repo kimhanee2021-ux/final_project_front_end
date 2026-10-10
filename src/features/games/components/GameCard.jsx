@@ -1,5 +1,5 @@
-import { useGameSense } from '../../contexts/GameSenseContext'
-import GSIcon from './GSIcon'
+import { useGameSense } from '../../../contexts/GameSenseContext'
+import GSIcon from '../../../components/common/GSIcon'
 
 export function PlatformIcons({ platforms }) {
   const icons = { Steam: 'steam', PlayStation: 'playstation', Xbox: 'xbox', Switch: 'switch' }

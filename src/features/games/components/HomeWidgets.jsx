@@ -6,9 +6,9 @@ import {
   playHistory,
   recentActivity,
   recommendedIds,
-} from '../../mocks/discoverMock'
-import { useGameSense } from '../../contexts/GameSenseContext'
-import GSIcon from './GSIcon'
+} from '../mocks/discoverMock'
+import { useGameSense } from '../../../contexts/GameSenseContext'
+import GSIcon from '../../../components/common/GSIcon'
 
 export function PlayPattern() {
   const [month, setMonth] = useState(5)

@@ -1,6 +1,6 @@
-import GSIcon from '../../components/discover/GSIcon'
-import { useGameSense } from '../../contexts/GameSenseContext'
-import { profileAvatars, profileCovers } from '../../mocks/playerMock'
+import GSIcon from '../../../components/common/GSIcon'
+import { useGameSense } from '../../../contexts/GameSenseContext'
+import { profileAvatars, profileCovers } from '../mocks/playerMock'
 
 export default function ProfileHero({ onEdit }) {
   const { player } = useGameSense()

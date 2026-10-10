@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
-import GSIcon from '../../components/discover/GSIcon'
-import { useGameSense } from '../../contexts/GameSenseContext'
+import GSIcon from '../../../components/common/GSIcon'
+import { useGameSense } from '../../../contexts/GameSenseContext'
 import {
   gameStatuses,
   playStyles,
   preferenceTags,
   profileAvatars,
   profileCovers,
-} from '../../mocks/playerMock'
+} from '../mocks/playerMock'
 import ActivityTimeline from './ActivityTimeline'
-import { useAuth } from '../../contexts/AuthContext'
-import { getErrorMessage } from '../../utils/apiClient'
+import { useAuth } from '../../auth/context/AuthContext'
+import { getErrorMessage } from '../../../utils/apiClient'
 
 const titles = {
   profile: '프로필 수정',

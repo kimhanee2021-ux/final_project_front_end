@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { GameSenseContext } from './GameSenseContext'
-import { discoverGames } from '../mocks/discoverMock'
-import usePlayerData from '../hooks/usePlayerData'
+import { discoverGames } from '../features/games/mocks/discoverMock'
+import usePlayerData from '../features/player/hooks/usePlayerData'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useAuth } from './AuthContext'
+import { useAuth } from '../features/auth/context/AuthContext'
 import { authLink } from '../features/auth/authSession'
 
 function readStored(key, fallback, validate) {

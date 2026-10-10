@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { discoverGames } from '../mocks/discoverMock'
+import { discoverGames } from '../../games/mocks/discoverMock'
 import {
   defaultPlayer,
   gameStatuses,

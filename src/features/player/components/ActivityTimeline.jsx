@@ -1,5 +1,5 @@
-import GSIcon from '../../components/discover/GSIcon'
-import { activityAppearance } from '../../mocks/playerMock'
+import GSIcon from '../../../components/common/GSIcon'
+import { activityAppearance } from '../mocks/playerMock'
 
 const dateFormat = new Intl.DateTimeFormat('ko-KR', {
   timeZone: 'Asia/Seoul',

@@ -1,19 +1,18 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 import App from './App'
 import GameSenseLayout from './layouts/GameSenseLayout'
-import DiscoverPage, { GameCatalog } from './pages/discover/DiscoverPage'
-import ExplorePage from './pages/explore/ExplorePage'
-import {
-  ActivityPage,
-  CollectionsPage,
-  SettingsPage,
-  UpcomingPage,
-} from './pages/discover/LibraryPages'
 import HomePage from './pages/home/HomePage'
+import ExplorePage from './pages/explore/ExplorePage'
+import UpcomingPage from './pages/upcoming/UpcomingPage'
+import CollectionsPage from './pages/collections/CollectionsPage'
+import ActivityPage from './pages/activity/ActivityPage'
+import SettingsPage from './pages/settings/SettingsPage'
+import AnalysisPage from './pages/analysis/AnalysisPage'
 import PerformancePage from './pages/performance/PerformancePage'
 import MyPage from './pages/mypage/MyPage'
 import AuthPage from './pages/auth/AuthPage'
-import RequireDemoSession from './components/auth/RequireDemoSession'
+import RequireDemoSession from './features/auth/components/RequireDemoSession'
+import GameCatalog from './features/games/components/GameCatalog'
 
 // 같은 컴포넌트를 mode만 바꿔 쓰는 라우트는 key로 구분해 페이지 이동 시 상태를 초기화한다.
 const authRoutes = ['login', 'signup', 'forgot-password'].map(mode => ({
@@ -35,7 +34,7 @@ const router = createBrowserRouter([
       {
         element: <GameSenseLayout />,
         children: [
-          { index: true, element: <DiscoverPage /> },
+          { index: true, element: <HomePage /> },
           { path: 'explore', element: <ExplorePage /> },
           ...catalogRoutes(['genres', 'trending', 'recommendations']),
           { path: 'upcoming', element: <UpcomingPage /> },
@@ -51,11 +50,11 @@ const router = createBrowserRouter([
               { path: 'mypage', element: <MyPage /> },
               {
                 path: 'analysis',
-                element: <div className="gs-legacy"><HomePage view="analysis" /></div>,
+                element: <div className="gs-legacy"><AnalysisPage view="analysis" /></div>,
               },
               {
                 path: 'purchases',
-                element: <div className="gs-legacy"><HomePage view="library" /></div>,
+                element: <div className="gs-legacy"><AnalysisPage view="library" /></div>,
               },
             ],
           },

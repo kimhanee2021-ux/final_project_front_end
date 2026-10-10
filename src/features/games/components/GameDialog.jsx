@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
-import { useGameSense } from '../../contexts/GameSenseContext'
+import { useGameSense } from '../../../contexts/GameSenseContext'
 import { PlatformIcons } from './GameCard'
-import GSIcon from './GSIcon'
+import GSIcon from '../../../components/common/GSIcon'
 
 export default function GameDialog() {
   const { selectedGame: game, setSelectedGame, wishlist, toggleWishlist } = useGameSense()

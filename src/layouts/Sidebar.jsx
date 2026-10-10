@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../features/auth/context/AuthContext'
 import { useGameSense } from '../contexts/GameSenseContext'
-import GSIcon from '../components/discover/GSIcon'
+import GSIcon from '../components/common/GSIcon'
 
 const primaryLinks = [
   ['/', 'home', 'Home', '홈'],
@@ -12,6 +12,7 @@ const primaryLinks = [
   ['/analysis', 'chart', 'Expenditure Pattern', '소비 패턴'],
   ['/recommendations', 'spark', 'AI Optimization', '맞춤 추천'],
   ['/pc-check', 'monitor', 'PC 성능 체크', 'PC 성능 체크'],
+  ['/library','','라이브러리','라이브러리']
 ]
 const libraryLinks = [
   ['/library', 'gamepad', 'My Games', '내 게임'],
