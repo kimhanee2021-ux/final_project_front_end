@@ -1,49 +1,50 @@
 import { useEffect, useRef, useState } from 'react'
 import { act, advance, cells, dropInterval, ghost, makeGame, readRecords, seoulDate, SHAPES, stageTarget, activateItem } from './engine'
 import './blocks.css'
+import {keyAction} from './keys'
 
 const KEY='gamesense-hangul-records-v1'
-const controls={KeyA:'left',KeyD:'right',Enter:'rotate',ShiftLeft:'hard',ShiftRight:'hard'}
 const itemTypes=[['bomb','💣 폭탄','1'],['freeze','❄ 시간 얼리기','2'],['swap','🔄 블록 바꾸기','3']]
 function loadRecords() { try { return readRecords(localStorage.getItem(KEY)) } catch { return [] } }
 function Mini({piece}) { return <div className="hb-mini" aria-label={`${piece.label} 블록`}>{piece.matrix.flat().map((v,i)=><i key={i} style={{background:v?piece.color:'transparent'}} />)}</div> }
-export default function HangulBlocks() {
-  const [game,setGame]=useState(()=>({...makeGame(),status:'ready'}))
+export default function HangulBlocks({gameFactory=makeGame,random=Math.random}) {
+  const [game,setGame]=useState(()=>({...gameFactory(),status:'ready'}))
   const [mode,setMode]=useState('challenge')
   const [records,setRecords]=useState(loadRecords)
   const [saveError,setSaveError]=useState(false)
   const boardRef=useRef(null), soft=useRef(false), runDate=useRef(seoulDate()), recorded=useRef(false)
   const playing=game.status==='playing'
-  const move=action=>setGame(s=>act(s,action))
+  const move=action=>setGame(s=>act(s,action,random))
   const item=type=>setGame(s=>activateItem(s,type))
   const pause=()=>{soft.current=false;setGame(s=>s.status==='playing'?{...s,status:'paused'}:s)}
   const start=(stage=1,carry=false)=>{
     soft.current=false;recorded.current=false
     if(!carry)runDate.current=seoulDate()
-    setGame(previous=>{const next=makeGame(stage);return carry?{...next,score:previous.score,items:previous.items,itemProgress:previous.itemProgress}:next})
+    setGame(previous=>{const next=gameFactory(stage);return carry?{...next,score:previous.score,items:previous.items,itemProgress:previous.itemProgress}:next})
     boardRef.current?.focus()
   }
   useEffect(()=>{
     if(!playing)return
     let last=performance.now()
-    const timer=setInterval(()=>{const now=performance.now(),ms=Math.min(100,now-last);last=now;setGame(s=>advance(s,ms,soft.current))},40)
+    const timer=setInterval(()=>{const now=performance.now(),ms=Math.min(100,now-last);last=now;setGame(s=>advance(s,ms,soft.current,random))},40)
     const visibility=()=>{if(document.hidden){soft.current=false;setGame(s=>s.status==='playing'?{...s,status:'paused'}:s)}}
     const blur=()=>{soft.current=false;setGame(s=>s.status==='playing'?{...s,status:'paused'}:s)}
     document.addEventListener('visibilitychange',visibility);window.addEventListener('blur',blur)
     return ()=>{clearInterval(timer);document.removeEventListener('visibilitychange',visibility);window.removeEventListener('blur',blur)}
-  },[playing])
+  },[playing,random])
   useEffect(()=>{
     if(!['over','stage-clear','complete'].includes(game.status)||recorded.current)return
     recorded.current=true
     const entry={mode,date:runDate.current,stage:game.stage,score:game.score,lines:game.lines,status:game.status}
     try {const next=[...loadRecords(),entry].slice(-100);localStorage.setItem(KEY,JSON.stringify(next));setRecords(next)} catch {setSaveError(true)}
   },[game.status,game.stage,game.score,game.lines,mode])
-  useEffect(()=>{const old=document.title;document.title='한글 블록 손풀기 | GameSense';return ()=>{document.title=old}},[])
+  useEffect(()=>{const old=document.title;document.title='한글 테트리스 | GameSense';return ()=>{document.title=old}},[])
   const onKeyDown=e=>{
     if(['Digit1','Digit2','Digit3'].includes(e.code)){e.preventDefault();if(!e.repeat)item(itemTypes[Number(e.code.slice(-1))-1][0]);return}
     if(e.code==='Escape'){e.preventDefault();pause();return}
     if(e.code==='KeyS'){e.preventDefault();if(playing)soft.current=true;return}
-    if(controls[e.code]){e.preventDefault();if(e.repeat&&['Enter','ShiftLeft','ShiftRight'].includes(e.code))return;move(controls[e.code])}
+    const action=keyAction(e)
+    if(action){e.preventDefault();move(action)}
   }
   const display=game.board.map(row=>[...row]), landed=ghost(game)
   if(['playing','paused'].includes(game.status)) {
@@ -52,9 +53,9 @@ export default function HangulBlocks() {
   }
   const today=records.filter(r=>r.mode===mode&&(mode!=='daily'||r.date===seoulDate()))
   const best=today.reduce((a,r)=>Math.max(a,r.score),0)
-  const statusTitle={ready:'게임 전, 가볍게 손풀기',paused:'잠시 쉬는 중',over:'이번 도전이 끝났어요', 'stage-clear':`${game.stage}단계 성공!`,complete:'50단계 완주!'}[game.status]
+  const statusTitle={ready:'한글 테트리스를 시작해볼까요?',paused:'잠시 쉬는 중',over:'이번 도전이 끝났어요', 'stage-clear':`${game.stage}단계 성공!`,complete:'50단계 완주!'}[game.status]
   return <section className="hb-page">
-    <header className="hb-heading"><div><span className="hb-eyebrow">PLAY • WARM UP • CHALLENGE</span><h1>한글 블록 손풀기</h1><p>자모 블록을 돌리고, 빈칸을 채우고, 한 줄씩 없애보세요.</p></div><a href="#hb-guide" className="hb-button">게임 설명서 ↓</a></header>
+    <header className="hb-heading"><div><span className="hb-eyebrow">PLAY • WARM UP • CHALLENGE</span><h1>한글 테트리스</h1><p>한글의 자음과 모음 블록을 돌리고, 빈칸을 채우고, 한 줄씩 없애보세요.</p></div><a href="#hb-guide" className="hb-button">게임 설명서 ↓</a></header>
     <div className="hb-modes" aria-label="게임 모드">{[['challenge','50단계 챌린지'],['daily','일일 챌린지']].map(([id,label])=><button key={id} aria-pressed={mode===id} disabled={game.status!=='ready'} onClick={()=>setMode(id)}>{label}</button>)}<span>{mode==='daily'?`${seoulDate()} · 오늘의 개인 기록`:'1단계부터 차근차근 도전'}</span></div>
     <div className="hb-game-layout">
       <div className="hb-play-area">
@@ -76,6 +77,6 @@ export default function HangulBlocks() {
         <div className="hb-actions"><button className="hb-button" disabled={!playing} onClick={pause}>일시정지 · Esc</button><button className="hb-button" disabled={!playing} onClick={()=>{pause()}}>잠시 쉬기</button></div>
       </aside>
     </div>
-    <section id="hb-guide" className="hb-card hb-guide"><span className="hb-eyebrow">HOW TO PLAY</span><h2>게임 설명서</h2><div className="hb-guide-grid"><div><h3>① 가로줄을 채워주세요</h3><p>ㄱ·ㄴ·ㄷ·ㅁ과 모음 모양 블록이 내려옵니다. 한 가로줄의 10칸을 모두 채우면 그 줄이 사라집니다. 블록이 쌓여 새 블록이 나올 공간이 없어지면 도전이 끝납니다.</p><h3>② 두 손으로 조작하세요</h3><p><kbd>A</kbd> 왼쪽 · <kbd>D</kbd> 오른쪽 · <kbd>S</kbd> 누르고 있으면 빠르게 내리기<br/><kbd>Enter</kbd> 시계 방향 90° 회전 · 양쪽 <kbd>Shift</kbd> 즉시 내리기<br/><kbd>Esc</kbd> 일시정지. 반투명 테두리는 착지 위치입니다.</p><p>휴대폰에서는 게임판 아래 버튼을 사용하세요. 다른 창으로 이동하거나 게임판을 벗어나면 자동으로 일시정지합니다.</p></div><div><h3>③ 50단계에 도전하세요</h3><p>1단계 목표는 10줄. 다음 단계마다 3줄씩 늘어나 50단계는 157줄입니다. 6·11·16·21·26·31·36·41·46단계에서 낙하 속도가 빨라집니다. 단계가 바뀌면 제거 줄 수와 게임판은 초기화되고 점수는 이어집니다.</p><h3>④ 매번 새로운 순서로</h3><p>10가지 시작 배치 중 하나가 무작위로 선택되고, 나오는 자모도 무작위입니다. 일일 챌린지도 50단계 규칙으로 진행하며 한국 날짜 기준 오늘의 개인 기록을 확인합니다. 모든 이용자의 배치와 순서가 같지는 않습니다.</p><p>줄 제거 점수는 제거 줄 수² × 100 × 단계, 즉시 낙하는 내려간 칸마다 2점입니다. 완료한 단계와 종료한 도전의 기록만 저장하며, 브라우저 데이터를 지우면 기록도 삭제됩니다.</p></div></div><h3>⑤ 아이템으로 위기를 넘기세요</h3><p>직접 5줄을 없앨 때마다 무작위 아이템 하나를 받습니다. 최대 3개 보관하며 가득 차 있으면 추가 지급되지 않습니다. 보관 아이템과 지급까지의 진행은 다음 단계에도 이어집니다.</p><p><kbd>1</kbd> 💣 폭탄: 현재 자모를 잠시 보관하고 폭탄을 떨어뜨려 착지 주변 3×3칸을 제거합니다. 이후 원래 자모를 이어서 배치합니다. 폭탄은 점수·목표 줄 수에 포함되지 않습니다.<br/><kbd>2</kbd> ❄ 시간 얼리기: 5초 동안 낙하와 자동 고정을 멈춥니다. 이동·회전·즉시 내리기는 가능하며 일시정지 중에는 효과 시간이 줄지 않습니다.<br/><kbd>3</kbd> 🔄 블록 바꾸기: 현재 블록과 첫 번째 다음 블록을 교환합니다. 공간이 부족하면 아이템을 소비하지 않습니다. 모바일에서는 아이템 버튼을 누르세요.</p><div className="hb-palette">{SHAPES.map(p=><span key={p.label}><i style={{background:p.color}}/>{p.label}</span>)}</div></section>
+    <section id="hb-guide" className="hb-card hb-guide"><span className="hb-eyebrow">HOW TO PLAY</span><h2>게임 설명서</h2><div className="hb-guide-grid"><div><h3>① 가로줄을 채워주세요</h3><p>ㄱ·ㄴ·ㄷ·ㅁ과 모음 모양 블록이 내려옵니다. 한 가로줄의 10칸을 모두 채우면 그 줄이 사라집니다. 블록이 쌓여 새 블록이 나올 공간이 없어지면 도전이 끝납니다.</p><h3>② 두 손으로 조작하세요</h3><p><kbd>A</kbd> 왼쪽 · <kbd>D</kbd> 오른쪽 · <kbd>S</kbd> 누르고 있으면 빠르게 내리기<br/><kbd>Enter</kbd> 시계 방향 90° 회전 · 양쪽 <kbd>Shift</kbd> 즉시 내리기<br/><kbd>Esc</kbd> 일시정지. 반투명 테두리는 착지 위치입니다.</p><p>휴대폰에서는 게임판 아래 버튼을 사용하세요. 다른 창으로 이동하거나 게임판을 벗어나면 자동으로 일시정지합니다.</p></div><div><h3>③ 50단계에 도전하세요</h3><p>1단계 목표는 10줄. 다음 단계마다 3줄씩 늘어나 50단계는 157줄입니다. 6·11·16·21·26·31·36·41·46단계에서 낙하 속도가 빨라집니다. 단계가 바뀌면 제거 줄 수와 게임판은 초기화되고 점수는 이어집니다.</p><h3>④ 매번 새로운 순서로</h3><p>10가지 시작 배치 중 하나가 무작위로 선택되고, 나오는 자음과 모음 블록도 무작위입니다. 일일 챌린지도 50단계 규칙으로 진행하며 한국 날짜 기준 오늘의 개인 기록을 확인합니다. 모든 이용자의 배치와 순서가 같지는 않습니다.</p><p>줄 제거 점수는 제거 줄 수² × 100 × 단계, 즉시 낙하는 내려간 칸마다 2점입니다. 완료한 단계와 종료한 도전의 기록만 저장하며, 브라우저 데이터를 지우면 기록도 삭제됩니다.</p></div></div><h3>⑤ 아이템으로 위기를 넘기세요</h3><p>직접 5줄을 없앨 때마다 무작위 아이템 하나를 받습니다. 최대 3개 보관하며 가득 차 있으면 추가 지급되지 않습니다. 보관 아이템과 지급까지의 진행은 다음 단계에도 이어집니다.</p><p><kbd>1</kbd> 💣 폭탄: 현재 자음과 모음 블록을 잠시 보관하고 폭탄을 떨어뜨려 착지 주변 3×3칸을 제거합니다. 이후 원래 자음과 모음 블록을 이어서 배치합니다. 폭탄은 점수·목표 줄 수에 포함되지 않습니다.<br/><kbd>2</kbd> ❄ 시간 얼리기: 5초 동안 낙하와 자동 고정을 멈춥니다. 이동·회전·즉시 내리기는 가능하며 일시정지 중에는 효과 시간이 줄지 않습니다.<br/><kbd>3</kbd> 🔄 블록 바꾸기: 현재 블록과 첫 번째 다음 블록을 교환합니다. 공간이 부족하면 아이템을 소비하지 않습니다. 모바일에서는 아이템 버튼을 누르세요.</p><div className="hb-palette">{SHAPES.map(p=><span key={p.label}><i style={{background:p.color}}/>{p.label}</span>)}</div></section>
   </section>
 }
