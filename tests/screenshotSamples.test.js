@@ -1,5 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import { existsSync } from 'node:fs'
 import { samples, validateUpload } from '../src/pages/ai/screenshotSamples.js'
 
 test('세 유형을 고르게 제공하며 실제 분석으로 오인하지 않는다', () => {
@@ -12,6 +13,17 @@ test('세 유형을 고르게 제공하며 실제 분석으로 오인하지 않�
     assert.equal(sample.isMock, true)
     assert.ok(sample.summary && sample.actions.length && sample.screen.length)
   }
+})
+
+test('실제 이미지가 로컬 파일과 일치하고 가짜 능력치를 사용하지 않는다', () => {
+  const images = samples.filter(s => s.image)
+  assert.equal(images.length, 20)
+  for (const sample of images) {
+    assert.ok(existsSync(new URL(`../public${sample.image}`, import.meta.url)))
+    assert.match(sample.sourceUrl, /^https:\/\/store\.steampowered\.com\/app\//)
+    assert.doesNotMatch(JSON.stringify(sample), /공격력 120|치명타 \+8%|회복 20|서리의 검/)
+  }
+  assert.ok(samples.filter(s => s.type === 'error').every(s => !s.image && s.imageStatus === 'text-example'))
 })
 
 test('업로드는 지원 이미지와 크기를 확인한다', () => {
