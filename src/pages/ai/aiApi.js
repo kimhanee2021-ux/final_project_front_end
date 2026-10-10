@@ -1,0 +1,18 @@
+export async function api(path, {token, method = 'GET', body, signal} = {}) {
+  let response
+  try {
+    response = await fetch(`/api${path}`, {method, signal, headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {}), ...(body ? {'Content-Type':'application/json'} : {})
+    }, ...(body ? {body:JSON.stringify(body)} : {})})
+  } catch (error) {
+    if (error.name === 'AbortError') throw error
+    throw new Error('서버에 연결하지 못했습니다. 잠시 후 다시 시도해주세요.', {cause:error})
+  }
+  const data = await response.json().catch(() => ({}))
+  if (!response.ok) {
+    const error = new Error(data.error || data.message || '요청을 처리하지 못했습니다.')
+    error.status = response.status
+    throw error
+  }
+  return data
+}

@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import process from 'node:process'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -9,7 +10,8 @@ export default defineConfig({
   server:{
     host:'0.0.0.0',//모든 아이피 접속 허용
     port:9191,// 개발 서버 포트 설정 (기본값: 5173)
-    open:true// 개발 서버 실행 시 자동으로 브라우저 열기(기본값:false)
+    open:false,
+    proxy: {'/api': {target:process.env.AI_API_TARGET||'http://localhost:8080',changeOrigin:true,configure(proxy){proxy.on('proxyReq',req=>req.removeHeader('origin'))}}}
   },
   build:{
     outDir:'dist' // 빌드 결과물 폴더 지정(기본값:dist)
