@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { request } from './noticeApi'
+import { mockNotices, mockNoticePage } from './noticeMock'
 import './notices.css'
 
 const date = value => value ? new Date(value).toLocaleDateString('ko-KR') : '—'
 
 export default function Notices() {
-  const [token, setToken] = useState(() => sessionStorage.getItem('noticeToken') || '')
+  const [preview] = useState(() => import.meta.env.DEV && new URLSearchParams(window.location.search).get('preview') === '1')
+  const [token, setToken] = useState(() => preview ? 'notice-preview' : sessionStorage.getItem('noticeToken') || '')
   const [user, setUser] = useState(null)
   const [page, setPage] = useState(0)
   const [result, setResult] = useState(null)
@@ -29,15 +31,15 @@ export default function Notices() {
   }
 
   useEffect(() => {
-    document.title = '공지사항 게시판'
+    document.title = '공지사항'
   }, [])
 
   useEffect(() => {
     if (!token) return
     const controller = new AbortController()
     Promise.all([
-      request('/me', { token, signal: controller.signal }),
-      request(`/notices?page=${page}&size=10`, { token, signal: controller.signal }),
+      preview ? Promise.resolve(null) : request('/me', { token, signal: controller.signal }),
+      preview ? Promise.resolve(mockNoticePage(page)) : request(`/notices?page=${page}&size=10`, { token, signal: controller.signal }),
     ]).then(([me, notices]) => {
       setUser(me); setResult(notices); setLoading(false)
     }).catch(err => {
@@ -48,7 +50,7 @@ export default function Notices() {
       setResult(null); setError(err.message); setLoading(false)
     })
     return () => controller.abort()
-  }, [token, page, revision])
+  }, [token, page, revision, preview])
 
   async function login(event) {
     event.preventDefault(); setBusy(true); setError('')
@@ -62,7 +64,7 @@ export default function Notices() {
 
   async function openNotice(id) {
     setBusy(true); setError(''); setMessage('')
-    try { setSelected(await request(`/notices/${id}`, { token })); setEditing(null) }
+    try { setSelected(preview ? mockNotices.find(item => item.id === id) : await request(`/notices/${id}`, { token })); setEditing(null) }
     catch (err) { handleError(err) } finally { setBusy(false) }
   }
 
@@ -88,8 +90,8 @@ export default function Notices() {
 
   const owner = selected && user && selected.authorId === user.id
   return <section className="notice-page">
-    <header className="notice-header"><div><span className="notice-eyebrow">NOTICE</span><h1>공지사항 게시판</h1><p>서비스 소식과 안내를 확인하세요.</p></div>
-      {token && <div className="notice-account"><span>{user?.nickname}</span><button onClick={logout}>로그아웃</button></div>}
+    <header className="notice-header"><div><span className="notice-eyebrow">NOTICE</span><h1>공지사항</h1><p>서비스 소식과 안내를 확인하세요.</p></div>
+      {preview ? <div className="notice-account"><span className="notice-badge">샘플 데이터</span><a href="/notices">로그인해서 이용</a></div> : token && <div className="notice-account"><span>{user?.nickname}</span><button onClick={logout}>로그아웃</button></div>}
     </header>
     {error && <p className="notice-alert" role="alert">{error}</p>}
     {message && <p className="notice-success" role="status">{message}</p>}
