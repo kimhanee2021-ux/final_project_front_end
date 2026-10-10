@@ -14,6 +14,7 @@ const primaryLinks = [
   ['/ai-games', 'spark', 'AI 게임 추천', 'AI 게임 추천'],
   ['/ai-screenshots', 'monitor', 'AI 스크린샷 분석', 'AI 스크린샷 분석'],
   ['/pc-check', 'monitor', 'PC 성능 체크', 'PC 성능 체크'],
+  ['/hangul-blocks', 'gamepad', '한글 블록 손풀기', '한글 블록 손풀기'],
 ]
 const libraryLinks = [
   ['/library', 'gamepad', 'My Games', '내 게임'],

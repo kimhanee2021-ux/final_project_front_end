@@ -275,7 +275,7 @@ function Shell() {
         <footer className="gs-footer">
           <span>
             <i />
-            {pathname === '/ai-games' ? <>AI GAME ASSISTANT <span className="gs-footer-separator">/</span> 게임 정보와 Gemini 답변으로 상담합니다.</> : <>DEMO EXPERIENCE <span className="gs-footer-separator">/</span> 모든 플레이 기록과 추천은 더미 데이터입니다.</>}
+            {pathname === '/hangul-blocks' ? <>HANGUL BLOCKS <span className="gs-footer-separator">/</span> 개인 기록은 현재 브라우저에 저장됩니다.</> : pathname === '/ai-games' ? <>AI GAME ASSISTANT <span className="gs-footer-separator">/</span> 게임 정보와 Gemini 답변으로 상담합니다.</> : <>DEMO EXPERIENCE <span className="gs-footer-separator">/</span> 모든 플레이 기록과 추천은 더미 데이터입니다.</>}
           </span>
           <span>Made for the way you play.</span>
         </footer>

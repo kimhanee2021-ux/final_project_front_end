@@ -326,6 +326,7 @@ export default function DiscoverPage() {
   return (
     <>
       <Hero />
+      <Link to="/hangul-blocks" className="hb-home-link"><strong>한글 블록 손풀기 →</strong><span>게임 전 가볍게 한 판 · 50단계 & 일일 챌린지</span></Link>
       <div className="gs-dashboard-grid">
         <GameCatalog />
         <aside className="gs-dashboard-widgets" aria-label="나의 게임 인사이트">
