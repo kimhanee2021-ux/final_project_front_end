@@ -9,9 +9,11 @@ import '../src/styles/gamesense.css'
 let call=0
 const rolls=[.95,0,.95,0,.4,.95,.8,.95]
 const random=()=>rolls[call++]??.95
-function gameFactory() {
+function gameFactory(stage) {
   call=0
-  const game=makeGame(40,()=>.95)
+  if(stage===6)return makeGame(6,()=>.95)
+  const game=makeGame(5,()=>.95)
+  game.lines=7
   game.board=Array.from({length:20},(_,y)=>Array.from({length:10},(_,x)=>y>=4&&x!==4?'#526878':null))
   game.piece={...SHAPES[9],x:3,y:0}
   game.next=[SHAPES[9],SHAPES[9],SHAPES[9]]
@@ -19,6 +21,6 @@ function gameFactory() {
 }
 export default function BrowserCheck() {
   const [key,setKey]=useState('입력 대기')
-  return <main className="gs-shell" style={{padding:24}} onKeyDownCapture={e=>setKey(`${e.key} / ${e.code} / ${e.location}`)}><p role="note">브라우저 검증용 고정 보드 · 아이템은 줄 제거로 획득 · 일반 게임과 별도</p><output aria-label="검증 키 입력">{key}</output><HangulBlocks gameFactory={gameFactory} random={random}/></main>
+  return <main className="gs-shell" style={{padding:24}} onKeyDownCapture={e=>setKey(`${e.key} / ${e.code} / ${e.location}`)}><p role="note">고정 보드 검증 · 5단계 7줄 제거 상태부터 시작 · 15줄을 직접 제거 후 보상 선택 · 일반 게임과 별도</p><output aria-label="검증 키 입력">{key}</output><HangulBlocks gameFactory={gameFactory} random={random} recordKey="gamesense-hangul-browser-check-v1"/></main>
 }
 ReactDOM.createRoot(document.getElementById('root')).render(<BrowserCheck/> )

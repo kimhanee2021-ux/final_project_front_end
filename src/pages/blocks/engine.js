@@ -11,6 +11,7 @@ export const SHAPES = [
   shape('ㅡ','#b4e965',[[0,0,0],[1,1,1],[0,0,0]]),
   shape('ㅣ','#b4e965',[[0,1,0],[0,1,0],[0,1,0]]),
 ]
+export const ITEM_TYPES=['bomb','freeze','swap','hammer','eraser']
 // 직접 구성한 시작 배치. 각 숫자는 해당 줄의 두 칸짜리 빈 공간 시작 위치다.
 export const TEMPLATES = [[0,0,0,0],[8,8,8,8],[4,4,4,4],[0,2,4,6],[6,4,2,0],[2,3,4,5],[5,4,3,2],[1,1,6,6],[7,7,2,2],[3,5,3,5]]
 export function stageTarget(stage) {
@@ -27,7 +28,7 @@ export function makeGame(stage=1,rng=Math.random) {
   stageTarget(stage)
   const template=Math.min(9,Math.floor(rng()*10))
   const board=Array.from({length:20},(_,y)=>Array.from({length:10},(_,x)=>y<16||x===TEMPLATES[template][y-16]||x===TEMPLATES[template][y-16]+1?null:'#526878'))
-  return {stage,template,board,piece:spawn(randomShape(rng)),next:Array.from({length:3},()=>randomShape(rng)),status:'playing',lines:0,score:0,placed:0,fall:0,ground:0,items:[],itemProgress:0,freezeMs:0}
+  return {stage,template,board,piece:spawn(randomShape(rng)),next:Array.from({length:3},()=>randomShape(rng)),status:'playing',lines:0,score:0,placed:0,fall:0,ground:0,items:[],pendingReward:false,freezeMs:0}
 }
 export function ghost(s) {
   let p=s.piece
@@ -47,13 +48,20 @@ function lock(s,rng) {
   board=[...Array.from({length:cleared},()=>Array(10).fill(null)),...remaining]
   const piece=spawn(s.next[0]), lines=s.lines+cleared
   const status=lines>=stageTarget(s.stage)?(s.stage===50?'complete':'stage-clear'):fits(board,piece)?'playing':'over'
-  const items=[...s.items], progress=s.itemProgress+cleared
-  for(let i=0;i<Math.floor(progress/5);i++)if(items.length<3)items.push(['bomb','freeze','swap'][Math.min(2,Math.floor(rng()*3))])
-  return {...s,board,piece,next:[...s.next.slice(1),randomShape(rng)],lines,status,placed:s.placed+1,score:s.score+cleared*cleared*100*s.stage,ground:0,fall:0,items,itemProgress:progress%5}
+  const pendingReward=['stage-clear','complete'].includes(status)&&s.stage%5===0
+  return {...s,board,piece,next:[...s.next.slice(1),randomShape(rng)],lines,status,placed:s.placed+1,score:s.score+cleared*cleared*100*s.stage,ground:0,fall:0,pendingReward}
+}
+export function chooseReward(s,type,replaceIndex=-1) {
+  if(!s.pendingReward||!['stage-clear','complete'].includes(s.status)||!ITEM_TYPES.includes(type))return s
+  const items=[...s.items]
+  if(items.length>=3){if(!Number.isInteger(replaceIndex)||replaceIndex<0||replaceIndex>=items.length)return s;items[replaceIndex]=type}
+  else items.push(type)
+  return {...s,items,pendingReward:false}
 }
 export function activateItem(s,type) {
   const index=s.items.indexOf(type)
   if(s.status!=='playing'||index<0||s.piece.bomb)return s
+  if(type==='hammer')return {...s,hammerArmed:!s.hammerArmed}
   let n
   if(type==='bomb')n={...s,bombOriginal:s.piece,piece:{matrix:[[1]],color:'#ff6262',label:'💣',bomb:true,x:s.piece.x+1,y:s.piece.y}}
   else if(type==='freeze') { if(s.freezeMs>0)return s;n={...s,freezeMs:5000} }
@@ -61,9 +69,18 @@ export function activateItem(s,type) {
     const p={...s.next[0],x:s.piece.x,y:s.piece.y}
     if(!fits(s.board,p))return s
     n={...s,piece:p,next:[{label:s.piece.label,color:s.piece.color,matrix:s.piece.matrix},...s.next.slice(1)],ground:0,fall:0}
+  } else if(type==='eraser') {
+    if(!s.board[19].some(Boolean))return s
+    n={...s,board:[Array(10).fill(null),...s.board.slice(0,19)],ground:0}
   } else return s
   if(!fits(n.board,n.piece))return s
-  return {...n,items:s.items.filter((_,i)=>i!==index)}
+  return {...n,hammerArmed:false,items:s.items.filter((_,i)=>i!==index)}
+}
+export function hammerCell(s,x,y) {
+  if(s.status!=='playing'||!s.hammerArmed||!s.items.includes('hammer')||!Number.isInteger(x)||!Number.isInteger(y)||x<0||x>=10||y<0||y>=20||!s.board[y][x])return s
+  const board=s.board.map(row=>[...row]);board[y][x]=null
+  const index=s.items.indexOf('hammer')
+  return {...s,board,hammerArmed:false,items:s.items.filter((_,i)=>i!==index),ground:0}
 }
 export function act(s,action,rng=Math.random) {
   if(s.status!=='playing')return s

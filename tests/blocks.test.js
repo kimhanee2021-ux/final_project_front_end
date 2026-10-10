@@ -1,14 +1,30 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { SHAPES, TEMPLATES, stageTarget, dropInterval, makeGame, act, advance, rotate, cells, seoulDate, readRecords, activateItem } from '../src/pages/blocks/engine.js'
+import { SHAPES, TEMPLATES, stageTarget, dropInterval, makeGame, act, advance, rotate, cells, seoulDate, readRecords, activateItem, hammerCell, chooseReward } from '../src/pages/blocks/engine.js'
 
-test('5줄마다 아이템 지급, 보관은 최대 3개',()=>{
- let s=makeGame(1,()=>0);s.lines=4;s.itemProgress=4
- s.board=Array.from({length:20},()=>Array(10).fill(null));s.board[19]=Array(10).fill('#888');s.board[19][0]=null
- s.piece={matrix:[[1]],color:'#abc',label:'검증',x:0,y:0}
- s=act(s,'hard',()=>0);assert.deepEqual(s.items,['bomb']);assert.equal(s.itemProgress,0)
- s.items=['bomb','freeze','swap'];s.itemProgress=4;s.board[19]=Array(10).fill('#888');s.board[19][0]=null;s.piece={matrix:[[1]],color:'#abc',x:0,y:0}
- s=act(s,'hard',()=>0);assert.equal(s.items.length,3)
+test('망치는 선택한 쌓인 한 칸만 제거하고 빈칸에서는 소비하지 않는다',()=>{
+ let s=makeGame(1,()=>0);s.items=['hammer'];s=activateItem(s,'hammer')
+ assert.equal(s.hammerArmed,true);assert.equal(s.items.length,1)
+ assert.equal(hammerCell(s,0,0),s);assert.equal(hammerCell(s,-1,19),s)
+ const count=s.board.flat().filter(Boolean).length;s=hammerCell(s,5,19)
+ assert.equal(s.board.flat().filter(Boolean).length,count-1);assert.equal(s.items.length,0);assert.equal(s.hammerArmed,false);assert.equal(s.lines,0);assert.equal(s.score,0)
+})
+test('줄 지우개는 아래 한 줄만 제거하고 윗줄을 내려주며 빈 바닥에서는 소비하지 않는다',()=>{
+ let s=makeGame(1,()=>0);s.items=['eraser'];const above=[...s.board[18]]
+ s=activateItem(s,'eraser');assert.deepEqual(s.board[19],above);assert.ok(s.board[0].every(c=>!c));assert.equal(s.lines,0);assert.equal(s.score,0);assert.equal(s.items.length,0)
+ s.items=['eraser'];s.board[19]=Array(10).fill(null);assert.equal(activateItem(s,'eraser'),s)
+})
+
+test('처음에는 아이템 없음, 5단계마다 완료 보상 하나만 선택하며 꽉 차면 교체한다',()=>{
+ for(const stage of [1,4,5,10,49,50]) {
+  let s=makeGame(stage,()=>0);assert.deepEqual(s.items,[]);s.lines=stageTarget(stage)-1
+  s.board=Array.from({length:20},()=>Array(10).fill(null));s.board[19]=Array(10).fill('#888');s.board[19][0]=null
+  s.piece={matrix:[[1]],color:'#abc',x:0,y:0};s=act(s,'hard',()=>0)
+  assert.deepEqual(s.items,[]);assert.equal(s.pendingReward,stage%5===0)
+  if(s.pendingReward){s=chooseReward(s,'hammer');assert.deepEqual(s.items,['hammer']);assert.equal(chooseReward(s,'eraser'),s)}
+ }
+ let s={...makeGame(5,()=>0),status:'stage-clear',pendingReward:true,items:['bomb','freeze','swap']}
+ assert.equal(chooseReward(s,'eraser'),s);s=chooseReward(s,'eraser',1);assert.deepEqual(s.items,['bomb','eraser','swap']);assert.equal(s.pendingReward,false)
 })
 test('폭탄은 주변 칸만 제거하고 목표와 점수는 늘리지 않는다',()=>{
  let s=makeGame(1,()=>0);s.items=['bomb'];const original=s.piece
