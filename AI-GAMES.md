@@ -2,16 +2,16 @@
 
 별도 브랜치 `codex/ai-games-ui`, 경로 `/ai-games`. 공지사항 브랜치와 분리했다.
 
-UI는 팀 `origin/refactor/dash01`의 GameSense 게임 탐색 화면 기준으로 민트 강조색, 배경/패널/텍스트 색상과 공통 GSIcon을 재사용한다. 독립 미리보기용 App/Sidebar는 실제 있는 홈·AI 경로만 제공한다. 팀 GameSenseLayout에 통합할 때 AiGames 페이지와 ai.css를 자식 경로로 연결하고 공통 메뉴에 링크를 추가하면 된다. 팀 공용 메뉴·로그인 전체를 이 브랜치에서 덮어쓰지 않는다.
+사용자가 실행한 `test/front_back_connect` (414821a)의 실제 UI를 병합하고, GameSenseLayout의 자식 경로에 AI 화면을 연결했다. 전체 사이드바·검색·테마·공용 로그인은 해당 브랜치의 기존 구성 그대로 사용한다. AI 전용 간소화 레이아웃은 제거했다.
 
 게임 추천, 구매 상담, 게임 검색·선택, 추천 카드에서 상담 전환, 최근 대화 전달, 오류 표시, 새 대화, 대기 취소·로그아웃을 제공한다. Gemini 키는 서버에서만 사용한다.
 
 ## 팀 연결
 
 - 백엔드 `codex/ai-games`의 `/api/ai/chat`, `/api/ai/games`와 연결한다.
-- 개발 서버: 환경변수 `AI_API_TARGET`에 백엔드 주소를 지정한다. 기본값 `http://localhost:8080`. 실행 `npm run dev`.
+- 개발 서버: 기존 `VITE_BACKEND_URL`로 백엔드 주소를 지정한다. 선택 설정 `AI_API_TARGET`이 우선하며 기본값 `http://localhost:8080`. 실행 `npm run dev`.
 - 배포 서버는 `/api`를 백엔드에 프록시해야 한다. Vite 설정은 개발용이다.
-- 공용 로그인 연결 전 임시 로그인 폼으로 기존 `/api/auth/login`을 호출한다. 반환된 token을 세션 저장소 `aiToken`에 보관한다. 팀 공용 인증 상태를 연결할 때 이 부분을 교체한다.
+- 공용 AuthProvider의 실제 로그인과 gamesense-access-token을 사용한다. 비로그인·데모 사용자는 공용 로그인으로 이동하며 성공 후 /ai-games로 복귀한다. 기존 aiToken 임시 인증은 사용하지 않는다.
 - 개발용 가짜 AI 응답은 포함하지 않는다. 실제 카탈로그와 Gemini 답변을 사용한다.
 - 취소는 브라우저의 대기를 중단한다. 이미 서버에서 시작한 Gemini 호출은 완료될 수 있으며 이용량이 발생할 수 있다.
 

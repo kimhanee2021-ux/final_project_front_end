@@ -1,17 +1,14 @@
 import { Outlet } from 'react-router-dom'
-import Sidebar from './components/Sidebar'
-import './styles/ai-shell.css'
+import AuthProvider from './contexts/AuthProvider'
+import GameSenseProvider from './contexts/GameSenseProvider'
 
-function App() {
+// 최상위 라우트 컴포넌트. 라우터 훅을 쓰는 Provider들이 라우터 안에 있어야 해서 여기서 감싼다.
+export default function App() {
   return (
-    <div className="ai-shell">
-      <Sidebar />
-      <main className="ai-workspace">
-        <div className="ai-shell-header"><span>GameSense <span className="ai-breadcrumb">/ 게임 도우미</span></span><span>Play Smarter</span></div>
+    <AuthProvider>
+      <GameSenseProvider>
         <Outlet />
-      </main>
-    </div>
+      </GameSenseProvider>
+    </AuthProvider>
   )
 }
-
-export default App

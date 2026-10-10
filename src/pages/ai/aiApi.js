@@ -1,7 +1,7 @@
 export async function api(path, {token, method = 'GET', body, signal} = {}) {
   let response
   try {
-    response = await fetch(`/api${path}`, {method, signal, headers: {
+    response = await fetch(`${import.meta.env.VITE_API_BASE_URL || ''}/api${path}`, {method, signal, headers: {
       ...(token ? {Authorization: `Bearer ${token}`} : {}), ...(body ? {'Content-Type':'application/json'} : {})
     }, ...(body ? {body:JSON.stringify(body)} : {})})
   } catch (error) {

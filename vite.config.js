@@ -1,11 +1,13 @@
+import process from 'node:process'
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import process from 'node:process'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), 'AI_')
+  // 백엔드(스프링) 주소. 기본값은 application.yaml의 server.port(8080)
+  const env = loadEnv(mode, process.cwd(), '')
+  const backendUrl = process.env.AI_API_TARGET || env.AI_API_TARGET || env.VITE_BACKEND_URL || 'http://localhost:8080'
   return {
   plugins: [react(), tailwindcss()],// React, Tailwind 플러그인 적용
   base:'/',//배포하려는 서버 상황에 맞게 절대 경로로 설정(기본값:/)
@@ -13,7 +15,14 @@ export default defineConfig(({ mode }) => {
     host:'0.0.0.0',//모든 아이피 접속 허용
     port:9191,// 개발 서버 포트 설정 (기본값: 5173)
     open:false,
-    proxy: {'/api': {target:process.env.AI_API_TARGET||env.AI_API_TARGET||'http://localhost:8080',changeOrigin:true,configure(proxy){proxy.on('proxyReq',req=>req.removeHeader('origin'))}}}
+    // /api 요청을 백엔드로 넘긴다. 브라우저 입장에서는 같은 출처라 CORS 설정과 무관하게 동작한다.
+    proxy:{
+      '/api':{
+        target:backendUrl,
+        // Origin 헤더가 남아 있으면 스프링이 CORS 요청으로 보고 허용 목록(기본 5173)과 대조해 403을 낸다
+        configure:proxy=>proxy.on('proxyReq',proxyReq=>proxyReq.removeHeader('origin')),
+      },
+    },
   },
   build:{
     outDir:'dist' // 빌드 결과물 폴더 지정(기본값:dist)
