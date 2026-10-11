@@ -275,7 +275,7 @@ function Shell() {
         <footer className="gs-footer">
           <span>
             <i />
-            {pathname === '/hangul-blocks' ? <>HANGUL BLOCKS <span className="gs-footer-separator">/</span> 개인 기록은 현재 브라우저에 저장됩니다.</> : pathname === '/ai-games' ? <>AI GAME ASSISTANT <span className="gs-footer-separator">/</span> 게임 정보와 Gemini 답변으로 상담합니다.</> : <>DEMO EXPERIENCE <span className="gs-footer-separator">/</span> 모든 플레이 기록과 추천은 더미 데이터입니다.</>}
+            {pathname === '/hangul-blocks' ? <>HANGUL BLOCKS <span className="gs-footer-separator">/</span> 개인 기록은 현재 브라우저에 저장됩니다.</> : pathname === '/ai-worldcup' ? <>AI TASTE WORLDCUP <span className="gs-footer-separator">/</span> Steam 게임 정보와 나의 선택을 바탕으로 Gemini가 취향을 탐색합니다.</> : pathname === '/ai-games' ? <>AI GAME ASSISTANT <span className="gs-footer-separator">/</span> 게임 정보와 Gemini 답변으로 상담합니다.</> : pathname === '/ai-screenshots' ? <>AI SCREENSHOT ANALYSIS <span className="gs-footer-separator">/</span> 샘플 분석과 실제 이미지 AI 분석을 구분해 제공합니다.</> : <>DEMO EXPERIENCE <span className="gs-footer-separator">/</span> 모든 플레이 기록과 추천은 더미 데이터입니다.</>}
           </span>
           <span>Made for the way you play.</span>
         </footer>

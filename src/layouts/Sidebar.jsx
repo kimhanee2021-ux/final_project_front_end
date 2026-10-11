@@ -13,6 +13,7 @@ const primaryLinks = [
   ['/recommendations', 'spark', 'AI Optimization', '맞춤 추천'],
   ['/ai-games', 'spark', 'AI 게임 추천', 'AI 게임 추천'],
   ['/ai-screenshots', 'monitor', 'AI 스크린샷 분석', 'AI 스크린샷 분석'],
+  ['/ai-worldcup', 'spark', 'AI 게임 취향 월드컵', 'AI 게임 취향 월드컵'],
   ['/pc-check', 'monitor', 'PC 성능 체크', 'PC 성능 체크'],
   ['/hangul-blocks', 'gamepad', '손풀기게임', '손풀기게임'],
 ]

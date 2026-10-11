@@ -17,6 +17,7 @@ import RequireDemoSession from './components/auth/RequireDemoSession'
 import AiGames from './pages/ai/AiGames'
 import ScreenshotAnalysis from './pages/ai/ScreenshotAnalysis'
 import HangulBlocks from './pages/blocks/HangulBlocks'
+import TasteWorldcup from './pages/worldcup/TasteWorldcup'
 
 // 같은 컴포넌트를 mode만 바꿔 쓰는 라우트는 key로 구분해 페이지 이동 시 상태를 초기화한다.
 const authRoutes = ['login', 'signup', 'forgot-password'].map(mode => ({
@@ -45,6 +46,7 @@ const router = createBrowserRouter([
           { path: 'pc-check', element: <PerformancePage /> },
           { path: 'ai-games', element: <AiGames /> },
           { path: 'ai-screenshots', element: <ScreenshotAnalysis /> },
+          { path: 'ai-worldcup', element: <TasteWorldcup /> },
           { path: 'hangul-blocks', element: <HangulBlocks /> },
           {
             // 로그인(데모 세션)이 필요한 페이지
