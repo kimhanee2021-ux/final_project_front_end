@@ -1,11 +1,11 @@
-import Icon from '../../../components/common/Icon'
+import GSIcon from '../../../components/common/GSIcon'
 import { money } from '../../../utils/formatters'
 export default function UnplayedSpendingCard({ summary, onExplore }) {
   return (
     <section className="unplayed-card">
       <div className="unplayed-heading">
         <span className="eyebrow">NEXT ADVENTURE</span>
-        <Icon name="library" />
+        <GSIcon name="library" size={20} />
       </div>
       <h2>아직 펼치지 않은 이야기</h2>
       <p>
@@ -21,7 +21,7 @@ export default function UnplayedSpendingCard({ summary, onExplore }) {
       </div>
       <button onClick={onExplore}>
         보유 게임부터 살펴보기
-        <Icon name="arrow" size={17} />
+        <GSIcon name="arrow" size={17} />
       </button>
     </section>
   )

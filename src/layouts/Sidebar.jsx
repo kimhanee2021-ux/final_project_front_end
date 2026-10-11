@@ -12,7 +12,7 @@ const primaryLinks = [
   ['/analysis', 'chart', 'Expenditure Pattern', '소비 패턴'],
   ['/recommendations', 'spark', 'AI Optimization', '맞춤 추천'],
   ['/pc-check', 'monitor', 'PC 성능 체크', 'PC 성능 체크'],
-  ['/library','','라이브러리','라이브러리']
+  ['/community', 'users', 'Community', '커뮤니티'],
 ]
 const libraryLinks = [
   ['/library', 'gamepad', 'My Games', '내 게임'],

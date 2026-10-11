@@ -20,7 +20,7 @@ export const discoverGames = [
     rating: 4.7,
     reviews: '124K',
     genres: ['RPG', 'Action', 'Open World'],
-    platforms: ['Steam', 'PlayStation', 'Xbox'],
+    platforms: ['Steam'],
     hours: 86.5,
     owned: true,
     description:
@@ -34,7 +34,7 @@ export const discoverGames = [
     rating: 4.8,
     reviews: '118K',
     genres: ['RPG', 'Strategy', 'Story Rich'],
-    platforms: ['Steam', 'PlayStation', 'Xbox'],
+    platforms: ['Steam'],
     hours: 0,
     owned: true,
     description:
@@ -48,7 +48,7 @@ export const discoverGames = [
     rating: 4.6,
     reviews: '92K',
     genres: ['Action', 'RPG', 'Soulslike'],
-    platforms: ['Steam', 'PlayStation', 'Xbox'],
+    platforms: ['Steam'],
     hours: 12,
     owned: false,
     description:
@@ -63,7 +63,7 @@ export const discoverGames = [
     rating: 4.8,
     reviews: '156K',
     genres: ['Adventure', 'Open World'],
-    platforms: ['Switch'],
+    platforms: ['Steam'],
     hours: 64,
     owned: true,
     description:
@@ -77,7 +77,7 @@ export const discoverGames = [
     rating: 4.2,
     reviews: '20.1K',
     genres: ['RPG', 'Open World', 'Story Rich'],
-    platforms: ['Steam', 'PlayStation', 'Xbox'],
+    platforms: ['Steam'],
     hours: 31,
     owned: true,
     description:
@@ -91,7 +91,7 @@ export const discoverGames = [
     rating: 4.4,
     reviews: '6.9K',
     genres: ['Action', 'Adventure'],
-    platforms: ['PlayStation'],
+    platforms: ['Steam'],
     hours: 18,
     owned: true,
     description:
@@ -105,7 +105,7 @@ export const discoverGames = [
     rating: 4.7,
     reviews: '18K',
     genres: ['RPG', 'Indie'],
-    platforms: ['Steam', 'Switch'],
+    platforms: ['Steam'],
     hours: 0,
     owned: false,
     description:
@@ -133,7 +133,7 @@ export const discoverGames = [
     rating: 4.8,
     reviews: '23K',
     genres: ['RPG', 'Story Rich'],
-    platforms: ['Steam', 'PlayStation', 'Xbox'],
+    platforms: ['Steam'],
     hours: 0,
     owned: false,
     description:
@@ -147,7 +147,7 @@ export const discoverGames = [
     rating: 4.8,
     reviews: '82K',
     genres: ['Simulation', 'Adventure', 'Indie'],
-    platforms: ['Steam', 'Switch'],
+    platforms: ['Steam'],
     hours: 9,
     owned: true,
     description:
@@ -161,7 +161,7 @@ export const discoverGames = [
     rating: 4.5,
     reviews: '96K',
     genres: ['Sports', 'Simulation', 'Open World'],
-    platforms: ['Steam', 'Xbox'],
+    platforms: ['Steam'],
     hours: 7,
     owned: false,
     description:
@@ -175,7 +175,7 @@ export const discoverGames = [
     rating: 4.5,
     reviews: '78K',
     genres: ['Strategy', 'Simulation'],
-    platforms: ['Steam', 'Switch'],
+    platforms: ['Steam'],
     hours: 0,
     owned: false,
     description:

@@ -60,13 +60,12 @@ const paths = {
   star: 'm12 2 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z',
   steam:
     'M22 7a5 5 0 1 1-10 0 5 5 0 0 1 10 0ZM20 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM12 7 8 14M17 12l-5 6M1 13l5 2a4 4 0 1 1-2 4l-3-1M6 16l3 1',
-  playstation:
-    'M9 21V3l7 2c4 1 4 7 0 8l-2-1V7l-2-1v15M7 13l-5 2c-2 2 2 3 5 2M14 17l5-2c5-1 5 2 0 4l-5 2',
-  xbox: 'M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0ZM5 4c6 2 11 9 13 15M19 4C13 6 8 13 6 19',
-  switch:
-    'M10 3H6a4 4 0 0 0-4 4v10a4 4 0 0 0 4 4h4V3ZM14 3h4a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4h-4V3ZM6 7v2M18 14v2',
   trophy: 'M8 3h8v7a4 4 0 0 1-8 0V3ZM8 5H3v3a5 5 0 0 0 5 5M16 5h5v3a5 5 0 0 1-5 5M12 14v6M7 21h10',
   check: 'm5 12 4 4L19 6',
+  library: 'M4 4v16M9 4v16M14 4v16M18 4l4 16',
+  bag: 'M5 7h14l1 14H4L5 7ZM9 8V5a3 3 0 0 1 6 0v3',
+  users:
+    'M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M9.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM23 21v-2a4 4 0 0 0-3-3.87M16.5 3.13a4 4 0 0 1 0 7.75',
 }
 export default function GSIcon({ name, size = 22, ...props }) {
   return (

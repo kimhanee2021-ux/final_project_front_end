@@ -13,6 +13,9 @@ import MyPage from './pages/mypage/MyPage'
 import AuthPage from './pages/auth/AuthPage'
 import RequireDemoSession from './features/auth/components/RequireDemoSession'
 import GameCatalog from './features/games/components/GameCatalog'
+import CommunityPage from './pages/community/CommunityPage'
+import CommunityPostPage from './pages/community/CommunityPostPage'
+import CommunityWritePage from './pages/community/CommunityWritePage'
 
 // 같은 컴포넌트를 mode만 바꿔 쓰는 라우트는 key로 구분해 페이지 이동 시 상태를 초기화한다.
 const authRoutes = ['login', 'signup', 'forgot-password'].map(mode => ({
@@ -48,6 +51,10 @@ const router = createBrowserRouter([
               { path: 'activity', element: <ActivityPage /> },
               { path: 'settings', element: <SettingsPage /> },
               { path: 'mypage', element: <MyPage /> },
+              { path: 'community', element: <CommunityPage /> },
+              { path: 'community/new', element: <CommunityWritePage /> },
+              { path: 'community/:id', element: <CommunityPostPage /> },
+              { path: 'community/:id/edit', element: <CommunityWritePage /> },
               {
                 path: 'analysis',
                 element: <div className="gs-legacy"><AnalysisPage view="analysis" /></div>,

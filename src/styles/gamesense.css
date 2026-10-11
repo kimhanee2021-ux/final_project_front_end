@@ -145,7 +145,6 @@ body:has(.gs-dialog[open], .gs-mobile-drawer[open]) { overflow: hidden; }
 .gs-platforms { display: flex; align-items: center; gap: 11px; margin-top: auto; }
 .gs-platforms > span { display: inline-flex; align-items: center; gap: 5px; }
 .gs-platforms small { font-size: 9px; color: var(--gs-muted); }
-.gs-platforms .gs-switch > svg { color: #ff304c; stroke-width: 2.6; }
 .gs-heart { position: absolute; right: 7px; top: 9px; display: grid; place-items: center; width: 24px; height: 24px; padding: 0; background: transparent; border-radius: 50%; color: var(--gs-text); }
 .gs-heart:hover { color: var(--gs-mint); background: var(--gs-raised); }
 .gs-heart.is-saved { color: var(--gs-mint); }

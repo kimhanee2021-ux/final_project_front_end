@@ -1,10 +1,10 @@
-import Icon from './Icon'
+import GSIcon from './GSIcon'
 export default function StatCard({ label, value, icon, tone, note, tag }) {
   return (
     <section className="stat-card">
       <div className="stat-top">
         <span className={'stat-icon ' + tone}>
-          <Icon name={icon} size={21} />
+          <GSIcon name={icon} size={21} />
         </span>
         <span className="stat-tag">{tag}</span>
       </div>

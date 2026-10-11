@@ -2,13 +2,12 @@ import { useGameSense } from '../../../contexts/GameSenseContext'
 import GSIcon from '../../../components/common/GSIcon'
 
 export function PlatformIcons({ platforms }) {
-  const icons = { Steam: 'steam', PlayStation: 'playstation', Xbox: 'xbox', Switch: 'switch' }
   return (
     <div className="gs-platforms" aria-label={`플랫폼: ${platforms.join(', ')}`}>
       {platforms.map(platform => (
-        <span key={platform} title={platform} className={platform === 'Switch' ? 'gs-switch' : ''}>
-          <GSIcon name={icons[platform]} size={17} />
-          {platforms.length === 1 && <small>{platform === 'PlayStation' ? 'PS5' : platform}</small>}
+        <span key={platform} title={platform}>
+          <GSIcon name="steam" size={17} />
+          {platforms.length === 1 && <small>{platform}</small>}
         </span>
       ))}
     </div>

@@ -3,7 +3,7 @@ import { useDashboardData } from '../../features/dashboard/hooks/useDashboardDat
 import PeriodFilter from '../../components/common/PeriodFilter'
 import Skeleton from '../../components/common/Skeleton'
 import ErrorState from '../../components/common/ErrorState'
-import Icon from '../../components/common/Icon'
+import GSIcon from '../../components/common/GSIcon'
 import DashboardIntro from '../../features/dashboard/components/DashboardIntro'
 import SpendingSummary from '../../features/dashboard/components/SpendingSummary'
 import MonthlySpendingChart from '../../features/dashboard/components/MonthlySpendingChart'
@@ -87,7 +87,7 @@ export default function AnalysisPage({ view = 'dashboard' }) {
         />
       </div>
       <div className="data-notice">
-        <Icon name="info" size={16} />
+        <GSIcon name="info" size={16} />
         <p>
           현재는 데모 데이터로 표시됩니다.{' '}
           {summary.unknownCount > 0 && (

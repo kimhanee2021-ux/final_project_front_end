@@ -4,7 +4,6 @@ import { discoverGames, genres, recommendedIds } from '../mocks/discoverMock'
 import { useGameSense } from '../../../contexts/GameSenseContext'
 import GameCard from './GameCard'
 import GSIcon from '../../../components/common/GSIcon'
-import { gameStatuses } from '../../player/mocks/playerMock'
 import { useAuth } from '../../auth/context/AuthContext'
 import SteamLibraryPanel from '../../library/components/SteamLibraryPanel'
 
@@ -26,14 +25,10 @@ const pageTitles = {
 }
 
 export default function GameCatalog({ mode = 'home' }) {
-  const { query, setQuery, wishlist, t, player } = useGameSense()
+  const { query, setQuery, wishlist, t } = useGameSense()
   const { isAuthenticated } = useAuth()
   const [params, setParams] = useSearchParams()
   const genre = genres.includes(params.get('genre')) ? params.get('genre') : 'All'
-  const status =
-    mode === 'library' && gameStatuses.some(item => item.id === params.get('status'))
-      ? params.get('status')
-      : 'all'
   const [view, setView] = useState('grid')
   const [sort, setSort] = useState('featured')
   const setGenre = value =>
@@ -46,13 +41,40 @@ export default function GameCatalog({ mode = 'home' }) {
       },
       { replace: true }
     )
+
+  if (mode === 'library') {
+    const title = pageTitles.library
+    return (
+      <section className="gs-catalog gs-full-catalog" aria-labelledby="gs-catalog-title">
+        <div className="gs-section-heading">
+          <div>
+            <span className="gs-eyebrow">YOUR WORLD OF GAMES</span>
+            <h1 id="gs-catalog-title">{t(title[0], title[1])}</h1>
+            <p>{title[2]}</p>
+          </div>
+        </div>
+        {isAuthenticated ? (
+          <SteamLibraryPanel query={query} />
+        ) : (
+          <div className="gs-empty">
+            <GSIcon name="steam" size={38} />
+            <h3>스팀 계정으로 로그인하면 보유 게임을 볼 수 있어요</h3>
+            <p>데모 세션에서는 실제 라이브러리를 불러올 수 없어요.</p>
+            <Link className="gs-primary-button" to="/signup">
+              회원가입하기
+              <GSIcon name="arrow" size={17} />
+            </Link>
+          </div>
+        )}
+      </section>
+    )
+  }
+
   let games = discoverGames.filter(
     game =>
-      (mode !== 'library' || game.owned) &&
       (mode !== 'wishlist' || wishlist.includes(game.id)) &&
       (mode !== 'recommendations' || recommendedIds.includes(game.id))
   )
-  if (status !== 'all') games = games.filter(game => player.games[game.id]?.status === status)
   if (mode === 'recommendations')
     games.sort((a, b) => recommendedIds.indexOf(a.id) - recommendedIds.indexOf(b.id))
   games = games.filter(
@@ -103,7 +125,6 @@ export default function GameCatalog({ mode = 'home' }) {
           </label>
         )}
       </div>
-      {mode === 'library' && isAuthenticated && <SteamLibraryPanel query={query} />}
       <div className="gs-catalog-toolbar">
         <div className="gs-genre-tabs" role="group" aria-label="장르 필터">
           {genres.map(item => (
@@ -136,29 +157,6 @@ export default function GameCatalog({ mode = 'home' }) {
           </button>
         </div>
       </div>
-      {mode === 'library' && (
-        <div className="gs-player-status-filter" role="group" aria-label="라이브러리 플레이 상태">
-          {[{ id: 'all', label: '전체 상태' }, ...gameStatuses].map(item => (
-            <button
-              key={item.id}
-              aria-pressed={status === item.id}
-              onClick={() =>
-                setParams(
-                  previous => {
-                    const next = new URLSearchParams(previous)
-                    if (item.id === 'all') next.delete('status')
-                    else next.set('status', item.id)
-                    return next
-                  },
-                  { replace: true }
-                )
-              }
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-      )}
       {query.trim() && (
         <p className="gs-search-summary" aria-live="polite">
           “{query}” 검색 결과 <strong>{games.length}개</strong>

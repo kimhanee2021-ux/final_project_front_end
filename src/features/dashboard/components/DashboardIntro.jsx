@@ -1,4 +1,4 @@
-import Icon from '../../../components/common/Icon'
+import GSIcon from '../../../components/common/GSIcon'
 export default function DashboardIntro({ view, asOf }) {
   return (
     <div className="dashboard-intro">
@@ -24,7 +24,7 @@ export default function DashboardIntro({ view, asOf }) {
       <div className="demo-pill">
         <span className="status-dot" />
         데모 데이터
-        <Icon name="info" size={14} />
+        <GSIcon name="info" size={14} />
         <span className="demo-date">{asOf.replaceAll('-', '.')} 기준</span>
       </div>
     </div>
