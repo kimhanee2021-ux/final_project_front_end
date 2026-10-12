@@ -297,7 +297,7 @@ export default function MyPage() {
               icon="clock"
               title="최근 게임 기록"
               description="나의 게임 여정을 돌아보세요."
-              className="!mb-[8px]"
+              className="mb-[8px]!"
             >
               <button
                 className="ml-auto self-start pt-[5px] shrink-0 inline-flex items-center justify-center gap-[8px] bg-transparent text-[10px] text-gs-muted py-[3px] hover:text-gs-mint whitespace-nowrap"

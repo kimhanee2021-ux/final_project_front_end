@@ -4,7 +4,7 @@ export default function GameIdentity({ game, size = 'default' }) {
   const large = size === 'large'
   return (
     <div className="flex items-center gap-[11px]">
-      <div className={`game-art art-${game.art} ${large ? '!w-[55px] !h-[65px] !text-[18px]' : 'max-[580px]:!w-[40px] max-[580px]:!h-[47px]'}`} aria-hidden="true">
+      <div className={`game-art art-${game.art} ${large ? 'w-[55px]! h-[65px]! text-[18px]!' : 'max-[580px]:w-[40px]! max-[580px]:h-[47px]!'}`} aria-hidden="true">
         <span>{game.initials}</span>
       </div>
       <div>

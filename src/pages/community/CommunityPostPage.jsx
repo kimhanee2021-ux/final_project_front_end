@@ -77,16 +77,16 @@ function CommentItem({ comment, isReply, userId, onReply, onEdit, onDelete, repl
       )}
       <div className="flex gap-[12px] mt-[8px]">
         {!isReply && (
-          <button type="button" className="gs-text-link text-[11px]" onClick={onToggleReply}>
+          <button type="button" className="inline-flex items-center gap-[8px] text-gs-muted whitespace-nowrap text-[10px] shrink-0 bg-transparent p-0 hover:text-gs-mint text-[11px]!" onClick={onToggleReply}>
             답글
           </button>
         )}
         {isOwner && !editing && (
           <>
-            <button type="button" className="gs-text-link text-[11px]" onClick={() => setEditing(true)}>
+            <button type="button" className="inline-flex items-center gap-[8px] text-gs-muted whitespace-nowrap text-[10px] shrink-0 bg-transparent p-0 hover:text-gs-mint text-[11px]!" onClick={() => setEditing(true)}>
               수정
             </button>
-            <button type="button" className="gs-text-link text-[11px]" onClick={() => onDelete(comment.id)}>
+            <button type="button" className="inline-flex items-center gap-[8px] text-gs-muted whitespace-nowrap text-[10px] shrink-0 bg-transparent p-0 hover:text-gs-mint text-[11px]!" onClick={() => onDelete(comment.id)}>
               삭제
             </button>
           </>
@@ -125,7 +125,7 @@ export default function CommunityPostPage() {
 
   if (postLoading) {
     return (
-      <div className="gs-empty" role="status">
+      <div className="p-[70px_20px] text-center border border-dashed border-gs-border rounded-[12px] [&>svg]:text-gs-muted" role="status">
         <GSIcon name="search" size={38} />
         <h3>게시글을 불러오는 중이에요</h3>
       </div>
@@ -133,7 +133,7 @@ export default function CommunityPostPage() {
   }
   if (postError || !post) {
     return (
-      <div className="gs-empty" role="alert">
+      <div className="p-[70px_20px] text-center border border-dashed border-gs-border rounded-[12px] [&>svg]:text-gs-muted" role="alert">
         <GSIcon name="info" size={38} />
         <h3>게시글을 불러오지 못했어요</h3>
         <p>{postError}</p>
@@ -163,7 +163,7 @@ export default function CommunityPostPage() {
 
   return (
     <article className="max-w-[760px] mx-auto">
-      <Link to="/community" className="gs-text-link mb-[16px]">
+      <Link to="/community" className="inline-flex items-center gap-[8px] text-gs-muted whitespace-nowrap text-[10px] shrink-0 bg-transparent p-0 hover:text-gs-mint mb-[16px]">
         <GSIcon name="arrowLeft" size={16} />
         목록으로
       </Link>
@@ -260,7 +260,7 @@ export default function CommunityPostPage() {
           </ul>
         )}
         {!commentsLast && (
-          <div className="gs-load-more">
+          <div className="flex justify-center p-[26px_0_8px]">
             <button className="gs-secondary-button" onClick={loadMoreComments} disabled={commentsLoading}>
               댓글 더 보기
             </button>

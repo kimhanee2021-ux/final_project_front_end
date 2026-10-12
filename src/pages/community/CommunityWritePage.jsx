@@ -80,7 +80,7 @@ export default function CommunityWritePage() {
 
   if (loading) {
     return (
-      <div className="gs-empty" role="status">
+      <div className="p-[70px_20px] text-center border border-dashed border-gs-border rounded-[12px] [&>svg]:text-gs-muted" role="status">
         <GSIcon name="search" size={38} />
         <h3>불러오는 중이에요</h3>
       </div>
@@ -92,9 +92,9 @@ export default function CommunityWritePage() {
 
   return (
     <section className="max-w-[640px] mx-auto">
-      <div className="gs-section-heading">
+      <div className="flex items-start justify-between gap-[16px] mb-[17px]">
         <div>
-          <span className="gs-eyebrow">YOUR WORLD OF GAMES</span>
+          <span className="text-gs-mint text-[9px] tracking-[2px] font-[650]">YOUR WORLD OF GAMES</span>
           <h1>{isEdit ? '글 수정' : '글쓰기'}</h1>
         </div>
       </div>

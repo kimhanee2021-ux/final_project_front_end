@@ -137,7 +137,7 @@ export default function ProfileHero({ onEdit }) {
           </em>
         </p>
         <button
-          className="gs-primary-button min-h-[35px] px-[15px] py-[8px] text-[11px] !bg-[#22ecc5]"
+          className="gs-primary-button min-h-[35px] px-[15px] py-[8px] text-[11px] bg-[#22ecc5]!"
           onClick={() => onEdit('profile')}
         >
           <GSIcon name="edit" size={17} />

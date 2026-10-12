@@ -348,7 +348,7 @@ function HistoryView() {
         <label>
           <span className="sr-only">게임 기록 유형</span>
           <select
-            className={`${fieldClass} !mt-0`}
+            className={`${fieldClass} mt-0!`}
             aria-label="게임 기록 유형"
             value={filter}
             onChange={event => setFilter(event.target.value)}
@@ -379,7 +379,7 @@ export default function PlayerDialog({ dialog, onClose }) {
   return (
     <dialog
       ref={ref}
-      className={`mp-dialog w-[min(560px,calc(100%-28px))] max-h-[90dvh] m-auto p-0 border border-gs-border rounded-[16px] text-gs-text bg-gs-panel shadow-[var(--gs-shadow)] backdrop:bg-[#020912c2] backdrop:backdrop-blur-[6px] ${dialog?.type === 'history' ? '!w-[min(760px,calc(100%-28px))]' : ''}`}
+      className={`mp-dialog w-[min(560px,calc(100%-28px))] max-h-[90dvh] m-auto p-0 border border-gs-border rounded-[16px] text-gs-text bg-gs-panel shadow-[var(--gs-shadow)] backdrop:bg-[#020912c2] backdrop:backdrop-blur-[6px] ${dialog?.type === 'history' ? 'w-[min(760px,calc(100%-28px))]!' : ''}`}
       aria-labelledby="mp-dialog-title"
       onCancel={onClose}
       onClose={onClose}

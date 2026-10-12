@@ -19,7 +19,7 @@ export default function UnplayedSpendingCard({ summary, onExplore }) {
         {summary.unplayed.slice(0, 3).map(game => (
           <span
             key={game.id}
-            className={`game-art art-${game.art} !w-[42px] !h-[57px] !ml-[-15px] !border-[3px] !border-surface !text-[10px] max-[580px]:!w-[48px] max-[580px]:!h-[64px]`}
+            className={`game-art art-${game.art} w-[42px]! h-[57px]! ml-[-15px]! border-[3px]! border-surface! text-[10px]! max-[580px]:w-[48px]! max-[580px]:h-[64px]!`}
           >
             {game.initials}
           </span>

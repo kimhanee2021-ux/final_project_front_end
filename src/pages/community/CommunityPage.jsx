@@ -27,15 +27,15 @@ export default function CommunityPage() {
     )
 
   return (
-    <section className="gs-catalog gs-full-catalog" aria-labelledby="gs-community-title">
-      <div className="gs-section-heading">
+    <section className="min-w-0 pt-[26px]" aria-labelledby="gs-community-title">
+      <div className="flex items-start justify-between gap-[16px] items-center mb-[26px]">
         <div>
-          <span className="gs-eyebrow">YOUR WORLD OF GAMES</span>
-          <h1 id="gs-community-title">
+          <span className="text-gs-mint text-[9px] tracking-[2px] font-[650] max-[600px]:text-[8px]">YOUR WORLD OF GAMES</span>
+          <h1 className="text-[31px] m-[10px_0_0] tracking-[-0.6px] font-[650] leading-[1.25] max-[600px]:text-[27px]" id="gs-community-title">
             커뮤니티
-            {isAuthenticated && !loading && !error && <span className="gs-result-count">{total.toLocaleString()}</span>}
+            {isAuthenticated && !loading && !error && <span className="inline-block ml-[12px] align-middle text-[13px] p-[4px_8px] bg-gs-raised text-gs-muted rounded-[6px] max-[600px]:ml-[8px] max-[600px]:text-[11px]">{total.toLocaleString()}</span>}
           </h1>
-          <p>솔직한 후기와 꿀팁을 나눠보세요.</p>
+          <p className="text-gs-muted text-[11px] mt-[8px] max-[600px]:max-w-[230px] max-[600px]:leading-[1.7]">솔직한 후기와 꿀팁을 나눠보세요.</p>
         </div>
         {isAuthenticated && (
           <Link to="/community/new" className="gs-primary-button">
@@ -46,10 +46,10 @@ export default function CommunityPage() {
       </div>
 
       {!isAuthenticated ? (
-        <div className="gs-empty">
+        <div className="p-[70px_20px] text-center border border-dashed border-gs-border rounded-[12px] [&>svg]:text-gs-muted">
           <GSIcon name="users" size={38} />
-          <h3>로그인하면 커뮤니티를 이용할 수 있어요</h3>
-          <p>데모 세션에서는 게시글을 불러올 수 없어요.</p>
+          <h3 className="text-[18px] mt-[18px]">로그인하면 커뮤니티를 이용할 수 있어요</h3>
+          <p className="m-[8px_0_23px] text-gs-muted text-[12px]">데모 세션에서는 게시글을 불러올 수 없어요.</p>
           <Link className="gs-primary-button" to="/signup">
             회원가입하기
             <GSIcon name="arrow" size={17} />
@@ -57,12 +57,16 @@ export default function CommunityPage() {
         </div>
       ) : (
         <>
-          <div className="gs-catalog-toolbar">
-            <div className="gs-genre-tabs" role="group" aria-label="게시판 카테고리">
+          <div className="flex items-center gap-[13px] m-[0_0_17px] min-w-0 max-[600px]:gap-[9px] max-[600px]:mb-[15px]">
+            <div
+              className="flex gap-[7px] overflow-x-auto min-w-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden p-[2px_1px_3px] [&_button]:border [&_button]:border-gs-border [&_button]:rounded-[25px] [&_button]:bg-[linear-gradient(0deg,transparent,#8796a00c),var(--gs-raised)] [&_button]:p-[6px_15px] [&_button]:text-[10px] [&_button]:whitespace-nowrap [&_button]:min-h-[31px] [&_button:hover]:border-gs-mint min-[1600px]:[&_button]:text-[11px] min-[1600px]:[&_button]:p-[6px_17px] max-[600px]:[&_button]:p-[6px_14px] max-[600px]:[&_button]:min-h-[32px] max-[600px]:[&_button]:text-[10px]"
+              role="group"
+              aria-label="게시판 카테고리"
+            >
               {['All', ...BOARD_CATEGORIES].map(item => (
                 <button
                   key={item}
-                  className={category === item ? 'active' : ''}
+                  className={category === item ? 'bg-gs-accent! text-[#04291f]! font-[650]! border-gs-accent!' : ''}
                   aria-pressed={category === item}
                   onClick={() => setCategory(item)}
                 >
@@ -83,15 +87,15 @@ export default function CommunityPage() {
           </div>
 
           {loading ? (
-            <div className="gs-empty" role="status">
+            <div className="p-[70px_20px] text-center border border-dashed border-gs-border rounded-[12px] [&>svg]:text-gs-muted" role="status">
               <GSIcon name="search" size={38} />
-              <h3>게시글을 불러오는 중이에요</h3>
+              <h3 className="text-[18px] mt-[18px]">게시글을 불러오는 중이에요</h3>
             </div>
           ) : error && !posts.length ? (
-            <div className="gs-empty" role="alert">
+            <div className="p-[70px_20px] text-center border border-dashed border-gs-border rounded-[12px] [&>svg]:text-gs-muted" role="alert">
               <GSIcon name="info" size={38} />
-              <h3>게시글을 불러오지 못했어요</h3>
-              <p>{error}</p>
+              <h3 className="text-[18px] mt-[18px]">게시글을 불러오지 못했어요</h3>
+              <p className="m-[8px_0_23px] text-gs-muted text-[12px]">{error}</p>
               <button className="gs-primary-button" onClick={retry}>
                 다시 시도
               </button>
@@ -127,13 +131,13 @@ export default function CommunityPage() {
                 ))}
               </ul>
               {error && (
-                <p className="gs-inline-note" role="alert">
+                <p className="flex items-center gap-[12px] text-gs-muted text-[11px] p-[18px_0] leading-[1.8] [&>svg]:shrink-0 [&>svg]:text-[#aa87ef]" role="alert">
                   <GSIcon name="info" size={20} />
                   {error}
                 </p>
               )}
               {!last && (
-                <div className="gs-load-more">
+                <div className="flex justify-center p-[26px_0_8px]">
                   <button
                     className="gs-secondary-button"
                     onClick={loadMore}
@@ -146,10 +150,10 @@ export default function CommunityPage() {
               )}
             </>
           ) : (
-            <div className="gs-empty">
+            <div className="p-[70px_20px] text-center border border-dashed border-gs-border rounded-[12px] [&>svg]:text-gs-muted">
               <GSIcon name="search" size={38} />
-              <h3>게시글이 없어요</h3>
-              <p>첫 번째 글을 남겨보세요.</p>
+              <h3 className="text-[18px] mt-[18px]">게시글이 없어요</h3>
+              <p className="m-[8px_0_23px] text-gs-muted text-[12px]">첫 번째 글을 남겨보세요.</p>
               <Link className="gs-primary-button" to="/community/new">
                 글쓰기
                 <GSIcon name="arrow" size={17} />
