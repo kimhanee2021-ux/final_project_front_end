@@ -1,7 +1,7 @@
 import Card from '../../../components/common/Card'
 import EmptyState from '../../../components/common/EmptyState'
 import { money } from '../../../utils/formatters'
-export default function GenreSpendingChart({ genres, total }) {
+export default function GenreSpendingChart({ genres, total, estimated = false }) {
   const slices = genres
     .map((genre, index) => {
       const start = genres.slice(0, index).reduce((sum, item) => sum + item.percent, 0)
@@ -11,8 +11,8 @@ export default function GenreSpendingChart({ genres, total }) {
     .join(', ')
   return (
     <Card
-      title="장르별 지출 비율"
-      subtitle="구매 기록으로 발견하는 나의 취향"
+      title={estimated ? '장르별 보유 게임 정가 비율' : '장르별 지출 비율'}
+      subtitle={estimated ? '보유 게임으로 발견하는 나의 취향' : '구매 기록으로 발견하는 나의 취향'}
       className="genre-card"
     >
       {!genres.length ? (
@@ -26,7 +26,7 @@ export default function GenreSpendingChart({ genres, total }) {
             aria-label={genres.map(g => g.name + ' ' + Math.round(g.percent) + '%').join(', ')}
           >
             <div>
-              <span>선택 기간 지출</span>
+              <span>{estimated ? '보유 게임 정가' : '선택 기간 지출'}</span>
               <strong>{money(total)}</strong>
             </div>
           </div>

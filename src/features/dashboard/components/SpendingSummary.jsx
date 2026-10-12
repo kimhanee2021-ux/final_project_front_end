@@ -1,23 +1,24 @@
 import StatCard from '../../../components/common/StatCard'
 import { money, number } from '../../../utils/formatters'
-export default function SpendingSummary({ summary }) {
+// estimated: 실제 결제액이 아니라 현재 정가로 추정한 금액일 때(스팀 연동 분석) 문구를 바꾼다
+export default function SpendingSummary({ summary, estimated = false }) {
   return (
     <div className="stats-grid">
       <StatCard
-        label="누적 게임 지출"
+        label={estimated ? '보유 게임 정가 합계' : '누적 게임 지출'}
         value={money(summary.total)}
         icon="wallet"
         tone="purple"
-        tag="ALL TIME"
-        note={'금액이 확인된 유료 게임 ' + summary.paidCount + '개 기준'}
+        tag={estimated ? 'ESTIMATED' : 'ALL TIME'}
+        note={(estimated ? '가격을 확인한 유료 게임 ' : '금액이 확인된 유료 게임 ') + summary.paidCount + '개 기준'}
       />
       <StatCard
-        label="게임당 평균 구매 금액"
+        label={estimated ? '게임당 평균 정가' : '게임당 평균 구매 금액'}
         value={money(summary.average)}
         icon="bag"
         tone="peach"
         tag="PER GAME"
-        note="환불 반영 · 무료 게임 제외"
+        note={estimated ? '현재 한국 정가 · 무료 게임 제외' : '환불 반영 · 무료 게임 제외'}
       />
       <StatCard
         label="플레이 1시간당 비용"

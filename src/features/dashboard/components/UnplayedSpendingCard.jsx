@@ -14,8 +14,8 @@ export default function UnplayedSpendingCard({ summary, onExplore }) {
       <div className="unplayed-value">{money(summary.unplayedAmount)}</div>
       <div className="mini-covers" aria-hidden="true">
         {summary.unplayed.slice(0, 3).map(game => (
-          <span key={game.id} className={'game-art art-' + game.art}>
-            {game.initials}
+          <span key={game.id} className={'game-art art-' + game.art + (game.thumbnailUrl ? ' has-image' : '')}>
+            {game.thumbnailUrl ? <img src={game.thumbnailUrl} alt="" loading="lazy" /> : game.initials}
           </span>
         ))}
       </div>

@@ -32,16 +32,23 @@ export default function GameDetailDialog({ game, onClose }) {
           </button>
           <span className="eyebrow">PURCHASE DETAILS</span>
           <GameIdentity game={game} />
-          <p>{game.edition}</p>
+          {game.edition && <p>{game.edition}</p>}
           <dl>
             <div>
-              <dt>실제 구매 금액</dt>
+              <dt>{game.amountSource === 'ESTIMATED' ? '추정 금액 (현재 한국 정가)' : '실제 구매 금액'}</dt>
               <dd>{money(netAmount(game))}</dd>
             </div>
-            <div>
-              <dt>구매일</dt>
-              <dd>{dateLabel(game.purchasedAt)}</dd>
-            </div>
+            {game.purchasedAt ? (
+              <div>
+                <dt>구매일</dt>
+                <dd>{dateLabel(game.purchasedAt)}</dd>
+              </div>
+            ) : (
+              <div>
+                <dt>최근 플레이</dt>
+                <dd>{game.lastPlayedAt ? dateLabel(game.lastPlayedAt) : '기록 없음'}</dd>
+              </div>
+            )}
             <div>
               <dt>누적 플레이 시간</dt>
               <dd>{game.hours == null ? '미확인' : number(game.hours) + '시간'}</dd>
@@ -62,7 +69,11 @@ export default function GameDetailDialog({ game, onClose }) {
               ? '아직 시작하지 않은 게임이에요. 다음 플레이 목록에 담아보는 건 어떨까요?'
               : '플레이 시간은 구매를 이해하는 하나의 지표예요. 짧은 플레이도 충분히 만족스러운 경험일 수 있어요.'}
           </div>
-          <small>데모 기록 · 실제 구매 내역이 아닙니다.</small>
+          <small>
+            {game.platform === 'Steam' && game.amountSource
+              ? '스팀 보유 게임 · 금액은 현재 한국 정가 기준 추정치예요.'
+              : '데모 기록 · 실제 구매 내역이 아닙니다.'}
+          </small>
         </div>
       )}
     </dialog>
