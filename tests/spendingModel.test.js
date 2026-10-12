@@ -5,7 +5,8 @@ import { summarize, genreSpending } from '../src/features/dashboard/spendingMetr
 const api = overrides => ({ appId: 1, name: 'Test Game', genre: 'RPG', genres: ['Action', 'RPG'], thumbnailUrl: null, amount: 10000, amountSource: 'ESTIMATED', hours: 10, recentHours: 0, lastPlayedAt: '2026-10-01T20:00:00', ...overrides })
 test('maps the backend response to dashboard games without purchase dates', () => {
   const game = toSpendingGame(api({ name: 'elden ring' }))
-  assert.equal(game.id, 1); assert.equal(game.purchasedAt, null); assert.equal(game.refund, 0)
+  assert.equal(game.id, 1); assert.equal(game.purchasedAt, null); assert.equal(game.refund, 0); assert.equal(game.bundleAllocated, false)
+  assert.equal(toSpendingGame(api({ bundleAllocated: true })).bundleAllocated, true)
   assert.equal(game.lastPlayedAt, '2026-10-01'); assert.equal(game.initials, 'ER'); assert.deepEqual(game.genres, ['액션', 'RPG'])
 })
 test('genre labels fall back to the raw value and missing genres become 기타', () => {

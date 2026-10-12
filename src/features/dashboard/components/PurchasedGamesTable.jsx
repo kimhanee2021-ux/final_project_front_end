@@ -129,6 +129,7 @@ export default function PurchasedGamesTable({
                   <td className="amount-cell">
                     {amountText(game)}
                     {game.amountSource === 'ESTIMATED' && <span className="estimate-badge">추정</span>}
+                    {game.bundleAllocated && <span className="estimate-badge">번들 배분</span>}
                     {game.dlcCount > 0 && <span className="estimate-badge">DLC {game.dlcCount}</span>}
                     {game.refund > 0 && <span className="estimate-badge">환불 반영</span>}
                   </td>

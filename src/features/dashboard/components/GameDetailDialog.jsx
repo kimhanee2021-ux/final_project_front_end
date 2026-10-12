@@ -57,11 +57,12 @@ export default function GameDetailDialog({ game, onClose }) {
                 <dd>{money(game.listPrice)}</dd>
               </div>
             )}
-            {(game.dlcCount > 0 || game.refund > 0 || game.savedKrw > 0) && (
+            {(game.bundleAllocated || game.dlcCount > 0 || game.refund > 0 || game.savedKrw > 0) && (
               <div>
                 <dt>구매 상세</dt>
                 <dd>
                   {[
+                    game.bundleAllocated && '여러 게임 번들로 구매 (결제액을 정가 비율로 나눈 금액)',
                     game.dlcCount > 0 && 'DLC ' + game.dlcCount + '개 포함',
                     game.refund > 0 && '환불 ' + money(game.refund) + ' 차감',
                     game.savedKrw > 0 && '할인으로 ' + money(game.savedKrw) + ' 절약',

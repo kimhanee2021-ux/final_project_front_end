@@ -46,6 +46,8 @@ export function toSpendingGame(game) {
     listPrice: game.listPrice ?? null,
     dlcCount: game.dlcCount ?? 0,
     savedKrw: game.savedKrw ?? 0,
+    // 여러 게임이 든 번들로 산 게임: amount는 번들 결제액을 정가 비율로 나눈 배분값
+    bundleAllocated: Boolean(game.bundleAllocated),
     hours: game.hours,
     recentHours: game.recentHours ?? 0,
     lastPlayedAt: game.lastPlayedAt ? game.lastPlayedAt.slice(0, 10) : null,
