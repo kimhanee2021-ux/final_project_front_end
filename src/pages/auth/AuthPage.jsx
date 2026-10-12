@@ -145,7 +145,7 @@ export default function AuthPage({ mode = 'login' }) {
             </form>
             <div className="auth-message" role="status" aria-live="polite">{message && <p><GSIcon name="info" size={18} />{message}</p>}</div>
             <p className="auth-switch">{mode === 'login' ? <>아직 계정이 없으신가요? <Link to={authLink('signup', returnTo)}>회원가입</Link></> : <Link to={authLink('login', returnTo)}>로그인으로 돌아가기 <span aria-hidden="true">→</span></Link>}</p>
-            <div className="auth-demo"><span>계정 없이 먼저 만나보세요</span><button type="button" onClick={() => { if (returnTo.split('?')[0] === '/ai-worldcup') navigate('/ai-worldcup?demo=1', { replace: true }); else { startDemo(remember); navigate(returnTo, { replace: true }) } }}>{returnTo.split('?')[0] === '/ai-worldcup' ? '데모로 둘러보기' : '데모 체험하기'}<GSIcon name="arrow" size={16} /></button><small>데모는 서버 계정 없이 이 브라우저에서만 동작해요.</small></div>
+            <div className="auth-demo"><span>계정 없이 먼저 만나보세요</span><button type="button" onClick={() => { if (['/ai-worldcup', '/ai-game-manager'].includes(returnTo.split('?')[0])) navigate(returnTo.split('?')[0] + '?demo=1', { replace: true }); else { startDemo(remember); navigate(returnTo, { replace: true }) } }}>{['/ai-worldcup', '/ai-game-manager'].includes(returnTo.split('?')[0]) ? '데모로 둘러보기' : '데모 체험하기'}<GSIcon name="arrow" size={16} /></button><small>데모는 서버 계정 없이 이 브라우저에서만 동작해요.</small></div>
           </div>
         </section>
       </main>

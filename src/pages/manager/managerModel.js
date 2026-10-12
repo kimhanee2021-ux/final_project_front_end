@@ -1,0 +1,3 @@
+export function parseWon(value){const text=String(value).trim();if(!/^(?:\d+|\d{1,3}(?:,\d{3})+)$/.test(text))throw new Error('목표 금액을 원 단위 정수로 입력해주세요.');const n=Number(text.replaceAll(',',''));if(!Number.isSafeInteger(n)||n<1||n>10000000)throw new Error('목표 금액은 1원부터 1천만 원까지 입력할 수 있어요.');return n}
+export function priceLabel(p){return p.currency==='KRW'&&p.minorPrice!==null&&p.minorPrice!==undefined?`${(p.minorPrice/100).toLocaleString('ko-KR')}원`:'가격 확인 필요'}
+export function selectedCost(products,owned){const ids=new Set(owned.map(g=>g.appId));let total=0;for(const p of products){if(ids.has(p.appId))continue;if(p.currency!=='KRW'||p.minorPrice==null)return null;total+=p.minorPrice}return total}

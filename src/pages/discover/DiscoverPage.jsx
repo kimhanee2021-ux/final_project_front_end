@@ -326,6 +326,7 @@ export default function DiscoverPage() {
   return (
     <>
       <Hero />
+      <Link to="/ai-game-manager" className="hb-home-link"><strong>AI 내 게임 매니저 →</strong><span>내 게임 정리 · 원하는 가격에 할인 기다리기</span></Link>
       <Link to="/ai-worldcup" className="hb-home-link"><strong>AI 게임 취향 월드컵 →</strong><span>두 게임 중 내 선택은? · 선택할수록 달라지는 AI 대결</span></Link>
       <Link to="/hangul-blocks" className="hb-home-link"><strong>한글 테트리스 →</strong><span>게임 전 가볍게 한 판 · 50단계 & 일일 챌린지</span></Link>
       <div className="gs-dashboard-grid">
