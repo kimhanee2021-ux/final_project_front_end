@@ -133,7 +133,13 @@ export default function PurchasedGamesTable({
                     {game.refund > 0 && <span className="estimate-badge">환불 반영</span>}
                   </td>
                   <td className="muted">
-                    {hasPurchaseDates ? dateLabel(game.purchasedAt) : game.lastPlayedAt ? dateLabel(game.lastPlayedAt) : '기록 없음'}
+                    {hasPurchaseDates
+                      ? game.purchasedAt
+                        ? dateLabel(game.purchasedAt)
+                        : '-'
+                      : game.lastPlayedAt
+                        ? dateLabel(game.lastPlayedAt)
+                        : '기록 없음'}
                   </td>
                   <td>{hoursText(game.hours)}</td>
                   <td>{hourlyText(game)}</td>
@@ -148,7 +154,8 @@ export default function PurchasedGamesTable({
       )}
       <div className="table-foot">
         <GSIcon name="info" size={14} />
-        플레이 시간은 누적 기준이며, 금액 미확인 게임은 지출 계산에서 제외됩니다.
+        플레이 시간은 누적 기준이고, 시간당 비용은 1시간 이상 플레이한 게임부터 계산해요. 금액이 없는 게임은 지출 계산에서
+        제외됩니다.
       </div>
     </Card>
   )

@@ -79,14 +79,13 @@ export function genreSpending(games) {
 export function hourlyText(game) {
   if (game.amount == null) return '-'
   if (game.amountSource === 'FREE') return '무료'
-  if (!(game.hours > 0)) return '계산 전'
-  if (game.hours < MIN_HOURS_FOR_HOURLY) return '1시간 미만 플레이'
+  if (!(game.hours >= MIN_HOURS_FOR_HOURLY)) return '계산 전'
   return money(netAmount(game) / game.hours)
 }
 
-// 플레이 시간 문구. 6분(0.1시간) 미만은 0시간으로 보이지 않게 따로 표시한다
+// 플레이 시간 문구. 1시간이 안 되면 분으로 보여준다 (0.1시간처럼 소수로 보이면 몇 분인지 알기 어렵다)
 export function hoursText(hours) {
   if (hours == null) return '시간 미확인'
-  if (hours > 0 && hours < 0.1) return '0.1시간 미만'
+  if (hours > 0 && hours < 1) return Math.max(1, Math.round(hours * 60)) + '분'
   return number(hours) + '시간'
 }
