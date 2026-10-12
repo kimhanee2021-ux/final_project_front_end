@@ -3,6 +3,7 @@ import GSIcon from '../../../components/common/GSIcon'
 import GameIdentity from './GameIdentity'
 import { money, dateLabel } from '../../../utils/formatters'
 import { netAmount, hourlyText, hoursText } from '../spendingMetrics'
+import { METHOD_LABELS, noRecordLabel } from '../../purchaseImport/labels'
 const AMOUNT_LABELS = {
   CONFIRMED: '실제 구매 금액 (구매일 환율 원화 환산)',
   ESTIMATED: '추정 금액 (현재 한국 정가)',
@@ -47,7 +48,9 @@ export default function GameDetailDialog({ game, onClose }) {
                 {game.amountSource === 'FREE'
                   ? '무료'
                   : game.amount == null
-                    ? NO_AMOUNT_LABELS[game.amountSource] ?? '금액 미확인'
+                    ? game.amountSource === 'NO_RECORD'
+                      ? noRecordLabel(game.acquisitionMethod)
+                      : NO_AMOUNT_LABELS[game.amountSource] ?? '금액 미확인'
                     : money(netAmount(game))}
               </dd>
             </div>
@@ -69,6 +72,14 @@ export default function GameDetailDialog({ game, onClose }) {
                   ]
                     .filter(Boolean)
                     .join(' · ')}
+                </dd>
+              </div>
+            )}
+            {game.acquiredAt && (
+              <div>
+                <dt>계정에 추가한 날</dt>
+                <dd>
+                  {dateLabel(game.acquiredAt)} · {METHOD_LABELS[game.acquisitionMethod] ?? '기타'}
                 </dd>
               </div>
             )}
@@ -103,7 +114,9 @@ export default function GameDetailDialog({ game, onClose }) {
             {game.amountSource === 'CONFIRMED'
               ? '스팀 구매내역 기준 · 원화가 아닌 결제는 구매일 환율로 환산했어요.'
               : game.amountSource === 'NO_RECORD'
-                ? '구매내역에 결제 기록이 없는 게임이에요 (선물·키 등록·무료 배포 등).'
+                ? game.acquisitionMethod
+                  ? '구매내역에 결제 기록이 없는 게임이에요 (라이선스 기준: ' + (METHOD_LABELS[game.acquisitionMethod] ?? '기타') + ').'
+                  : '구매내역에 결제 기록이 없는 게임이에요 (선물·키 등록·무료 배포 등).'
                 : game.platform === 'Steam' && game.amountSource
                   ? '스팀 보유 게임 · 금액은 현재 한국 정가 기준 추정치예요.'
                   : '데모 기록 · 실제 구매 내역이 아닙니다.'}

@@ -9,7 +9,13 @@ export async function importPurchases(transactions) {
   return data
 }
 
-// 가져온 구매내역을 모두 지운다 (다시 가져오기 전 초기화). 응답: { deleted }
+// 라이선스 페이지에서 파싱한 목록을 보낸다. 응답: { imported, duplicates, matched }
+export async function importLicenses(licenses) {
+  const { data } = await apiClient.post('/api/purchases/licenses/import', { licenses }, { timeout: 60000 })
+  return data
+}
+
+// 가져온 구매내역과 라이선스를 모두 지운다 (다시 가져오기 전 초기화). 응답: { deleted }
 export async function deletePurchases() {
   const { data } = await apiClient.delete('/api/purchases')
   return data

@@ -1,25 +1,32 @@
 import { useEffect, useRef, useState } from 'react'
 import GSIcon from '../../../components/common/GSIcon'
 import { parseSteamHistory } from '../parseSteamHistory'
-import { deletePurchases, importPurchases } from '../api'
+import { isLicensesPage, parseSteamLicenses } from '../parseSteamLicenses'
+import { deletePurchases, importLicenses, importPurchases } from '../api'
 import { getErrorMessage } from '../../../utils/apiClient'
 import { dateLabel, number } from '../../../utils/formatters'
+import { METHOD_LABELS } from '../labels'
 
 const HISTORY_URL = 'https://store.steampowered.com/account/history/'
+const LICENSES_URL = 'https://store.steampowered.com/account/licenses/'
 const TYPE_LABELS = { PURCHASE: '구매', REFUND: '환불', IN_GAME: '게임 내 구매', GIFT: '선물 구매' }
 const EXCLUDED_LABELS = { WALLET_CREDIT: '지갑 충전', CONVERSION: '통화 변환', MARKET: '장터 거래', UNKNOWN: '기타' }
 
 const countBy = (list, key) => list.reduce((counts, item) => ({ ...counts, [item[key]]: (counts[item[key]] ?? 0) + 1 }), {})
 const describe = (counts, labels) =>
   Object.entries(counts).map(([key, count]) => `${labels[key] ?? key} ${number(count)}건`).join(' · ')
+const range = dates => {
+  const sorted = [...dates].sort()
+  return `${dateLabel(sorted[0])} ~ ${dateLabel(sorted[sorted.length - 1])}`
+}
 
 function money(amount, currency) {
   if (amount == null) return '전액 환불'
   return `${currency ?? ''} ${amount.toLocaleString('ko-KR', { maximumFractionDigits: 2 })}`.trim()
 }
 
-// 스팀 구매내역 페이지를 저장한 HTML(또는 표를 복사한 내용)을 받아 브라우저에서 파싱하고,
-// 미리보기로 확인한 뒤 거래 목록만 서버로 보낸다.
+// 스팀 구매내역 페이지 또는 라이선스 페이지를 저장한 HTML(또는 표를 복사한 내용)을 받아 브라우저에서 파싱하고,
+// 미리보기로 확인한 뒤 정리한 목록만 서버로 보낸다. 어떤 페이지인지는 표 구조로 자동 판별한다.
 export default function PurchaseImportDialog({ open, hasHistory, onClose, onImported }) {
   const ref = useRef(null)
   const fileRef = useRef(null)
@@ -48,14 +55,25 @@ export default function PurchaseImportDialog({ open, hasHistory, onClose, onImpo
   }
 
   const readHtml = html => {
-    const parsedHistory = parseSteamHistory(html)
-    if (!parsedHistory.transactions.length) {
+    if (isLicensesPage(html)) {
+      const licenses = parseSteamLicenses(html)
+      if (!licenses.licenses.length) {
+        setParsed(null)
+        setError(licenses.warnings[0] ?? '가져올 라이선스를 찾지 못했어요.')
+        return
+      }
+      setError('')
+      setParsed({ kind: 'licenses', ...licenses })
+      return
+    }
+    const history = parseSteamHistory(html)
+    if (!history.transactions.length) {
       setParsed(null)
-      setError(parsedHistory.warnings[0] ?? '가져올 거래를 찾지 못했어요.')
+      setError(history.warnings[0] ?? '가져올 거래를 찾지 못했어요.')
       return
     }
     setError('')
-    setParsed(parsedHistory)
+    setParsed({ kind: 'history', ...history })
   }
   const onFile = async event => {
     const file = event.target.files?.[0]
@@ -65,23 +83,25 @@ export default function PurchaseImportDialog({ open, hasHistory, onClose, onImpo
     event.preventDefault()
     const html = event.clipboardData.getData('text/html')
     if (html) readHtml(html)
-    else setError('표 모양 그대로 복사되지 않았어요. 구매내역 페이지에서 표를 드래그해 복사하거나 HTML 파일을 올려 주세요.')
+    else setError('표 모양 그대로 복사되지 않았어요. 페이지에서 표를 드래그해 복사하거나 HTML 파일을 올려 주세요.')
   }
 
   const submit = async () => {
     setBusy(true)
     setError('')
     try {
-      setResult(await importPurchases(parsed.transactions))
+      const response =
+        parsed.kind === 'licenses' ? await importLicenses(parsed.licenses) : await importPurchases(parsed.transactions)
+      setResult({ kind: parsed.kind, ...response })
       setParsed(null)
     } catch (err) {
-      setError(getErrorMessage(err, '구매내역을 저장하지 못했어요. 잠시 후 다시 시도해 주세요.'))
+      setError(getErrorMessage(err, '저장하지 못했어요. 잠시 후 다시 시도해 주세요.'))
     } finally {
       setBusy(false)
     }
   }
   const removeAll = async () => {
-    if (!window.confirm('가져온 구매내역을 모두 지울까요? 소비 분석은 다시 정가 추정으로 돌아가요.')) return
+    if (!window.confirm('가져온 구매내역과 라이선스를 모두 지울까요? 소비 분석은 다시 정가 추정으로 돌아가요.')) return
     setBusy(true)
     try {
       await deletePurchases()
@@ -95,8 +115,8 @@ export default function PurchaseImportDialog({ open, hasHistory, onClose, onImpo
     }
   }
 
-  const list = parsed?.transactions ?? []
-  const dates = list.map(t => t.purchasedAt).sort()
+  const transactions = parsed?.kind === 'history' ? parsed.transactions : []
+  const licenses = parsed?.kind === 'licenses' ? parsed.licenses : []
   return (
     <dialog
       ref={ref}
@@ -114,7 +134,19 @@ export default function PurchaseImportDialog({ open, hasHistory, onClose, onImpo
         <span className="eyebrow">PURCHASE HISTORY</span>
         <h2>스팀 구매내역 가져오기</h2>
 
-        {result ? (
+        {result?.kind === 'licenses' ? (
+          <div className="import-result" role="status">
+            <p>
+              라이선스 <strong>{number(result.imported)}건</strong>을 가져와 보유 게임 {number(result.matched)}개에 획득일과 획득
+              방법을 붙였어요.
+              {result.duplicates > 0 && <> 이미 가져온 {number(result.duplicates)}건은 건너뛰었어요.</>}
+            </p>
+            <p className="import-note">데모·도구·옛 패키지처럼 지금 보유 게임이 아닌 라이선스는 연결되지 않아도 정상이에요.</p>
+            <button type="button" className="primary-button" onClick={close}>
+              소비 분석 보기
+            </button>
+          </div>
+        ) : result ? (
           <div className="import-result" role="status">
             <p>
               <strong>{number(result.imported)}건</strong>을 가져왔어요.
@@ -139,28 +171,66 @@ export default function PurchaseImportDialog({ open, hasHistory, onClose, onImpo
               소비 분석 보기
             </button>
           </div>
+        ) : parsed?.kind === 'licenses' ? (
+          <div className="import-preview">
+            <dl>
+              <div>
+                <dt>라이선스</dt>
+                <dd>
+                  {number(licenses.length)}건 <small>({describe(countBy(licenses, 'method'), METHOD_LABELS)})</small>
+                </dd>
+              </div>
+              <div>
+                <dt>기간</dt>
+                <dd>{range(licenses.map(l => l.acquiredAt))}</dd>
+              </div>
+            </dl>
+            {parsed.warnings.map(warning => (
+              <p key={warning} className="import-note" role="alert">
+                {warning}
+              </p>
+            ))}
+            <ul className="import-sample" aria-label="최근 라이선스 미리보기">
+              {licenses.slice(0, 5).map(l => (
+                <li key={l.externalKey}>
+                  <span>{dateLabel(l.acquiredAt)}</span>
+                  <span>{l.name}</span>
+                  <span>{METHOD_LABELS[l.method]}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="import-note">
+              라이선스에는 금액이 없어요. 구매내역에 결제 기록이 없는 게임(선물·무료 배포·제품 키)의 획득일과 이유를 보여줘요.
+            </p>
+            <div className="import-actions">
+              <button type="button" className="text-button" onClick={reset} disabled={busy}>
+                다른 파일 선택
+              </button>
+              <button type="button" className="primary-button" onClick={submit} disabled={busy}>
+                {busy ? '가져오는 중...' : `라이선스 ${number(licenses.length)}건 가져오기`}
+              </button>
+            </div>
+          </div>
         ) : parsed ? (
           <div className="import-preview">
             <dl>
               <div>
                 <dt>가져올 거래</dt>
                 <dd>
-                  {number(list.length)}건 <small>({describe(countBy(list, 'type'), TYPE_LABELS)})</small>
+                  {number(transactions.length)}건 <small>({describe(countBy(transactions, 'type'), TYPE_LABELS)})</small>
                 </dd>
               </div>
               <div>
                 <dt>기간</dt>
-                <dd>
-                  {dateLabel(dates[0])} ~ {dateLabel(dates[dates.length - 1])}
-                </dd>
+                <dd>{range(transactions.map(t => t.purchasedAt))}</dd>
               </div>
               <div>
                 <dt>결제 통화</dt>
-                <dd>{Object.keys(countBy(list.filter(t => t.currency), 'currency')).join(', ') || '-'}</dd>
+                <dd>{Object.keys(countBy(transactions.filter(t => t.currency), 'currency')).join(', ') || '-'}</dd>
               </div>
               <div>
                 <dt>할인 구매</dt>
-                <dd>{number(list.filter(t => t.discountPercent).length)}건</dd>
+                <dd>{number(transactions.filter(t => t.discountPercent).length)}건</dd>
               </div>
               {Object.keys(parsed.excluded).length > 0 && (
                 <div>
@@ -177,7 +247,7 @@ export default function PurchaseImportDialog({ open, hasHistory, onClose, onImpo
               </p>
             ))}
             <ul className="import-sample" aria-label="최근 거래 미리보기">
-              {list.slice(0, 5).map(t => (
+              {transactions.slice(0, 5).map(t => (
                 <li key={t.externalKey}>
                   <span>{dateLabel(t.purchasedAt)}</span>
                   <span>{t.items.join(' + ')}</span>
@@ -195,7 +265,7 @@ export default function PurchaseImportDialog({ open, hasHistory, onClose, onImpo
                 다른 파일 선택
               </button>
               <button type="button" className="primary-button" onClick={submit} disabled={busy}>
-                {busy ? '가져오는 중... (환율·DLC 확인)' : `${number(list.length)}건 가져오기`}
+                {busy ? '가져오는 중... (환율·DLC 확인)' : `${number(transactions.length)}건 가져오기`}
               </button>
             </div>
           </div>
@@ -209,20 +279,29 @@ export default function PurchaseImportDialog({ open, hasHistory, onClose, onImpo
                 </a>
                 를 엽니다.
               </li>
-              <li>맨 아래 <strong>"더 보기"</strong>가 안 나올 때까지 누릅니다.</li>
+              <li>
+                맨 아래 <strong>"더 보기"</strong>가 안 나올 때까지 누릅니다.
+              </li>
               <li>
                 <strong>Ctrl + S</strong> → <strong>"웹페이지, 전체"</strong>로 저장하고 아래에 올립니다.
+              </li>
+              <li>
+                (선택){' '}
+                <a href={LICENSES_URL} target="_blank" rel="noreferrer">
+                  라이선스 페이지
+                </a>
+                도 같은 방법으로 올리면, 선물·무료로 받은 게임의 획득일과 방법까지 보여줘요.
               </li>
             </ol>
             <label className="import-file">
               <GSIcon name="library" size={18} />
-              <span>저장한 HTML 파일 선택</span>
+              <span>저장한 HTML 파일 선택 (구매내역 또는 라이선스)</span>
               <input ref={fileRef} type="file" accept=".html,.htm,text/html" onChange={onFile} />
             </label>
             <textarea
               className="import-paste"
-              aria-label="구매내역 표 붙여넣기"
-              placeholder="또는 구매내역 표를 복사해서 여기에 붙여넣기 (Ctrl + V)"
+              aria-label="구매내역 또는 라이선스 표 붙여넣기"
+              placeholder="또는 구매내역·라이선스 표를 복사해서 여기에 붙여넣기 (Ctrl + V)"
               value=""
               onChange={() => {}}
               onPaste={onPaste}
@@ -231,7 +310,7 @@ export default function PurchaseImportDialog({ open, hasHistory, onClose, onImpo
             <p className="import-note">파일은 이 브라우저 안에서만 읽어요. 실제 결제 금액과 구매일로 소비 분석이 바뀝니다.</p>
             {hasHistory && (
               <button type="button" className="text-button danger" onClick={removeAll} disabled={busy}>
-                가져온 구매내역 모두 지우기
+                가져온 구매내역·라이선스 모두 지우기
               </button>
             )}
           </div>

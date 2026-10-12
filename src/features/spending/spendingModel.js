@@ -48,6 +48,9 @@ export function toSpendingGame(game) {
     savedKrw: game.savedKrw ?? 0,
     // 여러 게임이 든 번들로 산 게임: amount는 번들 결제액을 정가 비율로 나눈 배분값
     bundleAllocated: Boolean(game.bundleAllocated),
+    // 라이선스 페이지를 가져왔으면 계정에 처음 추가한 날과 방법 (선물·무료·제품 키 등)
+    acquiredAt: game.acquiredAt ?? null,
+    acquisitionMethod: game.acquisitionMethod ?? null,
     hours: game.hours,
     recentHours: game.recentHours ?? 0,
     lastPlayedAt: game.lastPlayedAt ? game.lastPlayedAt.slice(0, 10) : null,

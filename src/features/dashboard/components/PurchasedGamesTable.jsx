@@ -6,12 +6,15 @@ import GameIdentity from './GameIdentity'
 import PlayStatusBadge from './PlayStatusBadge'
 import { money, dateLabel } from '../../../utils/formatters'
 import { netAmount, hourlyText, hoursText } from '../spendingMetrics'
+import { noRecordLabel } from '../../purchaseImport/labels'
 const NO_AMOUNT_LABELS = { NO_RECORD: '구매 기록 없음', UNKNOWN: '가격 정보 없음' }
 const amountText = game =>
   game.amountSource === 'FREE'
     ? '무료'
     : game.amount == null
-      ? NO_AMOUNT_LABELS[game.amountSource] ?? '금액 미확인'
+      ? game.amountSource === 'NO_RECORD'
+        ? noRecordLabel(game.acquisitionMethod)
+        : NO_AMOUNT_LABELS[game.amountSource] ?? '금액 미확인'
       : money(netAmount(game))
 export default function PurchasedGamesTable({
   games,
@@ -137,7 +140,9 @@ export default function PurchasedGamesTable({
                     {hasPurchaseDates
                       ? game.purchasedAt
                         ? dateLabel(game.purchasedAt)
-                        : '-'
+                        : game.acquiredAt
+                          ? dateLabel(game.acquiredAt) + ' 획득'
+                          : '-'
                       : game.lastPlayedAt
                         ? dateLabel(game.lastPlayedAt)
                         : '기록 없음'}
