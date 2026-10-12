@@ -155,21 +155,21 @@ function Header({ onMenu }) {
         </div>}
         {isSignedIn ? <div className="flex items-center gap-[15px] shrink-0 max-[1120px]:gap-[9px] max-[600px]:gap-[4px]"><NavLink
           to="/mypage"
-          className="gs-profile gs-profile-link"
+          className="gs-profile border border-gs-border rounded-[28px] py-[5px] pr-[12px] pl-[5px] hover:border-[#34c7ae66] hover:bg-[#36d8b807] max-[900px]:py-[3px] max-[900px]:pr-[8px] max-[900px]:pl-[3px] max-[480px]:border-0 max-[480px]:p-0"
           aria-label="마이페이지 열기"
           onClick={() => {
             setPopover(null)
             setQuery('')
           }}
         >
-          <span className="gs-avatar">
+          <span className="gs-avatar !border-[#3feac28a]">
             <img
               src={(profileAvatars.find(item => item.id === player.profile.avatar) || profileAvatars[0]).image}
               alt=""
             />
           </span>
           <span className="gs-profile-label">
-            <strong>Hello, {player.profile.name}</strong>
+            <strong className="block max-w-[130px] overflow-hidden whitespace-nowrap text-ellipsis">Hello, {player.profile.name}</strong>
             <small>{isAuthenticated ? user.email : '데모 체험 중'}</small>
           </span>
           <GSIcon name="chevron" size={17} />
