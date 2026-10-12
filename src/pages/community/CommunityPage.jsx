@@ -4,7 +4,6 @@ import GSIcon from '../../components/common/GSIcon'
 import { useAuth } from '../../features/auth/context/AuthContext'
 import { BOARD_CATEGORIES, dateTimeLabel, postAuthorLabel } from '../../features/board/boardModel'
 import { useBoardPosts } from '../../features/board/hooks/useBoardPosts'
-import '../../styles/community.css'
 
 export default function CommunityPage() {
   const { isAuthenticated } = useAuth()
@@ -71,13 +70,14 @@ export default function CommunityPage() {
                 </button>
               ))}
             </div>
-            <label className="cm-search">
-              <GSIcon name="search" size={16} />
+            <label className="flex items-center gap-[9px] min-w-[200px] px-[14px] h-[38px] border border-gs-border rounded-[25px] bg-gs-search text-gs-muted shrink-0">
+              <GSIcon name="search" size={16} className="shrink-0" />
               <input
                 value={keyword}
                 onChange={event => setKeyword(event.target.value)}
                 placeholder="제목, 내용 검색"
                 aria-label="게시글 검색"
+                className="w-full bg-transparent border-0 outline-none text-gs-text text-[12px]"
               />
             </label>
           </div>
@@ -98,18 +98,25 @@ export default function CommunityPage() {
             </div>
           ) : posts.length > 0 ? (
             <>
-              <ul className="cm-post-list">
-                {posts.map(post => (
+              <ul className="flex flex-col gap-0.5 border border-gs-border rounded-xl overflow-hidden bg-gs-panel">
+                {posts.map((post, index) => (
                   <li key={post.id}>
-                    <Link to={`/community/${post.id}`} className="cm-post-row">
-                      {post.imageUrl && <img src={post.imageUrl} alt="" loading="lazy" />}
-                      <div className="cm-post-info">
-                        <span className="cm-post-category">{post.category}</span>
-                        <strong>{post.title}</strong>
-                        <div className="cm-post-meta">
+                    <Link
+                      to={`/community/${post.id}`}
+                      className={`flex items-center gap-[14px] px-[18px] py-[15px] min-w-0 hover:bg-gs-hover ${index === posts.length - 1 ? '' : 'border-b border-gs-border'}`}
+                    >
+                      {post.imageUrl && (
+                        <img src={post.imageUrl} alt="" loading="lazy" className="w-[52px] h-[52px] rounded-lg object-cover shrink-0" />
+                      )}
+                      <div className="flex flex-col gap-[5px] min-w-0 flex-1">
+                        <span className="inline-flex self-start px-[9px] py-[3px] rounded-[6px] bg-gs-active text-gs-mint text-[10px] font-[650]">
+                          {post.category}
+                        </span>
+                        <strong className="text-[14px] font-[620] whitespace-nowrap overflow-hidden text-ellipsis">{post.title}</strong>
+                        <div className="flex items-center gap-[10px] text-gs-muted text-[11px]">
                           <span>{postAuthorLabel(post)}</span>
                           <span>{dateTimeLabel(post.createdAt)}</span>
-                          <span className="cm-post-views">
+                          <span className="inline-flex items-center gap-[4px]">
                             <GSIcon name="eye" size={13} />
                             {post.viewCount}
                           </span>

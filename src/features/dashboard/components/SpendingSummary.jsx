@@ -2,7 +2,7 @@ import StatCard from '../../../components/common/StatCard'
 import { money, number } from '../../../utils/formatters'
 export default function SpendingSummary({ summary }) {
   return (
-    <div className="stats-grid">
+    <div className="grid grid-cols-3 gap-[20px] max-[1000px]:gap-[14px] max-[760px]:gap-[10px] max-[580px]:grid-cols-2">
       <StatCard
         label="누적 게임 지출"
         value={money(summary.total)}

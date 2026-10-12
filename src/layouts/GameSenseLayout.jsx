@@ -9,7 +9,6 @@ import GameDialog from '../features/games/components/GameDialog'
 import Sidebar from './Sidebar'
 import { profileAvatars } from '../features/player/mocks/playerMock'
 import '../styles/gamesense.css'
-import '../styles/auth.css'
 
 function Header({ onMenu }) {
   const { isSignedIn, isAuthenticated, user, signOut } = useAuth()
@@ -154,7 +153,7 @@ function Header({ onMenu }) {
             </div>
           )}
         </div>}
-        {isSignedIn ? <div className="gs-account-session"><NavLink
+        {isSignedIn ? <div className="flex items-center gap-[15px] shrink-0 max-[1120px]:gap-[9px] max-[600px]:gap-[4px]"><NavLink
           to="/mypage"
           className="gs-profile gs-profile-link"
           aria-label="마이페이지 열기"
@@ -177,7 +176,7 @@ function Header({ onMenu }) {
         </NavLink>
         <button
           type="button"
-          className="gs-account-logout"
+          className="grid place-items-center w-[36px] h-[36px] rounded-[8px] bg-transparent text-gs-muted hover:bg-gs-raised hover:text-gs-mint max-[600px]:w-[30px]"
           aria-label="로그아웃"
           title="로그아웃"
           onClick={() => startTransition(() => {
@@ -190,9 +189,9 @@ function Header({ onMenu }) {
         >
           <GSIcon name="logout" size={19} />
         </button>
-        </div> : <nav className="gs-account-entry" aria-label="계정">
-          <Link to={authLink('signup', returnTo)} className="gs-account-signup">회원가입</Link>
-          <Link to={authLink('login', returnTo)} className="gs-account-login">로그인<GSIcon name="arrow" size={16} /></Link>
+        </div> : <nav className="flex items-center gap-[15px] shrink-0 max-[1120px]:gap-[9px] max-[600px]:gap-[10px]" aria-label="계정">
+          <Link to={authLink('signup', returnTo)} className="text-[12px] text-gs-muted whitespace-nowrap py-[10px] hover:text-gs-mint max-[600px]:text-[11px] max-[360px]:hidden">회원가입</Link>
+          <Link to={authLink('login', returnTo)} className="inline-flex items-center justify-center gap-[8px] min-h-[38px] px-[19px] bg-gs-accent text-[#062c23] rounded-[9px] text-[12px] font-[750] whitespace-nowrap hover:bg-[#69f5d0] max-[600px]:min-h-[36px] max-[600px]:px-[12px]">로그인<GSIcon name="arrow" size={16} className="max-[600px]:hidden" /></Link>
         </nav>}
       </div>
     </header>
@@ -242,7 +241,7 @@ function Shell() {
   }, [])
   return (
     <div className="gs-shell">
-      <a className="skip-link" href="#main-content">
+      <a className="fixed left-[16px] top-[-80px] z-[100] p-[12px] bg-surface focus:top-[10px]" href="#main-content">
         본문으로 이동
       </a>
       <aside className="gs-sidebar">

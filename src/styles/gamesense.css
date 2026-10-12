@@ -8,7 +8,9 @@
   --gs-bg: #0c1218; --gs-panel: #11191f; --gs-raised: #19222c; --gs-hover: #202c37;
   --gs-text: #f4f6f9; --gs-muted: #94a3b6; --gs-border: #25313d; --gs-mint: #35edbe;
   --gs-accent: #35edbe; --gs-active: #102b2b; --gs-search: #1d2735; --gs-shadow: 0 18px 55px #0006;
-  --bg: #0c1218; --surface: #11191f; --surface-soft: #19222c; --border: #25313d;
+  /* --bg/--surface/--surface-soft/--border는 여기서 재정의하지 않는다 — tokens.css가 유일한 출처.
+     예전에 여기서 같은 이름을 다시 정의해서, gamesense.css가 로드되는 모든 화면(거의 전체)의
+     다크모드 공용 토큰 값이 의도와 다르게 바뀌는 충돌이 있었다. */
 }
 html { scrollbar-color: #3c4c59 var(--gs-bg); scrollbar-width: thin; }
 body:has(.gs-shell) { background: var(--gs-bg); }
