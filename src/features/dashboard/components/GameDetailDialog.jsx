@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
 import GSIcon from '../../../components/common/GSIcon'
 import GameIdentity from './GameIdentity'
-import { money, number, dateLabel } from '../../../utils/formatters'
-import { netAmount } from '../spendingMetrics'
+import { money, dateLabel } from '../../../utils/formatters'
+import { netAmount, hourlyText, hoursText } from '../spendingMetrics'
 const AMOUNT_LABELS = {
   CONFIRMED: '실제 구매 금액 (구매일 환율 원화 환산)',
   ESTIMATED: '추정 금액 (현재 한국 정가)',
@@ -84,18 +84,12 @@ export default function GameDetailDialog({ game, onClose }) {
             )}
             <div>
               <dt>누적 플레이 시간</dt>
-              <dd>{game.hours == null ? '미확인' : number(game.hours) + '시간'}</dd>
+              <dd>{hoursText(game.hours)}</dd>
             </div>
             <div>
               <dt>플레이 1시간당 비용</dt>
               <dd>
-                {game.amount == null
-                  ? '-'
-                  : game.amountSource === 'FREE'
-                    ? '무료'
-                    : game.hours > 0
-                    ? money(netAmount(game) / game.hours)
-                    : '계산 전'}
+                {hourlyText(game)}
               </dd>
             </div>
           </dl>

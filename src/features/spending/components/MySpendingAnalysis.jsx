@@ -54,7 +54,8 @@ function recentInsight(games) {
 // 로그인 사용자의 스팀 보유 게임으로 만드는 개인 소비 분석 화면.
 // 구매내역을 가져오기 전: 현재 한국 정가로 추정 (스팀 API는 구매일·결제액을 주지 않아 월별 차트·기간 필터는 숨김)
 // 구매내역을 가져온 뒤: 실제 결제액(구매일 환율 원화 환산)과 구매일로 월별 차트·기간 필터까지 보여준다.
-export default function MySpendingAnalysis() {
+// view='library'는 설정 > 구매 내역(/purchases) 화면: 분석 카드 없이 보유 게임·구매 표만 보여준다
+export default function MySpendingAnalysis({ view = 'analysis' }) {
   const { user, startSteamLink } = useAuth()
   const { data, loading, syncing, error, notLinked, reload, sync } = useMySpending(user?.id)
   const [filter, setFilter] = useState('all')
@@ -76,7 +77,7 @@ export default function MySpendingAnalysis() {
   if (notLinked || error || !data?.games.length) {
     return (
       <>
-        <DashboardIntro view="analysis" asOf={asOf} badgeLabel={BADGE} />
+        <DashboardIntro view={view} asOf={asOf} badgeLabel={BADGE} />
         {notLinked ? (
           <EmptyState
             title="스팀 계정을 연동해 주세요"
@@ -141,6 +142,55 @@ export default function MySpendingAnalysis() {
       <GSIcon name="library" size={15} />
     </button>
   )
+
+  if (view === 'library') {
+    return (
+      <>
+        <DashboardIntro view="library" asOf={asOf} badgeLabel={history ? HISTORY_BADGE : BADGE} />
+        <div className="section-heading">
+          <div>
+            <h2>내 게임과 구매 내역</h2>
+            <span>
+              스팀 보유 게임 {games.length}개 · {history ? '실제 결제액 (구매일 환율로 원화 환산)' : '현재 한국 정가 기준 추정'}
+            </span>
+          </div>
+          <div className="section-actions">
+            {importButton}
+            {syncButton}
+          </div>
+        </div>
+        {error && (
+          <p className="data-notice" role="alert">
+            {error}
+          </p>
+        )}
+        <PurchasedGamesTable
+          games={games}
+          filter={filter}
+          setFilter={setFilter}
+          genre={null}
+          clearGenre={() => {}}
+          onSelect={setSelectedGame}
+          library
+        />
+        <div className="data-notice">
+          <GSIcon name="info" size={16} />
+          <p>
+            {history
+              ? '금액은 스팀 구매내역의 실제 결제액을 구매일 환율로 원화로 바꾼 값이에요. 구매 기록 없음은 선물·키 등록·무료 배포 등으로 얻은 게임이에요.'
+              : '금액은 실제 결제액이 아니라 현재 한국 스팀 정가로 추정한 값이에요. 구매내역을 가져오면 실제 결제액과 구매일로 바뀌어요.'}
+          </p>
+        </div>
+        <GameDetailDialog game={selectedGame} onClose={() => setSelectedGame(null)} />
+        <PurchaseImportDialog
+          open={importOpen}
+          hasHistory={history}
+          onClose={() => setImportOpen(false)}
+          onImported={reload}
+        />
+      </>
+    )
+  }
 
   return (
     <>

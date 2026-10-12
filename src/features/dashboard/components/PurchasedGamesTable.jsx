@@ -4,8 +4,8 @@ import EmptyState from '../../../components/common/EmptyState'
 import GSIcon from '../../../components/common/GSIcon'
 import GameIdentity from './GameIdentity'
 import PlayStatusBadge from './PlayStatusBadge'
-import { money, number, dateLabel } from '../../../utils/formatters'
-import { netAmount } from '../spendingMetrics'
+import { money, dateLabel } from '../../../utils/formatters'
+import { netAmount, hourlyText, hoursText } from '../spendingMetrics'
 const NO_AMOUNT_LABELS = { NO_RECORD: '구매 기록 없음', UNKNOWN: '가격 정보 없음' }
 const amountText = game =>
   game.amountSource === 'FREE'
@@ -135,16 +135,8 @@ export default function PurchasedGamesTable({
                   <td className="muted">
                     {hasPurchaseDates ? dateLabel(game.purchasedAt) : game.lastPlayedAt ? dateLabel(game.lastPlayedAt) : '기록 없음'}
                   </td>
-                  <td>{game.hours == null ? '시간 미확인' : number(game.hours) + '시간'}</td>
-                  <td>
-                    {game.amount == null
-                      ? '-'
-                      : game.amountSource === 'FREE'
-                        ? '무료'
-                        : game.hours > 0
-                        ? money(netAmount(game) / game.hours)
-                        : '계산 전'}
-                  </td>
+                  <td>{hoursText(game.hours)}</td>
+                  <td>{hourlyText(game)}</td>
                   <td>
                     <PlayStatusBadge hours={game.hours} />
                   </td>

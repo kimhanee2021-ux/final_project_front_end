@@ -1,4 +1,4 @@
-import { netAmount, isPaid } from '../dashboard/spendingMetrics.js'
+import { netAmount, isPaid, MIN_HOURS_FOR_HOURLY } from '../dashboard/spendingMetrics.js'
 
 // 스팀 장르(영문) -> 화면 표시용 한글
 const GENRE_LABELS = {
@@ -62,7 +62,7 @@ export const hourlyCost = game =>
 // (몇 분 켜본 게임이 "최악의 가성비"로 잡히지 않게).
 export function valueRanking(games, size = 3) {
   const ranked = games
-    .filter(game => isPaid(game) && game.hours >= 1)
+    .filter(game => isPaid(game) && game.hours >= MIN_HOURS_FOR_HOURLY)
     .map(game => ({ game, hourly: hourlyCost(game) }))
     .sort((a, b) => a.hourly - b.hourly)
   const best = ranked.slice(0, size)

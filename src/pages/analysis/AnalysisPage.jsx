@@ -22,10 +22,10 @@ import { getSpendingInsights } from '../../features/dashboard/spendingInsights'
 import { useAuth } from '../../features/auth/context/AuthContext'
 import MySpendingAnalysis from '../../features/spending/components/MySpendingAnalysis'
 
-// 로그인(JWT) 사용자는 스팀 보유 게임 기반 개인 분석을, 데모 체험 사용자는 기존 데모 데이터를 본다.
+// 로그인(JWT) 사용자는 스팀 보유 게임 기반 개인 분석/구매 내역을, 데모 체험 사용자는 기존 데모 데이터를 본다.
 export default function AnalysisPage({ view = 'dashboard' }) {
   const { isAuthenticated } = useAuth()
-  if (view === 'analysis' && isAuthenticated) return <MySpendingAnalysis />
+  if ((view === 'analysis' || view === 'library') && isAuthenticated) return <MySpendingAnalysis view={view} />
   return <DemoAnalysisPage view={view} />
 }
 
