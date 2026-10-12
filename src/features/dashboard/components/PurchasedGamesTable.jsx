@@ -6,6 +6,13 @@ import GameIdentity from './GameIdentity'
 import PlayStatusBadge from './PlayStatusBadge'
 import { money, number, dateLabel } from '../../../utils/formatters'
 import { netAmount } from '../spendingMetrics'
+const NO_AMOUNT_LABELS = { NO_RECORD: '구매 기록 없음', UNKNOWN: '가격 정보 없음' }
+const amountText = game =>
+  game.amountSource === 'FREE'
+    ? '무료'
+    : game.amount == null
+      ? NO_AMOUNT_LABELS[game.amountSource] ?? '금액 미확인'
+      : money(netAmount(game))
 export default function PurchasedGamesTable({
   games,
   filter,
@@ -120,8 +127,10 @@ export default function PurchasedGamesTable({
                     </button>
                   </td>
                   <td className="amount-cell">
-                    {game.amountSource === 'FREE' ? '무료' : money(netAmount(game))}
+                    {amountText(game)}
                     {game.amountSource === 'ESTIMATED' && <span className="estimate-badge">추정</span>}
+                    {game.dlcCount > 0 && <span className="estimate-badge">DLC {game.dlcCount}</span>}
+                    {game.refund > 0 && <span className="estimate-badge">환불 반영</span>}
                   </td>
                   <td className="muted">
                     {hasPurchaseDates ? dateLabel(game.purchasedAt) : game.lastPlayedAt ? dateLabel(game.lastPlayedAt) : '기록 없음'}
@@ -129,7 +138,7 @@ export default function PurchasedGamesTable({
                   <td>{game.hours == null ? '시간 미확인' : number(game.hours) + '시간'}</td>
                   <td>
                     {game.amount == null
-                      ? '금액 미확인'
+                      ? '-'
                       : game.amountSource === 'FREE'
                         ? '무료'
                         : game.hours > 0

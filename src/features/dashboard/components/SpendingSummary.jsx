@@ -1,7 +1,8 @@
 import StatCard from '../../../components/common/StatCard'
 import { money, number } from '../../../utils/formatters'
 // estimated: 실제 결제액이 아니라 현재 정가로 추정한 금액일 때(스팀 연동 분석) 문구를 바꾼다
-export default function SpendingSummary({ summary, estimated = false }) {
+// totalNote: 누적 지출 카드의 설명을 바꿔야 할 때 (구매내역 기반 분석에서 나눌 수 없는 지출이 포함된 경우)
+export default function SpendingSummary({ summary, estimated = false, totalNote }) {
   return (
     <div className="stats-grid">
       <StatCard
@@ -10,7 +11,7 @@ export default function SpendingSummary({ summary, estimated = false }) {
         icon="wallet"
         tone="purple"
         tag={estimated ? 'ESTIMATED' : 'ALL TIME'}
-        note={(estimated ? '가격을 확인한 유료 게임 ' : '금액이 확인된 유료 게임 ') + summary.paidCount + '개 기준'}
+        note={totalNote ?? (estimated ? '가격을 확인한 유료 게임 ' : '금액이 확인된 유료 게임 ') + summary.paidCount + '개 기준'}
       />
       <StatCard
         label={estimated ? '게임당 평균 정가' : '게임당 평균 구매 금액'}

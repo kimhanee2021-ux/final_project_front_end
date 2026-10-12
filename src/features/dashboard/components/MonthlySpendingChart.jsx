@@ -1,20 +1,21 @@
 import { useState } from 'react'
 import Card from '../../../components/common/Card'
 import { money, number } from '../../../utils/formatters'
-export default function MonthlySpendingChart({ months }) {
+// title/unit은 구매내역 기반 차트가 연도별로 묶을 때 넘긴다 (데모 화면은 기본값 그대로)
+export default function MonthlySpendingChart({ months, title = '월별 지출 추이' }) {
   const [selectedKey, setSelectedKey] = useState(null)
   const selected = months.find(month => month.key === selectedKey) || months[months.length - 1]
   const max = Math.max(...months.map(month => month.total), 10000)
   const ceiling = Math.ceil(max / 50000) * 50000
   return (
     <Card
-      title="월별 지출 추이"
+      title={title}
       subtitle="언제, 얼마나 구매했는지 확인해 보세요."
       className="trend-card"
       action={<span className="chart-unit">단위: 원</span>}
     >
       <div className="chart-selected" aria-live="polite">
-        <span>{selected.key.replace('-', '년 ')}월 구매 금액</span>
+        <span>{selected.title ?? selected.key.replace('-', '년 ') + '월 구매 금액'}</span>
         <strong>{money(selected.total)}</strong>
       </div>
       <div className="bar-chart">

@@ -24,10 +24,15 @@ function RankingList({ title, items, onSelect }) {
   )
 }
 
-export default function ValueRankingCard({ ranking, onSelect }) {
+// confirmed: 구매내역을 가져와 실제 결제액으로 계산할 때 (아니면 현재 정가 추정)
+export default function ValueRankingCard({ ranking, onSelect, confirmed = false }) {
   const { best, worst } = ranking
   return (
-    <Card title="가성비 랭킹" subtitle="정가 ÷ 누적 플레이 시간 · 1시간 이상 플레이한 유료 게임" className="value-ranking">
+    <Card
+      title="가성비 랭킹"
+      subtitle={(confirmed ? '실제 결제액' : '정가') + ' ÷ 누적 플레이 시간 · 1시간 이상 플레이한 유료 게임'}
+      className="value-ranking"
+    >
       {!best.length ? (
         <EmptyState
           title="아직 비교할 게임이 없어요"
