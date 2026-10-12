@@ -88,11 +88,11 @@
 }
 
 /* 아래부터는 유틸리티로 바꾸지 않고 그대로 둔 것들.
-   - .avatar: PlayerDialog/ProfileHero(마이페이지, 다음 마이그레이션 차례)가 아직 참조.
+   - .avatar: PlayerDialog/ProfileHero가 계속 참조하는 공용 아바타 모양.
    - .game-art + .art-*(10종) + 가상요소: 게임 커버 그라디언트 10개짜리 디자인 토큰.
      유틸리티로 바꾸면 쓰는 곳마다(GameIdentity, UnplayedSpendingCard) 그라디언트 전체를
      중복해서 적어야 해서 이름 있는 클래스로 공유하는 게 낫다. 크기만 각 컴포넌트에서
-     !w-[...] 같은 중요도 오버라이드로 맞춘다. */
+     w-[...]! 같은 중요도 오버라이드(접미사 `!`, Tailwind v4 문법)로 맞춘다. */
 .avatar { width: 33px; height: 33px; display: grid; place-items: center; font-weight: 700; border-radius: 50%; color: var(--primary-text); background: var(--primary-soft); }
 .game-art { width: 37px; height: 44px; border-radius: 6px; flex-shrink: 0; position: relative; overflow: hidden; display: grid; place-items: center; font-family: Georgia,serif; color: #fff3d3; font-weight: 700; text-shadow: 0 1px 8px #000; font-size: 12px; background: #4c536b; }
 .game-art::before { content: ''; position: absolute; width: 80%; height: 110%; border: 1px solid #ffffff35; border-radius: 50%; transform: rotate(35deg); }
@@ -126,7 +126,7 @@
 :root:not([data-theme="dark"]) .mp-purple { --mp-tone: #8058be; }
 
 /* -- PC 성능 게이지(SVG path) 색상. stroke는 Tailwind 유틸리티로도 되지만,
-   라이트모드 전용 override까지 포함하면 плейн CSS가 더 간단하다. */
+   라이트모드 전용 override까지 포함하면 plain CSS가 더 간단하다. */
 .mp-gauge-track, .mp-gauge-value { fill: none; stroke-width: 14px; stroke-linecap: round; }
 .mp-gauge-track { stroke: #1c3c3c; }
 .mp-gauge-value { stroke: url('#mp-gauge-gradient'); filter: drop-shadow(0 0 5px #11d6b618); }
