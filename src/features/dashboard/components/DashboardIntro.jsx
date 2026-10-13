@@ -1,5 +1,5 @@
 import GSIcon from '../../../components/common/GSIcon'
-export default function DashboardIntro({ view, asOf }) {
+export default function DashboardIntro({ view, asOf, badgeLabel = '데모 데이터' }) {
   return (
     <div className="dashboard-intro">
       <div>
@@ -23,7 +23,7 @@ export default function DashboardIntro({ view, asOf }) {
       </div>
       <div className="demo-pill">
         <span className="status-dot" />
-        데모 데이터
+        {badgeLabel}
         <GSIcon name="info" size={14} />
         <span className="demo-date">{asOf.replaceAll('-', '.')} 기준</span>
       </div>

@@ -15,7 +15,9 @@ export default function PurchasedGamesTable({
   onSelect,
   library,
 }) {
-  const [sort, setSort] = useState('recent')
+  // 스팀 연동 분석은 구매일이 없으므로 구매일 열/정렬 대신 최근 플레이를 보여준다
+  const hasPurchaseDates = games.some(game => game.purchasedAt)
+  const [sort, setSort] = useState(hasPurchaseDates ? 'recent' : 'hours')
   const [query, setQuery] = useState('')
   const filtered = games.filter(
     game =>
@@ -28,12 +30,12 @@ export default function PurchasedGamesTable({
       ? (netAmount(b) ?? -1) - (netAmount(a) ?? -1)
       : sort === 'hours'
         ? (b.hours ?? -1) - (a.hours ?? -1)
-        : b.purchasedAt.localeCompare(a.purchasedAt)
+        : (b.purchasedAt ?? '').localeCompare(a.purchasedAt ?? '')
   )
   return (
     <Card
-      title={library ? '내 게임 라이브러리' : '구매한 게임, 얼마나 즐겼을까요?'}
-      subtitle="구매 금액과 누적 이용 시간을 함께 살펴보세요."
+      title={library ? '내 게임 라이브러리' : hasPurchaseDates ? '구매한 게임, 얼마나 즐겼을까요?' : '보유 게임, 얼마나 즐겼을까요?'}
+      subtitle={hasPurchaseDates ? '구매 금액과 누적 이용 시간을 함께 살펴보세요.' : '정가(추정)와 누적 플레이 시간을 함께 살펴보세요.'}
       className="purchase-card"
       action={<span className="count-label">{filtered.length}개 게임</span>}
     >
@@ -72,7 +74,7 @@ export default function PurchasedGamesTable({
             />
           </label>
           <select aria-label="게임 정렬" value={sort} onChange={e => setSort(e.target.value)}>
-            <option value="recent">최근 구매순</option>
+            {hasPurchaseDates && <option value="recent">최근 구매순</option>}
             <option value="price">구매 금액순</option>
             <option value="hours">플레이 시간순</option>
           </select>
@@ -98,12 +100,12 @@ export default function PurchasedGamesTable({
         />
       ) : (
         <div className="table-scroll">
-          <table>
+          <table className={hasPurchaseDates ? '' : 'no-purchase-dates'}>
             <thead>
               <tr>
                 <th>게임</th>
                 <th>구매 금액</th>
-                <th>구매일</th>
+                <th>{hasPurchaseDates ? '구매일' : '최근 플레이'}</th>
                 <th>플레이 시간</th>
                 <th>시간당 비용</th>
                 <th>상태</th>
@@ -117,13 +119,20 @@ export default function PurchasedGamesTable({
                       <GameIdentity game={game} />
                     </button>
                   </td>
-                  <td className="amount-cell">{money(netAmount(game))}</td>
-                  <td className="muted">{dateLabel(game.purchasedAt)}</td>
+                  <td className="amount-cell">
+                    {game.amountSource === 'FREE' ? '무료' : money(netAmount(game))}
+                    {game.amountSource === 'ESTIMATED' && <span className="estimate-badge">추정</span>}
+                  </td>
+                  <td className="muted">
+                    {hasPurchaseDates ? dateLabel(game.purchasedAt) : game.lastPlayedAt ? dateLabel(game.lastPlayedAt) : '기록 없음'}
+                  </td>
                   <td>{game.hours == null ? '시간 미확인' : number(game.hours) + '시간'}</td>
                   <td>
                     {game.amount == null
                       ? '금액 미확인'
-                      : game.hours > 0
+                      : game.amountSource === 'FREE'
+                        ? '무료'
+                        : game.hours > 0
                         ? money(netAmount(game) / game.hours)
                         : '계산 전'}
                   </td>
