@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../../contexts/AuthContext'
+import { useAuth } from '../../auth/context/AuthContext'
 import { useGameSense } from '../../../contexts/GameSenseContext'
-import GSIcon from '../../../components/discover/GSIcon'
+import GSIcon from '../../../components/common/GSIcon'
 import { getErrorMessage } from '../../../utils/apiClient'
 
 function Feedback({ result }) {

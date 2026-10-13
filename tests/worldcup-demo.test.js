@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { demoRound } from '../src/pages/worldcup/worldcupDemo.js'
+import { demoRound } from '../src/features/ai-worldcup/mocks/worldcupDemo.js'
 const games=Array.from({length:8},(_,i)=>({appId:i+1,name:`게임${i+1}`,tags:[i%2?'전략':'탐험'],groupIds:[]}))
 test('데모는 이미 나온 게임을 반복하지 않고 긍정 선택만 결과로 표시한다',()=>{
  const history=[{leftId:1,rightId:2,verdict:'unknown',reasons:[],note:''},{leftId:3,rightId:4,verdict:'left',reasons:['탐험'],note:''}]

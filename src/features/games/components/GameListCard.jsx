@@ -1,4 +1,4 @@
-import GSIcon from '../../../components/discover/GSIcon'
+import GSIcon from '../../../components/common/GSIcon'
 import { formatPrice, formatReviewCount } from '../gameModel'
 
 // 상세 API가 아직 없어 카드를 누르면 스팀 상점 페이지를 새 탭으로 연다.

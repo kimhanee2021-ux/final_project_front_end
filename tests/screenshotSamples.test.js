@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { existsSync } from 'node:fs'
-import { samples, validateUpload } from '../src/pages/ai/screenshotSamples.js'
+import { samples, validateUpload } from '../src/features/ai-screenshots/mocks/screenshotSamples.js'
 
 test('세 유형을 고르게 제공하며 실제 분석으로 오인하지 않는다', () => {
   assert.equal(samples.length, 30)

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
-import Icon from '../../../components/common/Icon'
-import GameIdentity from '../../../components/game/GameIdentity'
+import GSIcon from '../../../components/common/GSIcon'
+import GameIdentity from './GameIdentity'
 import { money, number, dateLabel } from '../../../utils/formatters'
 import { netAmount } from '../spendingMetrics'
 export default function GameDetailDialog({ game, onClose }) {
@@ -28,7 +28,7 @@ export default function GameDetailDialog({ game, onClose }) {
             aria-label="상세 정보 닫기"
             onClick={onClose}
           >
-            <Icon name="close" />
+            <GSIcon name="close" size={20} />
           </button>
           <span className="eyebrow">PURCHASE DETAILS</span>
           <GameIdentity game={game} />

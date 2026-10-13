@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { SHAPES, TEMPLATES, stageTarget, dropInterval, makeGame, act, advance, rotate, cells, seoulDate, readRecords, activateItem, hammerCell, chooseReward } from '../src/pages/blocks/engine.js'
+import { SHAPES, TEMPLATES, stageTarget, dropInterval, makeGame, act, advance, rotate, cells, seoulDate, readRecords, activateItem, hammerCell, chooseReward } from '../src/features/hangul-blocks/engine.js'
 
 test('망치는 선택한 쌓인 한 칸만 제거하고 빈칸에서는 소비하지 않는다',()=>{
  let s=makeGame(1,()=>0);s.items=['hammer'];s=activateItem(s,'hammer')

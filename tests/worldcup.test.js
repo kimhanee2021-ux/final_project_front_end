@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { makeChoice, validateRound } from '../src/pages/worldcup/worldcupModel.js'
+import { makeChoice, validateRound } from '../src/features/ai-worldcup/worldcupModel.js'
 
 test('복수 선택과 모름을 구분하고 선택 이유를 보존한다', () => {
   const pair = [{appId:1}, {appId:2}]

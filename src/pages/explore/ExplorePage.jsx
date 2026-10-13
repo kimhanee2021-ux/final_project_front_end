@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import GSIcon from '../../components/discover/GSIcon'
+import GSIcon from '../../components/common/GSIcon'
 import { useGameSense } from '../../contexts/GameSenseContext'
 import GameListCard from '../../features/games/components/GameListCard'
 import { useGames } from '../../features/games/hooks/useGames'

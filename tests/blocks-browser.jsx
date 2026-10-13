@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client'
 import {useState} from 'react'
-import HangulBlocks from '../src/pages/blocks/HangulBlocks'
-import {makeGame,SHAPES} from '../src/pages/blocks/engine'
+import HangulBlocks from '../src/features/hangul-blocks/components/HangulBlocks'
+import {makeGame,SHAPES} from '../src/features/hangul-blocks/engine'
 import '../src/styles/gamesense.css'
 
 // 실제 게임 컴포넌트에 고정 보드와 지급 순서만 주입한다. 보관함은 비어 있다.

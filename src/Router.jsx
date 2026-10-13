@@ -1,24 +1,27 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 import App from './App'
 import GameSenseLayout from './layouts/GameSenseLayout'
-import DiscoverPage, { GameCatalog } from './pages/discover/DiscoverPage'
-import ExplorePage from './pages/explore/ExplorePage'
-import {
-  ActivityPage,
-  CollectionsPage,
-  SettingsPage,
-  UpcomingPage,
-} from './pages/discover/LibraryPages'
 import HomePage from './pages/home/HomePage'
+import ExplorePage from './pages/explore/ExplorePage'
+import UpcomingPage from './pages/upcoming/UpcomingPage'
+import CollectionsPage from './pages/collections/CollectionsPage'
+import ActivityPage from './pages/activity/ActivityPage'
+import SettingsPage from './pages/settings/SettingsPage'
+import AnalysisPage from './pages/analysis/AnalysisPage'
 import PerformancePage from './pages/performance/PerformancePage'
 import MyPage from './pages/mypage/MyPage'
 import AuthPage from './pages/auth/AuthPage'
-import RequireDemoSession from './components/auth/RequireDemoSession'
+import RequireDemoSession from './features/auth/components/RequireDemoSession'
+import GameCatalog from './features/games/components/GameCatalog'
+import CommunityPage from './pages/community/CommunityPage'
+import CommunityPostPage from './pages/community/CommunityPostPage'
+import CommunityWritePage from './pages/community/CommunityWritePage'
 import AiGames from './pages/ai/AiGames'
 import ScreenshotAnalysis from './pages/ai/ScreenshotAnalysis'
 import HangulBlocks from './pages/blocks/HangulBlocks'
 import TasteWorldcup from './pages/worldcup/TasteWorldcup'
 import GameManager from './pages/manager/GameManager'
+
 
 // 같은 컴포넌트를 mode만 바꿔 쓰는 라우트는 key로 구분해 페이지 이동 시 상태를 초기화한다.
 const authRoutes = ['login', 'signup', 'forgot-password'].map(mode => ({
@@ -40,7 +43,7 @@ const router = createBrowserRouter([
       {
         element: <GameSenseLayout />,
         children: [
-          { index: true, element: <DiscoverPage /> },
+          { index: true, element: <HomePage /> },
           { path: 'explore', element: <ExplorePage /> },
           ...catalogRoutes(['genres', 'trending', 'recommendations']),
           { path: 'upcoming', element: <UpcomingPage /> },
@@ -59,13 +62,17 @@ const router = createBrowserRouter([
               { path: 'activity', element: <ActivityPage /> },
               { path: 'settings', element: <SettingsPage /> },
               { path: 'mypage', element: <MyPage /> },
+              { path: 'community', element: <CommunityPage /> },
+              { path: 'community/new', element: <CommunityWritePage /> },
+              { path: 'community/:id', element: <CommunityPostPage /> },
+              { path: 'community/:id/edit', element: <CommunityWritePage /> },
               {
                 path: 'analysis',
-                element: <div className="gs-legacy"><HomePage view="analysis" /></div>,
+                element: <div className="gs-legacy"><AnalysisPage view="analysis" /></div>,
               },
               {
                 path: 'purchases',
-                element: <div className="gs-legacy"><HomePage view="library" /></div>,
+                element: <div className="gs-legacy"><AnalysisPage view="library" /></div>,
               },
             ],
           },

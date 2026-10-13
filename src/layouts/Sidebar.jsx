@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../features/auth/context/AuthContext'
 import { useGameSense } from '../contexts/GameSenseContext'
-import GSIcon from '../components/discover/GSIcon'
+import GSIcon from '../components/common/GSIcon'
 
 const primaryLinks = [
   ['/', 'home', 'Home', '홈'],
@@ -17,6 +17,7 @@ const primaryLinks = [
   ['/ai-worldcup', 'spark', 'AI 게임 취향 월드컵', 'AI 게임 취향 월드컵'],
   ['/pc-check', 'monitor', 'PC 성능 체크', 'PC 성능 체크'],
   ['/hangul-blocks', 'gamepad', '손풀기게임', '손풀기게임'],
+  ['/community', 'users', 'Community', '커뮤니티'],
 ]
 const libraryLinks = [
   ['/library', 'gamepad', 'My Games', '내 게임'],

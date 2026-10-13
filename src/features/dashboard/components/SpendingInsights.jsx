@@ -1,11 +1,11 @@
-import Icon from '../../../components/common/Icon'
+import GSIcon from '../../../components/common/GSIcon'
 import EmptyState from '../../../components/common/EmptyState'
 export default function SpendingInsights({ insights, onExplore }) {
   return (
     <section className="insight-card">
       <div className="insight-title">
         <span className="insight-icon">
-          <Icon name="spark" />
+          <GSIcon name="spark" size={20} />
         </span>
         <div>
           <span className="eyebrow">SPENDING INSIGHT</span>
@@ -21,7 +21,7 @@ export default function SpendingInsights({ insights, onExplore }) {
               <p>{item.description}</p>
               <button className="text-button" onClick={() => onExplore(item)}>
                 {item.action}
-                <Icon name="arrow" size={16} />
+                <GSIcon name="arrow" size={16} />
               </button>
             </div>
           ))

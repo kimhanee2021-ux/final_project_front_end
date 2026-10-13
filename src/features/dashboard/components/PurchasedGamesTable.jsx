@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import Card from '../../../components/common/Card'
 import EmptyState from '../../../components/common/EmptyState'
-import Icon from '../../../components/common/Icon'
-import GameIdentity from '../../../components/game/GameIdentity'
-import PlayStatusBadge from '../../../components/game/PlayStatusBadge'
+import GSIcon from '../../../components/common/GSIcon'
+import GameIdentity from './GameIdentity'
+import PlayStatusBadge from './PlayStatusBadge'
 import { money, number, dateLabel } from '../../../utils/formatters'
 import { netAmount } from '../spendingMetrics'
 export default function PurchasedGamesTable({
@@ -56,14 +56,14 @@ export default function PurchasedGamesTable({
           {genre && (
             <button className="genre-filter" onClick={clearGenre}>
               {genre}
-              <Icon name="close" size={12} />
+              <GSIcon name="close" size={12} />
               <span className="sr-only">장르 필터 해제</span>
             </button>
           )}
         </div>
         <div className="table-controls">
           <label className="search-field">
-            <Icon name="search" size={16} />
+            <GSIcon name="search" size={16} />
             <input
               value={query}
               onChange={e => setQuery(e.target.value)}
@@ -92,7 +92,7 @@ export default function PurchasedGamesTable({
               }}
             >
               검색과 필터 초기화
-              <Icon name="refresh" size={15} />
+              <GSIcon name="refresh" size={15} />
             </button>
           }
         />
@@ -137,7 +137,7 @@ export default function PurchasedGamesTable({
         </div>
       )}
       <div className="table-foot">
-        <Icon name="info" size={14} />
+        <GSIcon name="info" size={14} />
         플레이 시간은 누적 기준이며, 금액 미확인 게임은 지출 계산에서 제외됩니다.
       </div>
     </Card>

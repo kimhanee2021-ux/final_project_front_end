@@ -1,5 +1,5 @@
-import { useAuth } from '../../../contexts/AuthContext'
-import GSIcon from '../../../components/discover/GSIcon'
+import { useAuth } from '../../auth/context/AuthContext'
+import GSIcon from '../../../components/common/GSIcon'
 import { useSteamLibrary } from '../hooks/useSteamLibrary'
 
 const hours = minutes => `${(minutes / 60).toLocaleString('ko-KR', { maximumFractionDigits: 1 })}시간`

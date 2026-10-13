@@ -1,8 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import { createManagerDemo, applyManagerDemoAction } from '../src/pages/manager/managerDemo.js'
-const games=JSON.parse(readFileSync(new URL('../src/pages/worldcup/demoGames.json',import.meta.url)))
+import { createManagerDemo, applyManagerDemoAction } from '../src/features/ai-manager/mocks/managerDemo.js'
+const games=JSON.parse(readFileSync(new URL('../src/features/games/mocks/ai-demoGames.json',import.meta.url)))
 const now='2026-10-12T03:00:00Z'
 test('데모 첫 진입에 보유 게임·컬렉션·대기·충족·실패·읽음 상태가 있고 게임 연결이 정확하다',()=>{
  const state=createManagerDemo(games,now)
