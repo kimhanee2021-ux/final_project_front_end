@@ -1,0 +1,1 @@
+export async function loadDemoCatalog(){const [games,groups]=await Promise.all([import('./mocks/ai-demoGames.json'),import('./mocks/ai-demoGroups.json')]);return {games:games.default,groups:groups.default,count:games.default.length}}
