@@ -134,3 +134,15 @@
 
 /* 마이페이지 다이얼로그가 열려 있을 때 배경 스크롤 막기. */
 body:has(.mp-dialog[open]) { overflow: hidden; }
+
+/* 스팀 연동 개인 소비 분석 */
+.game-art.has-image::before { display: none; }
+.game-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.value-ranking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 12px; }
+.value-ranking h3 { margin: 0 0 10px; font-size: 11px; font-weight: 600; color: var(--muted); }
+.value-ranking ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.value-ranking li { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-width: 0; }
+.value-ranking li .game-detail-trigger { min-width: 0; }
+.value-ranking .hourly { font-size: 12px; font-weight: 650; white-space: nowrap; }
+.value-ranking .hourly small { margin-left: 3px; font-size: 9px; font-weight: 400; color: var(--muted); }
+@media(max-width:580px) { .value-ranking-grid { grid-template-columns: 1fr; } }

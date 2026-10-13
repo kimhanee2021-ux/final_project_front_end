@@ -15,7 +15,9 @@ export default function PurchasedGamesTable({
   onSelect,
   library,
 }) {
-  const [sort, setSort] = useState('recent')
+  // 스팀 연동 분석은 구매일이 없으므로 구매일 열/정렬 대신 최근 플레이를 보여준다
+  const hasPurchaseDates = games.some(game => game.purchasedAt)
+  const [sort, setSort] = useState(hasPurchaseDates ? 'recent' : 'hours')
   const [query, setQuery] = useState('')
   const filtered = games.filter(
     game =>
@@ -28,12 +30,12 @@ export default function PurchasedGamesTable({
       ? (netAmount(b) ?? -1) - (netAmount(a) ?? -1)
       : sort === 'hours'
         ? (b.hours ?? -1) - (a.hours ?? -1)
-        : b.purchasedAt.localeCompare(a.purchasedAt)
+        : (b.purchasedAt ?? '').localeCompare(a.purchasedAt ?? '')
   )
   return (
     <Card
-      title={library ? '내 게임 라이브러리' : '구매한 게임, 얼마나 즐겼을까요?'}
-      subtitle="구매 금액과 누적 이용 시간을 함께 살펴보세요."
+      title={library ? '내 게임 라이브러리' : hasPurchaseDates ? '구매한 게임, 얼마나 즐겼을까요?' : '보유 게임, 얼마나 즐겼을까요?'}
+      subtitle={hasPurchaseDates ? '구매 금액과 누적 이용 시간을 함께 살펴보세요.' : '정가(추정)와 누적 플레이 시간을 함께 살펴보세요.'}
       className="pb-0"
       action={<span className="text-[10px] text-muted bg-surface-soft py-[5px] px-[9px] rounded-[6px] whitespace-nowrap">{filtered.length}개 게임</span>}
     >
@@ -78,7 +80,7 @@ export default function PurchasedGamesTable({
             onChange={e => setSort(e.target.value)}
             className="bg-surface border border-border rounded-[7px] p-[7px] text-subtle text-[10px]"
           >
-            <option value="recent">최근 구매순</option>
+            {hasPurchaseDates && <option value="recent">최근 구매순</option>}
             <option value="price">구매 금액순</option>
             <option value="hours">플레이 시간순</option>
           </select>
@@ -109,7 +111,7 @@ export default function PurchasedGamesTable({
               <tr>
                 <th className="text-[10px] font-medium text-muted px-[10px] py-[11px] bg-surface-soft rounded-l-[6px] pl-[12px]">게임</th>
                 <th className="text-[10px] font-medium text-muted px-[10px] py-[11px] bg-surface-soft">구매 금액</th>
-                <th className="text-[10px] font-medium text-muted px-[10px] py-[11px] bg-surface-soft">구매일</th>
+                <th className="text-[10px] font-medium text-muted px-[10px] py-[11px] bg-surface-soft">{hasPurchaseDates ? '구매일' : '최근 플레이'}</th>
                 <th className="text-[10px] font-medium text-muted px-[10px] py-[11px] bg-surface-soft">플레이 시간</th>
                 <th className="text-[10px] font-medium text-muted px-[10px] py-[11px] bg-surface-soft">시간당 비용</th>
                 <th className="text-[10px] font-medium text-muted px-[10px] py-[11px] bg-surface-soft rounded-r-[6px]">상태</th>
@@ -126,15 +128,24 @@ export default function PurchasedGamesTable({
                       <GameIdentity game={game} />
                     </button>
                   </td>
-                  <td className="px-[10px] py-[13px] font-[650] tabular-nums max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[11px] max-[580px]:before:content-['구매_금액'] max-[580px]:before:block max-[580px]:before:text-muted max-[580px]:before:text-[9px] max-[580px]:before:font-normal max-[580px]:before:mb-[3px]">{money(netAmount(game))}</td>
-                  <td className="px-[10px] py-[13px] text-muted max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[11px] max-[580px]:before:content-['구매일'] max-[580px]:before:block max-[580px]:before:text-muted max-[580px]:before:text-[9px] max-[580px]:before:font-normal max-[580px]:before:mb-[3px]">{dateLabel(game.purchasedAt)}</td>
+                  <td className="px-[10px] py-[13px] font-[650] tabular-nums max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[11px] max-[580px]:before:content-['구매_금액'] max-[580px]:before:block max-[580px]:before:text-muted max-[580px]:before:text-[9px] max-[580px]:before:font-normal max-[580px]:before:mb-[3px]">
+                    {game.amountSource === 'FREE' ? '무료' : money(netAmount(game))}
+                    {game.amountSource === 'ESTIMATED' && (
+                      <span className="inline-block ml-[6px] px-[5px] py-[1px] border border-border rounded-[4px] text-[9px] font-medium text-muted align-middle">추정</span>
+                    )}
+                  </td>
+                  <td className={`px-[10px] py-[13px] text-muted max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[11px] max-[580px]:before:block max-[580px]:before:text-muted max-[580px]:before:text-[9px] max-[580px]:before:font-normal max-[580px]:before:mb-[3px] ${hasPurchaseDates ? "max-[580px]:before:content-['구매일']" : "max-[580px]:before:content-['최근_플레이']"}`}>
+                    {hasPurchaseDates ? dateLabel(game.purchasedAt) : game.lastPlayedAt ? dateLabel(game.lastPlayedAt) : '기록 없음'}
+                  </td>
                   <td className="px-[10px] py-[13px] max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[11px] max-[580px]:before:content-['플레이_시간'] max-[580px]:before:block max-[580px]:before:text-muted max-[580px]:before:text-[9px] max-[580px]:before:font-normal max-[580px]:before:mb-[3px]">
                     {game.hours == null ? '시간 미확인' : number(game.hours) + '시간'}
                   </td>
                   <td className="px-[10px] py-[13px] max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[11px] max-[580px]:before:content-['시간당_비용'] max-[580px]:before:block max-[580px]:before:text-muted max-[580px]:before:text-[9px] max-[580px]:before:font-normal max-[580px]:before:mb-[3px]">
                     {game.amount == null
                       ? '금액 미확인'
-                      : game.hours > 0
+                      : game.amountSource === 'FREE'
+                        ? '무료'
+                        : game.hours > 0
                         ? money(netAmount(game) / game.hours)
                         : '계산 전'}
                   </td>

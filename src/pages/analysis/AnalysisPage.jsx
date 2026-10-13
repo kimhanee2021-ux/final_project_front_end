@@ -19,7 +19,17 @@ import {
   genreSpending,
 } from '../../features/dashboard/spendingMetrics'
 import { getSpendingInsights } from '../../features/dashboard/spendingInsights'
+import { useAuth } from '../../features/auth/context/AuthContext'
+import MySpendingAnalysis from '../../features/spending/components/MySpendingAnalysis'
+
+// 로그인(JWT) 사용자는 스팀 보유 게임 기반 개인 분석을, 데모 체험 사용자는 기존 데모 데이터를 본다.
 export default function AnalysisPage({ view = 'dashboard' }) {
+  const { isAuthenticated } = useAuth()
+  if (view === 'analysis' && isAuthenticated) return <MySpendingAnalysis />
+  return <DemoAnalysisPage view={view} />
+}
+
+function DemoAnalysisPage({ view }) {
   const { data, loading, error, retry } = useDashboardData()
   const [period, setPeriod] = useState('six')
   const [filter, setFilter] = useState('all')
