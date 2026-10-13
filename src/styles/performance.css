@@ -1,0 +1,338 @@
+/* PC performance demo; uses the shared GameSense theme and shell. */
+.pc-page { --pc-cyan: #00dfc4; --pc-blue: #68b9ff; --pc-purple: #bb8afa; --pc-gold: #f5ce65; display: grid; gap: 14px; padding-bottom: 4px; }
+.pc-page button:disabled { opacity: .7; cursor: wait; }
+.pc-page .pc-mint { color: var(--gs-mint); }
+.pc-page .pc-blue { color: var(--pc-blue); }
+.pc-page .pc-purple { color: var(--pc-purple); }
+.pc-page .pc-gold { color: var(--pc-gold); }
+.pc-page .pc-coral { color: #f39696; }
+.pc-page .pc-muted { color: var(--gs-muted); }
+.pc-hero { position: relative; isolation: isolate; min-height: 258px; border: 1px solid #294252; border-radius: 13px; overflow: hidden; color: #f8fbff; background: #06121b; }
+.pc-hero-background { position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #040d13ef 0%, #050d13bb 31%, #07111b20 66%, #06101820), url('/images/pc-performance-hero.png') center 55% / cover no-repeat; }
+.pc-hero-copy { padding: 30px 34px 27px; position: relative; z-index: 1; }
+.pc-eyebrow { font-size: 8px; letter-spacing: 3.7px; font-weight: 650; color: #b5d1df; margin-bottom: 15px; }
+.pc-hero h1 { margin: 0 0 12px; font-size: clamp(32px, 2.7vw, 47px); font-weight: 750; line-height: 1.15; letter-spacing: -1.6px; }
+.pc-hero h1 > span { color: #00ebcb; }
+.pc-hero-description { font-size: 15px; line-height: 1.65; color: #cbdfed; letter-spacing: -.3px; }
+.pc-hero-actions { display: flex; align-items: center; gap: 16px; margin-top: 21px; }
+.pc-hero-actions .pc-diagnose-button { background: #00edc8; min-height: 41px; padding: 10px 21px; font-size: 13px; color: #00271f; box-shadow: 0 0 27px #00edc812; }
+.pc-hero-actions .pc-diagnose-button:hover:not(:disabled) { background: #55ffdc; box-shadow: 0 0 28px #00edc830; }
+.pc-hero-actions > span { display: flex; align-items: center; gap: 7px; color: #b7d1de; font-size: 10px; }
+.pc-hero-signature { position: absolute; top: 26px; right: 27px; text-align: right; text-shadow: 0 2px 12px #000; }
+.pc-hero-signature > span { font-size: 7px; letter-spacing: 2px; color: #bad0e4; }
+.pc-hero-signature > strong { display: block; font-size: 17px; line-height: 1.45; letter-spacing: -.3px; margin-top: 9px; font-weight: 550; }
+.pc-hero-signature em { font-style: normal; color: #53f2d2; }
+.pc-hero-demo { position: absolute; bottom: 18px; right: 22px; display: flex; align-items: center; gap: 7px; font-size: 8px; letter-spacing: 1px; color: #b9d4e1; border: 1px solid #7da0b43d; border-radius: 20px; background: #08131a80; padding: 5px 10px; }
+.pc-hero-demo i { width: 3px; height: 3px; border-radius: 50%; background: #b9d4e1; }
+.pc-panel { border: 1px solid var(--gs-border); background: linear-gradient(125deg, #4f9cad04, transparent 75%), var(--gs-panel); border-radius: 11px; padding: 16px; min-width: 0; }
+.pc-panel-heading { display: flex; align-items: flex-start; gap: 10px; min-width: 0; }
+.pc-panel-heading > svg { color: var(--gs-mint); flex-shrink: 0; margin-top: 1px; }
+.pc-panel-heading > div { min-width: 0; }
+.pc-panel-heading h2 { font-size: 16px; line-height: 1.45; letter-spacing: -.3px; font-weight: 680; }
+.pc-panel-heading p { margin-top: 2px; font-size: 10px; color: var(--gs-muted); }
+.pc-panel-heading > :last-child:not(div, svg) { margin-left: auto; flex-shrink: 0; }
+.pc-panel-heading .pc-demo-badge { margin-top: 3px; }
+.pc-demo-badge { display: inline-flex; align-items: center; font-size: 8px; letter-spacing: 1.1px; font-weight: 650; color: var(--gs-muted); padding: 3px 6px; border: 1px solid var(--gs-border); border-radius: 5px; }
+.pc-overview { display: grid; grid-template-columns: minmax(390px, 1.17fr) minmax(0, 2fr); gap: 12px; }
+.pc-summary { padding: 13px 17px 12px; background: radial-gradient(ellipse at 18% 80%, #00bfa512, transparent 60%), var(--gs-panel); }
+.pc-summary-content { display: flex; align-items: center; gap: 22px; margin-top: 3px; }
+.pc-gauge { position: relative; flex: 0 0 165px; width: 165px; height: 175px; }
+.pc-gauge svg { width: 100%; height: 158px; overflow: visible; }
+.pc-gauge-track, .pc-gauge-fill { fill: none; stroke-width: 14; stroke-linecap: round; }
+.pc-gauge-track { stroke: #16413f; }
+.pc-gauge-fill { stroke: url('#pc-score-gradient'); filter: drop-shadow(0 0 7px #00ddbd28); }
+.pc-gauge-value { position: absolute; top: 39px; left: 0; right: 0; text-align: center; }
+.pc-gauge-value strong { display: block; font-size: 45px; font-weight: 740; line-height: 1.2; letter-spacing: -1px; }
+.pc-gauge-value > span { display: block; margin-top: 3px; font-size: 12px; color: var(--gs-muted); }
+.pc-gauge > b { position: absolute; bottom: 5px; left: 0; right: 0; text-align: center; font-size: 18px; color: var(--gs-mint); }
+.pc-score-description { min-width: 0; flex: 1; }
+.pc-score-description h3 { font-size: 12px; line-height: 1.7; font-weight: 600; letter-spacing: -.2px; }
+.pc-score-description h3 > span { color: var(--gs-mint); }
+.pc-score-description ul { margin: 12px 0 14px; padding: 0; list-style: none; display: grid; gap: 7px; }
+.pc-score-description li { display: flex; align-items: flex-start; gap: 7px; color: var(--gs-muted); font-size: 10px; line-height: 1.4; }
+.pc-score-description li > svg { flex: 0 0 13px; width: 13px; height: 13px; border: 1px solid var(--gs-mint); border-radius: 50%; padding: 1px; color: var(--gs-mint); }
+.pc-recheck { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 31px; background: var(--gs-raised); border: 1px solid var(--gs-border); border-radius: 24px; padding: 5px 13px; font-size: 10px; font-weight: 550; }
+.pc-recheck:hover:not(:disabled) { border-color: var(--gs-mint); color: var(--gs-mint); }
+.pc-hardware-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; border: 1px solid var(--gs-border); border-radius: 11px; padding: 10px; background: var(--gs-panel); }
+.pc-hardware-card { padding: 16px 13px 14px; border: 1px solid var(--gs-border); border-radius: 10px; background: linear-gradient(140deg, #4c89ab04, #60bdd008); min-width: 0; }
+.pc-hardware-title { display: flex; align-items: center; gap: 10px; }
+.pc-icon-tile { width: 38px; height: 42px; display: grid; place-items: center; background: #39ecbc0c; border: 1px solid #63dfca08; border-radius: 9px; color: var(--gs-mint); flex-shrink: 0; }
+.pc-icon-tile.pc-blue { background: #57aeff15; }
+.pc-hardware-title h3 { font-size: 12px; font-weight: 700; }
+.pc-hardware-title p { font-size: 9px; color: var(--gs-muted); margin-top: 3px; line-height: 1.45; overflow-wrap: anywhere; }
+.pc-usage-label { display: flex; align-items: baseline; justify-content: space-between; gap: 4px; margin: 16px 0 6px; }
+.pc-usage-label > strong { font-size: 17px; line-height: 1.3; }
+.pc-usage-label > strong span { font-size: 13px; }
+.pc-usage-label > span { color: var(--gs-muted); font-size: 8px; }
+.pc-meter { height: 9px; border: 1px solid var(--gs-border); border-radius: 20px; background: var(--gs-bg); overflow: hidden; }
+.pc-meter > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #03b8ae, #1bf0bf); }
+.pc-hardware-facts { display: grid; gap: 9px; list-style: none; padding: 0; margin: 19px 0 0; }
+.pc-hardware-facts li { display: flex; align-items: center; gap: 7px; font-size: 9px; line-height: 1.4; color: var(--gs-muted); }
+.pc-hardware-facts svg { flex-shrink: 0; }
+.pc-scan-status { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; color: var(--gs-muted); font-size: 9px; min-height: 17px; padding: 0 3px; margin: -4px 0; }
+.pc-status-dot, .pc-game-options > span > i { width: 5px; height: 5px; border-radius: 50%; background: var(--gs-mint); flex-shrink: 0; }
+.pc-scan-disclaimer { margin-left: auto; }
+.pc-scan-status.is-scanning { min-height: 35px; color: var(--gs-mint); }
+.pc-scan-status button { background: transparent; color: var(--gs-muted); font-size: 10px; padding: 5px 7px; text-decoration: underline; }
+.pc-scan-progress { height: 5px; max-width: 240px; min-width: 60px; flex: 1; background: var(--gs-border); border-radius: 10px; margin-left: 6px; overflow: hidden; }
+.pc-scan-progress > span { display: block; height: 100%; background: var(--gs-mint); transition: width .25s; }
+.pc-dashboard-grid { display: grid; grid-template-columns: minmax(0, 1.58fr) minmax(0, 1fr) minmax(0, .94fr); gap: 12px; align-items: stretch; }
+.pc-middle-column, .pc-right-column { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.pc-text-button { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 9px; line-height: 1.6; color: var(--gs-muted); background: none; padding: 3px 0; }
+.pc-text-button:hover { color: var(--gs-mint); }
+.pc-game-options { margin: 12px 0 9px; display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 9px; color: var(--gs-muted); }
+.pc-game-options > span { display: flex; align-items: center; gap: 6px; }
+.pc-game-options label { display: flex; align-items: center; gap: 7px; }
+.pc-game-options select { background: var(--gs-raised); color: var(--gs-text); border: 1px solid var(--gs-border); border-radius: 5px; font-size: 9px; padding: 5px 6px; max-width: 125px; }
+.pc-table-scroll { overflow-x: auto; scrollbar-width: thin; }
+.pc-game-table { display: table; width: 100%; border-collapse: separate; border-spacing: 0; font-size: 11px; table-layout: fixed; white-space: normal; }
+.pc-game-table tbody th { background: transparent; color: var(--gs-text); }
+.pc-game-table th { font-weight: 500; }
+.pc-game-table thead { background: var(--gs-raised); }
+.pc-game-table thead th { color: var(--gs-muted); font-size: 9px; padding: 9px 4px; text-align: center; white-space: nowrap; }
+.pc-game-table thead th:first-child { border-radius: 7px 0 0 7px; text-align: left; padding-left: 10px; width: 37%; }
+.pc-game-table thead th:last-child { border-radius: 0 7px 7px 0; width: 14%; }
+.pc-game-table thead th small { font-size: 8px; margin-left: 3px; }
+.pc-game-table tbody th, .pc-game-table td { border-bottom: 1px solid var(--gs-border); height: 45px; padding: 4px; }
+.pc-game-table tbody tr:last-child > * { border-bottom: 0; }
+.pc-game-table tbody th { padding-left: 0; }
+.pc-game-table tbody tr:hover { background: #3da89b06; }
+.pc-game-button { display: flex; align-items: center; gap: 9px; width: 100%; min-height: 37px; padding: 0; background: none; text-align: left; font-size: 11px; font-weight: 570; line-height: 1.5; }
+.pc-game-button:hover { color: var(--gs-mint); }
+.pc-game-button img { height: 37px; width: 29px; border-radius: 5px; object-fit: cover; flex-shrink: 0; background: var(--gs-raised); }
+.pc-game-table td { text-align: center; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pc-game-table td small { font-size: 8px; color: var(--gs-muted); }
+.pc-game-table td strong { font-weight: 600; }
+.pc-game-table .pc-fps-fhd { color: var(--gs-mint); }
+.pc-game-table .pc-fps-qhd { color: var(--pc-gold); }
+.pc-game-table .pc-fps-uhd { color: #ec979b; }
+.pc-game-table .is-selected { background: #36dfb706; }
+.pc-game-table thead .is-selected { color: var(--gs-mint); }
+.pc-unavailable { color: var(--gs-muted); }
+.pc-rating { display: inline-flex; align-items: center; justify-content: center; min-width: 46px; border-radius: 24px; padding: 3px 8px; line-height: 1.4; font-size: 10px; font-weight: 650; border: 1px solid #2de9bc26; background: #00d3b411; }
+.pc-rating.pc-gold { background: #e5b42814; border-color: #efbd3d30; }
+.pc-rating.pc-coral { background: #ea656214; border-color: #ec777730; }
+.pc-rating.pc-muted { background: var(--gs-raised); border-color: var(--gs-border); font-size: 8px; padding: 4px 6px; }
+.pc-table-note { display: flex; align-items: flex-start; gap: 5px; margin-top: 10px; font-size: 8px; color: var(--gs-muted); line-height: 1.7; }
+.pc-table-note svg { flex-shrink: 0; margin-top: 1px; }
+.pc-scores { flex: 1; }
+.pc-score-bars { display: grid; gap: 16px; margin-top: 23px; margin-bottom: 4px; }
+.pc-score-bars > div { display: grid; grid-template-columns: 64px minmax(0, 1fr) 28px; gap: 13px; align-items: center; font-size: 11px; }
+.pc-score-bars > div > strong { text-align: right; font-size: 14px; }
+.pc-score-meter { height: 16px; border-radius: 4px; background: var(--gs-raised); }
+.pc-score-meter > span { border-radius: 3px; background: linear-gradient(90deg, #0db995, #50ebbe); }
+.pc-score-meter.pc-blue > span { background: linear-gradient(90deg, #3678c7, #62b6ee); }
+.pc-score-meter.pc-purple > span { background: linear-gradient(90deg, #975ae2, #be91f5); }
+.pc-system { padding-bottom: 11px; }
+.pc-system-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-top: 14px; }
+.pc-system-metric { border: 1px solid var(--gs-border); border-radius: 9px; padding: 9px 5px 8px; display: flex; align-items: center; justify-content: center; gap: 6px; background: #478f9810; }
+.pc-system-metric > svg { flex-shrink: 0; }
+.pc-system-metric > div { display: flex; flex-direction: column; gap: 4px; }
+.pc-system-metric span { font-size: 8px; color: var(--gs-muted); white-space: nowrap; }
+.pc-system-metric strong { color: var(--gs-text); font-size: 12px; }
+.pc-system-metric small { font-size: 8px; color: var(--gs-muted); white-space: nowrap; }
+.pc-system-note { display: block; color: var(--gs-muted); font-size: 8px; margin: 8px 0 0; text-align: right; }
+.pc-upgrades { flex: 1; padding: 15px 14px 12px; }
+.pc-upgrade-list { display: grid; gap: 6px; margin-top: 12px; }
+.pc-upgrade-button { display: flex; align-items: center; width: 100%; gap: 12px; padding: 9px 11px; border: 1px solid var(--gs-border); border-radius: 9px; text-align: left; background: linear-gradient(110deg, #278c8810, #6186a006); }
+.pc-upgrade-button:hover { background: var(--gs-hover); border-color: #29bba66b; transform: translateX(2px); }
+.pc-upgrade-icon { display: grid; place-items: center; flex: 0 0 35px; color: var(--gs-mint); }
+.pc-upgrade-button > span:nth-child(2) { min-width: 0; }
+.pc-upgrade-button strong { font-size: 11px; display: block; font-weight: 650; }
+.pc-upgrade-button small { font-size: 9px; color: var(--gs-muted); line-height: 1.5; display: block; margin-top: 3px; }
+.pc-right-chevron { transform: rotate(-90deg); margin-left: auto; flex-shrink: 0; color: var(--gs-muted); }
+.pc-grade { padding: 13px 15px; }
+.pc-grade-content { display: flex; align-items: center; gap: 22px; margin: 11px 0 0 23px; }
+.pc-grade-hex { width: 65px; height: 72px; display: grid; place-items: center; flex-shrink: 0; clip-path: polygon(50% 0, 94% 24%, 94% 76%, 50% 100%, 6% 76%, 6% 24%); position: relative; background: #00eac5; }
+.pc-grade-hex::before { position: absolute; content: ''; inset: 3px; background: var(--gs-panel); clip-path: inherit; }
+.pc-grade-hex span { position: relative; font-size: 31px; line-height: 1; font-weight: 650; color: var(--gs-mint); }
+.pc-grade-content h3 { font-size: 14px; color: var(--gs-mint); font-weight: 700; }
+.pc-grade-content p { margin-top: 4px; font-size: 10px; color: var(--gs-muted); line-height: 1.6; }
+.pc-grade-content > div > span:not(.pc-grade-hex span) { display: block; margin-top: 5px; font-size: 8px; color: var(--gs-muted); }
+body:has(.pc-dialog[open]) { overflow: hidden; }
+.pc-dialog { margin: auto; max-height: 88vh; width: min(540px, calc(100% - 32px)); border: 1px solid var(--gs-border); border-radius: 17px; padding: 0; background: var(--gs-panel); color: var(--gs-text); box-shadow: var(--gs-shadow); }
+.pc-dialog::backdrop { background: #020810be; backdrop-filter: blur(6px); }
+.pc-dialog-inner { padding: 24px 28px 28px; }
+.pc-dialog-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.pc-dialog h2 { font-size: 24px; letter-spacing: -.6px; margin: 0 0 8px; line-height: 1.4; }
+.pc-dialog h3 { font-size: 17px; margin: 17px 0 12px; }
+.pc-dialog p { color: var(--gs-muted); font-size: 13px; line-height: 1.8; }
+.pc-dialog .pc-dialog-lead { margin-bottom: 22px; font-size: 12px; }
+.pc-dialog-fps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 22px; }
+.pc-dialog-fps > div { display: flex; flex-direction: column; gap: 10px; padding: 16px 10px; text-align: center; border: 1px solid var(--gs-border); border-radius: 10px; background: var(--gs-raised); }
+.pc-dialog-fps span { font-size: 10px; color: var(--gs-muted); }
+.pc-dialog-fps strong { font-size: 26px; color: var(--gs-mint); }
+.pc-dialog-fps small { font-size: 10px; }
+.pc-dialog .pc-dialog-disclaimer { padding: 12px 14px; background: var(--gs-raised); border: 1px solid var(--gs-border); border-radius: 8px; font-size: 11px; margin-top: 20px; }
+.pc-dialog-callout { padding: 18px; border: 1px solid var(--gs-border); border-radius: 10px; margin-bottom: 20px; }
+.pc-dialog-feature-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 13px; margin-top: 25px; color: var(--gs-mint); background: #2be6b914; }
+.pc-detail-tips { list-style: none; margin: 23px 0; padding: 0; display: grid; gap: 13px; }
+.pc-detail-tips li { display: flex; gap: 10px; align-items: flex-start; font-size: 12px; color: var(--gs-muted); line-height: 1.7; }
+.pc-detail-tips svg { flex-shrink: 0; margin-top: 3px; color: var(--gs-mint); }
+.pc-system-details { margin: 0; }
+.pc-system-details > div { padding: 16px 0; border-bottom: 1px solid var(--gs-border); }
+.pc-system-details dt { display: flex; align-items: center; gap: 9px; font-size: 12px; color: var(--gs-mint); }
+.pc-system-details dd { margin: 8px 0 0 30px; font-size: 13px; }
+.pc-system-details dd p { font-size: 11px; margin-top: 5px; }
+.pc-dialog .pc-dialog-confirm { margin-top: 22px; width: 100%; min-height: 42px; }
+.pc-spinning { animation: pc-spin 1.4s linear infinite; }
+@keyframes pc-spin { to { transform: rotate(360deg); } }
+:root:not([data-theme="dark"]) .pc-page { --pc-blue: #2875b5; --pc-purple: #8752c3; --pc-gold: #976809; }
+:root:not([data-theme="dark"]) .pc-page .pc-fps-uhd { color: #b04452; }
+:root:not([data-theme="dark"]) .pc-gauge-track { stroke: #d3e7e3; }
+@media (min-width: 1750px) {
+  .pc-hero { min-height: 288px; }
+  .pc-hero-copy { padding-top: 38px; padding-bottom: 34px; }
+  .pc-summary-content { gap: 28px; }
+  .pc-gauge { flex-basis: 185px; width: 185px; height: 189px; }
+  .pc-gauge svg { height: 175px; }
+  .pc-gauge-value { top: 48px; }
+  .pc-score-description h3 { font-size: 14px; }
+  .pc-score-description li, .pc-hardware-facts li { font-size: 11px; }
+  .pc-hardware-title h3 { font-size: 14px; }
+  .pc-hardware-title p { font-size: 10px; }
+  .pc-game-table tbody th, .pc-game-table td { height: 49px; }
+  .pc-game-button { font-size: 12px; }
+}
+@media (max-width: 1450px) {
+  .pc-overview { grid-template-columns: minmax(340px, 1.08fr) minmax(0, 1.8fr); }
+  .pc-summary-content { gap: 12px; }
+  .pc-gauge { flex-basis: 144px; width: 144px; height: 166px; }
+  .pc-gauge svg { height: 143px; }
+  .pc-gauge-value { top: 36px; }
+  .pc-gauge-value strong { font-size: 40px; }
+  .pc-score-description h3 { font-size: 11px; }
+  .pc-score-description li { font-size: 9px; }
+  .pc-hardware-card { padding: 12px 10px; }
+  .pc-hardware-title { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .pc-hardware-title > div { min-height: 45px; }
+  .pc-icon-tile { height: 33px; width: 33px; }
+  .pc-hardware-title p { font-size: 9px; }
+  .pc-usage-label { margin-top: 8px; }
+  .pc-hardware-facts { gap: 6px; margin-top: 14px; }
+  .pc-hardware-facts li { font-size: 8px; gap: 5px; }
+  .pc-hardware-facts svg { width: 13px; height: 13px; }
+  .pc-dashboard-grid { grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); }
+  .pc-right-column { grid-column: 1 / -1; display: grid; grid-template-columns: 1.45fr 1fr; }
+  .pc-upgrade-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pc-upgrade-button { flex-wrap: wrap; gap: 8px; padding: 10px; align-content: flex-start; }
+  .pc-upgrade-button > span:nth-child(2) { flex: 1 0 100%; order: 2; }
+  .pc-grade-content { margin-top: 25px; gap: 22px; }
+  .pc-game-table tbody th, .pc-game-table td { height: 49px; }
+}
+@media (max-width: 1100px) {
+  .pc-overview { grid-template-columns: minmax(0, 1fr); }
+  .pc-summary-content { justify-content: center; gap: 34px; }
+  .pc-score-description { flex: 0 1 340px; }
+  .pc-score-description h3 { font-size: 13px; }
+  .pc-score-description li { font-size: 10px; }
+  .pc-hardware-title { flex-direction: row; }
+  .pc-hardware-title > div { min-height: 0; }
+  .pc-hardware-title p { font-size: 10px; }
+  .pc-hardware-facts li { font-size: 9px; }
+  .pc-hardware-card { padding: 14px 10px; }
+  .pc-usage-label { margin-top: 16px; }
+  .pc-usage-label > span { display: none; }
+  .pc-dashboard-grid { grid-template-columns: minmax(0, 1fr); }
+  .pc-middle-column, .pc-right-column { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pc-scores, .pc-system { min-height: 205px; }
+  .pc-score-bars { gap: 13px; margin-top: 17px; }
+  .pc-score-bars > div { grid-template-columns: 48px minmax(0, 1fr) 22px; gap: 8px; }
+  .pc-system-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pc-system-metric { justify-content: flex-start; padding-left: 10px; }
+  .pc-system-note { text-align: left; }
+  .pc-upgrade-list { grid-template-columns: 1fr; }
+  .pc-upgrade-button { flex-wrap: nowrap; align-items: center; }
+  .pc-upgrade-button > span:nth-child(2) { flex: 1; order: 0; }
+  .pc-grade-content { flex-direction: column; text-align: center; gap: 18px; margin: 25px 0 10px; }
+  .pc-grade-hex { width: 77px; height: 86px; }
+  .pc-game-table thead th:first-child { width: 44%; }
+}
+@media (max-width: 600px) {
+  .pc-game-table thead { display: table-header-group; position: static; width: auto; height: auto; clip: auto; overflow: visible; }
+  .pc-game-table tbody { display: table-row-group; }
+  .pc-game-table tr { display: table-row; padding: 0; border: 0; }
+  .pc-game-table th, .pc-game-table td { display: table-cell; }
+  .pc-game-table td::before { display: none; content: none; }
+  .pc-page { gap: 12px; }
+  .pc-hero { min-height: 305px; }
+  .pc-hero-background { background-position: 66% center; background-image: linear-gradient(90deg, #031018f5, #031018b0 65%, #03101860), url('/images/pc-performance-hero.png'); }
+  .pc-hero-copy { padding: 29px 22px 39px; }
+  .pc-eyebrow { font-size: 6px; letter-spacing: 2.1px; margin-bottom: 19px; }
+  .pc-hero h1 { font-size: clamp(29px, 8vw, 39px); letter-spacing: -1.1px; }
+  .pc-hero-description { font-size: 12px; line-height: 1.8; }
+  .pc-hero-actions { flex-direction: column; align-items: flex-start; gap: 13px; margin-top: 22px; }
+  .pc-hero-actions > span { font-size: 8px; }
+  .pc-hero-signature { display: none; }
+  .pc-hero-demo { font-size: 7px; bottom: 13px; right: 15px; }
+  .pc-panel { padding: 14px; }
+  .pc-panel-heading h2 { font-size: 15px; }
+  .pc-panel-heading p { font-size: 9px; }
+  .pc-summary-content { gap: 13px; }
+  .pc-gauge { width: 131px; flex-basis: 131px; height: 156px; }
+  .pc-gauge svg { height: 131px; }
+  .pc-gauge-value { top: 32px; }
+  .pc-gauge-value strong { font-size: 38px; }
+  .pc-gauge-value > span { font-size: 10px; }
+  .pc-gauge > b { font-size: 16px; bottom: 4px; }
+  .pc-score-description { flex: 1; padding-top: 8px; }
+  .pc-score-description h3 { font-size: 10px; }
+  .pc-score-description li { font-size: 8px; gap: 5px; }
+  .pc-score-description ul { gap: 7px; margin: 9px 0 11px; }
+  .pc-recheck { font-size: 9px; padding: 5px 10px; }
+  .pc-hardware-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 8px; gap: 8px; }
+  .pc-hardware-title { gap: 9px; }
+  .pc-hardware-title p { font-size: 9px; }
+  .pc-hardware-facts li { font-size: 10px; }
+  .pc-usage-label > span { display: block; }
+  .pc-scan-status { font-size: 8px; gap: 5px; padding: 3px 2px; }
+  .pc-scan-disclaimer { flex-basis: 100%; margin-left: 10px; }
+  .pc-middle-column, .pc-right-column { grid-template-columns: minmax(0, 1fr); }
+  .pc-games { padding: 14px 11px; }
+  .pc-games .pc-panel-heading { gap: 7px; }
+  .pc-game-table thead th:first-child { width: 36%; }
+  .pc-game-table thead th { font-size: 8px; padding-left: 2px; padding-right: 2px; }
+  .pc-game-table thead th small { display: block; font-size: 7px; margin-left: 0; }
+  .pc-game-table thead th:last-child { width: 16%; }
+  .pc-game-table tbody th, .pc-game-table td { height: 56px; padding: 5px 2px; }
+  .pc-game-button { gap: 6px; font-size: 9px; }
+  .pc-game-button img { width: 25px; height: 34px; }
+  .pc-game-table td strong { font-size: 11px; }
+  .pc-game-table td small { font-size: 7px; display: block; }
+  .pc-rating { min-width: 36px; font-size: 8px; padding: 4px 6px; }
+  .pc-rating.pc-muted { font-size: 7px; padding: 4px; }
+  .pc-game-options { font-size: 8px; gap: 5px; }
+  .pc-game-options select { font-size: 8px; padding: 5px; }
+  .pc-table-note { font-size: 7px; }
+  .pc-scores, .pc-system { min-height: 0; }
+  .pc-score-bars { gap: 17px; margin: 22px 0 6px; }
+  .pc-score-bars > div { grid-template-columns: 63px minmax(0, 1fr) 28px; }
+  .pc-system-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; }
+  .pc-system-metric { flex-direction: column; align-items: flex-start; padding: 10px 8px; gap: 6px; }
+  .pc-system-metric strong { font-size: 13px; }
+  .pc-system-metric span, .pc-system-metric small { font-size: 7px; }
+  .pc-upgrade-button { padding: 12px; }
+  .pc-upgrade-button strong { font-size: 12px; }
+  .pc-upgrade-button small { font-size: 10px; }
+  .pc-grade-content { flex-direction: row; text-align: left; margin: 17px 13px 4px; gap: 26px; }
+  .pc-grade-hex { width: 68px; height: 76px; }
+  .pc-dialog-inner { padding: 18px; }
+  .pc-dialog h2 { font-size: 21px; }
+  .pc-dialog-fps { gap: 6px; }
+  .pc-dialog-fps > div { padding: 12px 6px; }
+  .pc-dialog-fps strong { font-size: 22px; }
+}
+@media (max-width: 360px) {
+  .pc-gauge { flex-basis: 112px; width: 112px; height: 140px; }
+  .pc-gauge svg { height: 112px; }
+  .pc-gauge-value { top: 26px; }
+  .pc-gauge-value strong { font-size: 33px; }
+  .pc-summary-content { gap: 9px; }
+  .pc-hardware-title { gap: 6px; }
+  .pc-icon-tile { width: 29px; height: 32px; }
+  .pc-hardware-facts li { font-size: 9px; }
+  .pc-usage-label > span { font-size: 7px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pc-page *, .pc-page *::before { animation: none !important; transition: none !important; }
+}
