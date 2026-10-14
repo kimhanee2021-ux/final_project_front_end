@@ -1,7 +1,8 @@
 import { money, number } from '../../utils/formatters.js'
 
-// 시간당 비용은 1시간 이상 플레이한 게임만 계산한다 (가성비 랭킹과 같은 기준).
+// 시간당 비용은 최소 1시간으로 나눈다. 1시간이 안 된 게임(미플레이 포함)은 구매 금액이 그대로 시간당 비용이다.
 // 몇 분만 켜 본 게임을 그대로 나누면 6분 플레이에 5,930원이 시간당 59,300원처럼 튀어 오해를 만든다.
+// 가성비 랭킹은 1시간 이상 플레이한 게임끼리만 비교한다.
 export const MIN_HOURS_FOR_HOURLY = 1
 
 export const netAmount = game =>
@@ -79,8 +80,8 @@ export function genreSpending(games) {
 export function hourlyText(game) {
   if (game.amount == null) return '-'
   if (game.amountSource === 'FREE') return '무료'
-  if (!(game.hours >= MIN_HOURS_FOR_HOURLY)) return '계산 전'
-  return money(netAmount(game) / game.hours)
+  if (game.hours == null) return '계산 전'
+  return money(netAmount(game) / Math.max(game.hours, MIN_HOURS_FOR_HOURLY))
 }
 
 // 플레이 시간 문구. 1시간이 안 되면 분으로 보여준다 (0.1시간처럼 소수로 보이면 몇 분인지 알기 어렵다)

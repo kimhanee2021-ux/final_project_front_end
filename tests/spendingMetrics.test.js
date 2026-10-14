@@ -29,8 +29,10 @@ test('monthly and genre totals reconcile with selected spending', () => {
 })
 test('hourly cost is only shown from one hour of play so a few minutes never explode the number', async () => {
   const { hourlyText, hoursText } = await import('../src/features/dashboard/spendingMetrics.js')
-  assert.equal(hourlyText(game({ amount: 5930, hours: 0.1 })), '계산 전')
-  assert.equal(hourlyText(game({ amount: 10000, hours: 0 })), '계산 전')
+  // 1시간 미만(미플레이 포함)은 구매 금액이 그대로 시간당 비용
+  assert.equal(hourlyText(game({ amount: 5930, hours: 0.1 })), '₩5,930')
+  assert.equal(hourlyText(game({ amount: 10000, hours: 0 })), '₩10,000')
+  assert.equal(hourlyText(game({ amount: 10000, hours: null })), '계산 전')
   assert.equal(hourlyText(game({ amount: 10000, hours: 4 })), '₩2,500')
   assert.equal(hourlyText(game({ amount: 0, amountSource: 'FREE', hours: 100 })), '무료')
   assert.equal(hourlyText(game({ amount: null, amountSource: 'NO_RECORD' })), '-')

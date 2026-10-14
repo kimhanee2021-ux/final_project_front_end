@@ -175,8 +175,8 @@ export default function PurchasedGamesTable({
       )}
       <div className="flex items-center gap-[7px] text-muted text-[9px] py-[15px] border-t border-border max-[580px]:items-start max-[580px]:leading-[1.8]">
         <GSIcon name="info" size={14} className="shrink-0" />
-        플레이 시간은 누적 기준이고, 시간당 비용은 1시간 이상 플레이한 게임부터 계산해요. 금액이 없는 게임은 지출 계산에서
-        제외됩니다.
+        플레이 시간은 누적 기준이고, 1시간 미만 플레이한 게임은 구매 금액을 그대로 시간당 비용으로 보여줘요. 금액이 없는
+        게임은 지출 계산에서 제외됩니다.
       </div>
     </Card>
   )
