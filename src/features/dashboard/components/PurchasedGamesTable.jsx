@@ -4,8 +4,20 @@ import EmptyState from '../../../components/common/EmptyState'
 import GSIcon from '../../../components/common/GSIcon'
 import GameIdentity from './GameIdentity'
 import PlayStatusBadge from './PlayStatusBadge'
-import { money, number, dateLabel } from '../../../utils/formatters'
-import { netAmount } from '../spendingMetrics'
+import { money, dateLabel } from '../../../utils/formatters'
+import { netAmount, hourlyText, hoursText } from '../spendingMetrics'
+import { noRecordLabel } from '../../purchaseImport/labels'
+const BADGE =
+  'inline-block ml-[6px] px-[5px] py-[1px] border border-border rounded-[4px] text-[9px] font-medium text-muted align-middle'
+const NO_AMOUNT_LABELS ={ NO_RECORD: '구매 기록 없음', UNKNOWN: '가격 정보 없음' }
+const amountText = game =>
+  game.amountSource === 'FREE'
+    ? '무료'
+    : game.amount == null
+      ? game.amountSource === 'NO_RECORD'
+        ? noRecordLabel(game.acquisitionMethod)
+        : NO_AMOUNT_LABELS[game.amountSource] ?? '금액 미확인'
+      : money(netAmount(game))
 export default function PurchasedGamesTable({
   games,
   filter,
@@ -129,25 +141,28 @@ export default function PurchasedGamesTable({
                     </button>
                   </td>
                   <td className="px-[10px] py-[13px] font-[650] tabular-nums max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[11px] max-[580px]:before:content-['구매_금액'] max-[580px]:before:block max-[580px]:before:text-muted max-[580px]:before:text-[9px] max-[580px]:before:font-normal max-[580px]:before:mb-[3px]">
-                    {game.amountSource === 'FREE' ? '무료' : money(netAmount(game))}
-                    {game.amountSource === 'ESTIMATED' && (
-                      <span className="inline-block ml-[6px] px-[5px] py-[1px] border border-border rounded-[4px] text-[9px] font-medium text-muted align-middle">추정</span>
-                    )}
+                    {amountText(game)}
+                    {game.amountSource === 'ESTIMATED' && <span className={BADGE}>추정</span>}
+                    {game.bundleAllocated && <span className={BADGE}>번들 배분</span>}
+                    {game.dlcCount > 0 && <span className={BADGE}>DLC {game.dlcCount}</span>}
+                    {game.refund > 0 && <span className={BADGE}>환불 반영</span>}
                   </td>
                   <td className={`px-[10px] py-[13px] text-muted max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[11px] max-[580px]:before:block max-[580px]:before:text-muted max-[580px]:before:text-[9px] max-[580px]:before:font-normal max-[580px]:before:mb-[3px] ${hasPurchaseDates ? "max-[580px]:before:content-['구매일']" : "max-[580px]:before:content-['최근_플레이']"}`}>
-                    {hasPurchaseDates ? dateLabel(game.purchasedAt) : game.lastPlayedAt ? dateLabel(game.lastPlayedAt) : '기록 없음'}
+                    {hasPurchaseDates
+                      ? game.purchasedAt
+                        ? dateLabel(game.purchasedAt)
+                        : game.acquiredAt
+                          ? dateLabel(game.acquiredAt) + ' 획득'
+                          : '-'
+                      : game.lastPlayedAt
+                        ? dateLabel(game.lastPlayedAt)
+                        : '기록 없음'}
                   </td>
                   <td className="px-[10px] py-[13px] max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[11px] max-[580px]:before:content-['플레이_시간'] max-[580px]:before:block max-[580px]:before:text-muted max-[580px]:before:text-[9px] max-[580px]:before:font-normal max-[580px]:before:mb-[3px]">
-                    {game.hours == null ? '시간 미확인' : number(game.hours) + '시간'}
+                    {hoursText(game.hours)}
                   </td>
                   <td className="px-[10px] py-[13px] max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[11px] max-[580px]:before:content-['시간당_비용'] max-[580px]:before:block max-[580px]:before:text-muted max-[580px]:before:text-[9px] max-[580px]:before:font-normal max-[580px]:before:mb-[3px]">
-                    {game.amount == null
-                      ? '금액 미확인'
-                      : game.amountSource === 'FREE'
-                        ? '무료'
-                        : game.hours > 0
-                        ? money(netAmount(game) / game.hours)
-                        : '계산 전'}
+                    {hourlyText(game)}
                   </td>
                   <td className="px-[10px] py-[13px] max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[11px]">
                     <PlayStatusBadge hours={game.hours} />
@@ -160,7 +175,8 @@ export default function PurchasedGamesTable({
       )}
       <div className="flex items-center gap-[7px] text-muted text-[9px] py-[15px] border-t border-border max-[580px]:items-start max-[580px]:leading-[1.8]">
         <GSIcon name="info" size={14} className="shrink-0" />
-        플레이 시간은 누적 기준이며, 금액 미확인 게임은 지출 계산에서 제외됩니다.
+        플레이 시간은 누적 기준이고, 1시간 미만 플레이한 게임은 구매 금액을 그대로 시간당 비용으로 보여줘요. 금액이 없는
+        게임은 지출 계산에서 제외됩니다.
       </div>
     </Card>
   )
