@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import GSIcon from '../../components/common/GSIcon'
 import { useGameSense } from '../../contexts/GameSenseContext'
 import GameListCard from '../../features/games/components/GameListCard'
+import GameLoadingSkeleton from '../../features/games/components/GameLoadingSkeleton'
 import { useGames } from '../../features/games/hooks/useGames'
 import { GAME_GENRES } from '../../features/games/gameModel'
 
@@ -29,6 +30,8 @@ export default function ExplorePage() {
     setQuery('')
     setParams({})
   }
+  // 실제 카드 목록과 로딩 스켈레톤이 같은 격자를 쓰도록 한 곳에서 만든다.
+  const gridClass = `grid gap-[11px_12px] max-[600px]:grid-cols-1 max-[600px]:gap-[11px] ${view === 'list' ? 'grid-cols-1' : 'grid-cols-2 min-[1900px]:grid-cols-4 max-[1350px]:grid-cols-2'}`
 
   return (
     <section className="min-w-0 pt-[26px]" aria-labelledby="gs-catalog-title" aria-busy={loading}>
@@ -86,10 +89,7 @@ export default function ExplorePage() {
         </p>
       )}
       {loading ? (
-        <div className="p-[70px_20px] text-center border border-dashed border-gs-border rounded-[12px] [&>svg]:text-gs-muted" role="status">
-          <GSIcon name="search" size={38} />
-          <h3 className="text-[18px] mt-[18px]">게임을 불러오는 중이에요</h3>
-        </div>
+        <GameLoadingSkeleton view={view} className={gridClass} />
       ) : error && !games.length ? (
         <div className="p-[70px_20px] text-center border border-dashed border-gs-border rounded-[12px] [&>svg]:text-gs-muted" role="alert">
           <GSIcon name="info" size={38} />
@@ -101,7 +101,7 @@ export default function ExplorePage() {
         </div>
       ) : games.length > 0 ? (
         <>
-          <div className={`grid gap-[11px_12px] max-[600px]:grid-cols-1 max-[600px]:gap-[11px] ${view === 'list' ? 'grid-cols-1' : 'grid-cols-2 min-[1900px]:grid-cols-4 max-[1350px]:grid-cols-2'}`}>
+          <div className={gridClass}>
             {games.map(game => (
               <GameListCard key={game.id} game={game} view={view} />
             ))}
