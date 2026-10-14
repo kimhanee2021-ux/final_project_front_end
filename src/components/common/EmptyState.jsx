@@ -5,10 +5,10 @@ export default function EmptyState({
   action,
 }) {
   return (
-    <div className="empty-state">
+    <div className="flex items-center justify-center flex-col gap-[12px] px-[20px] py-[42px] text-muted text-center">
       <GSIcon name="library" size={28} />
-      <strong>{title}</strong>
-      <p>{description}</p>
+      <strong className="text-text text-[14px]">{title}</strong>
+      <p className="text-[12px]">{description}</p>
       {action}
     </div>
   )

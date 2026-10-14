@@ -3,7 +3,7 @@ import { money, number } from '../../../utils/formatters'
 // estimated: 실제 결제액이 아니라 현재 정가로 추정한 금액일 때(스팀 연동 분석) 문구를 바꾼다
 export default function SpendingSummary({ summary, estimated = false }) {
   return (
-    <div className="stats-grid">
+    <div className="grid grid-cols-3 gap-[20px] max-[1000px]:gap-[14px] max-[760px]:gap-[10px] max-[580px]:grid-cols-2">
       <StatCard
         label={estimated ? '보유 게임 정가 합계' : '누적 게임 지출'}
         value={money(summary.total)}

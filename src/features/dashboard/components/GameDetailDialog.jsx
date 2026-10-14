@@ -14,7 +14,7 @@ export default function GameDetailDialog({ game, onClose }) {
     <dialog
       aria-label={game ? game.name + ' 구매 상세' : '구매 상세'}
       ref={ref}
-      className="detail-dialog"
+      className="p-0 border border-border rounded-[18px] w-[440px] max-w-[calc(100vw-32px)] bg-surface text-text shadow-[0_24px_80px_#0004] backdrop:bg-[#11102199] backdrop:backdrop-blur-[4px]"
       onCancel={onClose}
       onClose={onClose}
       onClick={e => {
@@ -22,16 +22,19 @@ export default function GameDetailDialog({ game, onClose }) {
       }}
     >
       {game && (
-        <div className="dialog-content">
+        <div className="relative p-[30px] [&>p]:mt-[18px] [&>p]:text-muted [&>p]:text-[12px] [&_dl]:my-[24px] [&_dl>div]:flex [&_dl>div]:justify-between [&_dl>div]:py-[12px] [&_dl>div]:border-b [&_dl>div]:border-border [&_dl>div]:text-[12px] [&_dt]:text-muted [&_dd]:m-0 [&_dd]:font-semibold [&>small]:block [&>small]:text-muted [&>small]:text-[10px] [&>small]:mt-[18px]">
           <button
-            className="icon-button dialog-close"
+            className="w-[34px] h-[34px] bg-transparent grid place-items-center rounded-[8px] hover:bg-surface-hover absolute top-[15px] right-[15px]"
             aria-label="상세 정보 닫기"
             onClick={onClose}
           >
             <GSIcon name="close" size={20} />
           </button>
-          <span className="eyebrow">PURCHASE DETAILS</span>
-          <GameIdentity game={game} />
+
+          <span className="text-[9px] font-bold tracking-[1.9px] text-primary-text">PURCHASE DETAILS</span>
+          <div className="mt-[26px]">
+            <GameIdentity game={game} size="large" />
+          </div>
           {game.edition && <p>{game.edition}</p>}
           <dl>
             <div>
@@ -64,7 +67,7 @@ export default function GameDetailDialog({ game, onClose }) {
               </dd>
             </div>
           </dl>
-          <div className="detail-note">
+          <div className="bg-primary-soft text-primary-text rounded-[9px] p-[15px] text-[12px] leading-[1.8]">
             {game.hours === 0
               ? '아직 시작하지 않은 게임이에요. 다음 플레이 목록에 담아보는 건 어떨까요?'
               : '플레이 시간은 구매를 이해하는 하나의 지표예요. 짧은 플레이도 충분히 만족스러운 경험일 수 있어요.'}
