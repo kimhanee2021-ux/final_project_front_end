@@ -63,22 +63,7 @@ export default function Sidebar({ onClose }) {
         <p className="text-gs-muted text-[11px] tracking-[0.9px] m-[0_0_13px_2px] max-[850px]:mb-[8px]">{t('MY LIBRARY', '나의 라이브러리')}</p>
         <nav aria-label="라이브러리" className="m-[0_-8px] grid gap-[4px]">{nav(libraryLinks)}</nav>
       </div>
-      <NavLink
-        to="/explore"
-        onClick={follow}
-        className="group mt-auto shrink-0 min-h-[158px] border border-[#3b4a5b] rounded-[12px] relative flex items-start overflow-hidden p-[23px_18px] bg-[linear-gradient(90deg,#08111eee,#07132344),url('/images/fantasy-world.png')_64%_center/cover] text-white min-[1600px]:min-h-[164px] max-[850px]:min-h-[135px] max-[850px]:mt-[24px] max-[850px]:pt-[18px]"
-      >
-        <span className="text-[14px] font-[650] leading-[1.5]">
-          Better
-          <br />
-          Games.
-          <br />A Smarter You.
-        </span>
-        <span className="absolute right-[13px] bottom-[14px] bg-[#22303baa] border-[#58667766] text-white transition-transform group-hover:translate-x-[3px] flex-shrink-0 grid place-items-center w-[29px] h-[29px] border rounded-full">
-          <GSIcon name="arrow" size={19} />
-        </span>
-      </NavLink>
-      <NavLink to="/settings" onClick={follow} className={navLinkClass('mt-[16px] max-[850px]:mt-[12px]')}>
+      <NavLink to="/settings" onClick={follow} className={navLinkClass('mt-auto max-[850px]:mt-[12px]')}>
         <GSIcon name="settings" size={22} />
         {t('Settings', '설정')}
       </NavLink>
