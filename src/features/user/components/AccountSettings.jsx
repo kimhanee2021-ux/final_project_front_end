@@ -8,7 +8,10 @@ import { getErrorMessage } from '../../../utils/apiClient'
 function Feedback({ result }) {
   if (!result) return null
   return (
-    <p className={`gs-account-message ${result.error ? 'is-error' : ''}`} role={result.error ? 'alert' : 'status'}>
+    <p
+      className={`basis-full text-[11px] text-gs-muted ${result.error ? 'text-[#ff7d8a]' : ''}`}
+      role={result.error ? 'alert' : 'status'}
+    >
       {result.text}
     </p>
   )
@@ -75,8 +78,15 @@ export default function AccountSettings() {
           <h2>내 계정</h2>
           <p>{user.email} · 닉네임은 다른 사용자와 중복될 수 없어요.</p>
         </div>
-        <form className="gs-account-form" onSubmit={saveNickname}>
-          <input aria-label="새 닉네임" value={nickname} maxLength={24} autoComplete="nickname" onChange={event => setNickname(event.target.value)} />
+        <form className="flex flex-wrap items-center gap-[8px]" onSubmit={saveNickname}>
+          <input
+            className="min-w-0 w-[180px] p-[10px_12px] rounded-[9px] border border-gs-border bg-gs-raised text-gs-text text-[12px] max-[700px]:w-full"
+            aria-label="새 닉네임"
+            value={nickname}
+            maxLength={24}
+            autoComplete="nickname"
+            onChange={event => setNickname(event.target.value)}
+          />
           <button type="submit" className="gs-secondary-button" disabled={busy === 'nickname'}>
             {busy === 'nickname' ? '저장 중...' : '닉네임 변경'}
           </button>
@@ -88,10 +98,14 @@ export default function AccountSettings() {
           <h2>비밀번호 변경</h2>
           <p>보안을 위해 현재 비밀번호를 한 번 더 확인해요.</p>
         </div>
-        <form className="gs-account-form" onSubmit={savePassword}>
-          <input type="password" aria-label="현재 비밀번호" placeholder="현재 비밀번호" autoComplete="current-password" value={passwords.currentPassword}
+        <form className="flex flex-wrap items-center gap-[8px]" onSubmit={savePassword}>
+          <input
+            className="min-w-0 w-[180px] p-[10px_12px] rounded-[9px] border border-gs-border bg-gs-raised text-gs-text text-[12px] max-[700px]:w-full"
+            type="password" aria-label="현재 비밀번호" placeholder="현재 비밀번호" autoComplete="current-password" value={passwords.currentPassword}
             onChange={event => setPasswords(current => ({ ...current, currentPassword: event.target.value }))} />
-          <input type="password" aria-label="새 비밀번호" placeholder="새 비밀번호 (8자 이상)" autoComplete="new-password" minLength={8} value={passwords.newPassword}
+          <input
+            className="min-w-0 w-[180px] p-[10px_12px] rounded-[9px] border border-gs-border bg-gs-raised text-gs-text text-[12px] max-[700px]:w-full"
+            type="password" aria-label="새 비밀번호" placeholder="새 비밀번호 (8자 이상)" autoComplete="new-password" minLength={8} value={passwords.newPassword}
             onChange={event => setPasswords(current => ({ ...current, newPassword: event.target.value }))} />
           <button type="submit" className="gs-secondary-button" disabled={busy === 'password'}>
             {busy === 'password' ? '변경 중...' : '비밀번호 변경'}
@@ -115,7 +129,12 @@ export default function AccountSettings() {
           <p>계정과 동기화된 보유 게임 정보가 영구 삭제됩니다.</p>
           <Feedback result={results.delete} />
         </div>
-        <button type="button" className="gs-danger-button" onClick={withdraw} disabled={busy === 'delete'}>
+        <button
+          type="button"
+          className="inline-flex items-center gap-[8px] p-[10px_18px] rounded-[25px] border border-[#ff7d8a80] text-[#ff7d8a] bg-transparent text-[12px] font-[650]"
+          onClick={withdraw}
+          disabled={busy === 'delete'}
+        >
           {busy === 'delete' ? '처리 중...' : '회원 탈퇴'}
         </button>
       </section>

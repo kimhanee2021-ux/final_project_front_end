@@ -59,10 +59,10 @@ function DemoAnalysisPage({ view }) {
       {view !== 'library' && (
         <>
           <SpendingSummary summary={summary} />
-          <div className="section-heading">
+          <div className="flex justify-between gap-[16px] items-center mt-[32px] mb-[17px] max-[1200px]:[&>div:first-child]:block max-[760px]:mt-[25px] max-[580px]:items-start max-[580px]:flex-col max-[580px]:gap-[12px] max-[580px]:[&>div:first-child]:w-full">
             <div>
-              <h2>{view === 'analysis' ? '소비 패턴 자세히 보기' : '나의 소비 돌아보기'}</h2>
-              <span>구매일 기준 · 누적 요약에는 영향을 주지 않아요</span>
+              <h2 className="text-[15px] tracking-[-0.5px]">{view === 'analysis' ? '소비 패턴 자세히 보기' : '나의 소비 돌아보기'}</h2>
+              <span className="text-[10px] text-muted max-[1200px]:block max-[1200px]:mt-[4px] max-[760px]:max-w-[180px] max-[580px]:max-w-none">구매일 기준 · 누적 요약에는 영향을 주지 않아요</span>
             </div>
             <PeriodFilter
               value={period}
@@ -72,11 +72,11 @@ function DemoAnalysisPage({ view }) {
               }}
             />
           </div>
-          <div className="charts-grid">
+          <div className="grid grid-cols-[1.5fr_1fr] gap-[20px] max-[1000px]:grid-cols-[1.2fr_1fr] max-[760px]:grid-cols-[1.2fr_1fr] max-[580px]:grid-cols-1">
             <MonthlySpendingChart months={monthlySpending(games, period, data.asOf)} />
             <GenreSpendingChart genres={genreSpending(selected)} total={periodSummary.total} />
           </div>
-          <div className="insights-grid">
+          <div className="grid grid-cols-[1.5fr_1fr] gap-[20px] my-[20px] max-[1000px]:grid-cols-1 max-[580px]:grid-cols-1">
             <SpendingInsights insights={getSpendingInsights(selected)} onExplore={explore} />
             <UnplayedSpendingCard
               summary={periodSummary}
@@ -85,7 +85,7 @@ function DemoAnalysisPage({ view }) {
           </div>
         </>
       )}
-      <div ref={tableRef} tabIndex={-1} className="table-anchor">
+      <div ref={tableRef} tabIndex={-1} className="scroll-mt-[20px]">
         <PurchasedGamesTable
           games={view === 'library' ? games : selected}
           filter={filter}
@@ -96,8 +96,8 @@ function DemoAnalysisPage({ view }) {
           library={view === 'library'}
         />
       </div>
-      <div className="data-notice">
-        <GSIcon name="info" size={16} />
+      <div className="flex items-start gap-[8px] mt-[18px] text-muted text-[10px]">
+        <GSIcon name="info" size={16} className="shrink-0" />
         <p>
           현재는 데모 데이터로 표시됩니다.{' '}
           {summary.unknownCount > 0 && (
@@ -107,9 +107,9 @@ function DemoAnalysisPage({ view }) {
         </p>
       </div>
       {view === 'analysis' && (
-        <details className="calculation-notes">
-          <summary>지표 계산 기준 확인하기</summary>
-          <p>
+        <details className="mt-[18px] border border-border rounded-[10px] p-[16px] text-[12px] bg-surface">
+          <summary className="cursor-pointer">지표 계산 기준 확인하기</summary>
+          <p className="text-muted leading-[1.9] mt-[15px]">
             누적 지출은 확인된 결제 금액에서 환불을 차감한 금액입니다. 평균 구매 금액은 환불 반영 후
             금액이 남아 있는 유료 게임 기준입니다. 시간당 비용은 금액과 누적 플레이 시간을 모두
             확인할 수 있는 유료 게임들의 금액 합계를 시간 합계로 나눕니다. 미플레이 게임의 구매

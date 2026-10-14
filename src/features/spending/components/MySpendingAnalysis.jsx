@@ -19,6 +19,7 @@ import { summarize, genreSpending } from '../../dashboard/spendingMetrics'
 import { getSpendingInsights } from '../../dashboard/spendingInsights'
 import { amountSourceCounts, periodStart, recentFocus, spendingBuckets, valueRanking } from '../spendingModel'
 import { money, number } from '../../../utils/formatters'
+import { NOTICE, PRIMARY_BUTTON, TEXT_BUTTON } from '../styles'
 
 const BADGE = '스팀 연동 · 정가 추정'
 const HISTORY_BADGE = '구매내역 연동 · 실제 결제액'
@@ -67,7 +68,7 @@ export default function MySpendingAnalysis({ view = 'analysis' }) {
 
   const asOf = data?.asOf ?? new Date().toISOString().slice(0, 10)
   const syncButton = (
-    <button type="button" className="text-button" onClick={sync} disabled={syncing}>
+    <button type="button" className={TEXT_BUTTON} onClick={sync} disabled={syncing}>
       {syncing ? '스팀에서 불러오는 중...' : '스팀 다시 동기화'}
       <GSIcon name="refresh" size={15} />
     </button>
@@ -83,7 +84,7 @@ export default function MySpendingAnalysis({ view = 'analysis' }) {
             title="스팀 계정을 연동해 주세요"
             description="보유 게임과 플레이 시간을 불러와 나만의 소비 패턴을 분석해 드려요."
             action={
-              <button type="button" className="text-button" onClick={startSteamLink}>
+              <button type="button" className={TEXT_BUTTON} onClick={startSteamLink}>
                 Steam 계정 연동하기
                 <GSIcon name="arrow" size={15} />
               </button>
@@ -94,7 +95,7 @@ export default function MySpendingAnalysis({ view = 'analysis' }) {
             title="소비 분석을 불러오지 못했어요"
             description={error}
             action={
-              <button type="button" className="text-button" onClick={reload}>
+              <button type="button" className={TEXT_BUTTON} onClick={reload}>
                 다시 시도
                 <GSIcon name="refresh" size={15} />
               </button>
@@ -137,7 +138,7 @@ export default function MySpendingAnalysis({ view = 'analysis' }) {
     tableRef.current?.focus({ preventScroll: true })
   }
   const importButton = (
-    <button type="button" className="text-button" onClick={() => setImportOpen(true)}>
+    <button type="button" className={TEXT_BUTTON} onClick={() => setImportOpen(true)}>
       {history ? '구매내역 다시 가져오기' : '구매내역 가져오기'}
       <GSIcon name="library" size={15} />
     </button>
@@ -147,20 +148,20 @@ export default function MySpendingAnalysis({ view = 'analysis' }) {
     return (
       <>
         <DashboardIntro view="library" asOf={asOf} badgeLabel={history ? HISTORY_BADGE : BADGE} />
-        <div className="section-heading">
-          <div>
-            <h2>내 게임과 구매 내역</h2>
-            <span>
+        <div className="flex justify-between gap-[16px] items-center mt-[32px] mb-[17px] max-[760px]:mt-[25px] max-[580px]:items-start max-[580px]:flex-col max-[580px]:gap-[12px]">
+          <div className="flex items-center gap-[13px] max-[1200px]:block">
+            <h2 className="text-[15px] tracking-[-0.5px]">내 게임과 구매 내역</h2>
+            <span className="text-[10px] text-muted max-[1200px]:block max-[1200px]:mt-[4px]">
               스팀 보유 게임 {games.length}개 · {history ? '실제 결제액 (구매일 환율로 원화 환산)' : '현재 한국 정가 기준 추정'}
             </span>
           </div>
-          <div className="section-actions">
+          <div className="flex items-center gap-[14px] flex-wrap justify-end max-[580px]:justify-start">
             {importButton}
             {syncButton}
           </div>
         </div>
         {error && (
-          <p className="data-notice" role="alert">
+          <p className={NOTICE} role="alert">
             {error}
           </p>
         )}
@@ -173,8 +174,8 @@ export default function MySpendingAnalysis({ view = 'analysis' }) {
           onSelect={setSelectedGame}
           library
         />
-        <div className="data-notice">
-          <GSIcon name="info" size={16} />
+        <div className={NOTICE}>
+          <GSIcon name="info" size={16} className="shrink-0" />
           <p>
             {history
               ? '금액은 스팀 구매내역의 실제 결제액을 구매일 환율로 원화로 바꾼 값이에요. 구매 기록 없음은 선물·키 등록·무료 배포 등으로 얻은 게임이에요.'
@@ -204,14 +205,14 @@ export default function MySpendingAnalysis({ view = 'analysis' }) {
             : undefined
         }
       />
-      <div className="section-heading">
-        <div>
-          <h2>나의 소비 패턴</h2>
-          <span>
+      <div className="flex justify-between gap-[16px] items-center mt-[32px] mb-[17px] max-[760px]:mt-[25px] max-[580px]:items-start max-[580px]:flex-col max-[580px]:gap-[12px]">
+        <div className="flex items-center gap-[13px] max-[1200px]:block">
+          <h2 className="text-[15px] tracking-[-0.5px]">나의 소비 패턴</h2>
+          <span className="text-[10px] text-muted max-[1200px]:block max-[1200px]:mt-[4px]">
             스팀 보유 게임 {games.length}개 · {history ? '실제 결제액 (구매일 환율로 원화 환산)' : '현재 한국 정가 기준 추정'}
           </span>
         </div>
-        <div className="section-actions">
+        <div className="flex items-center gap-[14px] flex-wrap justify-end max-[580px]:justify-start">
           {history && (
             <PeriodFilter
               value={period}
@@ -226,23 +227,23 @@ export default function MySpendingAnalysis({ view = 'analysis' }) {
         </div>
       </div>
       {error && (
-        <p className="data-notice" role="alert">
+        <p className={NOTICE} role="alert">
           {error}
         </p>
       )}
       {!history && (
-        <div className="import-callout">
-          <GSIcon name="spark" size={18} />
-          <p>
+        <div className="flex items-center gap-[14px] mb-[20px] px-[20px] py-[16px] border border-insight-border rounded-[15px] bg-insight-bg max-[580px]:flex-col max-[580px]:items-start">
+          <GSIcon name="spark" size={18} className="shrink-0" />
+          <p className="flex-1 text-[12px] leading-[1.6]">
             스팀 구매내역을 가져오면 <strong>실제로 낸 금액과 구매일</strong>로 분석이 바뀌고, 월별 지출과 할인으로 아낀 금액도
             볼 수 있어요.
           </p>
-          <button type="button" className="primary-button" onClick={() => setImportOpen(true)}>
+          <button type="button" className={PRIMARY_BUTTON} onClick={() => setImportOpen(true)}>
             구매내역 가져오기
           </button>
         </div>
       )}
-      <div className="charts-grid">
+      <div className="grid grid-cols-[1.5fr_1fr] gap-[20px] max-[1000px]:grid-cols-[1.2fr_1fr] max-[580px]:grid-cols-1">
         {history ? (
           <MonthlySpendingChart
             months={chart.buckets}
@@ -257,7 +258,7 @@ export default function MySpendingAnalysis({ view = 'analysis' }) {
           estimated={!history}
         />
       </div>
-      <div className="insights-grid">
+      <div className="grid grid-cols-[1.5fr_1fr] gap-[20px] my-[20px] max-[1000px]:grid-cols-1">
         <SpendingInsights insights={insights} onExplore={explore} />
         <UnplayedSpendingCard
           summary={history ? periodSummary : summary}
@@ -265,11 +266,11 @@ export default function MySpendingAnalysis({ view = 'analysis' }) {
         />
       </div>
       {history && (
-        <div className="value-row">
+        <div className="mb-[20px]">
           <ValueRankingCard ranking={valueRanking(games)} onSelect={setSelectedGame} confirmed />
         </div>
       )}
-      <div ref={tableRef} tabIndex={-1} className="table-anchor">
+      <div ref={tableRef} tabIndex={-1} className="scroll-mt-[20px]">
         <PurchasedGamesTable
           games={periodGames}
           filter={filter}
@@ -279,8 +280,8 @@ export default function MySpendingAnalysis({ view = 'analysis' }) {
           onSelect={setSelectedGame}
         />
       </div>
-      <div className="data-notice">
-        <GSIcon name="info" size={16} />
+      <div className={NOTICE}>
+        <GSIcon name="info" size={16} className="shrink-0" />
         {history ? (
           <p>
             금액은 스팀 구매내역의 <strong>실제 결제액</strong>을 구매일 환율로 원화로 바꾼 값이에요 (DLC는 본편에 합산, 환불은
@@ -308,17 +309,17 @@ export default function MySpendingAnalysis({ view = 'analysis' }) {
           </p>
         )}
       </div>
-      <details className="calculation-notes">
-        <summary>지표 계산 기준 확인하기</summary>
+      <details className="mt-[18px] border border-border rounded-[10px] p-[16px] text-[12px] bg-surface">
+        <summary className="cursor-pointer">지표 계산 기준 확인하기</summary>
         {history ? (
-          <p>
+          <p className="text-muted leading-[1.9] mt-[15px]">
             누적 지출은 가져온 구매내역의 결제액에서 환불을 뺀 금액이며, 원화가 아닌 결제는 구매일(주말·공휴일은 직전
             영업일) 유럽중앙은행 기준 환율로 바꿨습니다. 지갑 충전·통화 변환·장터 거래는 지출이 아니거나 중복이라 제외합니다.
             DLC는 스팀에서 본편이 확인된 경우에만 본편 게임에 합산합니다. 기간 필터와 월별 차트는 구매일 기준이고, 가성비
             랭킹은 전체 기간의 결제액을 누적 플레이 시간으로 나눈 값입니다.
           </p>
         ) : (
-          <p>
+          <p className="text-muted leading-[1.9] mt-[15px]">
             보유 게임 정가 합계는 가격을 확인한 유료 게임의 현재 한국 정가(할인 전)를 더한 값입니다. 시간당 비용은 정가를
             스팀 누적 플레이 시간으로 나눈 값이며, 가성비 랭킹은 1시간 이상 플레이한 유료 게임만 비교합니다. 미플레이 게임은
             누적 플레이 시간이 0분인 유료 게임입니다. 스팀 공개 API는 구매일과 실제 결제 금액을 제공하지 않아 기간별 지출은

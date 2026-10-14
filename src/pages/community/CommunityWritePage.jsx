@@ -5,7 +5,6 @@ import { useAuth } from '../../features/auth/context/AuthContext'
 import { BOARD_CATEGORIES } from '../../features/board/boardModel'
 import { createPost, fetchPost, updatePost } from '../../features/board/api'
 import { getErrorMessage } from '../../utils/apiClient'
-import '../../styles/community.css'
 
 const emptyForm = { category: BOARD_CATEGORIES[0], tag: '', title: '', content: '', isAnonymous: false }
 
@@ -81,25 +80,28 @@ export default function CommunityWritePage() {
 
   if (loading) {
     return (
-      <div className="gs-empty" role="status">
+      <div className="p-[70px_20px] text-center border border-dashed border-gs-border rounded-[12px] [&>svg]:text-gs-muted" role="status">
         <GSIcon name="search" size={38} />
         <h3>불러오는 중이에요</h3>
       </div>
     )
   }
 
+  const fieldClass = 'px-[14px] py-[11px] border border-gs-border rounded-[10px] bg-gs-panel text-gs-text text-[13px] [font-family:inherit]'
+  const labelClass = 'flex flex-col gap-[7px] text-[12px] text-gs-muted'
+
   return (
-    <section className="cm-write">
-      <div className="gs-section-heading">
+    <section className="max-w-[640px] mx-auto">
+      <div className="flex items-start justify-between gap-[16px] mb-[17px]">
         <div>
-          <span className="gs-eyebrow">YOUR WORLD OF GAMES</span>
+          <span className="text-gs-mint text-[9px] tracking-[2px] font-[650]">YOUR WORLD OF GAMES</span>
           <h1>{isEdit ? '글 수정' : '글쓰기'}</h1>
         </div>
       </div>
-      <form className="cm-write-form" onSubmit={submit}>
-        <label>
+      <form className="flex flex-col gap-[16px]" onSubmit={submit}>
+        <label className={labelClass}>
           <span>카테고리</span>
-          <select value={form.category} onChange={event => update({ category: event.target.value })} required>
+          <select value={form.category} onChange={event => update({ category: event.target.value })} required className={fieldClass}>
             {BOARD_CATEGORIES.map(category => (
               <option key={category} value={category}>
                 {category}
@@ -107,47 +109,51 @@ export default function CommunityWritePage() {
             ))}
           </select>
         </label>
-        <label>
+        <label className={labelClass}>
           <span>태그 (선택)</span>
           <input
             value={form.tag}
             onChange={event => update({ tag: event.target.value })}
             maxLength={50}
             placeholder="예: 세일정보"
+            className={fieldClass}
           />
         </label>
-        <label>
+        <label className={labelClass}>
           <span>제목</span>
           <input
             value={form.title}
             onChange={event => update({ title: event.target.value })}
             maxLength={255}
             required
+            className={fieldClass}
           />
         </label>
-        <label>
+        <label className={labelClass}>
           <span>내용</span>
           <textarea
             value={form.content}
             onChange={event => update({ content: event.target.value })}
             rows={10}
             required
+            className={`${fieldClass} resize-y`}
           />
         </label>
-        <label className="cm-checkbox">
+        <label className="flex items-center gap-[9px] text-[12px] text-gs-muted">
           <input
             type="checkbox"
             checked={form.isAnonymous}
             onChange={event => update({ isAnonymous: event.target.checked })}
+            className="w-auto p-0"
           />
           <span>익명으로 작성</span>
         </label>
         {error && (
-          <p className="cm-form-error" role="alert">
+          <p className="text-[#e45a67] text-[12px] my-[4px]" role="alert">
             {error}
           </p>
         )}
-        <div className="cm-write-actions">
+        <div className="flex justify-end gap-[10px] mt-[6px]">
           <button type="button" className="gs-secondary-button" onClick={() => navigate(-1)}>
             취소
           </button>

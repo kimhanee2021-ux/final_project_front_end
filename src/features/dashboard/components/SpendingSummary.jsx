@@ -4,7 +4,7 @@ import { money, number } from '../../../utils/formatters'
 // totalNote: 누적 지출 카드의 설명을 바꿔야 할 때 (구매내역 기반 분석에서 나눌 수 없는 지출이 포함된 경우)
 export default function SpendingSummary({ summary, estimated = false, totalNote }) {
   return (
-    <div className="stats-grid">
+    <div className="grid grid-cols-3 gap-[20px] max-[1000px]:gap-[14px] max-[760px]:gap-[10px] max-[580px]:grid-cols-2">
       <StatCard
         label={estimated ? '보유 게임 정가 합계' : '누적 게임 지출'}
         value={money(summary.total)}
