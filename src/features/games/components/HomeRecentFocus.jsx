@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useAuth } from '../../auth/context/AuthContext'
 import { authLink } from '../../auth/authSession'
-import { useMySpending } from '../../spending/hooks/useMySpending'
 import { recentFocus } from '../../spending/spendingModel'
 import { number } from '../../../utils/formatters'
 import GSIcon from '../../../components/common/GSIcon'
@@ -25,10 +23,8 @@ function Shell({ children }) {
 
 // 홈의 "최근 활동" 위젯. 분석탭(MySpendingAnalysis)과 같은 recentFocus() 신호를 그대로 써서
 // "요즘 가장 많이 플레이한 게임"을 보여준다. 로그인/스팀 연동이 안 돼 있으면 그 상태를 안내한다.
-export default function HomeRecentFocus() {
-  const { isAuthenticated, user, startSteamLink } = useAuth()
-  const { data, loading, notLinked } = useMySpending(user?.id)
-
+// 데이터는 HomePage에서 한 번만 받아와 HomeSpendingPattern과 같이 써서 /api/analysis/spending을 중복 호출하지 않는다.
+export default function HomeRecentFocus({ isAuthenticated, data, loading, notLinked, startSteamLink }) {
   if (!isAuthenticated) {
     return (
       <Shell>

@@ -190,12 +190,3 @@ export const recentActivity = [
   { gameId: 'stellar', when: '3일 전', duration: '3시간 10분', achievement: '스토리 챕터 완료' },
   { gameId: 'cyberpunk', when: '5일 전', duration: '2시간 15분', achievement: '나이트 시티 탐험' },
 ]
-export const playHistory = [18, 24, 21, 30, 43, 48]
-export const genrePreferences = [
-  { name: 'RPG', value: 35, color: '#8661ff' },
-  { name: 'Action', value: 25, color: '#41b7ff' },
-  { name: 'Adventure', value: 18, color: '#59dfb1' },
-  { name: 'Strategy', value: 10, color: '#f49abd' },
-  { name: 'Simulation', value: 7, color: '#ce91ea' },
-  { name: '기타', value: 5, color: '#677ca7' },
-]
