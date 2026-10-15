@@ -7,3 +7,9 @@ export async function fetchFeaturedGames({ signal } = {}) {
   const { data } = await apiClient.get('/api/games/featured', { signal })
   return data
 }
+
+// 트렌드 탭. 응답: FeaturedCategoryResponse[] = { categoryKey, categoryName, games: FeaturedGameItem[] }
+export async function fetchFeaturedCategories({ signal } = {}) {
+  const { data } = await apiClient.get('/api/games/featured-categories', { signal })
+  return data
+}

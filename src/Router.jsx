@@ -3,6 +3,7 @@ import App from './App'
 import GameSenseLayout from './layouts/GameSenseLayout'
 import HomePage from './pages/home/HomePage'
 import ExplorePage from './pages/explore/ExplorePage'
+import TrendingPage from './pages/trending/TrendingPage'
 import CollectionsPage from './pages/collections/CollectionsPage'
 import ActivityPage from './pages/activity/ActivityPage'
 import SettingsPage from './pages/settings/SettingsPage'
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <HomePage /> },
           { path: 'explore', element: <ExplorePage /> },
+          { path: 'trending', element: <TrendingPage /> },
           ...catalogRoutes(['recommendations']),
           { path: 'pc-check', element: <PerformancePage /> },
           {

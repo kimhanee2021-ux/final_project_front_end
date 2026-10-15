@@ -18,3 +18,20 @@ function formatFeaturedPrice(finalPrice) {
   if (finalPrice == null) return ''
   return finalPrice === 0 ? '무료' : money(finalPrice / 100)
 }
+
+// 백엔드 FeaturedCategoryResponse 하나를 화면에서 쓰는 형태로 바꾼다.
+// 스팀 원본 응답이 같은 게임을 한 카테고리 안에 두 번 넣어 보내는 경우가 있어(예: top_sellers),
+// appId 기준으로 먼저 나온 것만 남기고 걸러낸다.
+export function toFeaturedCategory(category) {
+  const seenAppIds = new Set()
+  const uniqueGames = category.games.filter(game => {
+    if (seenAppIds.has(game.appId)) return false
+    seenAppIds.add(game.appId)
+    return true
+  })
+  return {
+    key: category.categoryKey,
+    name: category.categoryName,
+    games: uniqueGames.map(toFeaturedGame),
+  }
+}

@@ -6,6 +6,7 @@ import GSIcon from '../components/common/GSIcon'
 const primaryLinks = [
   ['/', 'home', 'Home', '홈'],
   ['/explore', 'compass', 'Explore', '탐색'],
+  ['/trending', 'flame', 'Trending', '트렌드'],
   ['/analysis', 'chart', 'Expenditure Pattern', '소비 패턴'],
   ['/recommendations', 'spark', 'AI Optimization', '맞춤 추천'],
   ['/pc-check', 'monitor', 'PC 성능 체크', 'PC 성능 체크'],
@@ -14,7 +15,6 @@ const primaryLinks = [
 const libraryLinks = [
   ['/library', 'gamepad', 'My Games', '내 게임'],
   ['/wishlist', 'heart', 'Wishlist', '위시리스트'],
-  ['/collections', 'folder', 'Collections', '컬렉션'],
 ]
 
 // gs-nav-link/active는 클래스 이름 자체는 더 이상 스타일을 안 담당하지만,
