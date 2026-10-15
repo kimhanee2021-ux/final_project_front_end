@@ -39,7 +39,7 @@ function Header({ onMenu }) {
   }, [popover])
   const toggle = value => setPopover(popover === value ? null : value)
   return (
-    <header className="sticky top-0 flex items-center justify-between gap-[28px] relative z-[20] h-[78px] min-[1600px]:h-[76px] max-[900px]:gap-[13px] max-[900px]:h-[74px] max-[600px]:h-[69px] max-[600px]:gap-[8px]">
+    <header className="bg-gs-bg sticky top-0 flex items-center justify-between gap-[28px] relative z-[20] h-[78px] min-[1600px]:h-[76px] max-[900px]:gap-[13px] max-[900px]:h-[74px] max-[600px]:h-[69px] max-[600px]:gap-[8px]">
       <button
         className="hidden max-[900px]:grid max-[900px]:shrink-0 w-[37px] h-[37px] place-items-center bg-transparent text-gs-text rounded-full p-0 hover:bg-gs-raised max-[600px]:w-[32px] max-[600px]:h-[32px]"
         onClick={onMenu}
