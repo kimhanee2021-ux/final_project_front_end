@@ -3,7 +3,6 @@ import App from './App'
 import GameSenseLayout from './layouts/GameSenseLayout'
 import HomePage from './pages/home/HomePage'
 import ExplorePage from './pages/explore/ExplorePage'
-import UpcomingPage from './pages/upcoming/UpcomingPage'
 import CollectionsPage from './pages/collections/CollectionsPage'
 import ActivityPage from './pages/activity/ActivityPage'
 import SettingsPage from './pages/settings/SettingsPage'
@@ -39,8 +38,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <HomePage /> },
           { path: 'explore', element: <ExplorePage /> },
-          ...catalogRoutes(['genres', 'trending', 'recommendations']),
-          { path: 'upcoming', element: <UpcomingPage /> },
+          ...catalogRoutes(['recommendations']),
           { path: 'pc-check', element: <PerformancePage /> },
           {
             // 로그인(데모 세션)이 필요한 페이지

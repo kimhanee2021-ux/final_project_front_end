@@ -199,32 +199,3 @@ export const genrePreferences = [
   { name: 'Simulation', value: 7, color: '#ce91ea' },
   { name: '기타', value: 5, color: '#677ca7' },
 ]
-export const upcomingGames = [
-  {
-    id: 'upcoming-1',
-    name: 'Echoes of the Wild',
-    image: '/images/fantasy-world.png',
-    genres: ['Adventure', 'RPG'],
-    date: '2026. 11. 12',
-    description: '잊혀진 왕국에서 시작되는 새로운 모험',
-    demo: true,
-  },
-  {
-    id: 'upcoming-2',
-    name: 'Midnight Circuit',
-    image: image('cyberpunk-wide'),
-    genres: ['Action', 'Sports'],
-    date: '2026. 12. 04',
-    description: '네온 빛 도시를 가로지르는 질주',
-    demo: true,
-  },
-  {
-    id: 'upcoming-3',
-    name: 'Little Blue Ocean',
-    image: image('dave-wide'),
-    genres: ['Simulation', 'Indie'],
-    date: '2027. 01. 15',
-    description: '당신만의 바다 이야기를 만들어보세요',
-    demo: true,
-  },
-]

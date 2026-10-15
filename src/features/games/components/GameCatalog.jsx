@@ -7,14 +7,8 @@ import GSIcon from '../../../components/common/GSIcon'
 import { useAuth } from '../../auth/context/AuthContext'
 import SteamLibraryPanel from '../../library/components/SteamLibraryPanel'
 
-// 홈, 장르, 인기, 추천, 내 게임, 위시리스트가 mode만 바꿔 함께 쓰는 게임 목록 (더미 데이터 기반)
+// 홈, 추천, 내 게임, 위시리스트가 mode만 바꿔 함께 쓰는 게임 목록 (더미 데이터 기반)
 const pageTitles = {
-  genres: ['Find Your Genre', '취향별 장르 탐색', '지금 당신이 빠져들고 싶은 세계는 무엇인가요?'],
-  trending: [
-    'New & Trending',
-    '지금 인기 있는 게임',
-    '플레이어들이 사랑하는 게임을 평점순으로 만나보세요.',
-  ],
   library: ['My Games', '내 게임', '당신의 다음 모험은 이미 라이브러리에 있을지도 몰라요.'],
   wishlist: ['Your Wishlist', '나의 위시리스트', '언젠가 만나고 싶은 세계를 한곳에 모아두세요.'],
   recommendations: [
@@ -84,8 +78,7 @@ export default function GameCatalog({ mode = 'home' }) {
         .toLowerCase()
         .includes(query.trim().toLowerCase())
   )
-  if (sort === 'rating' || (mode === 'trending' && sort === 'featured'))
-    games.sort((a, b) => b.rating - a.rating)
+  if (sort === 'rating') games.sort((a, b) => b.rating - a.rating)
   if (sort === 'name') games.sort((a, b) => a.name.localeCompare(b.name))
   const visibleGames =
     mode === 'home' && genre === 'All' && !query.trim() ? games.slice(0, 6) : games
@@ -120,7 +113,7 @@ export default function GameCatalog({ mode = 'home' }) {
               value={sort}
               onChange={event => setSort(event.target.value)}
             >
-              <option value="featured">{mode === 'trending' ? '인기순' : '추천순'}</option>
+              <option value="featured">추천순</option>
               <option value="rating">평점 높은 순</option>
               <option value="name">이름순</option>
             </select>

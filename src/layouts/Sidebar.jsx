@@ -5,10 +5,6 @@ import GSIcon from '../components/common/GSIcon'
 
 const primaryLinks = [
   ['/', 'home', 'Home', '홈'],
-  ['/explore', 'compass', 'Explore', '탐색'],
-  ['/genres', 'grid', 'Genres', '장르'],
-  ['/trending', 'flame', 'New & Trending', '인기 게임'],
-  ['/upcoming', 'calendar', 'Upcoming', '출시 예정'],
   ['/analysis', 'chart', 'Expenditure Pattern', '소비 패턴'],
   ['/recommendations', 'spark', 'AI Optimization', '맞춤 추천'],
   ['/pc-check', 'monitor', 'PC 성능 체크', 'PC 성능 체크'],
