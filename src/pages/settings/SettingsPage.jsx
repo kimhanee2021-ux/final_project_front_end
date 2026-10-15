@@ -20,7 +20,7 @@ export default function SettingsPage() {
             <h2>화면 테마</h2>
             <p>편안한 밝기로 게임을 탐색하세요.</p>
           </div>
-          <div className="flex gap-[7px]" role="group" aria-label="테마 설정">
+          <div className="flex flex-wrap gap-[7px]" role="group" aria-label="테마 설정">
             {[
               ['dark', 'moon', '다크'],
               ['light', 'sun', '라이트'],
@@ -43,7 +43,7 @@ export default function SettingsPage() {
             <h2>메뉴 언어</h2>
             <p>탐색 메뉴와 목록 제목의 표시 언어를 선택하세요.</p>
           </div>
-          <div className="flex gap-[7px]" role="group" aria-label="메뉴 언어 설정">
+          <div className="flex flex-wrap gap-[7px]" role="group" aria-label="메뉴 언어 설정">
             {[
               ['en', 'English'],
               ['ko', '한국어'],
