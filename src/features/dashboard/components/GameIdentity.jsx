@@ -7,7 +7,7 @@ export default function GameIdentity({ game, size = 'default' }) {
       <div className={`game-art art-${game.art} ${game.thumbnailUrl ? 'has-image' : ''} ${large ? 'w-[55px]! h-[65px]! text-[18px]!' : 'max-[580px]:w-[40px]! max-[580px]:h-[47px]!'}`} aria-hidden="true">
         {game.thumbnailUrl ? <img src={game.thumbnailUrl} alt="" loading="lazy" /> : <span>{game.initials}</span>}
       </div>
-      <div>
+      <div className="min-w-0">
         <strong className={`font-[650] block ${large ? 'text-[19px]' : 'text-[12px] max-[580px]:text-[13px]'}`}>{game.name}</strong>
         <small className="text-[9px] text-muted block mt-[3px]">
           {game.genre} <span className="px-[4px]">·</span> {game.platform}
