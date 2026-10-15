@@ -10,7 +10,10 @@ function RankingList({ title, items, onSelect }) {
       <ol className="list-none m-0 p-0 grid gap-[10px]">
         {items.map(({ game, hourly }) => (
           <li key={game.id} className="flex items-center justify-between gap-[10px] min-w-0">
-            <button className="min-w-0 bg-transparent p-0 text-left rounded-[6px]" onClick={() => onSelect(game)}>
+            <button
+              className="flex-1 min-w-0 bg-transparent p-0 text-left rounded-[6px] [&_strong]:line-clamp-2 [&_strong]:break-words"
+              onClick={() => onSelect(game)}
+            >
               <GameIdentity game={game} compact />
             </button>
             <span className="text-[12px] font-[650] whitespace-nowrap">
@@ -38,7 +41,7 @@ export default function ValueRankingCard({ ranking, onSelect, confirmed = false 
           description="유료 게임을 1시간 이상 플레이하면 가성비를 계산해 드려요."
         />
       ) : (
-        <div className="grid grid-cols-2 gap-[18px] mt-[12px] max-[580px]:grid-cols-1">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-[18px] mt-[12px]">
           <RankingList title="본전 뽑은 게임" items={best} onSelect={onSelect} />
           {worst.length > 0 && <RankingList title="조금 아쉬운 게임" items={worst} onSelect={onSelect} />}
         </div>
