@@ -12,7 +12,7 @@ export default function CoachPortrait() {
       onError={() => setSrc(COACH_CHARACTER_FALLBACK)}
       className={
         isPhoto
-          ? 'absolute inset-0 h-full w-full object-cover object-[50%_15%]'
+          ? 'absolute inset-0 h-full w-full object-cover object-[50%_22%]'
           : 'absolute inset-x-0 bottom-0 mx-auto h-[104%] w-full object-contain object-bottom'
       }
     />

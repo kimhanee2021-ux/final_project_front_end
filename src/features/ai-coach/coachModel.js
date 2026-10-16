@@ -2,8 +2,10 @@
 
 export const COACH_NAME = '코치 세나'
 export const COACH_PATH = '/ai-coach'
-// 코치 세나 사진 (Gemini로 만든 가상 인물, 실존 인물 아님). 바꾸려면 public/images의 파일만 교체
-export const COACH_PORTRAIT = '/images/ai-coach-sena.png'
+// 코치 세나 사진 (AI 이미지 도구로 만든 가상 인물, 실존 인물 아님). 바꾸려면 public/images의 파일만 교체
+// PORTRAIT: 코치 화면 왼쪽 큰 사진(세로 3:4), FACE: 말풍선 옆 동그란 얼굴용으로 얼굴만 잘라 둔 정사각형
+export const COACH_PORTRAIT = '/images/ai-coach-sena.jpg'
+export const COACH_FACE = '/images/ai-coach-sena-face.jpg'
 // 사진 파일이 없을 때 대신 쓰는 직접 그린 일러스트
 export const COACH_AVATAR_FALLBACK = '/images/ai-coach-avatar.svg'
 export const COACH_CHARACTER_FALLBACK = '/images/ai-coach-character.svg'
