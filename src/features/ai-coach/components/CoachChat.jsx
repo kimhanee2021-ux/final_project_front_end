@@ -28,6 +28,27 @@ function GameCards({ games }) {
   )
 }
 
+// 답변에 쓰인 숫자의 원래 값. AI가 숫자를 지어내지 않고 소비 분석 데이터를 그대로 썼다는 걸 직접 확인할 수 있게 한다
+function Evidence({ items }) {
+  if (!items?.length) return null
+  return (
+    <details className="mt-[8px] text-[11px] text-muted group">
+      <summary className="cursor-pointer select-none inline-flex items-center gap-[4px] hover:text-text">
+        <GSIcon name="info" size={13} />근거 보기 ({items.length})
+      </summary>
+      <dl className="mt-[8px] grid gap-[4px] rounded-[10px] border border-border bg-surface px-[12px] py-[10px]">
+        {items.map(item => (
+          <div key={item.label} className="flex justify-between gap-[16px]">
+            <dt>{item.label}</dt>
+            <dd className="m-0 font-[650] text-text tabular-nums whitespace-nowrap">{item.value}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="mt-[6px] text-[10px]">숫자는 AI가 아니라 서버가 내 소비 분석 데이터에서 직접 채워 넣은 값이에요.</p>
+    </details>
+  )
+}
+
 function Message({ message }) {
   if (message.role === 'user') {
     return (
@@ -48,6 +69,7 @@ function Message({ message }) {
           {message.text}
         </p>
         <GameCards games={message.games} />
+        <Evidence items={message.evidence} />
       </div>
     </div>
   )

@@ -23,7 +23,7 @@ export function useCoachChat() {
     try {
       const reply = await askCoach(question, history)
       if (mounted.current) {
-        setMessages(current => [...current, { id: Date.now() + 1, role: 'model', text: reply.answer, games: reply.games ?? [] }])
+        setMessages(current => [...current, { id: Date.now() + 1, role: 'model', text: reply.answer, games: reply.games ?? [], evidence: reply.evidence ?? [] }])
       }
     } catch (error) {
       if (mounted.current) {
