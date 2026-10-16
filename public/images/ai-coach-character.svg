@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 360" role="img" aria-label="손을 흔드는 AI 소비 코치 세나">
+  <!-- GameSense AI 소비 코치 캐릭터 상반신 (직접 그린 일러스트, 외부 저작물 아님). 배경은 투명이라 화면 색 위에 그린다 -->
+  <!-- 반짝이 장식 -->
+  <path d="M40 90 l5 12 l12 5 l-12 5 l-5 12 l-5 -12 l-12 -5 l12 -5 Z" fill="#35edbe" opacity="0.8"/>
+  <path d="M262 70 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 Z" fill="#b6a8ff" opacity="0.9"/>
+  <circle cx="58" cy="200" r="4" fill="#b6a8ff" opacity="0.7"/>
+
+  <!-- 후드 뒤쪽 -->
+  <ellipse cx="150" cy="238" rx="78" ry="26" fill="#2c2370"/>
+  <!-- 몸통 (후드티) -->
+  <path d="M38 362 C42 286 92 244 150 244 C208 244 258 286 262 362 Z" fill="#3a2f86"/>
+  <path d="M150 262 L150 362" stroke="#2c2370" stroke-width="4"/>
+  <path d="M126 250 C128 268 132 280 136 292" fill="none" stroke="#e9e5ff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M174 250 C172 268 168 280 164 292" fill="none" stroke="#e9e5ff" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="136" cy="296" r="5" fill="#e9e5ff"/>
+  <circle cx="164" cy="296" r="5" fill="#e9e5ff"/>
+  <!-- 가슴 로고 (게임패드) -->
+  <rect x="186" y="300" width="40" height="24" rx="12" fill="#35edbe" opacity="0.9"/>
+  <path d="M196 312 h8 M200 308 v8" stroke="#2c2370" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="214" cy="309" r="2.5" fill="#2c2370"/>
+  <circle cx="219" cy="315" r="2.5" fill="#2c2370"/>
+
+  <!-- 손 흔드는 팔 -->
+  <path d="M226 284 C244 262 254 240 262 214" fill="none" stroke="#3a2f86" stroke-width="34" stroke-linecap="round"/>
+  <circle cx="264" cy="196" r="20" fill="#f7d6bb"/>
+  <path d="M256 180 l-4 -12 M264 177 l0 -13 M272 180 l4 -12" stroke="#f7d6bb" stroke-width="8" stroke-linecap="round"/>
+  <path d="M286 176 q8 8 2 18 M292 166 q14 14 4 32" fill="none" stroke="#35edbe" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- 목 -->
+  <rect x="128" y="196" width="44" height="58" rx="18" fill="#f2c9a8"/>
+  <!-- 귀 -->
+  <circle cx="84" cy="150" r="12" fill="#f2c9a8"/>
+  <circle cx="216" cy="150" r="12" fill="#f2c9a8"/>
+  <!-- 얼굴 -->
+  <circle cx="150" cy="140" r="68" fill="#f7d6bb"/>
+  <!-- 머리카락 -->
+  <path d="M82 152 C68 70 120 50 152 52 C198 54 234 84 218 154 C212 124 198 108 176 100 C166 118 136 126 106 118 C94 128 86 140 82 152 Z" fill="#2c2240"/>
+  <path d="M176 100 C184 112 190 124 192 136 C186 126 178 116 170 110 Z" fill="#2c2240"/>
+  <!-- 눈썹 -->
+  <path d="M114 132 q12 -8 24 -2 M162 130 q12 -6 24 2" fill="none" stroke="#2c2240" stroke-width="4" stroke-linecap="round"/>
+  <!-- 눈 -->
+  <ellipse cx="126" cy="152" rx="8" ry="10" fill="#2c2240"/>
+  <ellipse cx="174" cy="152" rx="8" ry="10" fill="#2c2240"/>
+  <circle cx="129" cy="148" r="3" fill="#ffffff"/>
+  <circle cx="177" cy="148" r="3" fill="#ffffff"/>
+  <!-- 볼 -->
+  <ellipse cx="108" cy="174" rx="11" ry="6" fill="#ff9db0" opacity="0.55"/>
+  <ellipse cx="192" cy="174" rx="11" ry="6" fill="#ff9db0" opacity="0.55"/>
+  <!-- 웃는 입 -->
+  <path d="M132 178 Q150 198 168 178 Q150 186 132 178 Z" fill="#b5523b"/>
+
+  <!-- 헤드셋 -->
+  <path d="M80 150 C80 50 220 50 220 150" fill="none" stroke="#35edbe" stroke-width="12" stroke-linecap="round"/>
+  <rect x="64" y="126" width="28" height="46" rx="13" fill="#35edbe" stroke="#1d8f75" stroke-width="3"/>
+  <rect x="208" y="126" width="28" height="46" rx="13" fill="#35edbe" stroke="#1d8f75" stroke-width="3"/>
+  <path d="M78 170 Q86 206 120 204" fill="none" stroke="#35edbe" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="124" cy="204" r="9" fill="#1d8f75"/>
+</svg>

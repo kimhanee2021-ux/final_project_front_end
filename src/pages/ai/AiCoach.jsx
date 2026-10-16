@@ -23,9 +23,9 @@ export default function AiCoach() {
           action={<Link to="/login?next=/ai-coach" className={TEXT_BUTTON}>로그인하기</Link>}
         />
       ) : (
-        <div className="grid grid-cols-[minmax(0,1fr)_300px] gap-[20px] items-start max-[1000px]:grid-cols-1">
+        <div className="grid gap-[20px]">
           <CoachChat />
-          <div className="grid gap-[20px]">
+          <div className="grid grid-cols-2 gap-[20px] items-start max-[760px]:grid-cols-1">
             <BudgetCard />
             <Card title="이렇게 활용해 보세요">
               <ul className="list-none m-0 mt-[14px] p-0 grid gap-[10px] text-[12px] leading-[1.6]">
