@@ -10,6 +10,7 @@ const primaryLinks = [
   ['/trending', 'flame', 'New & Trending', '인기 게임'],
   ['/upcoming', 'calendar', 'Upcoming', '출시 예정'],
   ['/analysis', 'chart', 'Expenditure Pattern', '소비 패턴'],
+  ['/coach', 'spark', 'AI Spending Coach', 'AI 소비 코치'],
   ['/recommendations', 'spark', 'AI Optimization', '맞춤 추천'],
   ['/pc-check', 'monitor', 'PC 성능 체크', 'PC 성능 체크'],
   ['/community', 'users', 'Community', '커뮤니티'],
