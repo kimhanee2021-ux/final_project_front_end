@@ -32,3 +32,12 @@ test('예산 입력은 쉼표·원·만 단위를 이해하고 범위를 벗어�
   assert.equal(parseBudgetInput('삼만원'), null)
   assert.equal(parseBudgetInput(''), null)
 })
+
+test('다른 화면에서 코치로 넘어가는 주소는 질문을 인코딩하고 길이를 제한한다', async () => {
+  const { coachLink, MAX_MESSAGE_LENGTH } = await import('../src/features/ai-coach/coachModel.js')
+  assert.equal(coachLink(), '/ai-coach')
+  assert.equal(coachLink('  '), '/ai-coach')
+  assert.equal(coachLink('이번 달 얼마 썼어?'), '/ai-coach?q=' + encodeURIComponent('이번 달 얼마 썼어?'))
+  const long = decodeURIComponent(coachLink('a'.repeat(900)).split('?q=')[1])
+  assert.equal(long.length, MAX_MESSAGE_LENGTH)
+})

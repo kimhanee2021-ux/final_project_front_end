@@ -1,27 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import GSIcon from '../../../components/common/GSIcon'
 import { PRIMARY_BUTTON } from '../../spending/styles'
-import { MAX_MESSAGE_LENGTH, SUGGESTED_QUESTIONS } from '../coachModel'
+import { COACH_NAME, MAX_MESSAGE_LENGTH, SUGGESTED_QUESTIONS } from '../coachModel'
+import CoachAvatar from './CoachAvatar'
+import CoachPortrait from './CoachPortrait'
 import { useCoachChat } from '../hooks/useCoachChat'
 
 const BUBBLE = 'rounded-[14px] px-[16px] py-[12px] text-[12px] leading-[1.75] whitespace-pre-line'
-// 코치 캐릭터 (public/images, 직접 그린 일러스트). 말풍선 옆 얼굴은 avatar, 왼쪽 큰 그림은 character. 다른 이미지로 바꾸려면 파일만 교체
-const COACH_NAME = '코치 세나'
-const COACH_AVATAR = '/images/ai-coach-avatar.svg'
-const COACH_CHARACTER = '/images/ai-coach-character.svg'
-
-function CoachAvatar({ size = 40 }) {
-  return (
-    <img
-      src={COACH_AVATAR}
-      alt=""
-      width={size}
-      height={size}
-      className="rounded-full shrink-0 shadow-[0_4px_14px_#0003] ring-2 ring-surface"
-    />
-  )
-}
-
 function GameCards({ games }) {
   if (!games?.length) return null
   return (
@@ -69,10 +54,19 @@ function Message({ message }) {
 }
 
 // AI 게임 소비 코치와의 대화 화면. 왼쪽에 큰 코치 캐릭터와 추천 질문, 오른쪽에 대화(답변에 추천 게임 카드).
-export default function CoachChat() {
+// initialQuestion: 다른 화면에서 /ai-coach?q=질문 으로 넘어왔을 때 처음 한 번 자동으로 보낼 질문
+export default function CoachChat({ initialQuestion, onInitialQuestionSent }) {
   const { messages, pending, send, reset } = useCoachChat()
+  const initialSent = useRef(false)
   const [input, setInput] = useState('')
   const listRef = useRef(null)
+
+  useEffect(() => {
+    if (!initialQuestion || initialSent.current) return
+    initialSent.current = true
+    send(initialQuestion)
+    onInitialQuestionSent?.()
+  }, [initialQuestion, onInitialQuestionSent, send])
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' })
@@ -86,15 +80,11 @@ export default function CoachChat() {
 
   return (
     <section className="grid grid-cols-[minmax(240px,0.72fr)_minmax(0,1.65fr)] gap-[12px] p-[12px] bg-surface border border-border rounded-[18px] shadow-[var(--shadow)] h-[min(720px,calc(100vh-200px))] min-h-[580px] max-[1000px]:grid-cols-1 max-[1000px]:h-auto">
-      {/* 왼쪽: 크게 보이는 코치 캐릭터 + 인사 + 추천 질문 */}
+      {/* 왼쪽: 크게 보이는 코치 세나 사진 + 인사 + 추천 질문 */}
       <aside className="flex flex-col min-h-0 overflow-hidden rounded-[14px] bg-surface-soft border border-border">
         <div className="relative flex-1 min-h-[210px] overflow-hidden max-[1000px]:min-h-[230px] max-[1000px]:flex-none">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_75%,var(--primary-soft),transparent_70%)]" />
-          <img
-            src={COACH_CHARACTER}
-            alt={COACH_NAME + ' 캐릭터'}
-            className="absolute inset-x-0 bottom-0 mx-auto h-[104%] w-full object-contain object-bottom"
-          />
+          <CoachPortrait />
           <div className="absolute inset-x-0 bottom-0 h-[56px] bg-[linear-gradient(to_top,var(--surface-soft),transparent)]" />
         </div>
         <div className="relative min-h-0 overflow-y-auto px-[20px] pb-[18px] pt-[4px]">

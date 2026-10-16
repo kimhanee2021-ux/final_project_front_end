@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom'
+import { useCallback } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import Card from '../../components/common/Card'
 import EmptyState from '../../components/common/EmptyState'
 import { useAuth } from '../../features/auth/context/AuthContext'
@@ -9,6 +10,10 @@ import { TEXT_BUTTON } from '../../features/spending/styles'
 // AI 게임 소비 코치 (/ai-coach). 실제 회원만 이용한다 (데모 체험은 소비 데이터가 없어 안내만).
 export default function AiCoach() {
   const { isAuthenticated } = useAuth()
+  // 소비 패턴 등에서 /ai-coach?q=질문 으로 오면 그 질문을 바로 보내고, 새로고침해도 다시 보내지 않게 주소에서 지운다
+  const [searchParams, setSearchParams] = useSearchParams()
+  const initialQuestion = searchParams.get('q')?.trim() || null
+  const clearQuestion = useCallback(() => setSearchParams({}, { replace: true }), [setSearchParams])
   return (
     <>
       <div className="pt-[26px] mb-[26px] max-[600px]:pt-[22px]">
@@ -24,7 +29,7 @@ export default function AiCoach() {
         />
       ) : (
         <div className="grid gap-[20px]">
-          <CoachChat />
+          <CoachChat initialQuestion={initialQuestion} onInitialQuestionSent={clearQuestion} />
           <div className="grid grid-cols-2 gap-[20px] items-start max-[760px]:grid-cols-1">
             <BudgetCard />
             <Card title="이렇게 활용해 보세요">

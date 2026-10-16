@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../../auth/context/AuthContext'
 import { useMySpending } from '../hooks/useMySpending'
 import Skeleton from '../../../components/common/Skeleton'
@@ -15,6 +16,8 @@ import UnplayedSpendingCard from '../../dashboard/components/UnplayedSpendingCar
 import PurchasedGamesTable from '../../dashboard/components/PurchasedGamesTable'
 import GameDetailDialog from '../../dashboard/components/GameDetailDialog'
 import ValueRankingCard from './ValueRankingCard'
+import CoachPromptCard from '../../ai-coach/components/CoachPromptCard'
+import { coachLink } from '../../ai-coach/coachModel'
 import { summarize, genreSpending } from '../../dashboard/spendingMetrics'
 import { getSpendingInsights } from '../../dashboard/spendingInsights'
 import { amountSourceCounts, periodStart, recentFocus, spendingBuckets, valueRanking } from '../spendingModel'
@@ -224,6 +227,10 @@ export default function MySpendingAnalysis({ view = 'analysis' }) {
           )}
           {importButton}
           {syncButton}
+          <Link to={coachLink()} className={TEXT_BUTTON}>
+            AI 코치에게 물어보기
+            <GSIcon name="spark" size={15} />
+          </Link>
         </div>
       </div>
       {error && (
@@ -265,6 +272,7 @@ export default function MySpendingAnalysis({ view = 'analysis' }) {
           onExplore={() => explore({ filter: 'unplayed' })}
         />
       </div>
+      <CoachPromptCard />
       {history && (
         <div className="mb-[20px]">
           <ValueRankingCard ranking={valueRanking(games)} onSelect={setSelectedGame} confirmed />
