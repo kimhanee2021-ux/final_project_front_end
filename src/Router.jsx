@@ -8,7 +8,7 @@ import CollectionsPage from './pages/collections/CollectionsPage'
 import ActivityPage from './pages/activity/ActivityPage'
 import SettingsPage from './pages/settings/SettingsPage'
 import AnalysisPage from './pages/analysis/AnalysisPage'
-import CoachPage from './pages/coach/CoachPage'
+import AiCoach from './pages/ai/AiCoach'
 import PerformancePage from './pages/performance/PerformancePage'
 import MyPage from './pages/mypage/MyPage'
 import AuthPage from './pages/auth/AuthPage'
@@ -52,7 +52,7 @@ const router = createBrowserRouter([
               { path: 'activity', element: <ActivityPage /> },
               { path: 'settings', element: <SettingsPage /> },
               { path: 'mypage', element: <MyPage /> },
-              { path: 'coach', element: <CoachPage /> },
+              { path: 'ai-coach', element: <AiCoach /> },
               { path: 'community', element: <CommunityPage /> },
               { path: 'community/new', element: <CommunityWritePage /> },
               { path: 'community/:id', element: <CommunityPostPage /> },

@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { coachErrorMessage, parseBudgetInput, toHistory } from '../src/features/coach/coachModel.js'
+import { coachErrorMessage, parseBudgetInput, toHistory } from '../src/features/ai-coach/coachModel.js'
 
 test('대화 기록은 오류 말풍선을 빼고 최근 10개만 user/model 역할로 보낸다', () => {
   const messages = [

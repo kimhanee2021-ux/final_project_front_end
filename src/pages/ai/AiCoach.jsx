@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom'
 import Card from '../../components/common/Card'
 import EmptyState from '../../components/common/EmptyState'
 import { useAuth } from '../../features/auth/context/AuthContext'
-import CoachChat from '../../features/coach/components/CoachChat'
-import BudgetCard from '../../features/coach/components/BudgetCard'
+import CoachChat from '../../features/ai-coach/components/CoachChat'
+import BudgetCard from '../../features/ai-coach/components/BudgetCard'
 import { TEXT_BUTTON } from '../../features/spending/styles'
 
-// AI 게임 소비 코치 (/coach). 실제 회원만 이용한다 (데모 체험은 소비 데이터가 없어 안내만).
-export default function CoachPage() {
+// AI 게임 소비 코치 (/ai-coach). 실제 회원만 이용한다 (데모 체험은 소비 데이터가 없어 안내만).
+export default function AiCoach() {
   const { isAuthenticated } = useAuth()
   return (
     <>
@@ -20,7 +20,7 @@ export default function CoachPage() {
         <EmptyState
           title="로그인하면 코치를 만날 수 있어요"
           description="스팀 계정을 연동한 회원의 실제 소비 기록으로 답해요. 데모 체험에서는 이용할 수 없어요."
-          action={<Link to="/login?next=/coach" className={TEXT_BUTTON}>로그인하기</Link>}
+          action={<Link to="/login?next=/ai-coach" className={TEXT_BUTTON}>로그인하기</Link>}
         />
       ) : (
         <div className="grid grid-cols-[minmax(0,1fr)_300px] gap-[20px] items-start max-[1000px]:grid-cols-1">
