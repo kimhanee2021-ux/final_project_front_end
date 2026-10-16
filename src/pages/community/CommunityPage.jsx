@@ -4,11 +4,15 @@ import GSIcon from '../../components/common/GSIcon'
 import { useAuth } from '../../features/auth/context/AuthContext'
 import { BOARD_CATEGORIES, dateTimeLabel, postAuthorLabel } from '../../features/board/boardModel'
 import { useBoardPosts } from '../../features/board/hooks/useBoardPosts'
+// [추가] 리뷰·평점 칩을 눌렀을 때 게시글 대신 보여줄 리뷰 화면
+import ReviewBoard from '../../features/review/components/ReviewBoard'
 
 export default function CommunityPage() {
   const { isAuthenticated } = useAuth()
   const [params, setParams] = useSearchParams()
   const category = BOARD_CATEGORIES.includes(params.get('category')) ? params.get('category') : 'All'
+  // [추가] ?view=reviews 이면 리뷰·평점 화면을 보여준다
+  const isReviewView = params.get('view') === 'reviews'
   const [keyword, setKeyword] = useState('')
   const { posts, total, last, error, loading, loadingMore, loadMore, retry } = useBoardPosts({
     category: category === 'All' ? '' : category,
@@ -21,6 +25,19 @@ export default function CommunityPage() {
         const next = new URLSearchParams(previous)
         if (value === 'All') next.delete('category')
         else next.set('category', value)
+        next.delete('view') // [추가] 카테고리를 고르면 리뷰 화면을 끈다
+        return next
+      },
+      { replace: true }
+    )
+
+  // [추가] 리뷰·평점 칩: 카테고리를 지우고 ?view=reviews 를 붙인다
+  const openReviews = () =>
+    setParams(
+      previous => {
+        const next = new URLSearchParams(previous)
+        next.delete('category')
+        next.set('view', 'reviews')
         return next
       },
       { replace: true }
@@ -73,6 +90,14 @@ export default function CommunityPage() {
                   {item === 'All' ? '전체' : item}
                 </button>
               ))}
+              {/* [추가] 리뷰·평점 칩: 누르면 게시글 대신 리뷰 화면을 보여준다 */}
+              <button
+                className={isReviewView ? 'bg-gs-accent! text-[#04291f]! font-[650]! border-gs-accent!' : ''}
+                aria-pressed={isReviewView}
+                onClick={openReviews}
+              >
+                리뷰·평점
+              </button>
             </div>
             <label className="flex items-center gap-[9px] min-w-[200px] px-[14px] h-[38px] border border-gs-border rounded-[25px] bg-gs-search text-gs-muted shrink-0">
               <GSIcon name="search" size={16} className="shrink-0" />
@@ -86,7 +111,10 @@ export default function CommunityPage() {
             </label>
           </div>
 
-          {loading ? (
+          {/* [추가] 리뷰 화면이면 게시글 대신 ReviewBoard를 보여준다. 아니면 아래 기존 로직 그대로 */}
+          {isReviewView ? (
+            <ReviewBoard />
+          ) : loading ? (
             <div className="p-[70px_20px] text-center border border-dashed border-gs-border rounded-[12px] [&>svg]:text-gs-muted" role="status">
               <GSIcon name="search" size={38} />
               <h3 className="text-[18px] mt-[18px]">게시글을 불러오는 중이에요</h3>
