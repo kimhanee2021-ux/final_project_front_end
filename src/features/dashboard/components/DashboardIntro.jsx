@@ -1,5 +1,6 @@
 import GSIcon from '../../../components/common/GSIcon'
-export default function DashboardIntro({ view, asOf, badgeLabel = '데모 데이터' }) {
+// aside: 제목 오른쪽에 함께 둘 요소 (예: AI 코치 입구). 없으면 기준 날짜 배지만 보인다.
+export default function DashboardIntro({ view, asOf, badgeLabel = '데모 데이터', aside }) {
   return (
     <div className="flex justify-between items-center mb-[29px] gap-[20px] max-[760px]:flex-col max-[760px]:gap-[13px] max-[760px]:mb-[23px]">
       <div>
@@ -22,11 +23,14 @@ export default function DashboardIntro({ view, asOf, badgeLabel = '데모 데이
         </p>
       </div>
 
+      <div className="flex flex-col items-end gap-[12px] max-[760px]:items-start max-[760px]:self-stretch">
+      {aside}
       <div className="flex items-center gap-[7px] text-[10px] text-muted whitespace-nowrap max-[1200px]:flex-wrap max-[1200px]:max-w-[145px] max-[760px]:max-w-none">
         <span className="w-[6px] h-[6px] rounded-full bg-[#8c72e9] shrink-0" />
         {badgeLabel}
         <GSIcon name="info" size={14} />
         <span className="border-l border-border ml-[3px] pl-[10px] max-[1200px]:ml-0 max-[1200px]:pl-0 max-[1200px]:border-0 max-[760px]:inline max-[760px]:border-l max-[760px]:border-border max-[760px]:pl-[8px]">{asOf.replaceAll('-', '.')} 기준</span>
+      </div>
       </div>
     </div>
   )
