@@ -17,7 +17,8 @@ export default function PcUpgradePanel({result}){
      <div className="pc-upgrade-guidance"><h3>추천 이유</h3><p>{reason}</p><h3>장착 전 확인</h3><p>{compatibilityNote}</p></div>
      {offer.observedDropPercent&&<p className="pc-part-drop">이전 수집가 대비 {offer.observedDropPercent}% 하락 <small>공식 할인율이 아니에요 · 이전 {offer.previousPriceKrw.toLocaleString('ko-KR')}원 ({new Date(offer.previousCheckedAt).toLocaleString('ko-KR')})</small></p>}
      <p>{offer.note}</p><ul>{offer.part.compatibilityChecks.map(text=><li key={text}>{text}</li>)}</ul>
-     <div className="pc-part-links"><a href={`https://prod.danawa.com/info/?pcode=${offer.part.productCode}`} target="_blank" rel="noreferrer">가격 출처 ↗</a><a href={offer.part.manufacturerSource} target="_blank" rel="noreferrer">호환 확인 자료 ↗</a></div><small>가격 확인 {new Date(offer.checkedAt).toLocaleString('ko-KR')}</small>
+     {(offer.retailQuotes??[]).filter(quote=>quote.url!==offer.priceSourceUrl&&quote.status==='OBSERVED'&&Number.isFinite(quote.priceKrw)&&quote.priceKrw>0).map(quote=><div key={quote.url} className="pc-upgrade-guidance"><h3>다른 판매처 가격</h3><p><a href={quote.url} target="_blank" rel="noreferrer">{quote.retailer} ↗</a> · {quote.priceKrw.toLocaleString('ko-KR')}원</p><p>{quote.note}</p><small>조회 {new Date(quote.checkedAt).toLocaleString('ko-KR')}</small></div>)}
+     <div className="pc-part-links"><a href={offer.priceSourceUrl??`https://prod.danawa.com/info/?pcode=${offer.part.productCode}`} target="_blank" rel="noreferrer">{offer.priceSourceName??'다나와'} 가격 ↗</a><a href={offer.part.manufacturerSource} target="_blank" rel="noreferrer">호환 확인 자료 ↗</a></div><small>가격 확인 {new Date(offer.checkedAt).toLocaleString('ko-KR')}</small>
     </article>)}</div>
     <p className="pc-form-hint">가격은 최대 6시간 내 수집값이에요. 배송비·재고·쿠폰·카드 조건은 판매처에서 확인해 주세요. 확인된 근거가 없으면 특가나 할인율을 붙이지 않아요.</p>
    </>}
