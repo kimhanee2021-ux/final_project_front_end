@@ -8,6 +8,7 @@ export default function PcUpgradePanel({result}){
  return <section className="pc-panel pc-upgrade-diagnosis">
   <PanelHeading icon="bulb" title="AI 추천 업그레이드" subtitle="내 PC와 게임의 분석 결과를 바탕으로, 필요한 개선 방향을 찾아요."/>
   {!ready?<div className="pc-upgrade-empty"><GSIcon name="cpu" size={30}/><div><h3>{result?'AI 분석을 완료하면 추천을 확인할 수 있어요.':'사양을 확인하면 AI가 업그레이드를 분석해요.'}</h3><p>{result?'공식 비교 결과만으로 AI 추천을 대신하지 않아요.':'CPU · GPU · RAM · 저장공간과 부품 호환 조건을 함께 검토해요.'}</p></div><span>{result?.explanationStatus==='RATE_LIMITED'?'AI 이용 한도 도달':'AI 분석 대기'}</span></div>:<>
+   {(result.componentAdvice??[]).length>0&&<div className="pc-component-advice-grid">{result.componentAdvice.map(item=><article key={item.category} className="pc-component-advice"><h3>{item.category==='SSD'?'저장장치':item.category}</h3><strong>{({UPGRADE:'교체 검토',KEEP:'현재 구성 유지 가능',CHECK:'추가 확인 필요'})[item.status]??'추가 확인 필요'}</strong><p>{item.reason}</p><small>{item.compatibilityNote}</small>{item.offer&&<div><p>{item.offer.part.name}</p><strong>{partPriceLabel(item.offer)}</strong><a href={item.offer.priceSourceUrl} target="_blank" rel="noreferrer">가격·판매처 확인 ↗</a></div>}</article>)}</div>}
    <div className="pc-upgrade-guidance"><h3>AI가 분석한 개선 방향</h3><ul>{result.upgradeChecks.map((text,i)=><li key={i}>{text}</li>)}</ul></div>
    {recommendations.length===0?<p className="pc-form-hint">현재 근거와 조사한 후보에서는 AI가 추천할 교체 부품을 선택하지 않았어요. 위 분석에서 추가로 확인할 정보를 살펴보세요.</p>:<>
     <p className="pc-form-hint">AI가 조사된 후보 중 검토할 부품을 골랐어요. 장착 호환성과 성능 향상은 아래 조건을 확인해야 해요.</p>

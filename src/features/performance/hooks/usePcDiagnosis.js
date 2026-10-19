@@ -11,8 +11,14 @@ export function usePcDiagnosis(){
  function applySpecs(values){const pc=normalizeSpecs(values);cancel();specsRef.current=pc;setSpecs(pc);setResults({});setGameErrors({});setSelected(null);setError('')}
  async function diagnoseGames(games,expectedSpecs){const pc=specsRef.current;if(expectedSpecs!==undefined&&expectedSpecs!==pc)return;if(!pc){setError('먼저 시스템 정보 사진에서 PC 사양을 확인해 주세요.');return}cancel();const id=++sequence.current;setError('');setGameErrors(old=>{const next={...old};for(const game of games)delete next[game.appId];return next})
   if(games.length>1){
-   const request=new AbortController();controller.current=request;setBusy(-1);const timer=setTimeout(()=>request.abort(),150000)
-   try{const responses=await assessPcBatch(pc,games.slice(0,5).map(game=>game.appId),request.signal);if(sequence.current!==id)return;setResults(old=>({...old,...Object.fromEntries(responses.map(result=>[result.appId,result]))}));if(responses.length)setSelected(responses[0].appId)}
+   const request=new AbortController();controller.current=request;setBusy(-1);const timer=setTimeout(()=>request.abort(),240000)
+   try{for(let offset=0;offset<games.length;offset+=5){
+    if(sequence.current!==id)return
+    const responses=await assessPcBatch(pc,games.slice(offset,offset+5).map(game=>game.appId),request.signal)
+    if(sequence.current!==id)return
+    setResults(old=>({...old,...Object.fromEntries(responses.map(result=>[result.appId,result]))}))
+    if(responses.length)setSelected(old=>old??responses[0].appId)
+   }}
    catch(e){if(sequence.current===id)setError(e.name==='AbortError'?'진단이 취소됐거나 시간이 초과됐어요.':e.message)}
    finally{clearTimeout(timer);if(sequence.current===id)setBusy(null)}
    return

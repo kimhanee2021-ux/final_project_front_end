@@ -16,3 +16,22 @@
 .pc-game-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}.pc-game-actions .pc-outline-action{white-space:nowrap;text-decoration:none}.pc-game-diagnosis .pc-section-top{flex-wrap:wrap;gap:12px}@media(max-width:650px){.pc-game-actions{justify-content:flex-start;gap:6px}}
 
 .pc-grade-criteria{margin-top:12px;font-size:11px;text-align:left;color:var(--gs-muted);line-height:1.7;max-width:240px}.pc-grade-criteria summary{cursor:pointer;text-align:center;color:var(--gs-text)}.pc-grade-criteria p{margin:6px 0}.pc-grade-key [aria-current="true"]{color:var(--gs-mint);font-weight:700}
+
+.pc-target-summary{padding:12px;border:1px solid var(--gs-border);border-radius:8px;margin:10px 0}.pc-target-summary strong{color:var(--gs-mint)}.pc-target-summary p{margin:6px 0;font-size:12px}.pc-target-summary small{color:var(--gs-muted)}
+
+/* 등급/제목 아래에서 설명은 패널 가로폭 전체를 사용한다. */
+.pc-ai-assessment:has(.pc-live-explanation){grid-template-columns:180px minmax(0,1fr);gap:12px 24px;align-items:start}
+.pc-ai-assessment:has(.pc-live-explanation) .pc-grade-summary{grid-column:1;grid-row:1/4}
+.pc-ai-assessment:has(.pc-live-explanation) .pc-ai-empty,.pc-ai-assessment:has(.pc-live-explanation) .pc-ai-empty>div{display:contents}
+.pc-ai-assessment:has(.pc-live-explanation) .pc-ai-orbit{grid-column:2;grid-row:1}
+.pc-ai-assessment:has(.pc-live-explanation) .pc-ai-title{grid-column:2;grid-row:1;margin-left:76px;align-self:center}
+.pc-ai-assessment:has(.pc-live-explanation) .pc-ai-subtitle{grid-column:2;grid-row:2}
+.pc-ai-assessment .pc-live-explanation{grid-column:1/-1;width:100%;min-width:0}
+.pc-resolution-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:16px 0}
+.pc-resolution-grid .pc-resolution-explanation{min-width:0;margin:0;padding:12px;border:1px solid var(--gs-border);border-radius:8px;overflow-wrap:anywhere}
+.pc-resolution-grid .pc-resolution-explanation h4{margin:0 0 10px}
+.pc-resolution-grid .pc-target-summary{padding:0;border:0;margin:0 0 10px}
+.pc-component-advice-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}
+.pc-component-advice{min-width:0;padding:14px;border:1px solid var(--gs-border);border-radius:9px;line-height:1.8;overflow-wrap:anywhere}.pc-component-advice h3{font-size:13px;margin:0 0 8px}.pc-component-advice>strong{color:var(--gs-mint);font-size:12px}.pc-component-advice p,.pc-component-advice small,.pc-component-advice a{font-size:11px}.pc-component-advice small{color:var(--gs-muted)}.pc-component-advice a{display:block;color:var(--gs-mint)}
+@media(max-width:900px){.pc-component-advice-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.pc-ai-assessment:has(.pc-live-explanation){display:flex;flex-direction:column}.pc-ai-assessment:has(.pc-live-explanation) .pc-grade-summary{align-self:center}.pc-ai-assessment:has(.pc-live-explanation) .pc-ai-title{margin-left:0}.pc-resolution-grid{grid-template-columns:1fr}.pc-component-advice-grid{grid-template-columns:1fr}}
