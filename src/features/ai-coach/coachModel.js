@@ -17,6 +17,7 @@ const MAX_TURN_LENGTH = 2000
 export const MAX_BUDGET = 10_000_000
 
 export const SUGGESTED_QUESTIONS = [
+  '내 소비 패턴을 분석해 줘',
   '이번 달 얼마 썼어?',
   '가성비 제일 좋은 게임은 뭐야?',
   '사 놓고 안 한 게임 중에 뭐부터 할까?',
