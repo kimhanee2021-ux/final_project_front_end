@@ -1,0 +1,4 @@
+import GSIcon from '../../../components/common/GSIcon'
+export default function PcGradeSummary({preparing,result}){
+ return <section className="pc-grade-summary" aria-labelledby="pc-grade-heading"><h2 id="pc-grade-heading"><GSIcon name="shield" size={19}/>종합 성능 등급</h2><div className={`pc-grade-ring${preparing?' is-preparing':''}`} role="img" aria-label={preparing?'진단 준비 중':`종합 성능 등급 ${result?.grade??'미판정'}`}><svg viewBox="0 0 180 180" aria-hidden="true"><circle cx="90" cy="90" r="73"/><circle className="pc-ring-inner" cx="90" cy="90" r="62"/></svg><div><strong>{result?.grade??'—'}</strong><span>{preparing?'진단 중':result?'공식 최소 사양 비교':'진단 전'}</span></div></div><span className="pc-grade-state">{result?(result.grade==='O'?'합격 · 확인 항목 기준':'평가 불가'):'정보 없음'}</span><div className="pc-grade-key" aria-label="등급 기준"><span>O 합격</span><span>X 평가 불가</span></div></section>
+}
