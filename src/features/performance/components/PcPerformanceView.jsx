@@ -32,4 +32,3 @@ function PcPerformanceSession({signedIn}){
   {dialog&&<PhotoDialog signedIn={signedIn} onClose={()=>setDialog(false)} onApply={pc=>{diagnosis.applySpecs(pc);setDialog(false)}}/>}
  </div>
 }
-
