@@ -26,7 +26,3 @@ export default function PcGameComparison({ diagnosis,signedIn }){
  {(error||diagnosis.error)&&<p role="alert" className="pc-photo-error">{error||diagnosis.error}</p>}{diagnosis.busy!==null&&<button className="pc-inline-action" onClick={diagnosis.cancel}>진단 취소</button>}
  </section>
 }
-
-
-
-

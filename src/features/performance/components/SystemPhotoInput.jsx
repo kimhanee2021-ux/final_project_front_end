@@ -34,4 +34,3 @@ export default function SystemPhotoInput({ onApply,signedIn }) {
   </form>}
  </div>
 }
-
