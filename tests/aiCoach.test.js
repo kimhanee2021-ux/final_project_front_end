@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { coachErrorMessage, parseBudgetInput, toHistory } from '../src/features/ai-coach/coachModel.js'
+import { barPercent, buildEvidenceBlocks, coachErrorMessage, parseBudgetInput, toHistory } from '../src/features/ai-coach/coachModel.js'
 
 test('대화 기록은 오류 말풍선을 빼고 최근 10개만 user/model 역할로 보낸다', () => {
   const messages = [
@@ -40,4 +40,27 @@ test('다른 화면에서 코치로 넘어가는 주소는 질문을 인코딩�
   assert.equal(coachLink('이번 달 얼마 썼어?'), '/ai-coach?q=' + encodeURIComponent('이번 달 얼마 썼어?'))
   const long = decodeURIComponent(coachLink('a'.repeat(900)).split('?q=')[1])
   assert.equal(long.length, MAX_MESSAGE_LENGTH)
+})
+
+test('근거 보기: 같은 묶음 숫자는 막대 비교, %는 하나여도 막대, 나머지는 글자 줄', () => {
+  const items = [
+    { label: '작년 지출', value: '87,765원', amount: 87765, unit: '원', group: 'spendingByYear.*.spentKrw' },
+    { label: '올해 지출', value: '11,117원', amount: 11117, unit: '원', group: 'spendingByYear.*.spentKrw' },
+    { label: '할인 비중', value: '40%', amount: 40, unit: '%', group: 'patterns.discountReliance' },
+    { label: '총 지출', value: '454,023원', amount: 454023, unit: '원', group: 'totals' },
+    { label: '가장 많이 쓴 해 연도', value: '2024년' },
+  ]
+  const blocks = buildEvidenceBlocks(items)
+  assert.deepEqual(blocks.map(b => b.type), ['chart', 'bar', 'row', 'row'])
+  assert.equal(blocks[0].items.length, 2)
+  assert.equal(blocks[2].item.label, '총 지출')
+})
+
+test('막대 길이: 원·시간은 묶음 최댓값 기준, %는 100 기준, 0은 0', () => {
+  const group = [{ amount: 87765 }, { amount: 11117 }]
+  assert.equal(barPercent(87765, '원', group), 100)
+  assert.equal(barPercent(11117, '원', group), 13)
+  assert.equal(barPercent(40, '%'), 40)
+  assert.equal(barPercent(0, '원', group), 0)
+  assert.equal(barPercent(1, '원', [{ amount: 100000 }]), 3)
 })

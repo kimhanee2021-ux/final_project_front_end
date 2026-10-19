@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import GSIcon from '../../../components/common/GSIcon'
 import { PRIMARY_BUTTON } from '../../spending/styles'
-import { COACH_NAME, MAX_MESSAGE_LENGTH, SUGGESTED_QUESTIONS } from '../coachModel'
+import { COACH_NAME, MAX_MESSAGE_LENGTH, SUGGESTED_QUESTIONS, barPercent, buildEvidenceBlocks } from '../coachModel'
 import CoachAvatar from './CoachAvatar'
 import CoachPortrait from './CoachPortrait'
 import { useCoachChat } from '../hooks/useCoachChat'
@@ -29,22 +29,51 @@ function GameCards({ games }) {
 }
 
 // 답변에 쓰인 숫자의 원래 값. AI가 숫자를 지어내지 않고 소비 분석 데이터를 그대로 썼다는 걸 직접 확인할 수 있게 한다
+function BarRow({ item, percent }) {
+  return (
+    <div>
+      <div className="flex justify-between gap-[16px]">
+        <span>{item.label}</span>
+        <span className="font-[650] text-text tabular-nums whitespace-nowrap">{item.value}</span>
+      </div>
+      <div className="mt-[3px] h-[6px] rounded-full bg-surface-soft overflow-hidden" role="img" aria-label={`${item.label} ${item.value}`}>
+        <div className="h-full rounded-full bg-primary" style={{ width: percent + '%' }} />
+      </div>
+    </div>
+  )
+}
+
 function Evidence({ items }) {
   if (!items?.length) return null
+  const blocks = buildEvidenceBlocks(items)
   return (
     <details className="mt-[8px] text-[11px] text-muted group">
       <summary className="cursor-pointer select-none inline-flex items-center gap-[4px] hover:text-text">
         <GSIcon name="info" size={13} />근거 보기 ({items.length})
       </summary>
-      <dl className="mt-[8px] grid gap-[4px] rounded-[10px] border border-border bg-surface px-[12px] py-[10px]">
-        {items.map(item => (
-          <div key={item.label} className="flex justify-between gap-[16px]">
-            <dt>{item.label}</dt>
-            <dd className="m-0 font-[650] text-text tabular-nums whitespace-nowrap">{item.value}</dd>
-          </div>
-        ))}
-      </dl>
-      <p className="mt-[6px] text-[10px]">숫자는 AI가 아니라 서버가 내 소비 분석 데이터에서 직접 채워 넣은 값이에요.</p>
+      <div className="mt-[8px] grid gap-[10px] rounded-[10px] border border-border bg-surface px-[12px] py-[10px]">
+        {blocks.map((block, index) => {
+          if (block.type === 'chart') {
+            return (
+              <div key={index} className="grid gap-[8px]">
+                {block.items.map(item => (
+                  <BarRow key={item.label} item={item} percent={barPercent(item.amount, block.unit, block.items)} />
+                ))}
+              </div>
+            )
+          }
+          if (block.type === 'bar') {
+            return <BarRow key={index} item={block.item} percent={barPercent(block.item.amount, '%')} />
+          }
+          return (
+            <div key={index} className="flex justify-between gap-[16px]">
+              <span>{block.item.label}</span>
+              <span className="font-[650] text-text tabular-nums whitespace-nowrap">{block.item.value}</span>
+            </div>
+          )
+        })}
+      </div>
+      <p className="mt-[6px] text-[10px]">숫자는 AI가 아니라 서버가 내 소비 분석 데이터에서 직접 채워 넣은 값이에요. 막대는 같은 종류끼리 비교해요.</p>
     </details>
   )
 }

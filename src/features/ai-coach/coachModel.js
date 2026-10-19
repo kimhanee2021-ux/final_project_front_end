@@ -58,3 +58,37 @@ export function parseBudgetInput(text) {
   const amount = Number(match[1]) * (match[2] ? 10_000 : 1)
   return Number.isSafeInteger(amount) && amount <= MAX_BUDGET ? amount : null
 }
+
+// "근거 보기"를 그래프로 보여주기 위해 근거를 묶는다.
+// 숫자(amount)와 단위(unit)가 있고 같은 group·unit인 근거가 2개 이상이면 막대 비교(chart),
+// %는 하나뿐이어도 0~100% 막대(bar), 나머지는 글자 줄(row)로 둔다. 순서는 처음 나온 근거 기준.
+export function buildEvidenceBlocks(items = []) {
+  const blocks = []
+  const charts = new Map()
+  for (const item of items) {
+    const hasNumber = typeof item.amount === 'number' && item.unit && item.group
+    if (!hasNumber) {
+      blocks.push({ type: 'row', item })
+      continue
+    }
+    const key = item.group + '|' + item.unit
+    if (!charts.has(key)) {
+      const block = { type: 'chart', unit: item.unit, items: [] }
+      charts.set(key, block)
+      blocks.push(block)
+    }
+    charts.get(key).items.push(item)
+  }
+  return blocks.map(block => {
+    if (block.type !== 'chart') return block
+    if (block.items.length >= 2) return block
+    return block.unit === '%' ? { type: 'bar', item: block.items[0] } : { type: 'row', item: block.items[0] }
+  })
+}
+
+// 막대 길이(0~100). %는 100을 기준, 그 외 단위는 같은 묶음의 최댓값을 기준으로 한다. 아주 작은 값도 보이게 최소 길이를 둔다.
+export function barPercent(amount, unit, items = []) {
+  const max = unit === '%' ? 100 : Math.max(...items.map(item => item.amount), 0)
+  if (!max || amount <= 0) return 0
+  return Math.min(100, Math.max(3, Math.round((amount / max) * 100)))
+}
