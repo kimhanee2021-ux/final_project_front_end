@@ -5,6 +5,7 @@ export async function assessGamesSequentially(games, assess, isActive, onResult,
    const result = await assess(game)
    if (!isActive()) return
    onResult(result)
+   if (result.explanationStatus === 'RATE_LIMITED') return
   } catch (error) {
    if (!isActive()) return
    if (!onGameError || ![400,404,503].includes(error.status)) throw error

@@ -25,3 +25,9 @@ test('한 게임의 사양 조회 실패는 표시하고 나머지 게임을 계
 test('요청 한도나 인증 오류는 나머지 게임에 반복 요청하지 않는다',async()=>{
  for(const status of [401,403,429]){const seen=[];await assert.rejects(assessGamesSequentially([{appId:1},{appId:2}],async game=>{seen.push(game.appId);throw Object.assign(new Error('중단'),{status})},()=>true,()=>{},()=>{}));assert.deepEqual(seen,[1])}
 })
+
+test('공식 비교를 보존한 외부 AI 한도 응답은 전달하고 다음 AI 요청을 멈춘다',async()=>{
+ const seen=[],results=[]
+ await assessGamesSequentially([{appId:1},{appId:2},{appId:3}],async game=>{seen.push(game.appId);return {...game,explanationStatus:game.appId===2?'RATE_LIMITED':'READY'}},()=>true,result=>results.push(result))
+ assert.deepEqual(seen,[1,2]);assert.equal(results.length,2);assert.equal(results[1].explanationStatus,'RATE_LIMITED')
+})
