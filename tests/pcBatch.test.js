@@ -17,3 +17,11 @@ test('평가 실패 시 성공한 결과를 보존하고 추가 요청을 멈춘
  await assert.rejects(assessGamesSequentially([{appId:1},{appId:2},{appId:3}],async game=>{if(game.appId===2)throw new Error('요청 제한');return game},()=>true,result=>results.push(result)))
  assert.deepEqual(results,[{appId:1}])
 })
+test('한 게임의 사양 조회 실패는 표시하고 나머지 게임을 계속 평가한다',async()=>{
+ const results=[],errors=[]
+ await assessGamesSequentially([{appId:1},{appId:2},{appId:3}],async game=>{if(game.appId===2)throw Object.assign(new Error('공식 자료 없음'),{status:503});return game},()=>true,result=>results.push(result),(game,error)=>errors.push([game.appId,error.status]))
+ assert.deepEqual(results,[{appId:1},{appId:3}]);assert.deepEqual(errors,[[2,503]])
+})
+test('요청 한도나 인증 오류는 나머지 게임에 반복 요청하지 않는다',async()=>{
+ for(const status of [401,403,429]){const seen=[];await assert.rejects(assessGamesSequentially([{appId:1},{appId:2}],async game=>{seen.push(game.appId);throw Object.assign(new Error('중단'),{status})},()=>true,()=>{},()=>{}));assert.deepEqual(seen,[1])}
+})
