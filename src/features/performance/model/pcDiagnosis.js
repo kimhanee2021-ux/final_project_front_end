@@ -14,4 +14,3 @@ export function ownedPage(games,expanded,page){
   const pages=Math.max(1,Math.ceil(ordered.length/10)),current=Math.max(0,Math.min(page,pages-1))
   return {games:expanded?ordered.slice(current*10,current*10+10):ordered.slice(0,5),hasPlaytime,pages,page:current,total:games.length}
 }
-export function showValue(value,unit=''){return value===null||value===undefined||value===''?'정보 없음':`${value}${unit}`}

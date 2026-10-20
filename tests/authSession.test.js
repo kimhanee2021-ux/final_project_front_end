@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { authLink, safeReturnTo, readDemoSession, saveDemoSession, clearDemoSession, DEMO_SESSION_KEY } from '../src/features/auth/authSession.js'
+import { authLink, safeReturnTo, readDemoSession, saveDemoSession, clearDemoSession, DEMO_SESSION_KEY } from '../src/features/auth/model/authSession.js'
 
 function storage() {
   const data = new Map()

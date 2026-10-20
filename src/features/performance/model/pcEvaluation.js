@@ -17,7 +17,7 @@ export const STATUS_MESSAGES = {
   consent: 'AI 분석 동의가 없어서 입력한 부품을 확인할 수 없어요. 사양 입력에서 동의를 켜주세요.',
 }
 
-export const COMPONENT_CATEGORIES = [
+const COMPONENT_CATEGORIES = [
   { category: 'CPU', label: 'CPU', icon: 'cpu' },
   { category: 'GPU', label: 'GPU', icon: 'gpu' },
   { category: 'RAM', label: 'RAM', icon: 'ram' },

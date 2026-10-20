@@ -37,7 +37,7 @@ export function valueHeadline(list) {
 }
 
 // 오늘 기준 며칠 전인지 문구로 바꾼다
-export function relativeDay(date, asOf) {
+function relativeDay(date, asOf) {
   const diff = Math.round((new Date(asOf) - new Date(date)) / DAY)
   if (diff <= 0) return '오늘'
   if (diff === 1) return '어제'
