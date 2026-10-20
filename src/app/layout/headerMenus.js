@@ -22,7 +22,6 @@ export const headerMenus = [
     id: 'explore',
     label: '게임 탐색',
     children: [
-      { to: '/recommendations', label: 'AI 추천 게임', description: '내 취향에 맞춘 추천' },
       { to: '/explore', label: '스팀 전체 게임', description: '장르별 · 출시 예정 · 인기 게임' },
     ],
   },

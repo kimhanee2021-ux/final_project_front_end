@@ -5,7 +5,7 @@ import { useGameSense } from '@/shared/state'
 import { useDismiss } from '@/shared/hooks'
 
 // 아래 화면들은 검색어로 목록을 걸러 주므로 검색해도 이동하지 않고 그 화면의 결과가 바뀐다. 다른 화면에서는 게임 탐색으로 이동한다.
-const SEARCHABLE_PATHS = ['/wishlist', '/recommendations', '/explore']
+const SEARCHABLE_PATHS = ['/wishlist', '/explore']
 
 // 헤더 검색: 작은 검색 버튼을 누르면(또는 / 키) 바로 아래로 큰 검색창 하나가 내려와서, 입력 중인 검색어를 편하게 볼 수 있다.
 export default function SearchBox() {

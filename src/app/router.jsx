@@ -5,8 +5,6 @@ import GameSenseLayout from '@/app/layout/GameSenseLayout'
 import LandingPage from '@/pages/landing/LandingPage'
 import StartPage from '@/pages/landing/StartPage'
 import ExplorePage from '@/pages/explore/ExplorePage'
-import CollectionsPage from '@/pages/collections/CollectionsPage'
-import ActivityPage from '@/pages/activity/ActivityPage'
 import SettingsPage from '@/pages/settings/SettingsPage'
 import AnalysisPage from '@/pages/analysis/AnalysisPage'
 import PurchasesPage from '@/pages/purchases/PurchasesPage'
@@ -16,8 +14,8 @@ import PcEvaluationPage from '@/pages/performance/PcEvaluationPage'
 import HangulBlocks from '@/pages/blocks/HangulBlocks'
 import MyPage from '@/pages/mypage/MyPage'
 import AuthPage from '@/pages/auth/AuthPage'
-import { RequireDemoSession } from '@/features/auth'
-import { GameCatalog } from '@/features/games'
+import { RequireAuth } from '@/features/auth'
+import LibraryPage from '@/pages/library/LibraryPage'
 import CommunityPage from '@/pages/community/CommunityPage'
 import CommunityPostPage from '@/pages/community/CommunityPostPage'
 import CommunityWritePage from '@/pages/community/CommunityWritePage'
@@ -30,11 +28,6 @@ const authRoutes = ['login', 'signup', 'forgot-password'].map(mode => ({
   path: mode,
   element: <AuthPage key={mode} mode={mode} />,
 }))
-const catalogRoutes = modes =>
-  modes.map(mode => ({
-    path: mode,
-    element: contained(<GameCatalog key={mode} mode={mode} />),
-  }))
 
 const router = createBrowserRouter([
   {
@@ -49,19 +42,16 @@ const router = createBrowserRouter([
         children: [
           { path: 'explore', element: <ExplorePage /> },
           { path: 'trending', element: <Navigate to="/explore" replace /> },
-          ...catalogRoutes(['recommendations']),
           { path: 'pc-check', element: <PcSpecPage /> },
           { path: 'pc-check/evaluation', element: <PcEvaluationPage /> },
           { path: 'pc-check/diagnosis', element: <Navigate to="/pc-check/evaluation" replace /> },
           { path: 'hangul-blocks', element: <HangulBlocks /> },
           {
-            // 로그인(데모 세션)이 필요한 페이지
-            element: <RequireDemoSession />,
+            // 로그인이 필요한 페이지
+            element: <RequireAuth />,
             children: [
-              { path: 'library', element: <GameCatalog mode="library" /> },
+              { path: 'library', element: <LibraryPage /> },
               { path: 'wishlist', element: contained(<WishlistPage />) },
-              { path: 'collections', element: <CollectionsPage /> },
-              { path: 'activity', element: contained(<ActivityPage />) },
               { path: 'settings', element: <SettingsPage /> },
               { path: 'mypage', element: <MyPage /> },
               { path: 'community', element: contained(<CommunityPage />) },

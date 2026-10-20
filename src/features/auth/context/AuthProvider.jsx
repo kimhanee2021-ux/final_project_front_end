@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import { AuthContext } from './AuthContext'
-import { clearDemoSession, readDemoSession, saveDemoSession } from '../model/authSession'
 import { clearAccessToken, readAccessToken, saveAccessToken } from '@/shared/lib/tokenStorage'
 import * as authApi from '../api'
 import { userApi } from '@/features/user'
@@ -10,13 +9,10 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   // 저장된 토큰이 있으면 /api/me 확인이 끝날 때까지 로그인 여부를 판단하지 않는다.
   const [isAuthLoading, setIsAuthLoading] = useState(() => Boolean(readAccessToken(browserStores())))
-  const [isDemoSignedIn, setIsDemoSignedIn] = useState(() => readDemoSession(browserStores()))
 
   const signOut = useCallback(() => {
     clearAccessToken(browserStores())
-    clearDemoSession(browserStores())
     setUser(null)
-    setIsDemoSignedIn(false)
   }, [])
 
   useEffect(() => {
@@ -36,8 +32,6 @@ export default function AuthProvider({ children }) {
   }, [signOut])
 
   async function establishSession(token, remember) {
-    clearDemoSession(browserStores())
-    setIsDemoSignedIn(false)
     saveAccessToken(browserStores(), token, remember)
     try {
       const me = await authApi.getCurrentUser()
@@ -78,13 +72,6 @@ export default function AuthProvider({ children }) {
     return true
   }
 
-  function startDemo(remember = false) {
-    clearAccessToken(browserStores())
-    setUser(null)
-    saveDemoSession(browserStores(), remember)
-    setIsDemoSignedIn(true)
-  }
-
   const isAuthenticated = Boolean(user)
   return (
     <AuthContext.Provider
@@ -92,15 +79,12 @@ export default function AuthProvider({ children }) {
         user,
         isAuthenticated,
         isAuthLoading,
-        isDemoSignedIn,
-        isSignedIn: isAuthenticated || isDemoSignedIn,
         login,
         signup,
         signOut,
         updateAccount,
         deleteAccount,
         startSteamLink,
-        startDemo,
       }}
     >
       {children}

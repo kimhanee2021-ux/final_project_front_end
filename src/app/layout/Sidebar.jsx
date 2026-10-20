@@ -10,7 +10,6 @@ const primaryLinks = [
   ['/library', 'library', 'My Library', '내 라이브러리'],
   ['/analysis', 'chart', 'Analysis', '분석'],
   ['/explore', 'compass', 'Explore', '게임 탐색'],
-  ['/recommendations', 'spark', 'AI Optimization', '맞춤 추천'],
 ]
 const moreLinks = [
   ['/pc-check', 'monitor', 'PC 사양', 'PC 사양'],
@@ -29,7 +28,7 @@ const navLinkActive = 'active bg-primary-soft text-primary-text font-[650]'
 const navLinkClass = ({ isActive }) => [navLinkBase, isActive && navLinkActive].filter(Boolean).join(' ')
 
 export default function Sidebar({ onClose }) {
-  const { isSignedIn } = useAuth()
+  const { isAuthenticated } = useAuth()
   const { t, wishlist, setQuery, player } = useGameSense()
   const follow = () => {
     setQuery('')
@@ -40,7 +39,7 @@ export default function Sidebar({ onClose }) {
       <NavLink key={to} to={to} end onClick={follow} className={navLinkClass}>
         <GSIcon name={icon} size={21} />
         <span>{t(en, ko)}</span>
-        {isSignedIn && to === '/wishlist' && wishlist.length > 0 && (
+        {isAuthenticated && to === '/wishlist' && wishlist.length > 0 && (
           <span className="ml-auto text-[10px] min-w-[21px] h-[21px] py-[2px] px-[6px] text-center rounded-[6px] bg-surface-soft text-muted">{wishlist.length}</span>
         )}
       </NavLink>
@@ -64,7 +63,7 @@ export default function Sidebar({ onClose }) {
       </div>
       <div className="mt-auto">
         <SidebarSteamCard />
-        {isSignedIn && (
+        {isAuthenticated && (
           <NavLink
             to="/mypage"
             onClick={follow}

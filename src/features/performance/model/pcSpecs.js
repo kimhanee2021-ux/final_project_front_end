@@ -75,12 +75,11 @@ export function toDiagnosisSpecs(specs, detail) {
   }
 }
 
-// 예시 부품 목록(mock)에 사용자가 입력한 모델명을 덮어쓴다. 입력하지 않은 부품은 예시 그대로 둔다.
-// 입력한 부품은 세부 사양(facts)을 알 수 없어서 비우고 custom 표시를 단다.
-export function mergeHardware(hardware, specs) {
-  return hardware.map(item => {
-    const field = SPEC_FIELDS.find(spec => spec.hardwareId === item.id)
-    const model = specs[field.key]?.trim()
-    return model ? { ...item, model, facts: [], custom: true } : item
-  })
+// 입력한 사양을 부품 카드 목록으로 바꾼다. 입력하지 않은 부품은 model이 빈 글자다.
+export function hardwareFromSpecs(specs) {
+  return SPEC_FIELDS.map(field => ({
+    id: field.hardwareId,
+    name: field.label,
+    model: (specs[field.key] ?? '').trim(),
+  }))
 }
