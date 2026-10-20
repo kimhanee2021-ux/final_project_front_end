@@ -14,7 +14,7 @@ function Shell() {
   const { pathname, search, hash } = useLocation()
   const navigate = useNavigate()
   const { toast, setToast, notify } = useGameSense()
-  const [noteTitle, noteText] = footerNote(pathname, search)
+  const [noteTitle, noteText] = footerNote(pathname)
   // 스팀 연동 콜백이 끝나면 백엔드가 프론트 루트로 ?steamLinked=true를 붙여 돌려보낸다.
   useEffect(() => {
     if (new URLSearchParams(search).get('steamLinked') !== 'true') return

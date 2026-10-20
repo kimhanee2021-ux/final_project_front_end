@@ -35,14 +35,4 @@ export const headerMenus = [
       { to: '/pc-check/diagnosis', label: 'PC 성능 진단', description: '게임별 FPS · 등급 · 업그레이드 후보' },
     ],
   },
-  {
-    id: 'ai',
-    label: 'AI 도우미',
-    children: [
-      { to: '/ai-games', label: 'AI 게임 추천', description: '게임 정보 기반 상담' },
-      { to: '/ai-screenshots', label: 'AI 스크린샷 분석', description: '화면을 올리면 원인을 짚어줘요' },
-      { to: '/ai-game-manager', label: 'AI 내 게임 매니저', description: '게임 정리와 구매 조건 알림' },
-      { to: '/ai-worldcup', label: 'AI 게임 취향 월드컵', description: '고르면서 취향 찾기' },
-    ],
-  },
 ]

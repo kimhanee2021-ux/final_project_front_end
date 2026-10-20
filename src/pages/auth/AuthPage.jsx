@@ -19,14 +19,6 @@ export default function AuthPage({ mode = 'login' }) {
   const location = useLocation()
   const [params] = useSearchParams()
   const returnTo = safeReturnTo(params.get('next'))
-  // AI 월드컵·게임 매니저는 로그인 없이 ?demo=1 샘플 화면으로 바로 보여준다.
-  const returnPath = returnTo.split('?')[0]
-  const isAiDemoPath = ['/ai-worldcup', '/ai-game-manager'].includes(returnPath)
-  const startDemoFlow = () => {
-    if (isAiDemoPath) return navigate(`${returnPath}?demo=1`, { replace: true })
-    startDemo(remember)
-    navigate(returnTo, { replace: true })
-  }
   const [values, setValues] = useState({ name: '', email: '', password: '', confirm: '' })
   const [errors, setErrors] = useState({})
   const [showPassword, setShowPassword] = useState(false)
@@ -188,7 +180,7 @@ export default function AuthPage({ mode = 'login' }) {
             <p className="flex flex-wrap justify-center gap-[7px] mt-[24px] text-auth-muted text-[12px]">{mode === 'login' ? <>아직 계정이 없으신가요? <Link to={authLink('signup', returnTo)} className={`text-[#6af6d3] font-semibold underline-offset-[4px] hover:underline ${focusRing}`}>회원가입</Link></> : <Link to={authLink('login', returnTo)} className={`text-[#6af6d3] font-semibold underline-offset-[4px] hover:underline ${focusRing}`}>로그인으로 돌아가기 <span aria-hidden="true">→</span></Link>}</p>
             <div className="mt-[26px] pt-[18px] border-t border-[#25313d] flex flex-wrap items-center justify-between gap-[9px] text-[11px] text-auth-muted">
               <span>계정 없이 먼저 만나보세요</span>
-              <button type="button" className={`bg-transparent inline-flex items-center gap-[7px] text-[#6af6d3] py-[6px] text-[12px] ${focusRing}`} onClick={startDemoFlow}>{isAiDemoPath ? '데모로 둘러보기' : '데모 체험하기'}<GSIcon name="arrow" size={16} /></button>
+              <button type="button" className={`bg-transparent inline-flex items-center gap-[7px] text-[#6af6d3] py-[6px] text-[12px] ${focusRing}`} onClick={() => { startDemo(remember); navigate(returnTo, { replace: true }) }}>데모 체험하기<GSIcon name="arrow" size={16} /></button>
               <small className="basis-full text-[10px] text-[#94a3b6]">데모는 서버 계정 없이 이 브라우저에서만 동작해요.</small>
             </div>
           </div>

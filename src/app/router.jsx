@@ -14,11 +14,7 @@ import WishlistPage from '@/pages/wishlist/WishlistPage'
 import PcSpecPage from '@/pages/performance/PcSpecPage'
 import PcEvaluationPage from '@/pages/performance/PcEvaluationPage'
 import PerformancePage from '@/pages/performance/PerformancePage'
-import AiGames from '@/pages/ai/AiGames'
-import ScreenshotAnalysis from '@/pages/ai/ScreenshotAnalysis'
 import HangulBlocks from '@/pages/blocks/HangulBlocks'
-import TasteWorldcup from '@/pages/worldcup/TasteWorldcup'
-import GameManager from '@/pages/manager/GameManager'
 import MyPage from '@/pages/mypage/MyPage'
 import AuthPage from '@/pages/auth/AuthPage'
 import { RequireDemoSession } from '@/features/auth'
@@ -58,10 +54,6 @@ const router = createBrowserRouter([
           { path: 'pc-check', element: <PcSpecPage /> },
           { path: 'pc-check/evaluation', element: <PcEvaluationPage /> },
           { path: 'pc-check/diagnosis', element: <PerformancePage /> },
-          { path: 'ai-games', element: <AiGames /> },
-          { path: 'ai-screenshots', element: <ScreenshotAnalysis /> },
-          { path: 'ai-worldcup', element: <TasteWorldcup /> },
-          { path: 'ai-game-manager', element: <GameManager /> },
           { path: 'hangul-blocks', element: <HangulBlocks /> },
           {
             // 로그인(데모 세션)이 필요한 페이지
