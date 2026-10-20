@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useAuth } from '@/features/auth'
 import { useMySpendingContext } from '@/features/spending'
-import { GSIcon, FilterChips } from '@/shared/ui'
+import { GSIcon, FilterChips, GameImage } from '@/shared/ui'
 import { useSteamLibrary } from '../hooks/useSteamLibrary'
 import { matchesSearch } from '@/shared/utils/searchMatch'
 import { libraryGenreOptions, genreOfLibraryGame, ALL_GENRES } from '../model/libraryGenres'
@@ -64,7 +64,7 @@ export default function SteamLibraryPanel({ query = '' }) {
           {visible.map(game => (
             <li key={game.appId} className="flex items-center gap-[16px] p-[16px] rounded-[16px] bg-bg min-w-0">
               {game.iconUrl ? (
-                <img className="w-[44px] h-[44px] rounded-[10px] shrink-0" src={game.iconUrl} alt="" loading="lazy" />
+                <GameImage className="w-[44px] h-[44px] rounded-[10px] shrink-0" src={game.iconUrl} />
               ) : (
                 <span className="w-[44px] h-[44px] rounded-[10px] shrink-0 grid place-items-center bg-surface text-muted"><GSIcon name="gamepad" size={20} /></span>
               )}

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { GSIcon, PanelPage, Panel } from '@/shared/ui'
+import { GameImage, GSIcon, PanelPage, Panel } from '@/shared/ui'
 import { useGameSense } from '@/shared/state'
 import { discoverGames } from '@/features/games'
 import { gameStatuses, ProfileHero, PlayerDialog } from '@/features/player'
@@ -70,7 +70,7 @@ function GameOverview({ onEditGame }) {
                 onClick={() => setSelectedGame(game)}
                 aria-label={`${game.name} 상세 보기`}
               >
-                <img className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105" src={game.banner} alt="" loading="lazy" />
+                <GameImage className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105" src={game.banner} />
               </button>
               <div className="min-w-0 flex-1">
                 <button className="block p-0 bg-transparent text-left text-[15px] font-[600] [overflow-wrap:anywhere] hover:underline" onClick={() => setSelectedGame(game)}>

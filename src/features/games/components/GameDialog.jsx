@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useGameSense } from '@/shared/state'
 import { PlatformIcons } from './GameCard'
-import { GSIcon } from '@/shared/ui'
+import { GSIcon, GameImage } from '@/shared/ui'
 
 export default function GameDialog() {
   const { selectedGame: game, setSelectedGame, isWishlisted, toggleWishlist } = useGameSense()
@@ -28,7 +28,7 @@ export default function GameDialog() {
       {game && (
         <div className="w-full">
           <div className="h-[215px] relative max-[600px]:h-[160px] after:content-[''] after:absolute after:inset-0 after:pointer-events-none after:bg-[linear-gradient(0deg,var(--gs-panel),transparent_50%)]">
-            <img className="w-full h-full object-cover" src={game.banner} alt="" />
+            <GameImage className="w-full h-full object-cover" src={game.banner} iconSize={40} />
             <button
               autoFocus
               className="w-[37px] h-[37px] grid place-items-center rounded-full p-0 hover:bg-gs-raised absolute right-[15px] top-[15px] z-[1] text-white bg-[#101923cf]"

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { GSIcon } from '@/shared/ui'
+import { GameImage, GSIcon } from '@/shared/ui'
 import EvaluationNotice from './EvaluationNotice'
 import { resolutionTarget } from '../model/pcGrade'
 import { STEAM_TOP_GAMES_CHECKED_AT } from '../model/steamTopGames'
@@ -9,13 +9,6 @@ const RESOLUTIONS = [
   { id: 'QHD', label: 'QHD', pixels: '1440p', hint: '선명한 게임용 모니터' },
   { id: '4K', label: '4K', pixels: '2160p', hint: '최고 화질 · 높은 사양' },
 ]
-
-// 게임 이미지: 주소가 없거나 불러오지 못하면 게임 아이콘으로 바꿔 보여준다.
-function GameThumb({ src }) {
-  const [failed, setFailed] = useState(false)
-  if (!src || failed) return <GSIcon name="gamepad" size={20} />
-  return <img src={src} alt="" loading="lazy" onError={() => setFailed(true)} />
-}
 
 // 등급 한 칸: 등급 글자와 설명. 추정이 어려우면 이유를 알 수 있게 짧게 적는다.
 function GradeCell({ target }) {
@@ -162,7 +155,7 @@ export default function GamePerformance({ evaluation, onDetails }) {
                 <tr key={game.appId}>
                   <th scope="row">
                     <button className="pc-game-button" onClick={() => onDetails({ type: 'game', game, result })}>
-                      <GameThumb src={game.iconUrl ?? game.headerImage} />
+                      <GameImage className="w-[36px] h-[46px] rounded-[8px] object-cover shrink-0" src={game.iconUrl ?? game.headerImage} iconSize={20} />
                       <span>
                         {game.name}
                         {game.playtimeForever > 0 && <small className="block text-faint">누적 {(game.playtimeForever / 60).toFixed(1)}시간</small>}
