@@ -1,0 +1,19 @@
+:root {
+  font-family: "Pretendard", "SUIT", -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+  color-scheme: light;
+  --bg: #F7F6FB; --surface: #FFFFFF; --surface-soft: #F7F6FB; --surface-hover: #F0ECFF;
+  --text: #17181F; --muted: #6B6E7B; --subtle: #6B6E7B; --faint: #9A9DAA; --border: #ECEAF3;
+  --primary: #7B61FF; --primary-strong: #5E3FE8; --primary-soft: #F0ECFF; --primary-text: #5E3FE8; --on-primary: #FFFFFF;
+  --chart-1: #5E3FE8; --chart-2: #7B61FF; --chart-3: #A08BFF; --chart-4: #C4B5FF; --chart-5: #E0D8FF;
+  --shadow: 0 6px 24px rgba(31,24,72,0.06), 0 1px 2px rgba(31,24,72,0.04); --insight-bg: #f1edff; --insight-border: #e5dcff;
+  --mint-bg: #e7f5ee; --mint-text: #27866a; --peach-bg: #fff0e5; --peach-text: #bf7746;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #14131c; --surface: #1e1d29; --surface-soft: #252331; --surface-hover: #2c293b;
+  --text: #f0edf9; --muted: #aaa5be; --subtle: #bab3ce; --faint: #8a859e; --border: #343040;
+  --primary: #a18afa; --primary-strong: #b49eff; --primary-soft: #32294b; --primary-text: #c1adff; --on-primary: #14131c;
+  --chart-1: #a18afa; --chart-2: #c4afff; --chart-3: #75cbb8; --chart-4: #edb680; --chart-5: #9cafe6;
+  --shadow: 0 5px 24px rgba(0,0,0,.05); --insight-bg: #29223d; --insight-border: #44335f;
+  --mint-bg: #203c33; --mint-text: #8bdbba; --peach-bg: #423025; --peach-text: #edb581;
+}

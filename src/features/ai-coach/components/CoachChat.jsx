@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import GSIcon from '../../../components/common/GSIcon'
-import { PRIMARY_BUTTON } from '../../spending/styles'
+import { GSIcon } from '@/shared/ui'
+import { PRIMARY_BUTTON } from '@/features/spending'
 import { COACH_NAME, MAX_MESSAGE_LENGTH, SUGGESTED_QUESTIONS, barPercent, buildEvidenceBlocks } from '../coachModel'
 import CoachAvatar from './CoachAvatar'
 import CoachPortrait from './CoachPortrait'
@@ -130,7 +130,7 @@ export default function CoachChat({ initialQuestion, onInitialQuestionSent }) {
   }
 
   return (
-    <section className="grid grid-cols-[minmax(240px,0.72fr)_minmax(0,1.65fr)] gap-[12px] p-[12px] bg-surface border border-border rounded-[18px] shadow-[var(--shadow)] h-[min(720px,calc(100vh-200px))] min-h-[580px] max-[1000px]:grid-cols-1 max-[1000px]:h-auto">
+    <section className="grid grid-cols-[minmax(240px,0.72fr)_minmax(0,1.65fr)] gap-[20px] h-[min(720px,calc(100vh-200px))] min-h-[580px] max-[1000px]:grid-cols-1 max-[1000px]:h-auto">
       {/* 왼쪽: 크게 보이는 코치 세나 사진 + 인사 + 추천 질문 */}
       <aside className="flex flex-col min-h-0 overflow-hidden rounded-[14px] bg-surface-soft border border-border">
         <div className="relative flex-1 min-h-[210px] overflow-hidden max-[1000px]:min-h-[230px] max-[1000px]:flex-none">

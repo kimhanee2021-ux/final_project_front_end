@@ -1,4 +1,4 @@
-import apiClient from '../../utils/apiClient'
+import apiClient from '@/shared/lib/apiClient'
 
 // 백엔드 AnalysisController(/api/analysis) 연동.
 // 응답: { asOf, priceBasis: 'KRW_LIST_PRICE', games: SpendingGame[] }

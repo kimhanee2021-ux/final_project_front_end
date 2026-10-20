@@ -1,0 +1,12 @@
+// 이 폴더의 공개 목록(public API). 다른 폴더는 여기서 내보낸 것만 가져다 쓴다.
+export { default as DetailsDialog } from './components/DetailsDialog'
+export { default as GamePerformance } from './components/GamePerformance'
+export { default as HardwareCard } from './components/HardwareCard'
+export { default as PcSpecDialog } from './components/PcSpecDialog'
+export { default as ScorePanel } from './components/ScorePanel'
+export { default as UpgradeList } from './components/UpgradeList'
+export { hardware } from './mocks/performanceMock'
+export { hasSpecs } from './model/pcSpecs'
+export { mergeHardware } from './model/pcSpecs'
+export { performanceSummary } from './mocks/performanceMock'
+export { usePcSpecs } from './hooks/usePcSpecs'

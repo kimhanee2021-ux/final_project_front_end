@@ -9,7 +9,7 @@ import {
   fetchPost,
   likePost,
 } from '../api'
-import { getErrorMessage } from '../../../utils/apiClient'
+import { getErrorMessage } from '@/shared/lib/apiClient'
 
 const emptyComments = { items: [], page: 0, last: true, total: 0 }
 

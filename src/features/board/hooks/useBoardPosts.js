@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { fetchPosts } from '../api'
-import { getErrorMessage } from '../../../utils/apiClient'
+import { getErrorMessage } from '@/shared/lib/apiClient'
 
 const SEARCH_DELAY = 300
 

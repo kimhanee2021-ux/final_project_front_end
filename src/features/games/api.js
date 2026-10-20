@@ -1,22 +1,15 @@
-import apiClient from '../../utils/apiClient'
+import apiClient from '@/shared/lib/apiClient'
 
-// 백엔드 GameController(/api/games) 연동.
-// 응답: { content: GameSummary[], page, size, totalElements, totalPages, first, last }
-// GameSummary: { appId, name, genre("Action,Indie"), priceInfo, discountPercent, reviewCount, positiveRate, thumbnailUrl }
-export const GAME_PAGE_SIZE = 24
-
-export async function fetchGames({ page = 0, genre, signal } = {}) {
-  const { data } = await apiClient.get('/api/games', {
-    params: { page, size: GAME_PAGE_SIZE, genre: genre || undefined },
-    signal,
-  })
+// 백엔드 FeaturedGameController(/api/games/featured) 연동 — 스팀 "추천" 섹션 캐시.
+// 페이지네이션 없이 전체 배열로 내려온다(장르 없음, 개수는 백엔드가 매일 동기화하는 스냅샷 크기만큼).
+// 응답: FeaturedGameItem[] = { appId, name, discounted, discountPercent, originalPrice, finalPrice, currency, headerImage }
+export async function fetchFeaturedGames({ signal } = {}) {
+  const { data } = await apiClient.get('/api/games/featured', { signal })
   return data
 }
 
-export async function searchGames({ page = 0, name, signal }) {
-  const { data } = await apiClient.get('/api/games/search', {
-    params: { page, size: GAME_PAGE_SIZE, name },
-    signal,
-  })
+// 트렌드 탭. 응답: FeaturedCategoryResponse[] = { categoryKey, categoryName, games: FeaturedGameItem[] }
+export async function fetchFeaturedCategories({ signal } = {}) {
+  const { data } = await apiClient.get('/api/games/featured-categories', { signal })
   return data
 }

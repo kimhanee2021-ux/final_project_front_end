@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { STEAM_NOT_LINKED_CODE, fetchMySpending } from '../api'
-import { syncSteamLibrary } from '../../library/api'
-import { toSpendingGame } from '../spendingModel'
-import { getErrorMessage } from '../../../utils/apiClient'
+import { syncSteamLibrary } from '@/features/library'
+import { toSpendingGame } from '../model/spendingModel'
+import { getErrorMessage } from '@/shared/lib/apiClient'
 
 const toState = data => ({
   data: { ...data, games: data.games.map(toSpendingGame) },

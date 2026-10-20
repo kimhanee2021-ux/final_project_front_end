@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { fetchBudget, saveBudget } from '../api'
-import { getErrorMessage } from '../../../utils/apiClient'
+import { getErrorMessage } from '@/shared/lib/apiClient'
 
 // 이번 달 게임 지출 예산 (코치가 남은 예산을 계산할 때 쓴다)
 export function useBudget() {

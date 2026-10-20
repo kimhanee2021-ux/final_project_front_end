@@ -1,19 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
-import GSIcon from '../../../components/common/GSIcon'
-import { parseSteamHistory } from '../parseSteamHistory'
-import { isLicensesPage, parseSteamLicenses } from '../parseSteamLicenses'
+import { GSIcon } from '@/shared/ui'
+import { parseSteamHistory } from '../model/parseSteamHistory'
+import { isLicensesPage, parseSteamLicenses } from '../model/parseSteamLicenses'
 import { deletePurchases, importLicenses, importPurchases } from '../api'
-import { getErrorMessage } from '../../../utils/apiClient'
-import { dateLabel, number } from '../../../utils/formatters'
-import { METHOD_LABELS } from '../labels'
-import { DANGER_TEXT_BUTTON, PRIMARY_BUTTON, TEXT_BUTTON } from '../../spending/styles'
+import { getErrorMessage } from '@/shared/lib/apiClient'
+import { dateLabel, number } from '@/shared/utils/formatters'
+import { METHOD_LABELS } from '../model/labels'
+import { DANGER_TEXT_BUTTON, PRIMARY_BUTTON, TEXT_BUTTON } from '@/features/spending'
 
 const HISTORY_URL = 'https://store.steampowered.com/account/history/'
 const LICENSES_URL = 'https://store.steampowered.com/account/licenses/'
 const TYPE_LABELS = { PURCHASE: '구매', REFUND: '환불', IN_GAME: '게임 내 구매', GIFT: '선물 구매' }
-const NOTE = 'mt-[12px] text-[11px] leading-[1.6] text-muted'
-const PREVIEW_LIST = 'grid gap-[8px] m-0 text-[12px] [&>div]:grid [&>div]:grid-cols-[90px_1fr] [&>div]:gap-[10px] max-[580px]:[&>div]:grid-cols-1 max-[580px]:[&>div]:gap-[2px] [&_dt]:text-muted [&_dd]:m-0 [&_dd]:font-semibold [&_small]:font-normal [&_small]:text-muted'
-const SAMPLE_LIST = 'list-none mt-[16px] mb-0 p-0 grid gap-[6px] text-[11px] [&>li]:grid [&>li]:grid-cols-[80px_1fr_auto] [&>li]:gap-[10px] [&>li]:px-[10px] [&>li]:py-[8px] [&>li]:rounded-[8px] [&>li]:bg-surface-hover max-[580px]:[&>li]:grid-cols-1 [&>li>span:nth-child(2)]:truncate'
+const NOTE = 'mt-[12px] text-[13px] leading-[1.6] text-muted'
+const PREVIEW_LIST = 'grid gap-[8px] m-0 text-[14px] [&>div]:grid [&>div]:grid-cols-[90px_1fr] [&>div]:gap-[10px] max-[580px]:[&>div]:grid-cols-1 max-[580px]:[&>div]:gap-[2px] [&_dt]:text-muted [&_dd]:m-0 [&_dd]:font-semibold [&_small]:font-normal [&_small]:text-muted'
+const SAMPLE_LIST = 'list-none mt-[16px] mb-0 p-0 grid gap-[6px] text-[13px] [&>li]:grid [&>li]:grid-cols-[80px_1fr_auto] [&>li]:gap-[10px] [&>li]:px-[10px] [&>li]:py-[8px] [&>li]:rounded-[8px] [&>li]:bg-surface-hover max-[580px]:[&>li]:grid-cols-1 [&>li>span:nth-child(2)]:truncate'
 const ACTIONS = 'flex justify-between items-center mt-[18px]'
 const EXCLUDED_LABELS = { WALLET_CREDIT: '지갑 충전', CONVERSION: '통화 변환', MARKET: '장터 거래', UNKNOWN: '기타' }
 
@@ -125,7 +125,7 @@ export default function PurchaseImportDialog({ open, hasHistory, onClose, onImpo
   return (
     <dialog
       ref={ref}
-      className="p-0 border border-border rounded-[18px] w-[560px] max-w-[calc(100vw-32px)] bg-surface text-text shadow-[0_24px_80px_#0004] backdrop:bg-[#11102199] backdrop:backdrop-blur-[4px]"
+      className="p-0 border-0 rounded-[24px] w-[560px] max-w-[calc(100vw-32px)] bg-surface text-text shadow-[0_24px_80px_#0004] backdrop:bg-[#11102199] backdrop:backdrop-blur-[4px]"
       aria-label="스팀 구매내역 가져오기"
       onCancel={close}
       onClick={e => {
@@ -136,7 +136,7 @@ export default function PurchaseImportDialog({ open, hasHistory, onClose, onImpo
         <button className="w-[34px] h-[34px] bg-transparent grid place-items-center rounded-[8px] hover:bg-surface-hover absolute top-[15px] right-[15px]" aria-label="닫기" onClick={close} disabled={busy}>
           <GSIcon name="close" size={20} />
         </button>
-        <span className="text-[9px] font-bold tracking-[1.9px] text-primary-text">PURCHASE HISTORY</span>
+        <span className="text-[12px] font-bold tracking-[1.9px] text-primary-text">PURCHASE HISTORY</span>
         <h2 className="mt-[6px] mb-[18px] text-[19px] font-bold">스팀 구매내역 가져오기</h2>
 
         {result?.kind === 'licenses' ? (
@@ -276,7 +276,7 @@ export default function PurchaseImportDialog({ open, hasHistory, onClose, onImpo
           </div>
         ) : (
           <div>
-            <ol className="mb-[16px] pl-[18px] text-[12px] leading-[1.9] list-decimal [&_a]:text-primary-text [&_a]:underline">
+            <ol className="mb-[16px] pl-[18px] text-[14px] leading-[1.9] list-decimal [&_a]:text-primary-text [&_a]:underline">
               <li>
                 크롬에서 스팀에 로그인한 뒤{' '}
                 <a href={HISTORY_URL} target="_blank" rel="noreferrer">
@@ -298,13 +298,13 @@ export default function PurchaseImportDialog({ open, hasHistory, onClose, onImpo
                 도 같은 방법으로 올리면, 선물·무료로 받은 게임의 획득일과 방법까지 보여줘요.
               </li>
             </ol>
-            <label className="flex items-center gap-[10px] px-[16px] py-[14px] border border-dashed border-border rounded-[12px] cursor-pointer text-[12px] font-[650] hover:bg-surface-hover focus-within:outline-2 focus-within:outline-primary focus-within:outline-offset-2">
+            <label className="flex items-center gap-[10px] px-[16px] py-[14px] border border-dashed border-border rounded-[12px] cursor-pointer text-[14px] font-[650] hover:bg-surface-hover focus-within:outline-2 focus-within:outline-primary focus-within:outline-offset-2">
               <GSIcon name="library" size={18} />
               <span>저장한 HTML 파일 선택 (구매내역 또는 라이선스)</span>
               <input className="sr-only" ref={fileRef} type="file" accept=".html,.htm,text/html" onChange={onFile} />
             </label>
             <textarea
-              className="block w-full mt-[10px] px-[14px] py-[12px] border border-dashed border-border rounded-[12px] bg-transparent text-text text-[12px] resize-none placeholder:text-muted"
+              className="block w-full mt-[10px] px-[14px] py-[12px] border border-dashed border-border rounded-[12px] bg-transparent text-text text-[14px] resize-none placeholder:text-muted"
               aria-label="구매내역 또는 라이선스 표 붙여넣기"
               placeholder="또는 구매내역·라이선스 표를 복사해서 여기에 붙여넣기 (Ctrl + V)"
               value=""
@@ -321,7 +321,7 @@ export default function PurchaseImportDialog({ open, hasHistory, onClose, onImpo
           </div>
         )}
         {error && (
-          <p className="mt-[14px] text-[12px] text-[#e8590c]" role="alert">
+          <p className="mt-[14px] text-[14px] text-[#e8590c]" role="alert">
             {error}
           </p>
         )}

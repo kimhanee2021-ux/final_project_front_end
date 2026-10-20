@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { askCoach } from '../api'
 import { coachErrorMessage, toHistory } from '../coachModel'
-import { getErrorMessage } from '../../../utils/apiClient'
+import { getErrorMessage } from '@/shared/lib/apiClient'
 
 // 코치와의 대화. 대화는 화면에만 두고 저장하지 않는다 (새로고침하면 처음부터).
 export function useCoachChat() {

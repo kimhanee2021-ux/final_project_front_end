@@ -1,4 +1,4 @@
-import apiClient from '../../utils/apiClient'
+import apiClient from '@/shared/lib/apiClient'
 
 // 백엔드 CoachController(/api/ai/coach) 연동.
 // 응답: { answer: string, games: [{ appId, name, thumbnailUrl, reason }], evidence: [{ label, value, amount?, unit?, group? }] }

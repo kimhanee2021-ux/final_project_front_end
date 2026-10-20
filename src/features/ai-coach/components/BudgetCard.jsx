@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import Card from '../../../components/common/Card'
-import { money } from '../../../utils/formatters'
-import { PRIMARY_BUTTON, TEXT_BUTTON } from '../../spending/styles'
+import { Card } from '@/shared/ui'
+import { money } from '@/shared/utils/formatters'
+import { PRIMARY_BUTTON, TEXT_BUTTON } from '@/features/spending'
 import { parseBudgetInput } from '../coachModel'
 import { useBudget } from '../hooks/useBudget'
 

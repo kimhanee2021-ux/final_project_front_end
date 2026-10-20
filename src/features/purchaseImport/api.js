@@ -1,4 +1,4 @@
-import apiClient from '../../utils/apiClient'
+import apiClient from '@/shared/lib/apiClient'
 
 // 백엔드 PurchaseController(/api/purchases) 연동.
 // 보내는 것은 브라우저에서 파싱한 거래 목록뿐이다 (HTML 원본·결제 수단·잔액은 보내지 않음).
