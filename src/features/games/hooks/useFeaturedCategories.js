@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { fetchFeaturedCategories } from '../api'
-import { toFeaturedCategory } from '../gameModel'
-import { getErrorMessage } from '../../../utils/apiClient'
+import { toFeaturedCategory } from '../model/gameModel'
+import { getErrorMessage } from '@/shared/lib/apiClient'
 
 // /trending 전용. featured와 마찬가지로 페이지네이션 없이 전체 카테고리 배열을 한 번에 받는다.
 export function useFeaturedCategories() {

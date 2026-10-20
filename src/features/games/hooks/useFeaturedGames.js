@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { fetchFeaturedGames } from '../api'
-import { toFeaturedGame } from '../gameModel'
-import { getErrorMessage } from '../../../utils/apiClient'
+import { toFeaturedGame } from '../model/gameModel'
+import { getErrorMessage } from '@/shared/lib/apiClient'
 
 // /explore 전용. 백엔드가 페이지네이션 없이 전체 배열을 내려주므로 한 번만 받아오고,
 // 화면 쪽 무한 스크롤은 이미 받은 배열을 점진적으로 더 보여주는 방식(ExplorePage)으로 처리한다.

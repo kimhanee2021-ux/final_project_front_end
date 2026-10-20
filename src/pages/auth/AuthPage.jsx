@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import GSIcon from '../../components/common/GSIcon'
-import { useAuth } from '../../features/auth/context/AuthContext'
-import { authLink, safeReturnTo } from '../../features/auth/authSession'
-import { checkEmailAvailability, checkNicknameAvailability } from '../../features/auth/api'
-import { getErrorMessage } from '../../utils/apiClient'
+import { GSIcon } from '@/shared/ui'
+import { useAuth, authLink, safeReturnTo, checkEmailAvailability, checkNicknameAvailability } from '@/features/auth'
+import { getErrorMessage } from '@/shared/lib/apiClient'
 
 const content = {
   login: { eyebrow: 'WELCOME BACK', title: '다시 만나 반가워요', subtitle: 'GameSense에서 나의 게임 라이프를 이어가세요.', action: '로그인' },

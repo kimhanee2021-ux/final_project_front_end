@@ -1,4 +1,4 @@
-import apiClient from '../../utils/apiClient'
+import apiClient from '@/shared/lib/apiClient'
 
 // 백엔드 FeaturedGameController(/api/games/featured) 연동 — 스팀 "추천" 섹션 캐시.
 // 페이지네이션 없이 전체 배열로 내려온다(장르 없음, 개수는 백엔드가 매일 동기화하는 스냅샷 크기만큼).

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
-import GSIcon from '../../components/common/GSIcon'
-import { useAuth } from '../../features/auth/context/AuthContext'
-import { BOARD_CATEGORIES } from '../../features/board/boardModel'
-import { createPost, fetchPost, updatePost } from '../../features/board/api'
-import { getErrorMessage } from '../../utils/apiClient'
+import { PageHeading } from '@/shared/ui'
+import { CatalogMessage } from '@/features/games'
+import { useAuth } from '@/features/auth'
+import { BOARD_CATEGORIES, createPost, fetchPost, updatePost } from '@/features/board'
+import { getErrorMessage } from '@/shared/lib/apiClient'
 
 const emptyForm = { category: BOARD_CATEGORIES[0], tag: '', title: '', content: '', isAnonymous: false }
 
@@ -78,26 +78,14 @@ export default function CommunityWritePage() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="p-[70px_20px] text-center border border-dashed border-gs-border rounded-[12px] [&>svg]:text-gs-muted" role="status">
-        <GSIcon name="search" size={38} />
-        <h3>불러오는 중이에요</h3>
-      </div>
-    )
-  }
+  if (loading) return <CatalogMessage icon="search" title="불러오는 중이에요" role="status" />
 
-  const fieldClass = 'px-[14px] py-[11px] border border-gs-border rounded-[10px] bg-gs-panel text-gs-text text-[13px] [font-family:inherit]'
-  const labelClass = 'flex flex-col gap-[7px] text-[12px] text-gs-muted'
+  const fieldClass = 'px-[16px] py-[12px] border-0 rounded-[14px] bg-bg text-text text-[15px] [font-family:inherit]'
+  const labelClass = 'flex flex-col gap-[8px] text-[13px] text-muted'
 
   return (
     <section className="max-w-[640px] mx-auto">
-      <div className="flex items-start justify-between gap-[16px] mb-[17px]">
-        <div>
-          <span className="text-gs-mint text-[9px] tracking-[2px] font-[650]">YOUR WORLD OF GAMES</span>
-          <h1>{isEdit ? '글 수정' : '글쓰기'}</h1>
-        </div>
-      </div>
+      <PageHeading title={isEdit ? '글 수정' : '글쓰기'} />
       <form className="flex flex-col gap-[16px]" onSubmit={submit}>
         <label className={labelClass}>
           <span>카테고리</span>
@@ -139,7 +127,7 @@ export default function CommunityWritePage() {
             className={`${fieldClass} resize-y`}
           />
         </label>
-        <label className="flex items-center gap-[9px] text-[12px] text-gs-muted">
+        <label className="flex items-center gap-[9px] text-[14px] text-muted">
           <input
             type="checkbox"
             checked={form.isAnonymous}
@@ -149,7 +137,7 @@ export default function CommunityWritePage() {
           <span>익명으로 작성</span>
         </label>
         {error && (
-          <p className="text-[#e45a67] text-[12px] my-[4px]" role="alert">
+          <p className="text-[#e5484d] text-[13px] my-[4px]" role="alert">
             {error}
           </p>
         )}
