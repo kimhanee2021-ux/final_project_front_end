@@ -19,11 +19,21 @@ function GameThumb({ src }) {
 
 // 등급 한 칸: 등급 글자와 설명. 추정이 어려우면 이유를 알 수 있게 짧게 적는다.
 function GradeCell({ target }) {
+  if (target.grade) {
+    return (
+      <>
+        <strong>{target.grade}</strong>
+        <small> {target.label}</small>
+      </>
+    )
+  }
+  // 등급을 못 정했으면 이유를 함께 보여준다(길면 두 줄까지, 전체는 마우스를 올리면 보인다).
   return (
-    <>
-      <strong>{target.grade ?? '—'}</strong>
-      <small> {target.grade ? target.label : '추정 어려움'}</small>
-    </>
+    <span title={target.reason}>
+      <strong>—</strong>
+      <small> {target.label ?? '추정 어려움'}</small>
+      {target.reason && <small className="block mt-[2px] max-w-[220px] mx-auto text-[11px] text-faint leading-[1.4] line-clamp-2 whitespace-normal">{target.reason}</small>}
+    </span>
   )
 }
 
