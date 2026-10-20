@@ -43,8 +43,37 @@ export function specsFromPhoto({ cpuModel, gpuModel, ramGB, storageTotalGB }) {
   }
 }
 
-// 입력한 사양이 하나라도 있으면 true
-export const hasSpecs = specs => Object.values(specs).some(value => value.trim() !== '')
+// 입력한 사양이 하나라도 있으면 true. 사양 칸(SPEC_FIELDS)만 본다.
+export const hasSpecs = specs => SPEC_FIELDS.some(({ key }) => (specs[key] ?? '').trim() !== '')
+
+// "512GB", "1 TB, 500GB"처럼 단위가 붙은 용량 글자를 GB 합계로 바꾼다. 단위가 없으면 null.
+function capacityGB(text) {
+  const matches = [...text.matchAll(/(\d+(?:\.\d+)?)\s*(TB|GB)/gi)]
+  if (!matches.length) return null
+  return matches.reduce((sum, [, amount, unit]) => sum + Number(amount) * (unit.toUpperCase() === 'TB' ? 1000 : 1), 0)
+}
+
+// "16 GB" 같은 글자에서 첫 숫자만 꺼낸다. 없으면 null.
+function firstNumber(text) {
+  const match = text.match(/\d+(?:\.\d+)?/)
+  return match ? Number(match[0]) : null
+}
+
+// 입력 창에서 저장한 사양을 PC 성능 진단(AI 분석)이 받는 형식으로 바꾼다.
+// 사진으로 읽은 상세 값(detail)은 사용자가 칸을 고치지 않았을 때만 그대로 쓰고, 고쳤다면 칸의 값으로 다시 만든다.
+export function toDiagnosisSpecs(specs, detail) {
+  if (detail) {
+    const fromPhoto = specsFromPhoto(detail)
+    if (SPEC_FIELDS.every(({ key }) => fromPhoto[key] === specs[key])) return detail
+  }
+  return {
+    cpuModel: specs.cpu,
+    gpuModel: specs.gpu,
+    ramGB: firstNumber(specs.ram),
+    storageTotalGB: capacityGB(specs.storage),
+    deviceType: 'UNKNOWN',
+  }
+}
 
 // 예시 부품 목록(mock)에 사용자가 입력한 모델명을 덮어쓴다. 입력하지 않은 부품은 예시 그대로 둔다.
 // 입력한 부품은 세부 사양(facts)을 알 수 없어서 비우고 custom 표시를 단다.

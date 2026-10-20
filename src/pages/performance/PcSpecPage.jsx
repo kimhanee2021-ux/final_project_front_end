@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react'
-import { GSIcon, PageHeading, PanelPage, Panel, AnalysisPanel } from '@/shared/ui'
+import { useMemo } from 'react'
+import { PageHeading, PanelPage, Panel, AnalysisPanel } from '@/shared/ui'
 import { hl } from '@/shared/utils/headline'
-import { hardware as sampleHardware, hasSpecs, mergeHardware, usePcSpecs, HardwareCard, PcSpecDialog } from '@/features/performance'
+import { hardware as sampleHardware, hasSpecs, mergeHardware, usePcSpecs, HardwareCard, PcSpecButton } from '@/features/performance'
 import '@/features/performance/styles/performance.css'
 
 const HOW_TO_STEPS = [
@@ -12,8 +12,7 @@ const HOW_TO_STEPS = [
 
 // 내 PC 사양: 부품 정보를 보고, 사양을 입력하는 곳. 입력한 사양은 이 브라우저에 저장되고 종합평가가 이어서 보여준다.
 export default function PcSpecPage() {
-  const [specOpen, setSpecOpen] = useState(false)
-  const { specs, saveSpecs, resetSpecs } = usePcSpecs()
+  const { specs } = usePcSpecs()
   const hardware = useMemo(() => mergeHardware(sampleHardware, specs), [specs])
   const custom = hasSpecs(specs)
   const cpu = hardware.find(item => item.id === 'cpu')
@@ -24,12 +23,7 @@ export default function PcSpecPage() {
         <PageHeading
           title="내 PC 사양"
           description={custom ? '입력한 사양을 보여주고 있어요.' : '아직 입력한 사양이 없어서 예시 사양을 보여주고 있어요.'}
-          action={
-            <button className="gs-primary-button" onClick={() => setSpecOpen(true)}>
-              <GSIcon name="monitor" size={17} />
-              {custom ? '내 사양 수정' : '내 사양 입력'}
-            </button>
-          }
+          action={<PcSpecButton />}
         />
         <AnalysisPanel eyebrow="부품 정보" headline={['내 PC는 ', hl(cpu.model), '와 ', hl(gpu.model), ' 구성이에요.']}>
           <div className="gs-stagger grid grid-cols-2 gap-[16px] max-[760px]:grid-cols-1">
@@ -49,7 +43,6 @@ export default function PcSpecPage() {
           <p className="mt-[20px] text-[13px] text-faint">브라우저는 내 PC의 부품을 직접 읽을 수 없어서 이 방식으로 받아요. 입력한 내용은 이 브라우저에만 저장돼요.</p>
         </AnalysisPanel>
       </Panel>
-      <PcSpecDialog open={specOpen} specs={specs} onSave={saveSpecs} onReset={resetSpecs} onClose={() => setSpecOpen(false)} />
     </PanelPage>
   )
 }

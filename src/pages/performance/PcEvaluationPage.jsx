@@ -1,8 +1,7 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { GSIcon, PageHeading, PanelPage, Panel, AnalysisPanel } from '@/shared/ui'
+import { PageHeading, PanelPage, Panel, AnalysisPanel } from '@/shared/ui'
 import { hl } from '@/shared/utils/headline'
-import { hardware as sampleHardware, performanceSummary, hasSpecs, mergeHardware, usePcSpecs, ScorePanel, UpgradeList, GamePerformance, DetailsDialog } from '@/features/performance'
+import { hardware as sampleHardware, performanceSummary, hasSpecs, mergeHardware, usePcSpecs, PcSpecButton, ScorePanel, UpgradeList, GamePerformance, DetailsDialog } from '@/features/performance'
 import '@/features/performance/styles/performance.css'
 
 // 내 PC 종합평가: 종합 점수, 게임별 성능, 추천 업그레이드를 패널 하나씩 보여준다.
@@ -18,14 +17,11 @@ export default function PcEvaluationPage() {
         <PageHeading
           title="내 PC 종합평가"
           description={custom ? '입력한 사양 기준이에요. 점수와 FPS는 예시 계산값입니다.' : '점수와 FPS는 예시 값입니다.'}
+          action={<PcSpecButton />}
         />
         {!custom && (
-          <div className="flex items-center justify-between gap-[16px] mb-[32px] p-[20px] rounded-[16px] bg-primary-soft max-[600px]:flex-col max-[600px]:items-start">
-            <p className="text-[14px] text-primary-text">아직 내 사양을 입력하지 않아 예시 PC 기준으로 보여주고 있어요. 먼저 사양을 입력해 보세요.</p>
-            <Link to="/pc-check" className="gs-primary-button shrink-0">
-              <GSIcon name="monitor" size={16} />
-              사양 입력하러 가기
-            </Link>
+          <div className="mb-[32px] p-[20px] rounded-[16px] bg-primary-soft">
+            <p className="text-[14px] text-primary-text">아직 내 사양을 입력하지 않아 예시 PC 기준으로 보여주고 있어요. 위의 “내 사양 입력” 버튼으로 입력해 보세요.</p>
           </div>
         )}
         <AnalysisPanel eyebrow="종합 점수" headline={['종합 성능은 ', hl(performanceSummary.label), ' 수준이에요.']}>

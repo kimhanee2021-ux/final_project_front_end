@@ -708,3 +708,13 @@ body:has(.pcd-dialog[open]){overflow: hidden;}
 .pcd-page .pcd-hardware-card{border:0;background:var(--surface);box-shadow:var(--shadow);border-radius:20px}
 @media(max-width:600px){.pcd-page .pcd-panel{padding:20px;border-radius:20px}}
 .pcd-photo-input{display:flex;flex-direction:column;align-items:center}
+
+/* 사양 입력 창(공용): 폭을 넓히고, 사진 탭 안쪽 글자를 읽기 좋은 크기로 맞춘다 */
+.pc-spec-dialog{width:min(620px,calc(100% - 32px))}
+.pc-spec-dialog .pcd-photo-empty{background:var(--surface);border-color:var(--border)}
+.pc-spec-dialog .pcd-photo-empty strong{font-size:14px}
+.pc-spec-dialog .pcd-photo-empty span,.pc-spec-dialog .pcd-photo-formats,.pc-spec-dialog .pcd-photo-pending,.pc-spec-dialog .pcd-photo-error{font-size:12px}
+.pc-spec-dialog .pcd-outline-action{width:auto;font-size:13px;padding:10px 18px;border-radius:25px}
+.pc-spec-dialog .pcd-photo-consent{font-size:12px}
+.pc-spec-dialog .pcd-spec-review>p,.pc-spec-dialog .pcd-spec-review li,.pc-spec-dialog .pcd-spec-review>label{font-size:12px}
+.pc-spec-dialog .pcd-spec-review input,.pc-spec-dialog .pcd-spec-review select{background:var(--surface);font-size:13px}
