@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useRevealOnView } from '@/shared/hooks'
 import { useGameSense } from '@/shared/state'
 import { GSIcon } from '@/shared/ui'
 import { GameDialog } from '@/features/games'
@@ -11,6 +12,7 @@ import '@/shared/styles/gamesense.css'
 
 function Shell() {
   const mobileMenu = useRef(null)
+  useRevealOnView()
   const { pathname, search, hash } = useLocation()
   const navigate = useNavigate()
   const { toast, setToast, notify } = useGameSense()
