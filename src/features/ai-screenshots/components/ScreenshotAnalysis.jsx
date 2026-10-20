@@ -1,12 +1,14 @@
 import { useScreenshotWorkspace } from '../hooks/useScreenshotWorkspace';
+import { PageHeading, Panel, PanelPage } from '@/shared/ui';
 import SampleScreen from './SampleScreen';
 import { Link } from 'react-router-dom';
 import { samples } from '../mocks/screenshotSamples';
-import { useAuth } from '../../auth/context/AuthContext';
-import { authLink, readAccessToken } from '../../auth/authSession';
-import { browserStores } from '../../../utils/apiClient';
-import '../../../styles/ai.css';
-import '../../../styles/screenshot.css';
+import { useAuth } from '@/features/auth';
+import { authLink } from '@/features/auth'
+import { readAccessToken } from '@/shared/lib/tokenStorage';
+import { browserStores } from '@/shared/lib/apiClient';
+import '@/shared/styles/ai.css';
+import '@/shared/styles/screenshot.css';
 const types = {
   item: '아이템 화면',
   play: '플레이 상황',
@@ -51,8 +53,8 @@ function ScreenshotWorkspace({
     token,
     loading
   });
-  return <section className="ai-page shot-page">
-    <header className="ai-header"><div><span className="ai-kicker">SEE · UNDERSTAND · PLAY</span><h1>AI 스크린샷 분석</h1><p>아이템, 플레이 상황, 오류 메시지를 살펴봐요.</p></div><Link to="/ai-games">AI 게임 추천 ↗</Link></header>
+  return <PanelPage><Panel className="ai-page shot-page">
+    <PageHeading title="AI 스크린샷 분석" description="아이템, 플레이 상황, 오류 메시지를 살펴봐요." action={<Link to="/ai-games">AI 게임 추천 ↗</Link>} />
     <div className="ai-tabs" role="group" aria-label="분석 방식">
       <button aria-pressed={mode === 'sample'} onClick={() => changeMode('sample')}>샘플 분석 · 30개</button>
       <button aria-pressed={mode === 'upload'} onClick={() => changeMode('upload')}>내 이미지 업로드</button>
@@ -99,5 +101,5 @@ function ScreenshotWorkspace({
       </div>
     </div>}
     {state === 'failed' && <div className="ai-error" role="alert"><p>{error}</p><button onClick={mode === 'sample' ? () => run() : upload && token ? analyze : () => input.current.click()}>{mode === 'sample' ? '샘플 다시 시도' : upload && token ? '분석 다시 시도' : '다른 이미지 선택'}</button></div>}
-  </section>;
+  </Panel></PanelPage>;
 }

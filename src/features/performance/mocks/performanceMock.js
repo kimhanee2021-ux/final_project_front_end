@@ -30,7 +30,6 @@ export const hardware = [
     color: 'mint',
     facts: [
       ['gpu', '12 GB GDDR6'],
-      ['check', '드라이버 최신 버전'],
     ],
     detail: '그래픽 카드',
     recommendation: 'QHD 이상에서는 게임별 그래픽 설정을 조절해 보세요.',
@@ -161,49 +160,6 @@ export const upgrades = [
       '이 화면은 실제 파일을 확인하거나 삭제하지 않습니다.',
     ],
   },
-]
-
-export const systemMetrics = [
-  {
-    id: 'cpu-temp',
-    icon: 'thermometer',
-    label: 'CPU 온도',
-    value: '54°C',
-    state: '정상',
-    color: 'mint',
-  },
-  {
-    id: 'gpu-temp',
-    icon: 'thermometer',
-    label: 'GPU 온도',
-    value: '62°C',
-    state: '정상',
-    color: 'gold',
-  },
-  {
-    id: 'usage',
-    icon: 'activity',
-    label: '평균 사용률',
-    value: '48%',
-    state: '낮음',
-    color: 'blue',
-  },
-  {
-    id: 'storage',
-    icon: 'drive',
-    label: '저장 공간',
-    value: '55%',
-    state: '282 GB 남음',
-    color: 'purple',
-  },
-]
-
-export const diagnosticSteps = [
-  'CPU 구성 확인',
-  '그래픽 성능 확인',
-  '메모리 상태 확인',
-  '저장 공간 확인',
-  '게임별 결과 정리',
 ]
 
 export function getPerformanceRating(fps) {

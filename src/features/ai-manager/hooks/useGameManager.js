@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useAuth } from '../../auth/context/AuthContext';
+import { useAuth } from '@/features/auth';
 import { api } from '../api';
 import { loadDemoCatalog } from '../../games/aiDemoCatalog';
 import { parseWon, selectedCost } from '../managerModel';

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { api } from '../api';
-import { useAuth } from '../../auth/context/AuthContext';
+import { useAuth } from '@/features/auth';
 export function useAiChat({
   token
 }) {

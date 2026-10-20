@@ -1,9 +1,11 @@
 import { useAiChat } from '../hooks/useAiChat';
-import '../../../styles/ai.css';
+import { PageHeading, Panel, PanelPage } from '@/shared/ui';
+import '@/shared/styles/ai.css';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../auth/context/AuthContext';
-import { authLink, readAccessToken } from '../../auth/authSession';
-import { browserStores } from '../../../utils/apiClient';
+import { useAuth } from '@/features/auth';
+import { authLink } from '@/features/auth'
+import { readAccessToken } from '@/shared/lib/tokenStorage';
+import { browserStores } from '@/shared/lib/apiClient';
 export default function AiGames() {
   const {
     isAuthenticated,
@@ -39,8 +41,8 @@ function AiChat({
     token,
     loading
   });
-  return <section className="ai-page">
-    <header className="ai-header"><div><span className="ai-kicker">PLAY YOUR WAY</span><h1>AI 게임 추천</h1><p>오늘 할 게임부터, 구매 전 고민까지 함께 찾아봐요.</p></div><Link to="/ai-screenshots">AI 스크린샷 분석 ↗</Link></header>
+  return <PanelPage><Panel className="ai-page">
+    <PageHeading title="AI 게임 추천" description="오늘 할 게임부터, 구매 전 고민까지 함께 찾아봐요." action={<Link to="/ai-screenshots">AI 스크린샷 분석 ↗</Link>} />
     {error && <p role="alert" className="ai-error">{error}</p>}
     {!token ? <div className="ai-login"><h2>{loading ? '로그인 확인 중…' : '로그인하고 상담 시작하기'}</h2><p>회원 계정으로 게임 추천과 구매 상담을 이용하세요.</p>{!loading && <Link className="ai-primary ai-login-link" to={authLink('login', '/ai-games')}>로그인</Link>}</div> : <>
       <div className="ai-tabs" role="group" aria-label="상담 종류"><button aria-pressed={mode === 'recommend'} disabled={busy} onClick={() => newChat('recommend')}>AI 게임 추천</button><button aria-pressed={mode === 'purchase'} disabled={busy} onClick={() => newChat('purchase')}>AI 구매 상담</button><button className="ai-reset" disabled={busy} onClick={() => newChat()}>새 대화</button></div>
@@ -56,5 +58,5 @@ function AiChat({
       <form className="ai-composer" onSubmit={send}><label className="ai-sr-only" htmlFor="ai-question">질문</label><textarea id="ai-question" value={text} onChange={e => setText(e.target.value)} maxLength={2000} rows={3} disabled={busy} placeholder={mode === 'purchase' && !game ? '먼저 상담할 게임을 선택해주세요.' : '어떤 게임을 원하시나요? 취향과 고민을 자유롭게 적어주세요.'} /><div><small>{text.length}/2000</small><button className="ai-primary" disabled={busy || !text.trim() || mode === 'purchase' && !game}>{busy ? '답변 준비 중…' : '질문 보내기'}</button></div></form>
       <p className="ai-note">AI 답변에는 오류가 있을 수 있어요. 가격·할인·플레이 인원은 공식 판매처에서 최종 확인해주세요.</p>
     </>}
-  </section>;
+  </Panel></PanelPage>;
 }

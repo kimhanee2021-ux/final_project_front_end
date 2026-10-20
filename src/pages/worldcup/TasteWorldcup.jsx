@@ -1,1 +1,1 @@
-export { default } from '../../features/ai-worldcup/components/TasteWorldcup'
+export { default } from '@/features/ai-worldcup/components/TasteWorldcup'

@@ -1,1 +1,1 @@
-export { default } from '../../features/ai-manager/components/GameManager'
+export { default } from '@/features/ai-manager/components/GameManager'

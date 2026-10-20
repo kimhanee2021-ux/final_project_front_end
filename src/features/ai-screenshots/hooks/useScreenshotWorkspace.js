@@ -2,7 +2,7 @@ import { validateUpload } from '../uploadModel';
 import { useEffect, useRef, useState } from 'react';
 import { samples } from '../mocks/screenshotSamples';
 import { api } from '../api';
-import { useAuth } from '../../auth/context/AuthContext';
+import { useAuth } from '@/features/auth';
 export function useScreenshotWorkspace({
   token
 }) {

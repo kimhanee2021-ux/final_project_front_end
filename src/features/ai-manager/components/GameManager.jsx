@@ -1,10 +1,12 @@
 import { useGameManager } from '../hooks/useGameManager';
+import { PageHeading, Panel, PanelPage } from '@/shared/ui';
 import { Link, useSearchParams } from 'react-router-dom';
-import { useAuth } from '../../auth/context/AuthContext';
-import { readAccessToken, authLink } from '../../auth/authSession';
-import { browserStores } from '../../../utils/apiClient';
+import { useAuth } from '@/features/auth';
+import { authLink } from '@/features/auth'
+import { readAccessToken } from '@/shared/lib/tokenStorage';
+import { browserStores } from '@/shared/lib/apiClient';
 import { priceLabel } from '../managerModel';
-import '../../../styles/manager.css';
+import '@/shared/styles/manager.css';
 export default function GameManager() {
   const {
     isAuthenticated,
@@ -84,7 +86,7 @@ function Manager({
           add(Number(appInput), tab === 'library' ? 'owned' : 'basket');
         }}>상품 확인하고 추가</button></details></section>;
   }
-  return <main className="gm-page"><header className="gm-title"><div><span className="gm-eyebrow">MY GAMES · MY PLAN</span><h1>AI 내 게임 매니저</h1><p>내 게임은 편하게 정리하고, 사고 싶은 게임은 원하는 가격에 기다려보세요.</p></div></header>
+  return <PanelPage><Panel className="gm-page"><PageHeading title="AI 내 게임 매니저" description="내 게임은 편하게 정리하고, 사고 싶은 게임은 원하는 가격에 기다려보세요." />
  {demo && <aside className="gm-panel gm-demo"><strong>데모 체험 · 샘플 데이터</strong><p>보유 게임과 가격·AI 제안은 샘플이에요. 서버 감시와 실제 알림은 동작하지 않고, 새로고침하면 처음의 샘플 구성으로 돌아가요.</p><div className="gm-presets"><button disabled={busy} onClick={() => showSamples('library')}>컬렉션 예시 보기</button><button disabled={busy} onClick={() => showSamples('watch')}>할인 대기·충족·실패 예시 보기</button><button disabled={busy} onClick={() => showSamples('alerts')}>알림 예시 보기</button></div><Link to={authLink('/login', '/ai-game-manager')}>로그인하고 실제로 이용하기 →</Link><Link to="/ai-game-manager">데모 나가기</Link></aside>}
  {authLoading ? <p role="status">로그인을 확인하고 있어요.</p> : !token && !demo ? <section className="gm-panel gm-welcome"><h2>내 게임을 위한 두 가지 도움</h2><div className="gm-columns"><article><h3>내 게임 정리하기</h3><p>원하는 기준을 말하면 AI가 컬렉션을 제안해요. 확인한 뒤 저장하세요.</p></article><article><h3>할인 기다리기</h3><p>사고 싶은 상품과 목표 금액을 정하면 조건을 충족했을 때 사이트 알림을 받아요.</p></article></div><Link className="gm-primary gm-link" to={authLink('/login', '/ai-game-manager')}>로그인하고 시작하기</Link><Link className="gm-link" to="/ai-game-manager?demo=1">데모로 둘러보기 →</Link></section> : state ? <>
  <nav className="gm-tabs" aria-label="내 게임 매니저"><button aria-pressed={tab === 'library'} disabled={busy} onClick={() => switchTab('library')}>내 게임 정리 <small>{owned.length}</small></button><button aria-pressed={tab === 'watch'} disabled={busy} onClick={() => switchTab('watch')}>할인 기다리기 <small>{watches.length}</small></button><button aria-pressed={tab === 'alerts'} disabled={busy} onClick={() => switchTab('alerts')} aria-label={unread > 0 ? `알림 ${unread}개 새 알림` : '알림'}>알림 {unread > 0 && <small>{unread}</small>}</button></nav>
@@ -151,5 +153,5 @@ function Manager({
       }}>다시 불러오기</button>}</section>}
  {busy && <aside className="gm-working" role="status"><strong>{canCancel ? 'AI 제안을 준비하고 있어요…' : '저장한 내용을 확인하고 있어요…'}</strong>{canCancel ? <button onClick={cancel}>취소</button> : <span>완료될 때까지 잠시 기다려주세요.</span>}</aside>}{error && <div ref={feedback} className="gm-error" role="alert">{error}</div>}{notice && <div ref={feedback} className="gm-notice" role="status">{notice}</div>}
  <details className="gm-panel gm-guide"><summary>처음 이용하시나요?</summary><p>① 보유 게임 동기화 또는 직접 등록 → ② AI 제안을 확인하고 컬렉션 저장 → ③ 관심 상품과 목표 금액 저장 → ④ 조건 충족 알림 확인.</p><p>Steam 가격은 한국 상점 기준이에요. 가격을 가져오지 못하면 확인 필요로 표시해요. 게임을 자동 구매하거나 이메일을 보내지는 않아요.</p></details>
- </main>;
+ </Panel></PanelPage>;
 }

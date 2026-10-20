@@ -1,10 +1,12 @@
 import { useWorldcup } from '../hooks/useWorldcup';
+import { PageHeading, Panel, PanelPage } from '@/shared/ui';
 import GameCard from './GameCard';
 import { Link, useSearchParams } from 'react-router-dom';
-import { useAuth } from '../../auth/context/AuthContext';
-import { authLink, readAccessToken } from '../../auth/authSession';
-import { browserStores } from '../../../utils/apiClient';
-import '../../../styles/worldcup.css';
+import { useAuth } from '@/features/auth';
+import { authLink } from '@/features/auth'
+import { readAccessToken } from '@/shared/lib/tokenStorage';
+import { browserStores } from '@/shared/lib/apiClient';
+import '@/shared/styles/worldcup.css';
 const reasonsList = ['분위기', '스토리', '전투', '탐험', '전략', '편하게 즐기기'];
 export default function TasteWorldcup() {
   const {
@@ -55,8 +57,8 @@ function Worldcup({
     authLoading,
     demo
   });
-  return <main className="wc-page">
-    <header className="wc-heading"><div><span className="wc-eyebrow">CHOOSE · DISCOVER · YOUR TASTE</span><h1>AI 게임 취향 월드컵</h1><p>두 게임을 비교하며, 아직 몰랐던 나의 취향을 찾아보세요.</p></div><span className="wc-badge">{catalog ? `${catalog.count}개 게임` : '나만의 선택'}</span></header>
+  return <PanelPage><Panel className="wc-page">
+    <PageHeading title="AI 게임 취향 월드컵" description="두 게임을 비교하며, 아직 몰랐던 나의 취향을 찾아보세요." action={<span className="wc-badge">{catalog ? `${catalog.count}개 게임` : '나만의 선택'}</span>} />
     {demo && <section className="wc-panel" aria-label="데모 안내"><strong>데모 체험 · 샘플 분석</strong><p>실제 게임 정보로 선택을 체험해요. 결과는 샘플이며 Gemini를 호출하거나 기록을 저장하지 않아요.</p><Link className="wc-link" to={authLink('/login', '/ai-worldcup')}>로그인하고 실제 AI 이용하기 →</Link><Link className="wc-link" to="/ai-worldcup">데모 나가기</Link></section>}
     <details className="wc-guide"><summary>어떻게 진행하나요?</summary><p>고정 대진표가 아닌 취향 탐색입니다. AI가 선택과 이유를 보고 다음 두 게임을 구성해요. 장르를 섞거나 세부 장르를 여러 개 골라도 돼요. 두 게임이 모두 좋거나 별로일 때도 선택할 수 있고, 모르는 게임은 ‘둘 다 몰라요’로 넘길 수 있어요.</p><p>결과는 이번 선택에 대한 해석이며 성격 검사나 구매 적합도 확정이 아닙니다. 게임 정보는 2026년 10월 11일 수집한 Steam 공개 정보이며 가격·플레이 통계는 실시간으로 갱신되지 않아요.</p></details>
     {authLoading ? <p role="status">로그인을 확인하고 있어요.</p> : !token && !demo ? <section className="wc-panel"><h2>내 선택으로 알아보는 게임 취향</h2><p>로그인하면 AI가 다음 대결을 구성하고 선택 근거를 담은 결과를 보여줘요.</p><Link className="wc-primary wc-link" to={authLink('/login', '/ai-worldcup')}>로그인하고 시작하기 →</Link> <Link className="wc-link" to="/ai-worldcup?demo=1">데모로 둘러보기 →</Link><p>로그인 없이 게임 선택과 샘플 결과를 체험해보세요.</p></section> : <>
@@ -85,5 +87,5 @@ function Worldcup({
         }}>취소</button></div>}
       {error && <div className="wc-error" role="alert"><p>{error}</p>{lastRequest && !busy && <button onClick={() => request(lastRequest.payload, lastRequest.choices)}>같은 선택으로 다시 시도</button>}<button disabled={busy} onClick={reset}>조건 다시 선택</button></div>}
     </>}
-  </main>;
+  </Panel></PanelPage>;
 }

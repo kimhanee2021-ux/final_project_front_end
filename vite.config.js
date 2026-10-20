@@ -1,3 +1,4 @@
+import path from 'node:path'
 import process from 'node:process'
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -10,6 +11,8 @@ export default defineConfig(({ mode }) => {
   const backendUrl = process.env.AI_API_TARGET || env.AI_API_TARGET || env.VITE_BACKEND_URL || 'http://localhost:8080'
   return {
   plugins: [react(), tailwindcss()],// React, Tailwind 플러그인 적용
+  // '@/...' 는 src 폴더를 가리킨다 (예: '@/features/auth'). 폴더를 옮겨도 import 경로가 길어지지 않는다.
+  resolve:{alias:{'@':path.resolve(process.cwd(),'src')}},
   base:'/',//배포하려는 서버 상황에 맞게 절대 경로로 설정(기본값:/)
   server:{
     host:'0.0.0.0',//모든 아이피 접속 허용

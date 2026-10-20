@@ -1,1 +1,1 @@
-export { default } from '../../features/ai-screenshots/components/ScreenshotAnalysis'
+export { default } from '@/features/ai-screenshots/components/ScreenshotAnalysis'

@@ -1,12 +1,10 @@
 import { Fragment, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import GSIcon from '../../components/common/GSIcon'
-import { useAuth } from '../../features/auth/context/AuthContext'
-import { dateTimeLabel, postAuthorLabel } from '../../features/board/boardModel'
-import { deletePost } from '../../features/board/api'
-import { useBoardPost } from '../../features/board/hooks/useBoardPost'
-import { getErrorMessage } from '../../utils/apiClient'
-import '../../styles/community.css'
+import { GSIcon } from '@/shared/ui'
+import { CatalogMessage } from '@/features/games'
+import { useAuth } from '@/features/auth'
+import { dateTimeLabel, postAuthorLabel, deletePost, useBoardPost } from '@/features/board'
+import { getErrorMessage } from '@/shared/lib/apiClient'
 
 function CommentForm({ onSubmit, onCancel, placeholder, submitLabel = '등록' }) {
   const [content, setContent] = useState('')
@@ -27,7 +25,7 @@ function CommentForm({ onSubmit, onCancel, placeholder, submitLabel = '등록' }
     }
   }
   return (
-    <form className="cm-comment-form" onSubmit={submit}>
+    <form className="flex flex-col gap-[10px] mt-[10px]" onSubmit={submit}>
       <textarea
         value={content}
         onChange={event => setContent(event.target.value)}
@@ -35,9 +33,10 @@ function CommentForm({ onSubmit, onCancel, placeholder, submitLabel = '등록' }
         maxLength={2000}
         rows={2}
         required
+        className="w-full resize-y px-[16px] py-[12px] border-0 rounded-[16px] bg-bg text-text text-[14px] [font-family:inherit]"
       />
-      {error && <p className="cm-form-error">{error}</p>}
-      <div className="cm-comment-form-actions">
+      {error && <p className="text-[#e5484d] text-[13px] my-[4px]">{error}</p>}
+      <div className="flex justify-end gap-[8px]">
         {onCancel && (
           <button type="button" className="gs-secondary-button" onClick={onCancel}>
             취소
@@ -55,10 +54,12 @@ function CommentItem({ comment, isReply, userId, onReply, onEdit, onDelete, repl
   const [editing, setEditing] = useState(false)
   const isOwner = userId != null && comment.authorId === userId
   return (
-    <li className={isReply ? 'cm-comment cm-reply' : 'cm-comment'}>
-      <div className="cm-comment-head">
-        <strong>{comment.authorNickname}</strong>
-        <span>{dateTimeLabel(comment.createdAt)}</span>
+    <li
+      className={`py-[18px] border-b border-border last:border-0 ${isReply ? 'ml-[28px]' : ''}`}
+    >
+      <div className="flex items-center gap-[10px] mb-[6px]">
+        <strong className="text-[14px]">{comment.authorNickname}</strong>
+        <span className="text-[12px] text-faint">{dateTimeLabel(comment.createdAt)}</span>
       </div>
       {editing ? (
         <CommentForm
@@ -71,20 +72,20 @@ function CommentItem({ comment, isReply, userId, onReply, onEdit, onDelete, repl
           onCancel={() => setEditing(false)}
         />
       ) : (
-        <p className="cm-comment-content">{comment.content}</p>
+        <p className="text-[15px] leading-[1.7] whitespace-pre-wrap">{comment.content}</p>
       )}
-      <div className="cm-comment-actions">
+      <div className="flex gap-[12px] mt-[8px]">
         {!isReply && (
-          <button type="button" className="gs-text-link" onClick={onToggleReply}>
+          <button type="button" className="inline-flex items-center gap-[8px] text-muted whitespace-nowrap shrink-0 bg-transparent p-0 hover:text-text text-[13px]" onClick={onToggleReply}>
             답글
           </button>
         )}
         {isOwner && !editing && (
           <>
-            <button type="button" className="gs-text-link" onClick={() => setEditing(true)}>
+            <button type="button" className="inline-flex items-center gap-[8px] text-muted whitespace-nowrap shrink-0 bg-transparent p-0 hover:text-text text-[13px]" onClick={() => setEditing(true)}>
               수정
             </button>
-            <button type="button" className="gs-text-link" onClick={() => onDelete(comment.id)}>
+            <button type="button" className="inline-flex items-center gap-[8px] text-muted whitespace-nowrap shrink-0 bg-transparent p-0 hover:text-text text-[13px]" onClick={() => onDelete(comment.id)}>
               삭제
             </button>
           </>
@@ -121,26 +122,15 @@ export default function CommunityPostPage() {
   const [deleteError, setDeleteError] = useState('')
   const [deleting, setDeleting] = useState(false)
 
-  if (postLoading) {
+  if (postLoading) return <CatalogMessage icon="search" title="게시글을 불러오는 중이에요" role="status" />
+  if (postError || !post)
     return (
-      <div className="gs-empty" role="status">
-        <GSIcon name="search" size={38} />
-        <h3>게시글을 불러오는 중이에요</h3>
-      </div>
-    )
-  }
-  if (postError || !post) {
-    return (
-      <div className="gs-empty" role="alert">
-        <GSIcon name="info" size={38} />
-        <h3>게시글을 불러오지 못했어요</h3>
-        <p>{postError}</p>
-        <Link className="gs-primary-button" to="/community">
+      <CatalogMessage icon="info" title="게시글을 불러오지 못했어요" description={postError} role="alert">
+        <Link className="gs-primary-button mt-[16px]" to="/community">
           목록으로
         </Link>
-      </div>
+      </CatalogMessage>
     )
-  }
 
   const isOwner = isAuthenticated && user?.id === post.authorId
   const topLevelComments = comments.filter(comment => !comment.parentId)
@@ -160,40 +150,42 @@ export default function CommunityPostPage() {
   }
 
   return (
-    <article className="cm-post-detail">
-      <Link to="/community" className="gs-text-link cm-back-link">
+    <article className="max-w-[760px] mx-auto">
+      <Link to="/community" className="inline-flex items-center gap-[8px] text-muted whitespace-nowrap text-[13px] shrink-0 bg-transparent p-0 hover:text-text mb-[24px]">
         <GSIcon name="arrowLeft" size={16} />
         목록으로
       </Link>
-      <header className="cm-post-header">
-        <span className="cm-post-category">{post.category}</span>
-        {post.tag && <span className="cm-post-tag">#{post.tag}</span>}
-        <h1>{post.title}</h1>
-        <div className="cm-post-meta">
+      <header className="flex flex-col gap-[10px] mb-[18px]">
+        <p className="text-[13px] text-muted">
+          {post.category}
+          {post.tag && <span className="ml-[8px] text-faint">#{post.tag}</span>}
+        </p>
+        <h1 className="!m-0 text-[28px] font-[750] tracking-[-0.8px] leading-[1.35]">{post.title}</h1>
+        <div className="flex items-center gap-[10px] text-faint text-[13px]">
           <span>{postAuthorLabel(post)}</span>
           <span>{dateTimeLabel(post.createdAt)}</span>
           {post.updatedAt && <span>(수정됨 {dateTimeLabel(post.updatedAt)})</span>}
-          <span className="cm-post-views">
+          <span className="inline-flex items-center gap-[4px]">
             <GSIcon name="eye" size={13} />
             {post.viewCount}
           </span>
         </div>
       </header>
-      {post.imageUrl && <img className="cm-post-image" src={post.imageUrl} alt="" />}
-      <p className="cm-post-content">{post.content}</p>
+      {post.imageUrl && <img className="w-full rounded-xl mb-[18px]" src={post.imageUrl} alt="" />}
+      <p className="whitespace-pre-wrap leading-[1.8] text-[16px] mb-[32px]">{post.content}</p>
 
-      <div className="cm-post-toolbar">
+      <div className="flex items-center justify-between gap-[12px] py-[16px] border-t border-b border-border mb-[36px]">
         <button
           type="button"
-          className={`gs-secondary-button ${like.liked ? 'is-active' : ''}`}
+          className={`gs-secondary-button ${like.liked ? 'bg-gs-accent! text-gs-on-accent!' : ''}`}
           onClick={toggleLike}
           disabled={!isAuthenticated || likeLoading}
         >
-          <GSIcon name="heart" size={16} />
+          <GSIcon name="heart" size={16} className={like.liked ? 'fill-gs-on-accent' : ''} />
           좋아요 {like.likeCount}
         </button>
         {isOwner && (
-          <div className="cm-post-owner-actions">
+          <div className="flex gap-[8px]">
             <Link to={`/community/${post.id}/edit`} className="gs-secondary-button">
               <GSIcon name="edit" size={16} />
               수정
@@ -206,29 +198,29 @@ export default function CommunityPostPage() {
         )}
       </div>
       {deleteError && (
-        <p className="cm-form-error" role="alert">
+        <p className="text-[#e5484d] text-[13px] my-[4px]" role="alert">
           {deleteError}
         </p>
       )}
 
-      <section className="cm-comments" aria-labelledby="cm-comments-title">
-        <h2 id="cm-comments-title">댓글 {comments.length > 0 ? comments.length : ''}</h2>
+      <section aria-labelledby="cm-comments-title">
+        <h2 id="cm-comments-title" className="text-[18px] font-[700] mb-[16px]">댓글 {comments.length > 0 ? comments.length : ''}</h2>
         {isAuthenticated ? (
           <CommentForm placeholder="댓글을 입력하세요" onSubmit={content => addComment(content)} />
         ) : (
-          <p className="cm-login-note">로그인하면 댓글을 남길 수 있어요.</p>
+          <p className="text-muted text-[14px] py-[10px]">로그인하면 댓글을 남길 수 있어요.</p>
         )}
         {commentError && (
-          <p className="cm-form-error" role="alert">
+          <p className="text-[#e5484d] text-[13px] my-[4px]" role="alert">
             {commentError}
           </p>
         )}
         {commentsLoading && !comments.length ? (
-          <p className="cm-login-note">댓글을 불러오는 중이에요...</p>
+          <p className="text-muted text-[14px] py-[10px]">댓글을 불러오는 중이에요...</p>
         ) : topLevelComments.length === 0 ? (
-          <p className="cm-login-note">아직 댓글이 없어요. 첫 댓글을 남겨보세요.</p>
+          <p className="text-muted text-[14px] py-[10px]">아직 댓글이 없어요. 첫 댓글을 남겨보세요.</p>
         ) : (
-          <ul className="cm-comment-list">
+          <ul className="flex flex-col mt-[8px] list-none p-0">
             {topLevelComments.map(comment => (
               <Fragment key={comment.id}>
                 <CommentItem
@@ -256,7 +248,7 @@ export default function CommunityPostPage() {
           </ul>
         )}
         {!commentsLast && (
-          <div className="gs-load-more">
+          <div className="flex justify-center p-[26px_0_8px]">
             <button className="gs-secondary-button" onClick={loadMoreComments} disabled={commentsLoading}>
               댓글 더 보기
             </button>

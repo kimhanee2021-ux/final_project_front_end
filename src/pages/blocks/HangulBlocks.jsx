@@ -1,1 +1,1 @@
-export { default } from '../../features/hangul-blocks/components/HangulBlocks'
+export { default } from '@/features/hangul-blocks/components/HangulBlocks'

@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
-import GSIcon from '../../components/common/GSIcon'
-import { useAuth } from '../../features/auth/context/AuthContext'
-import { BOARD_CATEGORIES } from '../../features/board/boardModel'
-import { createPost, fetchPost, updatePost } from '../../features/board/api'
-import { getErrorMessage } from '../../utils/apiClient'
-import '../../styles/community.css'
+import { PageHeading } from '@/shared/ui'
+import { CatalogMessage } from '@/features/games'
+import { useAuth } from '@/features/auth'
+import { BOARD_CATEGORIES, createPost, fetchPost, updatePost } from '@/features/board'
+import { getErrorMessage } from '@/shared/lib/apiClient'
 
 const emptyForm = { category: BOARD_CATEGORIES[0], tag: '', title: '', content: '', isAnonymous: false }
 
@@ -79,27 +78,18 @@ export default function CommunityWritePage() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="gs-empty" role="status">
-        <GSIcon name="search" size={38} />
-        <h3>불러오는 중이에요</h3>
-      </div>
-    )
-  }
+  if (loading) return <CatalogMessage icon="search" title="불러오는 중이에요" role="status" />
+
+  const fieldClass = 'px-[16px] py-[12px] border-0 rounded-[14px] bg-bg text-text text-[15px] [font-family:inherit]'
+  const labelClass = 'flex flex-col gap-[8px] text-[13px] text-muted'
 
   return (
-    <section className="cm-write">
-      <div className="gs-section-heading">
-        <div>
-          <span className="gs-eyebrow">YOUR WORLD OF GAMES</span>
-          <h1>{isEdit ? '글 수정' : '글쓰기'}</h1>
-        </div>
-      </div>
-      <form className="cm-write-form" onSubmit={submit}>
-        <label>
+    <section className="max-w-[640px] mx-auto">
+      <PageHeading title={isEdit ? '글 수정' : '글쓰기'} />
+      <form className="flex flex-col gap-[16px]" onSubmit={submit}>
+        <label className={labelClass}>
           <span>카테고리</span>
-          <select value={form.category} onChange={event => update({ category: event.target.value })} required>
+          <select value={form.category} onChange={event => update({ category: event.target.value })} required className={fieldClass}>
             {BOARD_CATEGORIES.map(category => (
               <option key={category} value={category}>
                 {category}
@@ -107,47 +97,51 @@ export default function CommunityWritePage() {
             ))}
           </select>
         </label>
-        <label>
+        <label className={labelClass}>
           <span>태그 (선택)</span>
           <input
             value={form.tag}
             onChange={event => update({ tag: event.target.value })}
             maxLength={50}
             placeholder="예: 세일정보"
+            className={fieldClass}
           />
         </label>
-        <label>
+        <label className={labelClass}>
           <span>제목</span>
           <input
             value={form.title}
             onChange={event => update({ title: event.target.value })}
             maxLength={255}
             required
+            className={fieldClass}
           />
         </label>
-        <label>
+        <label className={labelClass}>
           <span>내용</span>
           <textarea
             value={form.content}
             onChange={event => update({ content: event.target.value })}
             rows={10}
             required
+            className={`${fieldClass} resize-y`}
           />
         </label>
-        <label className="cm-checkbox">
+        <label className="flex items-center gap-[9px] text-[14px] text-muted">
           <input
             type="checkbox"
             checked={form.isAnonymous}
             onChange={event => update({ isAnonymous: event.target.checked })}
+            className="w-auto p-0"
           />
           <span>익명으로 작성</span>
         </label>
         {error && (
-          <p className="cm-form-error" role="alert">
+          <p className="text-[#e5484d] text-[13px] my-[4px]" role="alert">
             {error}
           </p>
         )}
-        <div className="cm-write-actions">
+        <div className="flex justify-end gap-[10px] mt-[6px]">
           <button type="button" className="gs-secondary-button" onClick={() => navigate(-1)}>
             취소
           </button>
