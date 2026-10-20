@@ -74,7 +74,7 @@ export default function PcSpecDialog({ open, saved, onSave, onReset, onClose }) 
   }
 
   const save = () => {
-    onSave(draft, { detail, aiConsent: isAuthenticated && aiConsent })
+    onSave(draft, { detail, aiConsent })
     onClose()
   }
 
@@ -206,20 +206,19 @@ export default function PcSpecDialog({ open, saved, onSave, onReset, onClose }) 
           </p>
         )}
 
-        <label className={`flex items-start gap-[10px] mt-[16px] text-[12px] leading-[1.6] ${isAuthenticated ? 'text-muted cursor-pointer' : 'text-faint'}`}>
+        <label className="flex items-start gap-[10px] mt-[16px] text-[12px] leading-[1.6] text-muted cursor-pointer">
           <input
             type="checkbox"
             className="mt-[3px] w-[16px] h-[16px] accent-primary shrink-0"
-            checked={isAuthenticated && aiConsent}
-            disabled={!isAuthenticated}
+            checked={aiConsent}
             onChange={event => setAiConsent(event.target.checked)}
           />
           <span>
-            PC 성능 진단에서 이 사양을 AI 분석(Gemini·Groq)에 전송해 쓰는 데 동의해요.
+            입력한 사양을 AI 분석(Gemini·Groq)에 전송해 PC 평가에 쓰는 데 동의해요. (필수)
             {!isAuthenticated && (
               <>
                 {' '}
-                <Link to="/login?next=%2Fpc-check" className="text-primary-text underline">로그인</Link>하면 선택할 수 있어요.
+                분석은 <Link to="/login?next=%2Fpc-check%2Fevaluation" className="text-primary-text underline">로그인</Link> 후에 진행돼요.
               </>
             )}
           </span>
@@ -229,7 +228,7 @@ export default function PcSpecDialog({ open, saved, onSave, onReset, onClose }) 
           <button type="button" className="bg-transparent text-[13px] text-muted underline" onClick={reset}>
             입력한 사양 지우기
           </button>
-          <button type="button" className="gs-primary-button" onClick={save}>
+          <button type="button" className="gs-primary-button" onClick={save} disabled={!aiConsent}>
             저장하기
           </button>
         </div>

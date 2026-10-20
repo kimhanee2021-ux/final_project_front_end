@@ -15,7 +15,6 @@ const primaryLinks = [
 const moreLinks = [
   ['/pc-check', 'monitor', 'PC 사양', 'PC 사양'],
   ['/pc-check/evaluation', 'chart', 'PC 종합평가', 'PC 종합평가'],
-  ['/pc-check/diagnosis', 'monitor', 'PC 성능 진단', 'PC 성능 진단'],
   ['/hangul-blocks', 'gamepad', '손풀기게임', '손풀기게임'],
   ['/community', 'users', 'Community', '커뮤니티'],
   ['/wishlist', 'heart', 'Wishlist', '위시리스트'],

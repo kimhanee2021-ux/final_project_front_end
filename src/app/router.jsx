@@ -13,7 +13,6 @@ import PurchasesPage from '@/pages/purchases/PurchasesPage'
 import WishlistPage from '@/pages/wishlist/WishlistPage'
 import PcSpecPage from '@/pages/performance/PcSpecPage'
 import PcEvaluationPage from '@/pages/performance/PcEvaluationPage'
-import PerformancePage from '@/pages/performance/PerformancePage'
 import HangulBlocks from '@/pages/blocks/HangulBlocks'
 import MyPage from '@/pages/mypage/MyPage'
 import AuthPage from '@/pages/auth/AuthPage'
@@ -53,7 +52,7 @@ const router = createBrowserRouter([
           ...catalogRoutes(['recommendations']),
           { path: 'pc-check', element: <PcSpecPage /> },
           { path: 'pc-check/evaluation', element: <PcEvaluationPage /> },
-          { path: 'pc-check/diagnosis', element: <PerformancePage /> },
+          { path: 'pc-check/diagnosis', element: <Navigate to="/pc-check/evaluation" replace /> },
           { path: 'hangul-blocks', element: <HangulBlocks /> },
           {
             // 로그인(데모 세션)이 필요한 페이지
