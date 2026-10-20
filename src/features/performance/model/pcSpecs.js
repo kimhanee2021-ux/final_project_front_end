@@ -33,6 +33,16 @@ export function parseSpecOutput(text) {
   return specs
 }
 
+// 사진에서 읽은 사양(cpuModel, gpuModel, ramGB, storageTotalGB …)을 사양 입력 칸 형식으로 바꾼다. 읽지 못한 값은 빈 글자로 둔다.
+export function specsFromPhoto({ cpuModel, gpuModel, ramGB, storageTotalGB }) {
+  return {
+    cpu: cpuModel ?? '',
+    gpu: gpuModel ?? '',
+    ram: ramGB ? `${ramGB} GB` : '',
+    storage: storageTotalGB ? `${storageTotalGB} GB` : '',
+  }
+}
+
 // 입력한 사양이 하나라도 있으면 true
 export const hasSpecs = specs => Object.values(specs).some(value => value.trim() !== '')
 

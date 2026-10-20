@@ -707,3 +707,4 @@ body:has(.pcd-dialog[open]){overflow: hidden;}
 .pcd-page .pcd-panel{border:0;border-radius:24px;box-shadow:var(--shadow);background:var(--surface);padding:32px}
 .pcd-page .pcd-hardware-card{border:0;background:var(--surface);box-shadow:var(--shadow);border-radius:20px}
 @media(max-width:600px){.pcd-page .pcd-panel{padding:20px;border-radius:20px}}
+.pcd-photo-input{display:flex;flex-direction:column;align-items:center}

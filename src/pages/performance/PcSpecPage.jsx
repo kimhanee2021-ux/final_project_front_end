@@ -6,7 +6,7 @@ import '@/features/performance/styles/performance.css'
 
 const HOW_TO_STEPS = [
   '"내 사양 입력"을 누르세요.',
-  '윈도우 PowerShell에서 복사한 명령어를 실행하고, 나온 결과 한 줄을 붙여넣어 "불러오기"를 누르세요. (직접 입력도 가능해요)',
+  '방법 1: PowerShell 명령어 결과 한 줄을 붙여넣고 "불러오기". 방법 2: 직접 입력. 방법 3: 시스템 정보 사진을 올리면 AI가 읽어줘요(로그인 필요).',
   '저장하면 부품 정보와 종합평가가 내 PC 기준으로 바뀌어요.',
 ]
 
