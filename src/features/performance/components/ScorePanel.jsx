@@ -28,6 +28,11 @@ export default function ScorePanel({ evaluation }) {
               ? `검색한 ${overview.gameName} 기준 · AI 추정 · 낮은 신뢰`
               : '보유 게임을 가져오거나 게임을 검색하면 등급이 계산돼요.'}
         </p>
+        {(diagnosis.overviewError || diagnosis.error) && (
+          <p role="alert" className="mt-[16px] p-[14px] rounded-[12px] bg-bg text-[13px] text-[#e5484d] leading-[1.6]">
+            {diagnosis.overviewError || diagnosis.error} 잠시 뒤 사양 입력 완료 버튼에서 다시 저장하면 재분석해요.
+          </p>
+        )}
         <div className="mt-[20px] grid gap-[10px]">
           {overallPerformanceExplanation(overview ? { overview } : {}).map(text => (
             <p key={text} className="text-[14px] text-muted leading-[1.7]">
