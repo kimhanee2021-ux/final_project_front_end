@@ -28,9 +28,7 @@ export const hardware = [
     usage: 78,
     score: 88,
     color: 'mint',
-    facts: [
-      ['gpu', '12 GB GDDR6'],
-    ],
+    facts: [['gpu', '12 GB GDDR6']],
     detail: '그래픽 카드',
     recommendation: 'QHD 이상에서는 게임별 그래픽 설정을 조절해 보세요.',
   },
@@ -60,7 +58,6 @@ export const hardware = [
       ['folder', '잔여 공간 282 GB'],
     ],
     detail: '저장장치',
-    recommendation:
-      '512 GB 중 230 GB를 사용 중인 예시입니다. 큰 게임을 설치하기 전에 여유 공간을 확인하세요.',
+    recommendation: '512 GB 중 230 GB를 사용 중인 예시입니다. 큰 게임을 설치하기 전에 여유 공간을 확인하세요.',
   },
 ]

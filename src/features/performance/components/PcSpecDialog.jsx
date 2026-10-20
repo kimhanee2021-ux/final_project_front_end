@@ -5,7 +5,8 @@ import { useAuth } from '@/features/auth'
 import { EMPTY_SPECS, SPEC_COMMAND, SPEC_FIELDS, parseSpecOutput, specsFromPhoto } from '../model/pcSpecs'
 import SystemPhotoInput from './SystemPhotoInput'
 
-const inputClass = 'w-full h-[46px] px-[16px] rounded-[14px] border-0 bg-surface text-text text-[14px] placeholder:text-faint'
+const inputClass =
+  'w-full h-[46px] px-[16px] rounded-[14px] border-0 bg-surface text-text text-[14px] placeholder:text-faint'
 
 // 사양을 알려주는 세 가지 방법. 위쪽 탭으로 하나씩 골라서 본다.
 const METHODS = [
@@ -108,15 +109,23 @@ export default function PcSpecDialog({ open, saved, onSave, onReset, onClose }) 
             <GSIcon name="monitor" size={24} />
           </span>
           <div className="min-w-0 flex-1">
-            <h2 id="pc-spec-title" className="!m-0 !text-[22px]">내 PC 사양 입력</h2>
-            <p className="!m-0 mt-[4px] text-[13px] text-muted leading-[1.6]">내 PC 부품을 알려주면 평가와 진단이 내 PC 기준으로 바뀌어요.</p>
+            <h2 id="pc-spec-title" className="!m-0 !text-[22px]">
+              내 PC 사양 입력
+            </h2>
+            <p className="!m-0 mt-[4px] text-[13px] text-muted leading-[1.6]">
+              내 PC 부품을 알려주면 평가와 진단이 내 PC 기준으로 바뀌어요.
+            </p>
           </div>
           <button type="button" className="gs-icon-button" aria-label="사양 입력 닫기" onClick={onClose}>
             <GSIcon name="close" />
           </button>
         </header>
 
-        <div className="grid grid-cols-3 gap-[4px] p-[4px] mb-[18px] rounded-[18px] bg-bg" role="tablist" aria-label="사양 입력 방법">
+        <div
+          className="grid grid-cols-3 gap-[4px] p-[4px] mb-[18px] rounded-[18px] bg-bg"
+          role="tablist"
+          aria-label="사양 입력 방법"
+        >
           {METHODS.map(item => {
             const active = item.key === method
             return (
@@ -126,11 +135,15 @@ export default function PcSpecDialog({ open, saved, onSave, onReset, onClose }) 
                 role="tab"
                 aria-selected={active}
                 className={`flex items-center justify-center gap-[8px] h-[44px] rounded-[14px] text-[13px] whitespace-nowrap transition-colors ${
-                  active ? 'bg-surface text-text font-[650] shadow-[var(--shadow)]' : 'bg-transparent text-muted hover:text-text'
+                  active
+                    ? 'bg-surface text-text font-[650] shadow-[var(--shadow)]'
+                    : 'bg-transparent text-muted hover:text-text'
                 }`}
                 onClick={() => changeMethod(item.key)}
               >
-                <span className={`grid place-items-center w-[20px] h-[20px] rounded-full text-[11px] font-[700] ${active ? 'bg-primary text-on-primary' : 'bg-surface text-muted'}`}>
+                <span
+                  className={`grid place-items-center w-[20px] h-[20px] rounded-full text-[11px] font-[700] ${active ? 'bg-primary text-on-primary' : 'bg-surface text-muted'}`}
+                >
                   {item.number}
                 </span>
                 {item.label}
@@ -143,15 +156,22 @@ export default function PcSpecDialog({ open, saved, onSave, onReset, onClose }) 
           {method === 'command' && (
             <section aria-label="명령어 결과 붙여넣기" className="grid gap-[14px]">
               <ol className="grid gap-[10px] text-[13px] text-muted leading-[1.6]">
-                {['윈도우에서 PowerShell을 열고 아래 명령어를 복사해 실행하세요.', '나온 결과 한 줄을 아래 칸에 붙여넣고 “불러오기”를 누르세요.'].map((step, index) => (
+                {[
+                  '윈도우에서 PowerShell을 열고 아래 명령어를 복사해 실행하세요.',
+                  '나온 결과 한 줄을 아래 칸에 붙여넣고 “불러오기”를 누르세요.',
+                ].map((step, index) => (
                   <li key={step} className="flex items-start gap-[10px]">
-                    <span className="grid place-items-center w-[22px] h-[22px] rounded-full bg-surface text-[12px] font-[700] text-primary-text shrink-0">{index + 1}</span>
+                    <span className="grid place-items-center w-[22px] h-[22px] rounded-full bg-surface text-[12px] font-[700] text-primary-text shrink-0">
+                      {index + 1}
+                    </span>
                     {step}
                   </li>
                 ))}
               </ol>
               <div className="flex items-start gap-[8px]">
-                <code className="flex-1 min-w-0 max-h-[84px] overflow-auto p-[12px] rounded-[12px] bg-surface text-[11px] leading-[1.6] break-all">{SPEC_COMMAND}</code>
+                <code className="flex-1 min-w-0 max-h-[84px] overflow-auto p-[12px] rounded-[12px] bg-surface text-[11px] leading-[1.6] break-all">
+                  {SPEC_COMMAND}
+                </code>
                 <button type="button" className="gs-secondary-button shrink-0 !bg-surface" onClick={copyCommand}>
                   <GSIcon name={copied ? 'check' : 'note'} size={15} />
                   {copied ? '복사됨' : '복사'}
@@ -191,29 +211,41 @@ export default function PcSpecDialog({ open, saved, onSave, onReset, onClose }) 
                   </label>
                 ))}
               </div>
-              <p className="mt-[16px] text-[12px] text-faint leading-[1.6]">입력하지 않은 부품은 예시 사양으로 표시돼요. 예시 점수와 FPS는 사양을 정확히 분석한 값이 아니에요.</p>
+              <p className="mt-[16px] text-[12px] text-faint leading-[1.6]">
+                입력하지 않은 부품은 예시 사양으로 표시돼요. 예시 점수와 FPS는 사양을 정확히 분석한 값이 아니에요.
+              </p>
             </section>
           )}
 
           {method === 'photo' && (
             <section aria-label="사진으로 입력">
-              <p className="mb-[14px] text-[13px] text-muted leading-[1.7]">Windows 설정 → 시스템 → 정보 화면을 찍은 사진을 올리면 AI가 부품 정보를 읽어요. 읽은 값은 “직접 입력” 칸에 채워지니 확인하고 저장하세요.</p>
+              <p className="mb-[14px] text-[13px] text-muted leading-[1.7]">
+                Windows 설정 → 시스템 → 정보 화면을 찍은 사진을 올리면 AI가 부품 정보를 읽어요. 읽은 값은 “직접 입력”
+                칸에 채워지니 확인하고 저장하세요.
+              </p>
               <SystemPhotoInput
                 signedIn={isAuthenticated}
                 allowManual={false}
-                onApply={pc => fillDraft(specsFromPhoto(pc), '사진에서 읽은 사양이에요. 틀린 곳은 고친 뒤 저장하세요.', pc)}
+                onApply={pc =>
+                  fillDraft(specsFromPhoto(pc), '사진에서 읽은 사양이에요. 틀린 곳은 고친 뒤 저장하세요.', pc)
+                }
               />
             </section>
           )}
         </div>
 
         {message.text && (
-          <p className={`mt-[12px] text-[13px] ${message.error ? 'text-[#e5484d]' : 'text-primary-text'}`} role={message.error ? 'alert' : 'status'}>
+          <p
+            className={`mt-[12px] text-[13px] ${message.error ? 'text-[#e5484d]' : 'text-primary-text'}`}
+            role={message.error ? 'alert' : 'status'}
+          >
             {message.text}
           </p>
         )}
 
-        <label className={`flex items-start gap-[10px] mt-[16px] p-[12px] rounded-[14px] text-[12px] leading-[1.6] cursor-pointer transition-colors ${consentWarning && !aiConsent ? 'bg-peach-bg text-peach-text' : 'text-muted'}`}>
+        <label
+          className={`flex items-start gap-[10px] mt-[16px] p-[12px] rounded-[14px] text-[12px] leading-[1.6] cursor-pointer transition-colors ${consentWarning && !aiConsent ? 'bg-peach-bg text-peach-text' : 'text-muted'}`}
+        >
           <input
             type="checkbox"
             className="mt-[3px] w-[16px] h-[16px] accent-primary shrink-0"
@@ -231,7 +263,11 @@ export default function PcSpecDialog({ open, saved, onSave, onReset, onClose }) 
             {!isAuthenticated && (
               <>
                 {' '}
-                분석은 <Link to="/login?next=%2Fpc-check%2Fevaluation" className="text-primary-text underline">로그인</Link> 후에 진행돼요.
+                분석은{' '}
+                <Link to="/login?next=%2Fpc-check%2Fevaluation" className="text-primary-text underline">
+                  로그인
+                </Link>{' '}
+                후에 진행돼요.
               </>
             )}
           </span>

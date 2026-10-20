@@ -9,7 +9,11 @@ const EMPTY_SAVED = { specs: EMPTY_SPECS, detail: null, aiConsent: false }
 // 저장된 값은 사양 칸 4개에, 사진 상세(detail)와 AI 분석 동의(aiConsent)를 함께 둔 객체다.
 function readSaved() {
   try {
-    const { detail = null, aiConsent = false, ...fields } = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null') ?? {}
+    const {
+      detail = null,
+      aiConsent = false,
+      ...fields
+    } = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null') ?? {}
     const specs = Object.fromEntries(SPEC_FIELDS.map(({ key }) => [key, String(fields[key] ?? '')]))
     return { specs, detail, aiConsent }
   } catch {
@@ -26,7 +30,10 @@ export default function PcSpecProvider({ children }) {
   const persist = next => {
     setSaved(next)
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...next.specs, detail: next.detail, aiConsent: next.aiConsent }))
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ ...next.specs, detail: next.detail, aiConsent: next.aiConsent })
+      )
     } catch {
       /* 저장소를 못 써도 이번 화면에서는 입력값을 계속 쓴다. */
     }

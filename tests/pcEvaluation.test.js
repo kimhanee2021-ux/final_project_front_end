@@ -11,7 +11,13 @@ test('사양 → 로그인 → 동의 순서로 상태를 정한다', () => {
 
 test('부품 판정은 분석이 끝난 결과에서만 만든다', () => {
   assert.ok(componentJudgements(null).every(item => item.verdict === null && item.value === 0))
-  const result = { explanationStatus: 'READY', componentAdvice: [{ category: 'GPU', status: 'UPGRADE', reason: 'x' }, { category: 'CPU', status: 'KEEP' }] }
+  const result = {
+    explanationStatus: 'READY',
+    componentAdvice: [
+      { category: 'GPU', status: 'UPGRADE', reason: 'x' },
+      { category: 'CPU', status: 'KEEP' },
+    ],
+  }
   const [cpu, gpu, ram] = componentJudgements(result)
   assert.equal(cpu.verdict.label, '유지 가능')
   assert.equal(gpu.verdict.label, '교체 검토')

@@ -37,11 +37,20 @@ export default function LibraryGameDialog({ game, onClose }) {
           <div className="flex items-start justify-between gap-[12px]">
             <div className="flex items-center gap-[16px] min-w-0">
               <GameImage className="w-[64px] h-[64px] rounded-[16px] shrink-0" src={game.iconUrl} iconSize={28} />
-              <h2 id="library-game-title" className="!m-0 text-[22px] font-[700] tracking-[-0.5px] leading-[1.35] [overflow-wrap:anywhere]">
+              <h2
+                id="library-game-title"
+                className="!m-0 text-[22px] font-[700] tracking-[-0.5px] leading-[1.35] [overflow-wrap:anywhere]"
+              >
                 {game.name}
               </h2>
             </div>
-            <button autoFocus type="button" className="gs-icon-button shrink-0" aria-label="게임 상세 닫기" onClick={onClose}>
+            <button
+              autoFocus
+              type="button"
+              className="gs-icon-button shrink-0"
+              aria-label="게임 상세 닫기"
+              onClick={onClose}
+            >
               <GSIcon name="close" />
             </button>
           </div>

@@ -9,7 +9,8 @@ import { DEFAULT_SORT, SORT_OPTIONS, formatHours, formatPlayedDate, genreIcon, s
 import LibraryGameDialog from './LibraryGameDialog'
 
 // 안내 문구 한 줄과 버튼 하나. 연동 전·오류·로딩·빈 목록이 같은 모양을 쓴다.
-const noticeClass = 'flex flex-wrap items-center justify-between gap-[14px] py-[8px] text-muted text-[14px] max-[700px]:flex-col max-[700px]:items-start'
+const noticeClass =
+  'flex flex-wrap items-center justify-between gap-[14px] py-[8px] text-muted text-[14px] max-[700px]:flex-col max-[700px]:items-start'
 
 // 정렬 드롭다운. 위쪽과 목록 카드 안 두 곳에서 같은 값을 쓴다.
 function SortSelect({ value, onChange, id }) {
@@ -47,7 +48,10 @@ export default function SteamLibraryPanel() {
   const genreOptions = libraryGenreOptions(withGenre)
   const activeGenre = genreOptions.some(option => option.key === genre) ? genre : ALL_GENRES
   const visible = sortGames(
-    withGenre.filter(game => matchesSearch(`${game.name} ${game.genre}`, query) && (activeGenre === ALL_GENRES || game.genre === activeGenre)),
+    withGenre.filter(
+      game =>
+        matchesSearch(`${game.name} ${game.genre}`, query) && (activeGenre === ALL_GENRES || game.genre === activeGenre)
+    ),
     sort
   )
   const ready = games && !notLinked && !error
@@ -96,18 +100,25 @@ export default function SteamLibraryPanel() {
               <ul className="list-none m-0 p-0 grid gap-[4px] max-[900px]:grid-cols-2 max-[480px]:grid-cols-1">
                 {genreOptions.map(option => {
                   const active = option.key === activeGenre
-                  const [name, count] = option.key === ALL_GENRES ? ['전체', games.length] : option.label.split(/ (?=\d+$)/)
+                  const [name, count] =
+                    option.key === ALL_GENRES ? ['전체', games.length] : option.label.split(/ (?=\d+$)/)
                   return (
                     <li key={option.key}>
                       <button
                         type="button"
                         aria-pressed={active}
                         className={`w-full flex items-center gap-[12px] h-[44px] px-[14px] rounded-[14px] text-[14px] text-left transition-colors ${
-                          active ? 'bg-primary-soft text-primary-text font-[650]' : 'bg-transparent text-muted hover:bg-bg hover:text-text'
+                          active
+                            ? 'bg-primary-soft text-primary-text font-[650]'
+                            : 'bg-transparent text-muted hover:bg-bg hover:text-text'
                         }`}
                         onClick={() => setGenre(option.key)}
                       >
-                        <GSIcon name={genreIcon(option.key === ALL_GENRES ? 'all' : name)} size={18} className="shrink-0" />
+                        <GSIcon
+                          name={genreIcon(option.key === ALL_GENRES ? 'all' : name)}
+                          size={18}
+                          className="shrink-0"
+                        />
                         <span className="flex-1 truncate">{name}</span>
                         <span className="text-[12px] tabular-nums">{count}</span>
                       </button>
@@ -143,12 +154,16 @@ export default function SteamLibraryPanel() {
           ) : error ? (
             <div className={noticeClass} role="alert">
               <p>{error}</p>
-              <button type="button" className="gs-primary-button" onClick={sync} disabled={loading}>다시 시도</button>
+              <button type="button" className="gs-primary-button" onClick={sync} disabled={loading}>
+                다시 시도
+              </button>
             </div>
           ) : loading && !games ? (
             <p className={noticeClass}>스팀에서 보유 게임을 불러오는 중이에요...</p>
           ) : games && !visible.length ? (
-            <p className={noticeClass}>{games.length ? '조건과 일치하는 스팀 게임이 없어요.' : '스팀 계정에 보유한 게임이 없어요.'}</p>
+            <p className={noticeClass}>
+              {games.length ? '조건과 일치하는 스팀 게임이 없어요.' : '스팀 계정에 보유한 게임이 없어요.'}
+            </p>
           ) : (
             // 게임이 많아도 페이지가 끝없이 길어지지 않게, 목록만 이 칸 안에서 스크롤한다.
             // overscroll-contain: 목록 끝에 닿은 뒤 계속 내려도 바깥 페이지가 따라 스크롤되지 않게 막는다.

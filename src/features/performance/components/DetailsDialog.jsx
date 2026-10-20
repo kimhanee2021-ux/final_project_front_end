@@ -40,7 +40,9 @@ export default function DetailsDialog({ details, evaluation, onClose }) {
                 <PcGameAnalysisDetails result={details.result} />
               </>
             ) : (
-              <p className="pc-dialog-callout">아직 분석하지 않은 게임이에요. 분석이 끝나면 해상도별 등급과 설명을 볼 수 있어요.</p>
+              <p className="pc-dialog-callout">
+                아직 분석하지 않은 게임이에요. 분석이 끝나면 해상도별 등급과 설명을 볼 수 있어요.
+              </p>
             ))}
           {details.type === 'upgrade' && (
             <PcUpgradePanel

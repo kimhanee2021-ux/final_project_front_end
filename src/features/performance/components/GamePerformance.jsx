@@ -25,7 +25,11 @@ function GradeCell({ target }) {
     <span title={target.reason}>
       <strong>—</strong>
       <small> {target.label ?? '추정 어려움'}</small>
-      {target.reason && <small className="block mt-[2px] max-w-[220px] mx-auto text-[11px] text-faint leading-[1.4] line-clamp-2 whitespace-normal">{target.reason}</small>}
+      {target.reason && (
+        <small className="block mt-[2px] max-w-[220px] mx-auto text-[11px] text-faint leading-[1.4] line-clamp-2 whitespace-normal">
+          {target.reason}
+        </small>
+      )}
     </span>
   )
 }
@@ -43,7 +47,11 @@ export default function GamePerformance({ evaluation, onDetails }) {
 
   return (
     <section>
-      <div className="mb-[20px] p-[20px] rounded-[20px] bg-primary-soft" role="radiogroup" aria-label="게임 성능 평가 기준">
+      <div
+        className="mb-[20px] p-[20px] rounded-[20px] bg-primary-soft"
+        role="radiogroup"
+        aria-label="게임 성능 평가 기준"
+      >
         <p className="mb-[12px] text-[14px] font-[650] text-primary-text">평가 기준을 선택하세요</p>
         <div className="grid grid-cols-3 gap-[10px] max-[600px]:grid-cols-1">
           {RESOLUTIONS.map(item => {
@@ -55,11 +63,15 @@ export default function GamePerformance({ evaluation, onDetails }) {
                 role="radio"
                 aria-checked={active}
                 className={`flex items-center gap-[12px] p-[14px] rounded-[16px] text-left transition-[background,box-shadow,transform] duration-200 ${
-                  active ? 'bg-surface shadow-[var(--shadow)] ring-2 ring-primary' : 'bg-surface/60 hover:bg-surface hover:-translate-y-[2px]'
+                  active
+                    ? 'bg-surface shadow-[var(--shadow)] ring-2 ring-primary'
+                    : 'bg-surface/60 hover:bg-surface hover:-translate-y-[2px]'
                 }`}
                 onClick={() => setResolution(item.id)}
               >
-                <span className={`grid place-items-center w-[40px] h-[40px] rounded-full shrink-0 ${active ? 'bg-primary text-on-primary' : 'bg-primary-soft text-primary-text'}`}>
+                <span
+                  className={`grid place-items-center w-[40px] h-[40px] rounded-full shrink-0 ${active ? 'bg-primary text-on-primary' : 'bg-primary-soft text-primary-text'}`}
+                >
                   <GSIcon name={active ? 'check' : 'monitor'} size={18} />
                 </span>
                 <span className="min-w-0">
@@ -76,7 +88,13 @@ export default function GamePerformance({ evaluation, onDetails }) {
       <div className="flex flex-wrap items-center justify-between gap-[12px] mb-[16px] text-[13px] text-muted">
         <p className="text-[13px] text-muted">선택한 평가 기준의 등급을 보여줘요.</p>
         <div className="flex flex-wrap items-center gap-[8px]">
-          <button type="button" className="gs-secondary-button" aria-pressed={!showSearch} disabled={loading} onClick={gameList.showOwned}>
+          <button
+            type="button"
+            className="gs-secondary-button"
+            aria-pressed={!showSearch}
+            disabled={loading}
+            onClick={gameList.showOwned}
+          >
             <GSIcon name="library" size={15} />
             {loading && !showSearch ? '불러오는 중…' : '내 보유게임 가져오기'}
           </button>
@@ -104,10 +122,18 @@ export default function GamePerformance({ evaluation, onDetails }) {
       )}
       {showSearch && candidates.length > 0 && (
         <div className="mb-[16px] p-[16px] rounded-[16px] bg-bg">
-          <p className="mb-[10px] text-[13px] text-muted">정확히 일치하는 게임이 없어 후보를 찾았어요. 분석할 게임 하나를 선택해 주세요.</p>
+          <p className="mb-[10px] text-[13px] text-muted">
+            정확히 일치하는 게임이 없어 후보를 찾았어요. 분석할 게임 하나를 선택해 주세요.
+          </p>
           <div className="flex flex-wrap gap-[8px]">
             {candidates.map(game => (
-              <button key={game.appId} type="button" className="gs-secondary-button !bg-surface" disabled={loading} onClick={() => gameList.selectSearchGame(game)}>
+              <button
+                key={game.appId}
+                type="button"
+                className="gs-secondary-button !bg-surface"
+                disabled={loading}
+                onClick={() => gameList.selectSearchGame(game)}
+              >
                 {game.name}
               </button>
             ))}
@@ -116,7 +142,9 @@ export default function GamePerformance({ evaluation, onDetails }) {
       )}
       {showSearch && games.length > 0 && (
         <p className="mb-[12px] text-[13px] text-muted">
-          {searched.length ? `검색한 게임 · ${searched.length}개` : `스팀 전체 판매 순위 상위 ${games.length}개 (${STEAM_TOP_GAMES_CHECKED_AT} 기준) · 게임 이름을 검색해서 다른 게임도 분석할 수 있어요`}
+          {searched.length
+            ? `검색한 게임 · ${searched.length}개`
+            : `스팀 전체 판매 순위 상위 ${games.length}개 (${STEAM_TOP_GAMES_CHECKED_AT} 기준) · 게임 이름을 검색해서 다른 게임도 분석할 수 있어요`}
         </p>
       )}
       {!showSearch && listing.total > 0 && (
@@ -125,7 +153,12 @@ export default function GamePerformance({ evaluation, onDetails }) {
             {listing.hasPlaytime ? '플레이시간 상위 순' : '플레이시간 기록 없음 · 이름순'} · {listing.total}개
           </span>
           {listing.total > 5 && (
-            <button type="button" className="inline-flex items-center gap-[6px] bg-transparent text-muted hover:text-text" aria-expanded={expanded} onClick={gameList.toggleExpanded}>
+            <button
+              type="button"
+              className="inline-flex items-center gap-[6px] bg-transparent text-muted hover:text-text"
+              aria-expanded={expanded}
+              onClick={gameList.toggleExpanded}
+            >
               {expanded ? '접기' : '전체 보기'}
               <GSIcon name="arrow" size={15} />
             </button>
@@ -135,7 +168,9 @@ export default function GamePerformance({ evaluation, onDetails }) {
 
       <div className="pc-table-scroll" tabIndex={0} role="region" aria-label="게임별 해상도 성능 비교표">
         <table className="pc-game-table">
-          <caption className="sr-only">내 PC 사양 기준 게임별 AI 예상 성능 등급. 실측 FPS가 아니라 AI 추정이에요.</caption>
+          <caption className="sr-only">
+            내 PC 사양 기준 게임별 AI 예상 성능 등급. 실측 FPS가 아니라 AI 추정이에요.
+          </caption>
           <thead>
             <tr>
               <th scope="col">게임 제목</th>
@@ -155,10 +190,16 @@ export default function GamePerformance({ evaluation, onDetails }) {
                 <tr key={game.appId}>
                   <th scope="row">
                     <button className="pc-game-button" onClick={() => onDetails({ type: 'game', game, result })}>
-                      <GameImage className="w-[36px] h-[46px] rounded-[8px] object-cover shrink-0" src={game.iconUrl ?? game.headerImage} iconSize={20} />
+                      <GameImage
+                        className="w-[36px] h-[46px] rounded-[8px] object-cover shrink-0"
+                        src={game.iconUrl ?? game.headerImage}
+                        iconSize={20}
+                      />
                       <span>
                         {game.name}
-                        {game.playtimeForever > 0 && <small className="block text-faint">누적 {(game.playtimeForever / 60).toFixed(1)}시간</small>}
+                        {game.playtimeForever > 0 && (
+                          <small className="block text-faint">누적 {(game.playtimeForever / 60).toFixed(1)}시간</small>
+                        )}
                       </span>
                     </button>
                   </th>
@@ -167,7 +208,12 @@ export default function GamePerformance({ evaluation, onDetails }) {
                       {result ? (
                         <GradeCell target={resolutionTarget(result, selected.id)} />
                       ) : failed ? (
-                        <button type="button" className="pc-rating" disabled={busy} onClick={() => diagnosis.diagnose(game, scope, true)}>
+                        <button
+                          type="button"
+                          className="pc-rating"
+                          disabled={busy}
+                          onClick={() => diagnosis.diagnose(game, scope, true)}
+                        >
                           분석 실패 · 다시 시도
                         </button>
                       ) : (
@@ -182,7 +228,9 @@ export default function GamePerformance({ evaluation, onDetails }) {
               <tr>
                 <td colSpan={selected ? 2 : 1}>
                   <p className="py-[28px] text-center text-[14px] text-muted">
-                    {showSearch ? '위에서 분석할 게임 이름을 검색해 보세요.' : '보유 게임을 가져오거나, 궁금한 게임을 검색해서 분석해 보세요.'}
+                    {showSearch
+                      ? '위에서 분석할 게임 이름을 검색해 보세요.'
+                      : '보유 게임을 가져오거나, 궁금한 게임을 검색해서 분석해 보세요.'}
                   </p>
                 </td>
               </tr>
@@ -194,18 +242,42 @@ export default function GamePerformance({ evaluation, onDetails }) {
       {busy && (
         <p className="mt-[12px] text-[12px] text-muted" role="status">
           공식 사양 확인 및 AI 분석 중 · {diagnosis.elapsed ?? 0}초 경과 · 완료된 결과는 유지돼요.{' '}
-          <button type="button" className="bg-transparent text-primary-text underline" onClick={diagnosis.cancel}>진단 취소</button>
+          <button type="button" className="bg-transparent text-primary-text underline" onClick={diagnosis.cancel}>
+            진단 취소
+          </button>
         </p>
       )}
       {!showSearch && expanded && listing.pages > 1 && (
         <div className="flex items-center justify-center gap-[12px] mt-[16px] text-[13px] text-muted">
-          <button type="button" className="gs-secondary-button" disabled={listing.page === 0} onClick={() => gameList.setPage(current => current - 1)}>이전</button>
-          <span>{listing.page + 1} / {listing.pages}</span>
-          <button type="button" className="gs-secondary-button" disabled={listing.page + 1 === listing.pages} onClick={() => gameList.setPage(current => current + 1)}>다음</button>
+          <button
+            type="button"
+            className="gs-secondary-button"
+            disabled={listing.page === 0}
+            onClick={() => gameList.setPage(current => current - 1)}
+          >
+            이전
+          </button>
+          <span>
+            {listing.page + 1} / {listing.pages}
+          </span>
+          <button
+            type="button"
+            className="gs-secondary-button"
+            disabled={listing.page + 1 === listing.pages}
+            onClick={() => gameList.setPage(current => current + 1)}
+          >
+            다음
+          </button>
         </div>
       )}
-      {error && <p role="alert" className="mt-[12px] text-[13px] text-[#e5484d]">{error}</p>}
-      <p className="mt-[16px] text-[12px] text-faint">AI 추정 등급 · A 144 FPS↑ / B 60↑ / C 30↑ / D 20↑ / E 20 미만 · 실측이나 프레임 유지 보장이 아니에요</p>
+      {error && (
+        <p role="alert" className="mt-[12px] text-[13px] text-[#e5484d]">
+          {error}
+        </p>
+      )}
+      <p className="mt-[16px] text-[12px] text-faint">
+        AI 추정 등급 · A 144 FPS↑ / B 60↑ / C 30↑ / D 20↑ / E 20 미만 · 실측이나 프레임 유지 보장이 아니에요
+      </p>
     </section>
   )
 }

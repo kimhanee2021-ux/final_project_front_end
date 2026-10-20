@@ -27,10 +27,23 @@ export function usePcGameList(diagnosis, enabled) {
   const attemptedPages = useRef(new Set())
   const syncingOwned = useRef(false)
 
-  useEffect(() => () => { sequence.current++; controller.current?.abort() }, [])
-  useEffect(() => { ownedLoader.current = loadOwned; diagnosisRef.current = diagnosis })
-  useEffect(() => { if (enabled && diagnosis.specs) ownedLoader.current() }, [enabled, diagnosis.specs])
-  useEffect(() => { attemptedPages.current.clear() }, [diagnosis.specs])
+  useEffect(
+    () => () => {
+      sequence.current++
+      controller.current?.abort()
+    },
+    []
+  )
+  useEffect(() => {
+    ownedLoader.current = loadOwned
+    diagnosisRef.current = diagnosis
+  })
+  useEffect(() => {
+    if (enabled && diagnosis.specs) ownedLoader.current()
+  }, [enabled, diagnosis.specs])
+  useEffect(() => {
+    attemptedPages.current.clear()
+  }, [diagnosis.specs])
 
   const listing = ownedPage(owned, expanded, page)
   const games = gameViewGames(listing, searched, showSearch, STEAM_TOP_GAMES)
@@ -38,7 +51,8 @@ export function usePcGameList(diagnosis, enabled) {
   // 지금 화면에 보이는 보유게임 중 아직 분석하지 않은 게임을 한 번만 요청한다.
   useEffect(() => {
     const current = diagnosisRef.current
-    if (showSearch || !current.specs || loading || syncingOwned.current || current.busy !== null || !owned.length) return
+    if (showSearch || !current.specs || loading || syncingOwned.current || current.busy !== null || !owned.length)
+      return
     const visible = ownedPage(owned, expanded, page).games
     const key = JSON.stringify([current.specs, visible.map(game => game.appId)])
     if (attemptedPages.current.has(key)) return
@@ -68,9 +82,10 @@ export function usePcGameList(diagnosis, enabled) {
     try {
       const response = await syncSteamLibrary()
       if (sequence.current !== id) return
-      const list = Array.isArray(response) ? response : response.games ?? response.items ?? []
+      const list = Array.isArray(response) ? response : (response.games ?? response.items ?? [])
       setOwned(list)
-      if (list.length && diagnosisRef.current.prepareOwnedOverview) await diagnosisRef.current.prepareOwnedOverview(list)
+      if (list.length && diagnosisRef.current.prepareOwnedOverview)
+        await diagnosisRef.current.prepareOwnedOverview(list)
       if (sequence.current !== id) return
       setPage(0)
       setLoading(false)
@@ -144,5 +159,24 @@ export function usePcGameList(diagnosis, enabled) {
     setPage(0)
   }
 
-  return { games, listing, owned, searched, candidates, query, setQuery, expanded, toggleExpanded, page, setPage, showSearch, error, loading, showOwned, openSearch, search, selectSearchGame }
+  return {
+    games,
+    listing,
+    owned,
+    searched,
+    candidates,
+    query,
+    setQuery,
+    expanded,
+    toggleExpanded,
+    page,
+    setPage,
+    showSearch,
+    error,
+    loading,
+    showOwned,
+    openSearch,
+    search,
+    selectSearchGame,
+  }
 }

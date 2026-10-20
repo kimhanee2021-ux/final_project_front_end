@@ -35,8 +35,10 @@ export const VERDICTS = {
 export function componentJudgements(result) {
   const ready = result?.explanationStatus === 'READY'
   return COMPONENT_CATEGORIES.map(item => {
-    const advice = ready ? (result.componentAdvice ?? []).find(entry => entry.category === item.category) ?? null : null
-    const verdict = advice ? VERDICTS[advice.status] ?? VERDICTS.CHECK : null
+    const advice = ready
+      ? ((result.componentAdvice ?? []).find(entry => entry.category === item.category) ?? null)
+      : null
+    const verdict = advice ? (VERDICTS[advice.status] ?? VERDICTS.CHECK) : null
     return { ...item, advice, verdict, value: verdict?.value ?? 0 }
   })
 }

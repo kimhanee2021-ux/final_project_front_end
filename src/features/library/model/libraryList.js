@@ -11,7 +11,8 @@ export const DEFAULT_SORT = 'playtime'
 const lastPlayed = game => (game.lastPlayedAt ? new Date(game.lastPlayedAt).getTime() || 0 : 0)
 const COMPARATORS = {
   recent: (a, b) => lastPlayed(b) - lastPlayed(a),
-  popular: (a, b) => (b.playtime2Weeks ?? 0) - (a.playtime2Weeks ?? 0) || (b.playtimeForever ?? 0) - (a.playtimeForever ?? 0),
+  popular: (a, b) =>
+    (b.playtime2Weeks ?? 0) - (a.playtime2Weeks ?? 0) || (b.playtimeForever ?? 0) - (a.playtimeForever ?? 0),
   playtime: (a, b) => (b.playtimeForever ?? 0) - (a.playtimeForever ?? 0),
 }
 
@@ -22,7 +23,8 @@ export function sortGames(games, sortKey) {
 }
 
 // 분 단위 플레이시간 → "154.2시간"
-export const formatHours = minutes => `${((minutes ?? 0) / 60).toLocaleString('ko-KR', { maximumFractionDigits: 1 })}시간`
+export const formatHours = minutes =>
+  `${((minutes ?? 0) / 60).toLocaleString('ko-KR', { maximumFractionDigits: 1 })}시간`
 
 // 마지막 플레이 날짜 → "2024.05.12". 기록이 없으면 안내 문구.
 export function formatPlayedDate(value) {
@@ -33,5 +35,13 @@ export function formatPlayedDate(value) {
 }
 
 // 장르 필터 줄의 아이콘(GSIcon 이름). 정해 두지 않은 장르는 게임패드.
-const GENRE_ICONS = { all: 'library', 액션: 'gamepad', RPG: 'trophy', 시뮬레이션: 'grid', 전략: 'compass', 스포츠: 'activity', 기타: 'more' }
+const GENRE_ICONS = {
+  all: 'library',
+  액션: 'gamepad',
+  RPG: 'trophy',
+  시뮬레이션: 'grid',
+  전략: 'compass',
+  스포츠: 'activity',
+  기타: 'more',
+}
 export const genreIcon = key => GENRE_ICONS[key] ?? 'gamepad'
