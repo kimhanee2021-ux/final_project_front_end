@@ -1,4 +1,4 @@
-import apiClient, { API_BASE_URL } from '../../utils/apiClient'
+import apiClient, { API_BASE_URL } from '@/shared/lib/apiClient'
 
 // 백엔드 AuthController(/api/auth/**, /api/me) 연동
 

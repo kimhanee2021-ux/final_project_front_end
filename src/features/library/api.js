@@ -1,4 +1,4 @@
-import apiClient from '../../utils/apiClient'
+import apiClient from '@/shared/lib/apiClient'
 
 // 백엔드 LibraryController(/api/library) 연동.
 // 조회 전용 API가 없어 동기화(POST) 응답을 그대로 보유 게임 목록으로 사용한다.

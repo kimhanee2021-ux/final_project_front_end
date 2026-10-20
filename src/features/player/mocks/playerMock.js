@@ -106,11 +106,3 @@ export const defaultPlayer = {
     },
   ],
 }
-export const activityAppearance = {
-  wishlist: { icon: 'heart', tone: 'pink' },
-  completed: { icon: 'check', tone: 'mint' },
-  note: { icon: 'note', tone: 'gold' },
-  playing: { icon: 'play', tone: 'blue' },
-  preferences: { icon: 'wallet', tone: 'mint' },
-  profile: { icon: 'user', tone: 'purple' },
-}

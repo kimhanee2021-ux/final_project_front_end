@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { STEAM_NOT_LINKED_MESSAGE, syncSteamLibrary } from '../api'
-import { getErrorMessage } from '../../../utils/apiClient'
+import { getErrorMessage } from '@/shared/lib/apiClient'
 
 // 동기화는 매번 스팀 API를 호출하므로, 같은 계정이면 페이지를 오가도 마지막 결과를 재사용한다.
 const cache = { userId: null, games: null }

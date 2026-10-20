@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
-import GSIcon from '../../../components/common/GSIcon'
-import { getPerformanceRating, hardware, resolutions } from '../mocks/performanceMock'
+import { GSIcon } from '@/shared/ui'
+import { getPerformanceRating, resolutions } from '../mocks/performanceMock'
 
 export default function DetailsDialog({ details, onClose }) {
   const ref = useRef(null)
@@ -12,9 +12,7 @@ export default function DetailsDialog({ details, onClose }) {
   const title =
     details?.type === 'game'
       ? details.item.name
-      : details?.type === 'upgrade'
-        ? details.item.title
-        : '시스템 현황 자세히 보기'
+      : details?.item.title
   return (
     <dialog
       ref={ref}
@@ -88,29 +86,6 @@ export default function DetailsDialog({ details, onClose }) {
                   </li>
                 ))}
               </ul>
-            </>
-          )}
-          {details.type === 'system' && (
-            <>
-              <p className="pc-dialog-lead">데모 PC의 하드웨어와 상태 예시입니다.</p>
-              <dl className="pc-system-details">
-                {hardware.map(item => (
-                  <div key={item.id}>
-                    <dt>
-                      <GSIcon name={item.id} size={21} />
-                      {item.detail}
-                    </dt>
-                    <dd>
-                      <strong>{item.model}</strong>
-                      <p>{item.recommendation}</p>
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-              <p className="pc-dialog-disclaimer">
-                표시된 온도·사용률·드라이버 상태는 고정된 더미 데이터입니다. 기기 정보 수집이나 실제
-                시스템 진단은 수행하지 않습니다.
-              </p>
             </>
           )}
           <button className="gs-primary-button pc-dialog-confirm" onClick={onClose}>

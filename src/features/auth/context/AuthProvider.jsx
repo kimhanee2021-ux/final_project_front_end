@@ -1,16 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 import { AuthContext } from './AuthContext'
-import {
-  clearAccessToken,
-  clearDemoSession,
-  readAccessToken,
-  readDemoSession,
-  saveAccessToken,
-  saveDemoSession,
-} from '../authSession'
+import { clearDemoSession, readDemoSession, saveDemoSession } from '../model/authSession'
+import { clearAccessToken, readAccessToken, saveAccessToken } from '@/shared/lib/tokenStorage'
 import * as authApi from '../api'
-import * as userApi from '../../user/api'
-import { browserStores, UNAUTHORIZED_EVENT } from '../../../utils/apiClient'
+import { userApi } from '@/features/user'
+import { browserStores, UNAUTHORIZED_EVENT } from '@/shared/lib/apiClient'
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
