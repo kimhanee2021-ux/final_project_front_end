@@ -1,17 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { getErrorMessage } from '@/shared/lib/apiClient'
 import { syncSteamLibrary } from '../../library/api'
-import { fetchFeaturedCategories } from '../../games/api'
 import { searchPcGames } from '../api/pcApi'
 import { ownedPage } from '../model/pcDiagnosis'
 import { pendingGames } from '../model/pcHardware'
 import { gameViewGames } from '../model/pcGameSelection'
 import { exactSearchGame } from '../model/pcSearchSelection'
+import { STEAM_TOP_GAMES } from '../model/steamTopGames'
 
-// 게임별 성능표에 올릴 게임 목록: 내 보유게임(스팀 동기화), 스팀 인기 판매 상위 게임, 검색한 게임 중 하나를 고른다.
-const TOP_CATEGORY = 'top_sellers'
-const TOP_COUNT = 5
-
+// 게임별 성능표에 올릴 게임 목록: 내 보유게임(스팀 동기화), 스팀 판매 순위 상위 게임(미리 가져와 둔 5개), 검색한 게임 중 하나를 고른다.
 // 사양이 적용되면 보유게임을 자동으로 불러오고, 화면에 보이는 게임부터 분석을 요청한다.
 export function usePcGameList(diagnosis, enabled) {
   const [owned, setOwned] = useState([])
@@ -23,23 +20,20 @@ export function usePcGameList(diagnosis, enabled) {
   const [showSearch, setShowSearch] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [topGames, setTopGames] = useState([])
-  const [topStatus, setTopStatus] = useState('idle')
   const controller = useRef(null)
-  const topController = useRef(null)
   const sequence = useRef(0)
   const ownedLoader = useRef(null)
   const diagnosisRef = useRef(diagnosis)
   const attemptedPages = useRef(new Set())
   const syncingOwned = useRef(false)
 
-  useEffect(() => () => { sequence.current++; controller.current?.abort(); topController.current?.abort() }, [])
+  useEffect(() => () => { sequence.current++; controller.current?.abort() }, [])
   useEffect(() => { ownedLoader.current = loadOwned; diagnosisRef.current = diagnosis })
   useEffect(() => { if (enabled && diagnosis.specs) ownedLoader.current() }, [enabled, diagnosis.specs])
   useEffect(() => { attemptedPages.current.clear() }, [diagnosis.specs])
 
   const listing = ownedPage(owned, expanded, page)
-  const games = gameViewGames(listing, searched, showSearch, topGames)
+  const games = gameViewGames(listing, searched, showSearch, STEAM_TOP_GAMES)
 
   // 지금 화면에 보이는 보유게임 중 아직 분석하지 않은 게임을 한 번만 요청한다.
   useEffect(() => {
@@ -53,35 +47,16 @@ export function usePcGameList(diagnosis, enabled) {
     if (pending.length) current.diagnoseGames(pending, current.specs)
   }, [owned, expanded, page, diagnosis.specs, diagnosis.busy, loading, showSearch])
 
-  // 검색 전에 보이는 스팀 인기 게임도 보유게임처럼 한 번만 자동으로 분석을 요청한다.
+  // 검색 전에 보이는 스팀 판매 순위 상위 게임도 보유게임처럼 한 번만 자동으로 분석을 요청한다.
   useEffect(() => {
     const current = diagnosisRef.current
-    if (!showSearch || searched.length || !topGames.length || !current.specs || loading || current.busy !== null) return
-    const key = JSON.stringify(['top', current.specs, topGames.map(game => game.appId)])
+    if (!showSearch || searched.length || !current.specs || loading || current.busy !== null) return
+    const key = JSON.stringify(['top', current.specs, STEAM_TOP_GAMES.map(game => game.appId)])
     if (attemptedPages.current.has(key)) return
-    const pending = pendingGames(topGames, current.results)
+    const pending = pendingGames(STEAM_TOP_GAMES, current.results)
     attemptedPages.current.add(key)
     if (pending.length) current.diagnoseGames(pending, current.specs, 'search')
-  }, [showSearch, searched, topGames, diagnosis.specs, diagnosis.busy, loading])
-
-  // 백엔드가 매일 동기화해 둔 스팀 카테고리에서 인기 판매 상위 게임을 가져온다(한 번만).
-  async function loadTopGames() {
-    if (topGames.length || topStatus === 'loading') return
-    topController.current?.abort()
-    const request = new AbortController()
-    topController.current = request
-    setTopStatus('loading')
-    try {
-      const categories = await fetchFeaturedCategories({ signal: request.signal })
-      const top = categories.find(category => category.categoryKey === TOP_CATEGORY)
-      const list = (top?.games ?? []).slice(0, TOP_COUNT)
-      if (request.signal.aborted) return
-      setTopGames(list)
-      setTopStatus(list.length ? 'ready' : 'empty')
-    } catch {
-      if (!request.signal.aborted) setTopStatus('error')
-    }
-  }
+  }, [showSearch, searched, diagnosis.specs, diagnosis.busy, loading])
 
   async function loadOwned() {
     setExpanded(false)
@@ -163,12 +138,11 @@ export function usePcGameList(diagnosis, enabled) {
     setSearched([])
     setCandidates([])
     setError('')
-    loadTopGames()
   }
   const toggleExpanded = () => {
     setExpanded(current => !current)
     setPage(0)
   }
 
-  return { games, listing, owned, searched, topGames, topStatus, loadTopGames, candidates, query, setQuery, expanded, toggleExpanded, page, setPage, showSearch, error, loading, showOwned, openSearch, search, selectSearchGame }
+  return { games, listing, owned, searched, candidates, query, setQuery, expanded, toggleExpanded, page, setPage, showSearch, error, loading, showOwned, openSearch, search, selectSearchGame }
 }

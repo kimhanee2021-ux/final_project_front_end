@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { GSIcon } from '@/shared/ui'
 import EvaluationNotice from './EvaluationNotice'
 import { resolutionTarget } from '../model/pcGrade'
+import { STEAM_TOP_GAMES_CHECKED_AT } from '../model/steamTopGames'
 
 const RESOLUTIONS = [
   { id: 'FHD', label: 'FHD', pixels: '1080p', hint: '가장 많이 쓰는 해상도' },
@@ -25,7 +26,7 @@ export default function GamePerformance({ evaluation, onDetails }) {
   const { status, diagnosis, gameList } = evaluation
   const [resolution, setResolution] = useState(null)
   if (status !== 'ready') return <EvaluationNotice status={status} />
-  const { games, listing, showSearch, loading, error, candidates, query, setQuery, expanded, searched, topStatus } = gameList
+  const { games, listing, showSearch, loading, error, candidates, query, setQuery, expanded, searched } = gameList
   const busy = diagnosis.busy !== null
   const scope = showSearch ? 'search' : 'owned'
   const selected = RESOLUTIONS.find(item => item.id === resolution) ?? null
@@ -110,7 +111,7 @@ export default function GamePerformance({ evaluation, onDetails }) {
       )}
       {showSearch && games.length > 0 && (
         <p className="mb-[12px] text-[13px] text-muted">
-          {searched.length ? `검색한 게임 · ${searched.length}개` : `스팀 인기 판매 상위 ${games.length}개 · 게임 이름을 검색해서 다른 게임도 분석할 수 있어요`}
+          {searched.length ? `검색한 게임 · ${searched.length}개` : `스팀 전체 판매 순위 상위 ${games.length}개 (${STEAM_TOP_GAMES_CHECKED_AT} 기준) · 게임 이름을 검색해서 다른 게임도 분석할 수 있어요`}
         </p>
       )}
       {!showSearch && listing.total > 0 && (
@@ -182,13 +183,7 @@ export default function GamePerformance({ evaluation, onDetails }) {
               <tr>
                 <td colSpan={selected ? 3 : 2}>
                   <p className="py-[28px] text-center text-[14px] text-muted">
-                    {showSearch
-                      ? topStatus === 'loading'
-                        ? '스팀 인기 게임을 불러오는 중이에요…'
-                        : topStatus === 'error'
-                          ? '스팀 인기 게임을 불러오지 못했어요. 위에서 게임 이름을 검색해 보세요.'
-                          : '위에서 분석할 게임 이름을 검색해 보세요.'
-                      : '보유 게임을 가져오거나, 궁금한 게임을 검색해서 분석해 보세요.'}
+                    {showSearch ? '위에서 분석할 게임 이름을 검색해 보세요.' : '보유 게임을 가져오거나, 궁금한 게임을 검색해서 분석해 보세요.'}
                   </p>
                 </td>
               </tr>
