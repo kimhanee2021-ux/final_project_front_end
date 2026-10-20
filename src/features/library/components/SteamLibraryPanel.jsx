@@ -75,11 +75,11 @@ export default function SteamLibraryPanel() {
             )
           }
         />
-        <label className="flex items-center gap-[12px] h-[52px] px-[20px] rounded-full bg-bg text-muted focus-within:ring-2 focus-within:ring-primary">
+        <label className="flex items-center gap-[12px] h-[52px] px-[20px] rounded-full bg-bg text-muted origin-center transition-[transform,box-shadow] duration-200 hover:scale-[1.01] focus-within:scale-[1.02] focus-within:shadow-[var(--shadow)]">
           <GSIcon name="search" size={18} className="shrink-0" />
           <input
             type="search"
-            className="flex-1 min-w-0 h-full bg-transparent border-0 text-text text-[14px] outline-none placeholder:text-faint"
+            className="flex-1 min-w-0 h-full bg-transparent border-0 text-text text-[14px] outline-none! placeholder:text-faint"
             placeholder="게임 이름 또는 장르로 검색해보세요"
             aria-label="내 게임 검색"
             value={query}
@@ -151,7 +151,8 @@ export default function SteamLibraryPanel() {
             <p className={noticeClass}>{games.length ? '조건과 일치하는 스팀 게임이 없어요.' : '스팀 계정에 보유한 게임이 없어요.'}</p>
           ) : (
             // 게임이 많아도 페이지가 끝없이 길어지지 않게, 목록만 이 칸 안에서 스크롤한다.
-            <ul className="list-none m-0 p-0 grid grid-cols-2 gap-[12px] max-h-[620px] overflow-y-auto pr-[6px] max-[700px]:grid-cols-1">
+            // overscroll-contain: 목록 끝에 닿은 뒤 계속 내려도 바깥 페이지가 따라 스크롤되지 않게 막는다.
+            <ul className="list-none m-0 p-0 grid grid-cols-2 gap-[12px] max-h-[620px] overflow-y-auto overscroll-contain pr-[6px] max-[700px]:grid-cols-1">
               {visible.map(game => (
                 <li key={game.appId} className="min-w-0">
                   <button
