@@ -10,6 +10,13 @@ const RESOLUTIONS = [
   { id: '4K', label: '4K', pixels: '2160p', hint: '최고 화질 · 높은 사양' },
 ]
 
+// 게임 이미지: 주소가 없거나 불러오지 못하면 게임 아이콘으로 바꿔 보여준다.
+function GameThumb({ src }) {
+  const [failed, setFailed] = useState(false)
+  if (!src || failed) return <GSIcon name="gamepad" size={20} />
+  return <img src={src} alt="" loading="lazy" onError={() => setFailed(true)} />
+}
+
 // 등급 한 칸: 등급 글자와 설명. 추정이 어려우면 이유를 알 수 있게 짧게 적는다.
 function GradeCell({ target }) {
   return (
@@ -24,17 +31,12 @@ function GradeCell({ target }) {
 // 평가 기준(해상도)을 고르면 그 해상도의 등급만 보여주고, 게임 이름을 누르면 자세한 분석을 연다.
 export default function GamePerformance({ evaluation, onDetails }) {
   const { status, diagnosis, gameList } = evaluation
-  const [resolution, setResolution] = useState(null)
+  const [resolution, setResolution] = useState('FHD')
   if (status !== 'ready') return <EvaluationNotice status={status} />
   const { games, listing, showSearch, loading, error, candidates, query, setQuery, expanded, searched } = gameList
   const busy = diagnosis.busy !== null
   const scope = showSearch ? 'search' : 'owned'
   const selected = RESOLUTIONS.find(item => item.id === resolution) ?? null
-
-  const emptyCell = game => {
-    if (diagnosis.gameErrors?.[game.appId]) return '분석 실패'
-    return busy ? 'AI 분석 중…' : '분석 전'
-  }
 
   return (
     <section>
@@ -69,7 +71,7 @@ export default function GamePerformance({ evaluation, onDetails }) {
         </div>
       </div>
       <div className="flex flex-wrap items-center justify-between gap-[12px] mb-[16px] text-[13px] text-muted">
-        <p className="text-[13px] text-muted">평가 기준을 고르면 그 해상도의 등급만 보여줘요.</p>
+        <p className="text-[13px] text-muted">선택한 평가 기준의 등급을 보여줘요.</p>
         <div className="flex flex-wrap items-center gap-[8px]">
           <button type="button" className="gs-secondary-button" aria-pressed={!showSearch} disabled={loading} onClick={gameList.showOwned}>
             <GSIcon name="library" size={15} />
@@ -140,7 +142,6 @@ export default function GamePerformance({ evaluation, onDetails }) {
                   <small>({selected.pixels})</small>
                 </th>
               )}
-              <th scope="col">AI 분석</th>
             </tr>
           </thead>
           <tbody>
@@ -151,7 +152,7 @@ export default function GamePerformance({ evaluation, onDetails }) {
                 <tr key={game.appId}>
                   <th scope="row">
                     <button className="pc-game-button" onClick={() => onDetails({ type: 'game', game, result })}>
-                      {game.iconUrl || game.headerImage ? <img src={game.iconUrl ?? game.headerImage} alt="" loading="lazy" /> : <GSIcon name="gamepad" size={20} />}
+                      <GameThumb src={game.iconUrl ?? game.headerImage} />
                       <span>
                         {game.name}
                         {game.playtimeForever > 0 && <small className="block text-faint">누적 {(game.playtimeForever / 60).toFixed(1)}시간</small>}
@@ -162,26 +163,21 @@ export default function GamePerformance({ evaluation, onDetails }) {
                     <td className="is-selected">
                       {result ? (
                         <GradeCell target={resolutionTarget(result, selected.id)} />
+                      ) : failed ? (
+                        <button type="button" className="pc-rating" disabled={busy} onClick={() => diagnosis.diagnose(game, scope, true)}>
+                          분석 실패 · 다시 시도
+                        </button>
                       ) : (
-                        <span className="pc-unavailable">{emptyCell(game)}</span>
+                        <span className="pc-rating">{busy ? '분석 중…' : '대기'}</span>
                       )}
                     </td>
                   )}
-                  <td>
-                    {failed ? (
-                      <button type="button" className="pc-rating" disabled={busy} onClick={() => diagnosis.diagnose(game, scope, true)}>
-                        다시 시도
-                      </button>
-                    ) : (
-                      <span className="pc-rating">{result?.explanationStatus === 'READY' ? '완료' : busy ? '분석 중' : '대기'}</span>
-                    )}
-                  </td>
                 </tr>
               )
             })}
             {games.length === 0 && (
               <tr>
-                <td colSpan={selected ? 3 : 2}>
+                <td colSpan={selected ? 2 : 1}>
                   <p className="py-[28px] text-center text-[14px] text-muted">
                     {showSearch ? '위에서 분석할 게임 이름을 검색해 보세요.' : '보유 게임을 가져오거나, 궁금한 게임을 검색해서 분석해 보세요.'}
                   </p>
@@ -206,7 +202,6 @@ export default function GamePerformance({ evaluation, onDetails }) {
         </div>
       )}
       {error && <p role="alert" className="mt-[12px] text-[13px] text-[#e5484d]">{error}</p>}
-      {!selected && games.length > 0 && <p className="mt-[12px] text-[13px] text-primary-text">위에서 평가 기준을 선택하면 게임별 등급이 나타나요.</p>}
       <p className="mt-[16px] text-[12px] text-faint">AI 추정 등급 · A 144 FPS↑ / B 60↑ / C 30↑ / D 20↑ / E 20 미만 · 실측이나 프레임 유지 보장이 아니에요</p>
     </section>
   )
