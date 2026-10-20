@@ -90,3 +90,5 @@
 .pc-gpu-choice{border:1px solid var(--gs-border);border-radius:8px;padding:12px;margin:12px 0}.pc-gpu-choice label{display:flex;align-items:center;gap:8px}.pc-gpu-choice input{width:auto}.pc-gpu-choice p{font-size:11px;color:var(--gs-muted)}.pc-spec-review select{width:100%;background:var(--gs-panel);color:var(--gs-text);border:1px solid var(--gs-border);border-radius:6px;padding:9px;margin-top:5px}
 
 .pc-hardware-source{margin-top:14px;font-size:11px}.pc-hardware-source a{color:var(--gs-mint)}.pc-hardware-source small{display:block;color:var(--gs-muted);margin-top:6px;font-size:10px}
+
+.pc-search-candidates{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}.pc-search-candidates>p{flex-basis:100%;font-size:12px;color:var(--gs-muted)}.pc-search-candidates>button{white-space:normal;text-align:left}
