@@ -58,7 +58,7 @@ const router = createBrowserRouter([
             // 로그인(데모 세션)이 필요한 페이지
             element: <RequireDemoSession />,
             children: [
-              ...catalogRoutes(['library']),
+              { path: 'library', element: <GameCatalog mode="library" /> },
               { path: 'wishlist', element: contained(<WishlistPage />) },
               { path: 'collections', element: <CollectionsPage /> },
               { path: 'activity', element: contained(<ActivityPage />) },

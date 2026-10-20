@@ -4,7 +4,7 @@ import { discoverGames, genres, recommendedIds } from '../mocks/discoverMock'
 import { useGameSense } from '@/shared/state'
 import RecommendedGameCard from './RecommendedGameCard'
 import CatalogMessage from './CatalogMessage'
-import { GSIcon, PageHeading, FilterChips } from '@/shared/ui'
+import { GSIcon, PageBox, PageHeading, PanelPage, FilterChips } from '@/shared/ui'
 import { matchesSearch } from '@/shared/utils/searchMatch'
 import { useAuth } from '@/features/auth'
 import { SteamLibraryPanel } from '@/features/library'
@@ -39,20 +39,21 @@ export default function GameCatalog({ mode }) {
 
   if (mode === 'library') {
     const title = pageTitles.library
-    return (
-      <section className="min-w-0" aria-labelledby="gs-catalog-title">
+    // 라이브러리는 제목·필터·목록을 각각 따로 카드로 보여줘서, 화면 틀(PanelPage)을 직접 만든다.
+    return isAuthenticated ? (
+      <PanelPage>
+        <SteamLibraryPanel />
+      </PanelPage>
+    ) : (
+      <PageBox>
         <PageHeading id="gs-catalog-title" title={t(title[0], title[1])} description={title[2]} />
-        {isAuthenticated ? (
-          <SteamLibraryPanel query={query} />
-        ) : (
-          <CatalogMessage icon="steam" title="스팀 계정으로 로그인하면 보유 게임을 볼 수 있어요" description="데모 세션에서는 실제 라이브러리를 불러올 수 없어요.">
-            <Link className="gs-primary-button mt-[16px]" to="/signup">
-              회원가입하기
-              <GSIcon name="arrow" size={17} />
-            </Link>
-          </CatalogMessage>
-        )}
-      </section>
+        <CatalogMessage icon="steam" title="스팀 계정으로 로그인하면 보유 게임을 볼 수 있어요" description="데모 세션에서는 실제 라이브러리를 불러올 수 없어요.">
+          <Link className="gs-primary-button mt-[16px]" to="/signup">
+            회원가입하기
+            <GSIcon name="arrow" size={17} />
+          </Link>
+        </CatalogMessage>
+      </PageBox>
     )
   }
 
