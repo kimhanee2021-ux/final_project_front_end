@@ -11,6 +11,9 @@ const primaryLinks = [
   ['/analysis', 'chart', 'Analysis', '분석'],
   ['/explore', 'compass', 'Explore', '게임 탐색'],
   ['/recommendations', 'spark', 'AI Optimization', '맞춤 추천'],
+  ['/gamer-map', 'globe', 'Gamer Map', '게이머 지도'],
+  ['/weekly-rankings', 'trophy', 'Weekly Rankings', '스팀 국가별 주간랭킹'],
+  ['/pro-streamer-play', 'gamepad', '프로·스트리머 플레이', '프로·스트리머 플레이'],
 ]
 const moreLinks = [
   ['/pc-check', 'monitor', 'PC 사양', 'PC 사양'],

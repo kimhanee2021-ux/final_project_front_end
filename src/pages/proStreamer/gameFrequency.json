@@ -1,0 +1,632 @@
+[
+  {
+    "appId": 730,
+    "name": "Counter-Strike 2",
+    "frequency": 50,
+    "countryCount": 10,
+    "position": 1
+  },
+  {
+    "appId": 1867240,
+    "name": "WARDOGS",
+    "frequency": 49,
+    "countryCount": 12,
+    "position": 2
+  },
+  {
+    "appId": 4080220,
+    "name": "EA SPORTS FC™ 27",
+    "frequency": 43,
+    "countryCount": 12,
+    "position": 3
+  },
+  {
+    "appId": 3393110,
+    "name": "AION 2",
+    "frequency": 29,
+    "countryCount": 10,
+    "position": 4
+  },
+  {
+    "appId": 4126040,
+    "name": "Aniimo",
+    "frequency": 29,
+    "countryCount": 11,
+    "position": 5
+  },
+  {
+    "appId": 578080,
+    "name": "PUBG: BATTLEGROUNDS",
+    "frequency": 20,
+    "countryCount": 7,
+    "position": 6
+  },
+  {
+    "appId": 1172470,
+    "name": "Apex Legends™",
+    "frequency": 19,
+    "countryCount": 7,
+    "position": 7
+  },
+  {
+    "appId": 2357570,
+    "name": "Overwatch®",
+    "frequency": 17,
+    "countryCount": 9,
+    "position": 8
+  },
+  {
+    "appId": 2288340,
+    "name": "ACE COMBAT 8: WINGS OF THEVE",
+    "frequency": 16,
+    "countryCount": 8,
+    "position": 9
+  },
+  {
+    "appId": 3493540,
+    "name": "Transport Fever 3",
+    "frequency": 13,
+    "countryCount": 7,
+    "position": 10
+  },
+  {
+    "appId": 2344520,
+    "name": "Diablo® IV",
+    "frequency": 12,
+    "countryCount": 6,
+    "position": 11
+  },
+  {
+    "appId": 570,
+    "name": "Dota 2",
+    "frequency": 12,
+    "countryCount": 12,
+    "position": 12
+  },
+  {
+    "appId": 2767030,
+    "name": "Marvel Rivals",
+    "frequency": 12,
+    "countryCount": 6,
+    "position": 13
+  },
+  {
+    "appId": 4019220,
+    "name": "Dressmaker",
+    "frequency": 11,
+    "countryCount": 6,
+    "position": 14
+  },
+  {
+    "appId": 3669870,
+    "name": "CONTROL Resonant",
+    "frequency": 10,
+    "countryCount": 10,
+    "position": 15
+  },
+  {
+    "appId": 3010850,
+    "name": "Gears of War: E-Day",
+    "frequency": 10,
+    "countryCount": 5,
+    "position": 16
+  },
+  {
+    "appId": 1912410,
+    "name": "Minecraft Dungeons II",
+    "frequency": 10,
+    "countryCount": 8,
+    "position": 17
+  },
+  {
+    "appId": 1142710,
+    "name": "Total War: WARHAMMER III",
+    "frequency": 10,
+    "countryCount": 9,
+    "position": 18
+  },
+  {
+    "appId": 2406770,
+    "name": "Bodycam",
+    "frequency": 9,
+    "countryCount": 9,
+    "position": 19
+  },
+  {
+    "appId": 4001890,
+    "name": "How to Fish",
+    "frequency": 9,
+    "countryCount": 7,
+    "position": 20
+  },
+  {
+    "appId": 230410,
+    "name": "Warframe",
+    "frequency": 9,
+    "countryCount": 9,
+    "position": 21
+  },
+  {
+    "appId": 1086940,
+    "name": "Baldur's Gate 3",
+    "frequency": 8,
+    "countryCount": 8,
+    "position": 22
+  },
+  {
+    "appId": 3751260,
+    "name": "The Blood of Dawnwalker",
+    "frequency": 8,
+    "countryCount": 7,
+    "position": 23
+  },
+  {
+    "appId": 1808500,
+    "name": "ARC Raiders",
+    "frequency": 7,
+    "countryCount": 7,
+    "position": 24
+  },
+  {
+    "appId": 1091500,
+    "name": "Cyberpunk 2077",
+    "frequency": 7,
+    "countryCount": 7,
+    "position": 25
+  },
+  {
+    "appId": 632360,
+    "name": "Risk of Rain 2",
+    "frequency": 7,
+    "countryCount": 7,
+    "position": 26
+  },
+  {
+    "appId": 4078430,
+    "name": "STAR WARS: Galactic Racer™",
+    "frequency": 7,
+    "countryCount": 7,
+    "position": 27
+  },
+  {
+    "appId": 3513350,
+    "name": "Wuthering Waves",
+    "frequency": 7,
+    "countryCount": 6,
+    "position": 28
+  },
+  {
+    "appId": 1285190,
+    "name": "Borderlands 4",
+    "frequency": 6,
+    "countryCount": 4,
+    "position": 29
+  },
+  {
+    "appId": 4358690,
+    "name": "Graveyard Keeper 2",
+    "frequency": 6,
+    "countryCount": 4,
+    "position": 30
+  },
+  {
+    "appId": 1973530,
+    "name": "Limbus Company",
+    "frequency": 6,
+    "countryCount": 3,
+    "position": 31
+  },
+  {
+    "appId": 1374490,
+    "name": "RuneScape: Dragonwilds",
+    "frequency": 6,
+    "countryCount": 6,
+    "position": 32
+  },
+  {
+    "appId": 2507950,
+    "name": "Delta Force",
+    "frequency": 5,
+    "countryCount": 1,
+    "position": 33
+  },
+  {
+    "appId": 2054970,
+    "name": "Dragon's Dogma 2",
+    "frequency": 5,
+    "countryCount": 5,
+    "position": 34
+  },
+  {
+    "appId": 1049590,
+    "name": "Eternal Return",
+    "frequency": 5,
+    "countryCount": 1,
+    "position": 35
+  },
+  {
+    "appId": 3240220,
+    "name": "Grand Theft Auto V Enhanced",
+    "frequency": 5,
+    "countryCount": 2,
+    "position": 36
+  },
+  {
+    "appId": 2638890,
+    "name": "Onimusha: Way of the Sword",
+    "frequency": 5,
+    "countryCount": 3,
+    "position": 37
+  },
+  {
+    "appId": 4225980,
+    "name": "Trails in the Sky 2nd Chapter",
+    "frequency": 5,
+    "countryCount": 5,
+    "position": 38
+  },
+  {
+    "appId": 2402680,
+    "name": "Dimraeth",
+    "frequency": 4,
+    "countryCount": 4,
+    "position": 39
+  },
+  {
+    "appId": 3219630,
+    "name": "Halloween: The Game",
+    "frequency": 4,
+    "countryCount": 4,
+    "position": 40
+  },
+  {
+    "appId": 4356430,
+    "name": "NBA 2K27",
+    "frequency": 4,
+    "countryCount": 2,
+    "position": 41
+  },
+  {
+    "appId": 1551980,
+    "name": "Clive Barker's Hellraiser: Revival",
+    "frequency": 3,
+    "countryCount": 3,
+    "position": 42
+  },
+  {
+    "appId": 381210,
+    "name": "Dead by Daylight",
+    "frequency": 3,
+    "countryCount": 3,
+    "position": 43
+  },
+  {
+    "appId": 275850,
+    "name": "No Man's Sky",
+    "frequency": 3,
+    "countryCount": 3,
+    "position": 44
+  },
+  {
+    "appId": 4508340,
+    "name": "NTE: Neverness to Everness",
+    "frequency": 3,
+    "countryCount": 2,
+    "position": 45
+  },
+  {
+    "appId": 2139460,
+    "name": "Once Human",
+    "frequency": 3,
+    "countryCount": 1,
+    "position": 46
+  },
+  {
+    "appId": 3219030,
+    "name": "Planet Zoo 2",
+    "frequency": 3,
+    "countryCount": 3,
+    "position": 47
+  },
+  {
+    "appId": 2138720,
+    "name": "REMATCH",
+    "frequency": 3,
+    "countryCount": 3,
+    "position": 48
+  },
+  {
+    "appId": 1304930,
+    "name": "The Outlast Trials",
+    "frequency": 3,
+    "countryCount": 2,
+    "position": 49
+  },
+  {
+    "appId": 4435490,
+    "name": "Call of Duty®: Modern Warfare® 4",
+    "frequency": 2,
+    "countryCount": 2,
+    "position": 50
+  },
+  {
+    "appId": 1158310,
+    "name": "Crusader Kings III",
+    "frequency": 2,
+    "countryCount": 2,
+    "position": 51
+  },
+  {
+    "appId": 3932890,
+    "name": "Escape from Tarkov",
+    "frequency": 2,
+    "countryCount": 2,
+    "position": 52
+  },
+  {
+    "appId": 216150,
+    "name": "MapleStory",
+    "frequency": 2,
+    "countryCount": 2,
+    "position": 53
+  },
+  {
+    "appId": 4115450,
+    "name": "Phantom Blade Zero",
+    "frequency": 2,
+    "countryCount": 1,
+    "position": 54
+  },
+  {
+    "appId": 1174180,
+    "name": "Red Dead Redemption 2",
+    "frequency": 2,
+    "countryCount": 1,
+    "position": 55
+  },
+  {
+    "appId": 4659620,
+    "name": "Touhou Koumakyou: New Classic - the Embodiment of Scarlet Devil",
+    "frequency": 2,
+    "countryCount": 2,
+    "position": 56
+  },
+  {
+    "appId": 892970,
+    "name": "Valheim",
+    "frequency": 2,
+    "countryCount": 2,
+    "position": 57
+  },
+  {
+    "appId": 3624140,
+    "name": "Wanderburg",
+    "frequency": 2,
+    "countryCount": 1,
+    "position": 58
+  },
+  {
+    "appId": 4557380,
+    "name": "Batomon Showdown",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 59
+  },
+  {
+    "appId": 3321460,
+    "name": "Crimson Desert Enhanced",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 60
+  },
+  {
+    "appId": 960170,
+    "name": "DJMAX RESPECT V",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 61
+  },
+  {
+    "appId": 4027450,
+    "name": "Dragon Quest Heroes: Torneko's Mystery Dungeon -Classic HD-",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 62
+  },
+  {
+    "appId": 3841510,
+    "name": "DYNASTY WARRIORS 3: Complete Edition Remastered",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 63
+  },
+  {
+    "appId": 3059520,
+    "name": "F1® 25",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 64
+  },
+  {
+    "appId": 2369390,
+    "name": "Far Cry® 6",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 65
+  },
+  {
+    "appId": 1551360,
+    "name": "Forza Horizon 5",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 66
+  },
+  {
+    "appId": 2349820,
+    "name": "Hero's Land",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 67
+  },
+  {
+    "appId": 4282500,
+    "name": "hololive Dreams",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 68
+  },
+  {
+    "appId": 4968640,
+    "name": "Japanese Ramen Simulator",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 69
+  },
+  {
+    "appId": 4259190,
+    "name": "Kingdom Rush 6: Genesis TD",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 70
+  },
+  {
+    "appId": 2141910,
+    "name": "Magic: The Gathering Arena",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 71
+  },
+  {
+    "appId": 2246340,
+    "name": "Monster Hunter Wilds",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 72
+  },
+  {
+    "appId": 1057090,
+    "name": "Ori and the Will of the Wisps",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 73
+  },
+  {
+    "appId": 294100,
+    "name": "RimWorld",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 74
+  },
+  {
+    "appId": 872410,
+    "name": "ROMANCE OF THE THREE KINGDOMS XIV",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 75
+  },
+  {
+    "appId": 4214960,
+    "name": "Romancing SaGa 3: Destinies United",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 76
+  },
+  {
+    "appId": 1172620,
+    "name": "Sea of Thieves: 2026 Edition",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 77
+  },
+  {
+    "appId": 2902720,
+    "name": "SPAM",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 78
+  },
+  {
+    "appId": 413150,
+    "name": "Stardew Valley",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 79
+  },
+  {
+    "appId": 2764370,
+    "name": "Starward",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 80
+  },
+  {
+    "appId": 1364780,
+    "name": "Street Fighter™ 6",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 81
+  },
+  {
+    "appId": 489830,
+    "name": "The Elder Scrolls V: Skyrim Special Edition",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 82
+  },
+  {
+    "appId": 2977260,
+    "name": "The Guild 1 Remake: Europa 1410",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 83
+  },
+  {
+    "appId": 1888930,
+    "name": "The Last of Us™ Part I",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 84
+  },
+  {
+    "appId": 2531310,
+    "name": "The Last of Us™ Part II Remastered",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 85
+  },
+  {
+    "appId": 5099430,
+    "name": "The Rhapsody of Zephyr Remastered",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 86
+  },
+  {
+    "appId": 292030,
+    "name": "The Witcher 3: Wild Hunt — Remastered",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 87
+  },
+  {
+    "appId": 3375780,
+    "name": "Trails in the Sky 1st Chapter",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 88
+  },
+  {
+    "appId": 236390,
+    "name": "War Thunder",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 89
+  },
+  {
+    "appId": 1449850,
+    "name": "Yu-Gi-Oh! Master Duel",
+    "frequency": 1,
+    "countryCount": 1,
+    "position": 90
+  }
+]

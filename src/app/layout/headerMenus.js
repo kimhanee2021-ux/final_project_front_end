@@ -24,6 +24,9 @@ export const headerMenus = [
     children: [
       { to: '/recommendations', label: 'AI 추천 게임', description: '내 취향에 맞춘 추천' },
       { to: '/explore', label: '스팀 전체 게임', description: '장르별 · 출시 예정 · 인기 게임' },
+      { to: '/gamer-map', label: '게이머 지도', description: '전세계 게이머 지도' },
+      { to: '/weekly-rankings', label: '스팀 국가별 주간랭킹', description: '국가별 게임랭킹' },
+      { to: '/pro-streamer-play', label: '프로·스트리머 플레이', description: '인기 게임의 플레이 영상 탐색' },
     ],
   },
   {

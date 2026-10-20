@@ -1,0 +1,111 @@
+{
+  "region_id": "americas",
+  "region_name": "America",
+  "countries": [
+    {
+      "country_code": "USA",
+      "country_iso2": "US",
+      "country_name": "미국",
+      "total_population_2025_m": 340,
+      "gamer_penetration_rate": 0.76,
+      "PC": {
+        "gamers_2025_m": 110,
+        "top_5_games": [
+          "Roblox",
+          "Minecraft",
+          "Fortnite",
+          "Valorant",
+          "Call of Duty"
+        ],
+        "yearly_mau_m": {
+          "2010": 78,
+          "2011": 80.8,
+          "2012": 83.8,
+          "2013": 87,
+          "2014": 89.7,
+          "2015": 92,
+          "2016": 94.2,
+          "2017": 97,
+          "2018": 98.8,
+          "2019": 100.4,
+          "2020": 105,
+          "2021": 107.5,
+          "2022": 106.2,
+          "2023": 107.6,
+          "2024": 108.8,
+          "2025": 110
+        }
+      }
+    },
+    {
+      "country_code": "BRA",
+      "country_iso2": "BR",
+      "country_name": "브라질",
+      "total_population_2025_m": 216,
+      "gamer_penetration_rate": 0.73,
+      "PC": {
+        "gamers_2025_m": 45,
+        "top_5_games": [
+          "CS2",
+          "League of Legends",
+          "Valorant",
+          "Minecraft",
+          "GTA V (FiveM)"
+        ],
+        "yearly_mau_m": {
+          "2010": 21,
+          "2011": 22.6,
+          "2012": 24.3,
+          "2013": 26.1,
+          "2014": 27.7,
+          "2015": 29,
+          "2016": 31,
+          "2017": 33.5,
+          "2018": 35.2,
+          "2019": 36.7,
+          "2020": 41,
+          "2021": 42.6,
+          "2022": 42.1,
+          "2023": 43.1,
+          "2024": 44.1,
+          "2025": 45
+        }
+      }
+    },
+    {
+      "country_code": "CHL",
+      "country_iso2": "CL",
+      "country_name": "칠레",
+      "total_population_2025_m": 20,
+      "gamer_penetration_rate": 0.69,
+      "PC": {
+        "gamers_2025_m": 6,
+        "top_5_games": [
+          "Valorant",
+          "League of Legends",
+          "CS2",
+          "Minecraft",
+          "Fortnite"
+        ],
+        "yearly_mau_m": {
+          "2010": 2.8,
+          "2011": 3.1,
+          "2012": 3.3,
+          "2013": 3.6,
+          "2014": 3.9,
+          "2015": 4.1,
+          "2016": 4.3,
+          "2017": 4.6,
+          "2018": 4.8,
+          "2019": 5,
+          "2020": 5.5,
+          "2021": 5.7,
+          "2022": 5.6,
+          "2023": 5.8,
+          "2024": 5.9,
+          "2025": 6
+        }
+      }
+    }
+  ]
+}
