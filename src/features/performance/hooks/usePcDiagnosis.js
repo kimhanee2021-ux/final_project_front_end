@@ -47,7 +47,7 @@ export function usePcDiagnosis(){
   let active=[];const timer=setTimeout(()=>request.abort(),150000)
   try{for(let offset=0;offset<games.length;offset+=5){
    active=games.slice(offset,offset+5)
-   const responses=active.length===1?[await assessPc(pc,active[0].appId,request.signal,true)]:await assessPcBatch(pc,active.map(game=>game.appId),request.signal)
+   const responses=active.length===1?[await assessPc(pc,active[0].appId,request.signal)]:await assessPcBatch(pc,active.map(game=>game.appId),request.signal)
    if(sequence.current!==id)return
    const values=responses.map(result=>({...result,summaryBatch:id*100+offset,summaryGames:responses.map(game=>game.gameName)}))
    resultCaches.current[scope]={...resultCaches.current[scope],...Object.fromEntries(values.map(result=>[result.appId,result]))}
