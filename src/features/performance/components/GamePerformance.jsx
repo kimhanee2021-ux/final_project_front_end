@@ -4,20 +4,31 @@ import EvaluationNotice from './EvaluationNotice'
 import { resolutionTarget } from '../model/pcGrade'
 
 const RESOLUTIONS = [
-  { id: 'FHD', label: 'FHD', pixels: '1080p' },
-  { id: 'QHD', label: 'QHD', pixels: '1440p' },
-  { id: '4K', label: '4K', pixels: '2160p' },
+  { id: 'FHD', label: 'FHD', pixels: '1080p', hint: '가장 많이 쓰는 해상도' },
+  { id: 'QHD', label: 'QHD', pixels: '1440p', hint: '선명한 게임용 모니터' },
+  { id: '4K', label: '4K', pixels: '2160p', hint: '최고 화질 · 높은 사양' },
 ]
 
+// 등급 한 칸: 등급 글자와 설명. 추정이 어려우면 이유를 알 수 있게 짧게 적는다.
+function GradeCell({ target }) {
+  return (
+    <>
+      <strong>{target.grade ?? '—'}</strong>
+      <small> {target.grade ? target.label : '추정 어려움'}</small>
+    </>
+  )
+}
+
 // 게임별 예상 성능표: 내 보유게임 또는 검색한 게임을 AI가 해상도별 등급으로 분석한 결과를 보여준다.
-// 해상도를 고르면 해당 열만 강조하고, 게임 이름을 누르면 자세한 분석을 연다.
+// 평가 기준(해상도)을 고르면 그 해상도의 등급만 보여주고, 게임 이름을 누르면 자세한 분석을 연다.
 export default function GamePerformance({ evaluation, onDetails }) {
   const { status, diagnosis, gameList } = evaluation
-  const [resolution, setResolution] = useState('FHD')
+  const [resolution, setResolution] = useState(null)
   if (status !== 'ready') return <EvaluationNotice status={status} />
   const { games, listing, showSearch, loading, error, candidates, query, setQuery, expanded } = gameList
   const busy = diagnosis.busy !== null
   const scope = showSearch ? 'search' : 'owned'
+  const selected = RESOLUTIONS.find(item => item.id === resolution) ?? null
 
   const emptyCell = game => {
     if (diagnosis.gameErrors?.[game.appId]) return '분석 실패'
@@ -26,22 +37,38 @@ export default function GamePerformance({ evaluation, onDetails }) {
 
   return (
     <section>
+      <div className="mb-[20px] p-[20px] rounded-[20px] bg-primary-soft" role="radiogroup" aria-label="게임 성능 평가 기준">
+        <p className="mb-[12px] text-[14px] font-[650] text-primary-text">평가 기준을 선택하세요</p>
+        <div className="grid grid-cols-3 gap-[10px] max-[600px]:grid-cols-1">
+          {RESOLUTIONS.map(item => {
+            const active = resolution === item.id
+            return (
+              <button
+                key={item.id}
+                type="button"
+                role="radio"
+                aria-checked={active}
+                className={`flex items-center gap-[12px] p-[14px] rounded-[16px] text-left transition-[background,box-shadow,transform] duration-200 ${
+                  active ? 'bg-surface shadow-[var(--shadow)] ring-2 ring-primary' : 'bg-surface/60 hover:bg-surface hover:-translate-y-[2px]'
+                }`}
+                onClick={() => setResolution(item.id)}
+              >
+                <span className={`grid place-items-center w-[40px] h-[40px] rounded-full shrink-0 ${active ? 'bg-primary text-on-primary' : 'bg-primary-soft text-primary-text'}`}>
+                  <GSIcon name={active ? 'check' : 'monitor'} size={18} />
+                </span>
+                <span className="min-w-0">
+                  <strong className="block text-[16px] font-[700]">
+                    {item.label} <small className="text-[12px] font-[500] text-muted">{item.pixels}</small>
+                  </strong>
+                  <small className="block text-[12px] text-muted">{item.hint}</small>
+                </span>
+              </button>
+            )
+          })}
+        </div>
+      </div>
       <div className="flex flex-wrap items-center justify-between gap-[12px] mb-[16px] text-[13px] text-muted">
-        <label className="flex items-center gap-[10px]">
-          평가 기준
-          <select
-            className="h-[34px] px-[14px] rounded-full bg-bg border-0 text-text text-[13px]"
-            aria-label="게임 성능 평가 해상도"
-            value={resolution}
-            onChange={event => setResolution(event.target.value)}
-          >
-            {RESOLUTIONS.map(item => (
-              <option key={item.id} value={item.id}>
-                {item.label} ({item.pixels})
-              </option>
-            ))}
-          </select>
-        </label>
+        <p className="text-[13px] text-muted">평가 기준을 고르면 그 해상도의 등급만 보여줘요.</p>
         <div className="flex flex-wrap items-center gap-[8px]">
           <button type="button" className="gs-secondary-button" aria-pressed={!showSearch} disabled={loading} onClick={gameList.showOwned}>
             <GSIcon name="library" size={15} />
@@ -101,12 +128,12 @@ export default function GamePerformance({ evaluation, onDetails }) {
           <thead>
             <tr>
               <th scope="col">게임 제목</th>
-              {RESOLUTIONS.map(item => (
-                <th scope="col" key={item.id} className={resolution === item.id ? 'is-selected' : ''}>
-                  {item.label}
-                  <small>({item.pixels})</small>
+              {selected && (
+                <th scope="col" className="is-selected">
+                  {selected.label}
+                  <small>({selected.pixels})</small>
                 </th>
-              ))}
+              )}
               <th scope="col">AI 분석</th>
             </tr>
           </thead>
@@ -125,21 +152,15 @@ export default function GamePerformance({ evaluation, onDetails }) {
                       </span>
                     </button>
                   </th>
-                  {RESOLUTIONS.map(item => {
-                    const target = result ? resolutionTarget(result, item.id) : null
-                    return (
-                      <td key={item.id} className={resolution === item.id ? 'is-selected' : ''}>
-                        {target ? (
-                          <>
-                            <strong>{target.grade ?? '—'}</strong>
-                            <small> {target.grade ? target.label : '추정 어려움'}</small>
-                          </>
-                        ) : (
-                          <span className="pc-unavailable">{emptyCell(game)}</span>
-                        )}
-                      </td>
-                    )
-                  })}
+                  {selected && (
+                    <td className="is-selected">
+                      {result ? (
+                        <GradeCell target={resolutionTarget(result, selected.id)} />
+                      ) : (
+                        <span className="pc-unavailable">{emptyCell(game)}</span>
+                      )}
+                    </td>
+                  )}
                   <td>
                     {failed ? (
                       <button type="button" className="pc-rating" disabled={busy} onClick={() => diagnosis.diagnose(game, scope, true)}>
@@ -154,7 +175,7 @@ export default function GamePerformance({ evaluation, onDetails }) {
             })}
             {games.length === 0 && (
               <tr>
-                <td colSpan={5}>
+                <td colSpan={selected ? 3 : 2}>
                   <p className="py-[28px] text-center text-[14px] text-muted">보유 게임을 가져오거나, 궁금한 게임을 검색해서 분석해 보세요.</p>
                 </td>
               </tr>
@@ -177,6 +198,7 @@ export default function GamePerformance({ evaluation, onDetails }) {
         </div>
       )}
       {error && <p role="alert" className="mt-[12px] text-[13px] text-[#e5484d]">{error}</p>}
+      {!selected && games.length > 0 && <p className="mt-[12px] text-[13px] text-primary-text">위에서 평가 기준을 선택하면 게임별 등급이 나타나요.</p>}
       <p className="mt-[16px] text-[12px] text-faint">AI 추정 등급 · A 144 FPS↑ / B 60↑ / C 30↑ / D 20↑ / E 20 미만 · 실측이나 프레임 유지 보장이 아니에요</p>
     </section>
   )

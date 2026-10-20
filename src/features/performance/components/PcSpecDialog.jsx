@@ -27,6 +27,7 @@ export default function PcSpecDialog({ open, saved, onSave, onReset, onClose }) 
   const [pasted, setPasted] = useState('')
   const [message, setMessage] = useState(NO_MESSAGE)
   const [copied, setCopied] = useState(false)
+  const [consentWarning, setConsentWarning] = useState(false)
 
   useEffect(() => {
     const dialog = ref.current
@@ -38,6 +39,7 @@ export default function PcSpecDialog({ open, saved, onSave, onReset, onClose }) 
       setAiConsent(saved.aiConsent)
       setPasted('')
       setMessage(NO_MESSAGE)
+      setConsentWarning(false)
       dialog.showModal()
     } else if (!open && dialog.open) dialog.close()
   }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -74,6 +76,11 @@ export default function PcSpecDialog({ open, saved, onSave, onReset, onClose }) 
   }
 
   const save = () => {
+    if (!aiConsent) {
+      setMessage({ text: 'AI 분석 동의에 체크해야 사양을 저장할 수 있어요.', error: true })
+      setConsentWarning(true)
+      return
+    }
     onSave(draft, { detail, aiConsent })
     onClose()
   }
@@ -206,12 +213,18 @@ export default function PcSpecDialog({ open, saved, onSave, onReset, onClose }) 
           </p>
         )}
 
-        <label className="flex items-start gap-[10px] mt-[16px] text-[12px] leading-[1.6] text-muted cursor-pointer">
+        <label className={`flex items-start gap-[10px] mt-[16px] p-[12px] rounded-[14px] text-[12px] leading-[1.6] cursor-pointer transition-colors ${consentWarning && !aiConsent ? 'bg-peach-bg text-peach-text' : 'text-muted'}`}>
           <input
             type="checkbox"
             className="mt-[3px] w-[16px] h-[16px] accent-primary shrink-0"
             checked={aiConsent}
-            onChange={event => setAiConsent(event.target.checked)}
+            onChange={event => {
+              setAiConsent(event.target.checked)
+              if (event.target.checked) {
+                setConsentWarning(false)
+                setMessage(NO_MESSAGE)
+              }
+            }}
           />
           <span>
             입력한 사양을 AI 분석(Gemini·Groq)에 전송해 PC 평가에 쓰는 데 동의해요. (필수)
@@ -228,7 +241,7 @@ export default function PcSpecDialog({ open, saved, onSave, onReset, onClose }) 
           <button type="button" className="bg-transparent text-[13px] text-muted underline" onClick={reset}>
             입력한 사양 지우기
           </button>
-          <button type="button" className="gs-primary-button" onClick={save} disabled={!aiConsent}>
+          <button type="button" className="gs-primary-button" onClick={save}>
             저장하기
           </button>
         </div>
