@@ -13,3 +13,14 @@ export function overallPerformanceGrade(results){
  if(!values.length)return {grade:null,count:0,total:all.length}
  return {grade:values[Math.floor(values.length/2)].grade,count:values.length,total:all.length}
 }
+
+export function latestOverallResult(results){
+ return Object.values(results??{}).filter(r=>r.explanationStatus==='READY'&&Array.isArray(r.overallExplanation)&&r.overallExplanation.length===4&&r.overallExplanation.every(s=>typeof s==='string'&&s.trim())).sort((a,b)=>(b.summaryBatch??0)-(a.summaryBatch??0))[0]
+}
+// AI가 PC 전체에 대해 작성한 설명만 사용한다. 개별 게임 문장을 종합 설명으로 조립하지 않는다.
+export function overallPerformanceExplanation(results){
+ const ready=Object.values(results??{}).filter(r=>r.explanationStatus==='READY')
+ const overall=latestOverallResult(results)
+ if(overall)return overall.overallExplanation.map((text,i)=>`${['현재 성능','제한 요인','설정 조언','업그레이드 방향'][i]}: ${text.trim()}`)
+ return [ready.length?'이전 분석에는 PC 종합 설명이 포함되지 않았어요. 새로 분석하면 확인할 수 있어요.':'AI 분석이 완료되면 성능 제한 이유와 설정 조언을 보여드려요.']
+}

@@ -35,3 +35,58 @@
 .pc-component-advice{min-width:0;padding:14px;border:1px solid var(--gs-border);border-radius:9px;line-height:1.8;overflow-wrap:anywhere}.pc-component-advice h3{font-size:13px;margin:0 0 8px}.pc-component-advice>strong{color:var(--gs-mint);font-size:12px}.pc-component-advice p,.pc-component-advice small,.pc-component-advice a{font-size:11px}.pc-component-advice small{color:var(--gs-muted)}.pc-component-advice a{display:block;color:var(--gs-mint)}
 @media(max-width:900px){.pc-component-advice-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.pc-ai-assessment:has(.pc-live-explanation){display:flex;flex-direction:column}.pc-ai-assessment:has(.pc-live-explanation) .pc-grade-summary{align-self:center}.pc-ai-assessment:has(.pc-live-explanation) .pc-ai-title{margin-left:0}.pc-resolution-grid{grid-template-columns:1fr}.pc-component-advice-grid{grid-template-columns:1fr}}
+
+.pc-overall-explanation{grid-column:2;grid-row:3;min-width:0;padding:0 0 16px}.pc-ai-assessment .pc-overall-explanation p{margin:0 0 7px;line-height:1.7;font-size:12px;color:var(--gs-text)}
+@media(max-width:650px){.pc-overall-explanation{width:100%}}
+
+/* 종합 판단은 좌우 균형, 선택한 게임 상세는 별도 전체 폭으로 배치한다. */
+.pc-assessment-layout{display:grid;grid-template-columns:minmax(160px,1fr) minmax(0,3fr);gap:28px;align-items:center}
+.pc-assessment-layout .pc-grade-summary{padding:8px 0;background:transparent;border:0}
+.pc-assessment-layout .pc-grade-ring{width:140px;height:140px}
+.pc-assessment-layout .pc-grade-state{margin-bottom:5px}
+.pc-assessment-layout .pc-grade-key{margin-top:8px}
+.pc-assessment-layout .pc-grade-criteria{margin-top:8px}
+.pc-overall-copy{min-width:0;align-self:center}
+.pc-overall-heading{display:flex;align-items:center;gap:19px;margin-bottom:18px}
+.pc-overall-heading h2{font-size:16px;margin:0;color:var(--gs-text)}
+.pc-overall-heading .pc-ai-orbit{width:46px;height:46px}
+.pc-overall-caption{font-size:11px;color:var(--gs-muted);line-height:1.7;margin:0 0 17px}
+.pc-overall-copy .pc-overall-explanation{padding:0}
+.pc-overall-copy .pc-overall-explanation p{font-size:12px;line-height:1.9;color:var(--gs-text);margin:0 0 12px;overflow-wrap:anywhere}
+.pc-overall-copy .pc-overall-explanation p:last-child{margin-bottom:0}
+.pc-game-explanation-section{margin-top:24px;padding-top:22px;border-top:1px solid var(--gs-border);min-width:0}
+.pc-game-explanation-title{font-size:12px;color:var(--gs-muted);margin:0 0 14px;font-weight:500}
+@media(max-width:650px){.pc-assessment-layout{grid-template-columns:1fr;gap:22px}.pc-overall-heading{gap:14px}.pc-overall-copy{width:100%}.pc-game-explanation-section{margin-top:22px}.pc-assessment-layout .pc-grade-summary{justify-self:center}}
+
+.pc-inline-game-detail>td{padding:20px!important;text-align:left!important;background:color-mix(in srgb,var(--gs-mint) 3%,var(--gs-panel))}.pc-inline-game-detail .pc-live-explanation{white-space:normal}.pc-inline-game-detail .pc-resolution-grid{text-align:left}
+
+.pc-assessment-layout{align-items:stretch}
+.pc-overall-copy{align-self:stretch;display:flex;flex-direction:column;justify-content:center;padding:6px 0}
+.pc-overall-heading{margin-bottom:12px}
+.pc-overall-caption{margin-bottom:14px}
+.pc-overall-copy .pc-overall-explanation{display:grid;gap:12px}
+.pc-overall-copy .pc-overall-explanation p{display:grid;grid-template-columns:94px minmax(0,1fr);gap:10px;margin:0;font-size:12px;line-height:1.8}
+.pc-overall-explanation strong{font-size:11px;font-weight:600;color:var(--gs-mint)}
+.pc-overall-explanation span{min-width:0}
+@media(max-width:650px){.pc-overall-copy .pc-overall-explanation p{grid-template-columns:1fr;gap:3px}}
+
+.pc-hardware-detail{padding:0;align-self:start}
+.pc-hardware-detail>summary{display:block;list-style:none;cursor:pointer;padding:17px 18px 14px;border-radius:11px}
+.pc-hardware-detail>summary::-webkit-details-marker{display:none}
+.pc-hardware-detail>summary:hover{background:color-mix(in srgb,var(--gs-mint) 4%,transparent)}
+.pc-hardware-detail>summary:focus-visible{outline:2px solid var(--gs-mint);outline-offset:3px}
+.pc-hardware-detail[open]{border-color:color-mix(in srgb,var(--gs-mint) 45%,var(--gs-border))}
+.pc-hardware-upgrade{padding:16px 18px 19px;border-top:1px solid var(--gs-border);color:var(--gs-text);line-height:1.8;font-size:12px}
+.pc-hardware-upgrade h3{font-size:13px;margin:0 0 12px}
+.pc-hardware-upgrade p{margin:7px 0;color:var(--gs-muted);font-size:12px}
+.pc-hardware-verdict{color:var(--gs-mint);font-size:12px}
+.pc-hardware-offer{margin-top:14px;padding-top:12px;border-top:1px solid var(--gs-border)}
+.pc-hardware-offer h4{margin:0 0 8px;font-size:12px}
+.pc-hardware-offer a{display:block;color:var(--gs-mint);margin-top:10px}
+.pc-hardware-offer small{display:block;color:var(--gs-muted);font-size:10px;margin-top:7px}
+.pc-hardware-offer ul{padding-left:17px;color:var(--gs-muted)}
+.pc-spec-item.pc-hardware-detail{padding:0}
+
+.pc-gpu-choice{border:1px solid var(--gs-border);border-radius:8px;padding:12px;margin:12px 0}.pc-gpu-choice label{display:flex;align-items:center;gap:8px}.pc-gpu-choice input{width:auto}.pc-gpu-choice p{font-size:11px;color:var(--gs-muted)}.pc-spec-review select{width:100%;background:var(--gs-panel);color:var(--gs-text);border:1px solid var(--gs-border);border-radius:6px;padding:9px;margin-top:5px}
+
+.pc-hardware-source{margin-top:14px;font-size:11px}.pc-hardware-source a{color:var(--gs-mint)}.pc-hardware-source small{display:block;color:var(--gs-muted);margin-top:6px;font-size:10px}

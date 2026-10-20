@@ -5,6 +5,7 @@ export function normalizeSpecs(input){
   for(const key of textFields){const value=String(input[key]??'').trim();if(value.length>(key==='ramSpeed'?80:160))throw new Error('사양 항목을 짧게 입력해 주세요.');result[key]=value}
   for(const key of numericFields){const raw=input[key];const value=raw==null||String(raw).trim()===''?null:Number(raw);if(value!==null&&(!Number.isFinite(value)||value<(key==='storageFreeGB'?0:.1)||value>(key==='ramGB'?4096:100000)))throw new Error('용량은 올바른 GB 숫자로 입력해 주세요.');result[key]=value}
   if(result.storageFreeGB!==null&&result.storageTotalGB!==null&&result.storageFreeGB>result.storageTotalGB)throw new Error('남은 공간은 총 저장공간보다 클 수 없어요.')
+  result.deviceType=['DESKTOP','LAPTOP'].includes(input.deviceType)?input.deviceType:'UNKNOWN'
   return result
 }
 export function ownedPage(games,expanded,page){
