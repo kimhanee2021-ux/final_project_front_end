@@ -6,5 +6,6 @@ test('owned overview survives page changes and returning from a search',()=>{
  assert.equal(evaluationForView('owned',owned,search),owned)
  assert.equal(evaluationForView('search',owned,search),search)
  assert.equal(evaluationForView('owned',owned,search),owned)
- assert.equal(evaluationForView('search',owned,null),null)
+ assert.equal(evaluationForView('search',owned,null),owned)
+ assert.equal(evaluationForView('search',null,null),null)
 })

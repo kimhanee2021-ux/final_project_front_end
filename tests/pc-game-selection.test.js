@@ -11,6 +11,8 @@ test('owned and explicit search modes replace the same table instead of mixing l
  assert.deepEqual(gameViewGames(owned,searched,false),owned.games)
  assert.deepEqual(gameViewGames(owned,searched,true),searched)
  assert.deepEqual(gameViewGames(owned,[],true),[])
+ assert.deepEqual(gameViewGames(owned,[],true,[{appId:3}]),[{appId:3}])
+ assert.deepEqual(gameViewGames(owned,searched,true,[{appId:3}]),searched)
 })
 test('expand shows ten games and pagination covers all 49 without duplicates',()=>{
  const games=Array.from({length:49},(_,i)=>({appId:i+1,name:`Game ${i}`,playtimeForever:49-i}))

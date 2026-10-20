@@ -52,7 +52,7 @@ export function usePcDiagnosis(){
    const values=responses.map(result=>({...result,summaryBatch:id*100+offset,summaryGames:responses.map(game=>game.gameName)}))
    resultCaches.current[scope]={...resultCaches.current[scope],...Object.fromEntries(values.map(result=>[result.appId,result]))}
    const saveResults=scope==='search'?setSearchResults:setOwnedResults;saveResults(resultCaches.current[scope])
-   if(scope==='search'&&values.length){const result=values[0];setSearchOverview(searchOverviewFrom(result));setViewMode('search')}
+   if(scope==='search'&&values.length&&games.length===1){const result=values[0];setSearchOverview(searchOverviewFrom(result));setViewMode('search')}
    if(values.length)setSelected(values[0].appId)
   }}catch(e){if(sequence.current===id){const message=e.name==='AbortError'?'분석이 중단됐거나 시간이 초과됐어요.':e.message;setScopeErrors(scope,old=>({...old,...Object.fromEntries(active.map(game=>[game.appId,message]))}));setError(message)}}finally{clearTimeout(timer);if(sequence.current===id){activeRequestKey.current=null;setBusy(null)}}
  }

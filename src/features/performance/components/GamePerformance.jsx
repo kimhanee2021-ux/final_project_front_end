@@ -25,7 +25,7 @@ export default function GamePerformance({ evaluation, onDetails }) {
   const { status, diagnosis, gameList } = evaluation
   const [resolution, setResolution] = useState(null)
   if (status !== 'ready') return <EvaluationNotice status={status} />
-  const { games, listing, showSearch, loading, error, candidates, query, setQuery, expanded } = gameList
+  const { games, listing, showSearch, loading, error, candidates, query, setQuery, expanded, searched, topStatus } = gameList
   const busy = diagnosis.busy !== null
   const scope = showSearch ? 'search' : 'owned'
   const selected = RESOLUTIONS.find(item => item.id === resolution) ?? null
@@ -76,7 +76,7 @@ export default function GamePerformance({ evaluation, onDetails }) {
           </button>
           <button type="button" className="gs-secondary-button" aria-pressed={showSearch} onClick={gameList.openSearch}>
             <GSIcon name="search" size={15} />
-            다른 게임 검색하기
+            다른 게임도 확인해보기
           </button>
         </div>
       </div>
@@ -107,6 +107,11 @@ export default function GamePerformance({ evaluation, onDetails }) {
             ))}
           </div>
         </div>
+      )}
+      {showSearch && games.length > 0 && (
+        <p className="mb-[12px] text-[13px] text-muted">
+          {searched.length ? `검색한 게임 · ${searched.length}개` : `스팀 인기 판매 상위 ${games.length}개 · 게임 이름을 검색해서 다른 게임도 분석할 수 있어요`}
+        </p>
       )}
       {!showSearch && listing.total > 0 && (
         <div className="flex items-center justify-between gap-[12px] mb-[12px] text-[13px] text-muted">
@@ -145,7 +150,7 @@ export default function GamePerformance({ evaluation, onDetails }) {
                 <tr key={game.appId}>
                   <th scope="row">
                     <button className="pc-game-button" onClick={() => onDetails({ type: 'game', game, result })}>
-                      {game.iconUrl ? <img src={game.iconUrl} alt="" loading="lazy" /> : <GSIcon name="gamepad" size={20} />}
+                      {game.iconUrl || game.headerImage ? <img src={game.iconUrl ?? game.headerImage} alt="" loading="lazy" /> : <GSIcon name="gamepad" size={20} />}
                       <span>
                         {game.name}
                         {game.playtimeForever > 0 && <small className="block text-faint">누적 {(game.playtimeForever / 60).toFixed(1)}시간</small>}
@@ -176,7 +181,15 @@ export default function GamePerformance({ evaluation, onDetails }) {
             {games.length === 0 && (
               <tr>
                 <td colSpan={selected ? 3 : 2}>
-                  <p className="py-[28px] text-center text-[14px] text-muted">보유 게임을 가져오거나, 궁금한 게임을 검색해서 분석해 보세요.</p>
+                  <p className="py-[28px] text-center text-[14px] text-muted">
+                    {showSearch
+                      ? topStatus === 'loading'
+                        ? '스팀 인기 게임을 불러오는 중이에요…'
+                        : topStatus === 'error'
+                          ? '스팀 인기 게임을 불러오지 못했어요. 위에서 게임 이름을 검색해 보세요.'
+                          : '위에서 분석할 게임 이름을 검색해 보세요.'
+                      : '보유 게임을 가져오거나, 궁금한 게임을 검색해서 분석해 보세요.'}
+                  </p>
                 </td>
               </tr>
             )}
