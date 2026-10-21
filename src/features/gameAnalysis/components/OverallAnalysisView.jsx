@@ -1,9 +1,10 @@
+import { useState } from 'react'
 import { CoachPromptCard } from '@/features/ai-coach'
 import { PageHeading, PanelPage, Panel, AnalysisPanel, ColumnChart, CountUp } from '@/shared/ui'
 import GameThumb from './GameThumb'
 import ValueRankList from './ValueRankList'
 import { overallStats } from '../model/gameAnalysisModel'
-import { netAmount, hoursText } from '@/features/spending'
+import { GameDetailDialog, PurchasedGamesTable, netAmount, hoursText } from '@/features/spending'
 import { money, number } from '@/shared/utils/formatters'
 import { br, hl } from '@/shared/utils/headline'
 
@@ -81,8 +82,12 @@ function OverallPanel({ tag, label, stats }) {
 }
 
 // "나의 분석 > 종합 분석": 지표 하나가 패널 하나를 차지한다.
-export default function OverallAnalysisView({ games }) {
+// hasHistory가 false(구매 내역을 아직 안 가져옴)이면 게임 목록의 구매 금액·시간당 비용 칸을 "확인 필요"로 보여준다.
+// 데모처럼 값이 없으면(undefined) 평소대로 보여준다.
+export default function OverallAnalysisView({ games, hasHistory }) {
   const stats = overallStats(games)
+  const [filter, setFilter] = useState('all')
+  const [selectedGame, setSelectedGame] = useState(null)
   return (
     <PanelPage>
       {TAGS.map(({ id, label }, index) => (
@@ -91,6 +96,18 @@ export default function OverallAnalysisView({ games }) {
           <OverallPanel tag={id} label={label} stats={stats} />
         </Panel>
       ))}
+      <Panel id="games">
+        <PurchasedGamesTable
+          games={games}
+          filter={filter}
+          setFilter={setFilter}
+          genre={null}
+          clearGenre={() => {}}
+          onSelect={setSelectedGame}
+          needsHistory={hasHistory === false}
+        />
+        <GameDetailDialog game={selectedGame} onClose={() => setSelectedGame(null)} />
+      </Panel>
       <Panel id="coach">
         <AnalysisPanel eyebrow="AI 소비 코치" headline="숫자만으로 부족하다면, 세나에게 물어보세요.">
           <CoachPromptCard />

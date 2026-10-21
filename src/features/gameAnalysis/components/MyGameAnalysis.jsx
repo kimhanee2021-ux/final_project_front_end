@@ -49,5 +49,5 @@ export default function MyGameAnalysis({ overall = false }) {
       </PageBox>
     )
   const View = overall ? OverallAnalysisView : GameAnalysisView
-  return <View games={data.games} asOf={data.asOf} />
+  return <View games={data.games} asOf={data.asOf} hasHistory={data.hasPurchaseHistory} />
 }
