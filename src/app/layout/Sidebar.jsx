@@ -1,24 +1,12 @@
-import { NavLink } from 'react-router-dom'
-import { useAuth } from '@/features/auth'
+import { startTransition, useState } from 'react'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth, authLink } from '@/features/auth'
 import { useGameSense } from '@/shared/state'
 import { GSIcon } from '@/shared/ui'
 import { profileAvatars } from '@/features/player'
 import SidebarSteamCard from '@/app/layout/SidebarSteamCard'
-
-// 목표 UI의 핵심 메뉴 5개, 그리고 기존에 있던 나머지 메뉴(PC 성능 체크·커뮤니티·위시리스트·설정)를 아래 묶음에 둔다.
-const primaryLinks = [
-  ['/library', 'library', 'My Library', '내 라이브러리'],
-  ['/analysis', 'chart', 'Analysis', '분석'],
-  ['/explore', 'compass', 'Explore', '게임 탐색'],
-]
-const moreLinks = [
-  ['/pc-check', 'monitor', 'PC 사양', 'PC 사양'],
-  ['/pc-check/evaluation', 'chart', 'PC 종합평가', 'PC 종합평가'],
-  ['/hangul-blocks', 'gamepad', '손풀기게임', '손풀기게임'],
-  ['/community', 'users', 'Community', '커뮤니티'],
-  ['/wishlist', 'heart', 'Wishlist', '위시리스트'],
-  ['/settings', 'settings', 'Settings', '설정'],
-]
+import SidebarMenuGroup from '@/app/layout/SidebarMenuGroup'
+import { headerMenus } from '@/app/layout/headerMenus'
 
 // gs-nav-link/active는 gamesense.css의 ".gs-nav-link.active > svg:has(path[d^='m3 10'])"
 // (홈 아이콘만 채워 그리는 규칙)가 거는 훅이라 마커로 유지한다.
@@ -27,18 +15,36 @@ const navLinkBase =
 const navLinkActive = 'active bg-primary-soft text-primary-text font-[650]'
 const navLinkClass = ({ isActive }) => [navLinkBase, isActive && navLinkActive].filter(Boolean).join(' ')
 
+// 모바일 사이드바: 헤더바와 같은 메뉴 목록(headerMenus)을 묶음별로 보여준다.
 export default function Sidebar({ onClose }) {
-  const { isAuthenticated } = useAuth()
-  const { t, wishlist, setQuery, player } = useGameSense()
+  const { isAuthenticated, signOut } = useAuth()
+  const { wishlist, setQuery, player } = useGameSense()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const returnTo = location.pathname + location.search + location.hash
+  // 지금 보고 있는 페이지가 속한 묶음은 처음부터 펼쳐 둔다.
+  const [openId, setOpenId] = useState(
+    () => headerMenus.find(menu => menu.children.some(child => child.to === location.pathname))?.id ?? null
+  )
   const follow = () => {
     setQuery('')
     onClose?.()
   }
+  const logout = () =>
+    startTransition(() => {
+      // 세션 변경과 라우트 이동을 같은 전환 안에서 처리한다.
+      signOut()
+      follow()
+      navigate('/', { replace: true })
+    })
   const nav = links =>
-    links.map(([to, icon, en, ko]) => (
+    links.map(({ to, icon, label, description }) => (
       <NavLink key={to} to={to} end onClick={follow} className={navLinkClass}>
         <GSIcon name={icon} size={21} />
-        <span>{t(en, ko)}</span>
+        <span className="min-w-0">
+          {label}
+          {description && <small className="block mt-[2px] text-[11px] font-[400] text-faint whitespace-normal">{description}</small>}
+        </span>
         {isAuthenticated && to === '/wishlist' && wishlist.length > 0 && (
           <span className="ml-auto text-[10px] min-w-[21px] h-[21px] py-[2px] px-[6px] text-center rounded-[6px] bg-surface-soft text-muted">{wishlist.length}</span>
         )}
@@ -54,12 +60,16 @@ export default function Sidebar({ onClose }) {
         </span>
         <strong className="text-[22px] tracking-[-0.6px] leading-[1.2] font-[720] max-[1350px]:text-[20px]">GameSense</strong>
       </NavLink>
-      <nav aria-label="주 메뉴" className="flex flex-col gap-[5px] max-[850px]:gap-[2px]">
-        {nav(primaryLinks)}
-      </nav>
-      <div className="border-t border-border mt-[20px] pt-[16px] max-[850px]:mt-[14px] max-[850px]:pt-[12px]">
-        <p className="text-muted text-[11px] tracking-[0.9px] m-[0_0_10px_14px]">{t('MORE', '더보기')}</p>
-        <nav aria-label="더보기 메뉴" className="grid gap-[4px]">{nav(moreLinks)}</nav>
+      <div className="grid gap-[6px]">
+        {headerMenus.map(menu => (
+          <SidebarMenuGroup
+            key={menu.id}
+            menu={menu}
+            open={openId === menu.id}
+            onToggle={() => setOpenId(openId === menu.id ? null : menu.id)}
+            renderLinks={nav}
+          />
+        ))}
       </div>
       <div className="mt-auto">
         <SidebarSteamCard />
@@ -76,6 +86,17 @@ export default function Sidebar({ onClose }) {
             <strong className="block min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[13px] font-[600]">Hello, {player.profile.name}</strong>
             <GSIcon name="arrow" size={15} className="ml-auto text-muted shrink-0" />
           </NavLink>
+        )}
+        {isAuthenticated ? (
+          <button type="button" className={`${navLinkBase} w-full mt-[6px]`} onClick={logout}>
+            <GSIcon name="logout" size={21} />
+            <span>로그아웃</span>
+          </button>
+        ) : (
+          <nav className="mt-[14px] flex items-center gap-[8px]" aria-label="계정">
+            <Link to={authLink('login', returnTo)} onClick={follow} className="flex-1 grid place-items-center min-h-[40px] rounded-full bg-gs-accent text-gs-on-accent text-[13px] font-[700] hover:brightness-110">로그인</Link>
+            <Link to={authLink('signup', returnTo)} onClick={follow} className="flex-1 grid place-items-center min-h-[40px] rounded-full text-[13px] text-gs-muted hover:text-gs-mint">회원가입</Link>
+          </nav>
         )}
       </div>
     </>
