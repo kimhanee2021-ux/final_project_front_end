@@ -7,7 +7,8 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   // 백엔드(스프링) 주소. 기본값은 application.yaml의 server.port(8080)
-  const backendUrl = loadEnv(mode, process.cwd(), '').VITE_BACKEND_URL || 'http://localhost:8080'
+  const env = loadEnv(mode, process.cwd(), '')
+  const backendUrl = process.env.AI_API_TARGET || env.AI_API_TARGET || env.VITE_BACKEND_URL || 'http://localhost:8080'
   return {
   plugins: [react(), tailwindcss()],// React, Tailwind 플러그인 적용
   // '@/...' 는 src 폴더를 가리킨다 (예: '@/features/auth'). 폴더를 옮겨도 import 경로가 길어지지 않는다.
@@ -16,7 +17,7 @@ export default defineConfig(({ mode }) => {
   server:{
     host:'0.0.0.0',//모든 아이피 접속 허용
     port:9191,// 개발 서버 포트 설정 (기본값: 5173)
-    open:true,// 개발 서버 실행 시 자동으로 브라우저 열기(기본값:false)
+    open:false,
     // /api 요청을 백엔드로 넘긴다. 브라우저 입장에서는 같은 출처라 CORS 설정과 무관하게 동작한다.
     proxy:{
       '/api':{

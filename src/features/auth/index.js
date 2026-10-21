@@ -1,6 +1,6 @@
 // 이 폴더의 공개 목록(public API). 다른 폴더는 여기서 내보낸 것만 가져다 쓴다.
 export { default as AuthProvider } from './context/AuthProvider'
-export { default as RequireDemoSession } from './components/RequireDemoSession'
+export { default as RequireAuth } from './components/RequireAuth'
 export { authLink } from './model/authSession'
 export { checkEmailAvailability } from './api'
 export { checkNicknameAvailability } from './api'

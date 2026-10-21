@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { GSIcon } from '@/shared/ui'
+import { GSIcon, GameImage } from '@/shared/ui'
 import { useGameSense } from '@/shared/state'
 import {
   gameStatuses,
@@ -254,7 +254,7 @@ function GameRecordForm({ game, onClose }) {
   return (
     <form className="[&>label]:flex [&>label]:flex-col" onSubmit={submit}>
       <div className="flex items-center gap-[15px] m-[22px_0] bg-gs-raised rounded-[14px] overflow-hidden max-[480px]:gap-[11px]">
-        <img className="w-[115px] h-[77px] object-cover max-[480px]:w-[88px] max-[480px]:h-[73px]" src={game.banner} alt="" />
+        <GameImage className="w-[115px] h-[77px] object-cover max-[480px]:w-[88px] max-[480px]:h-[73px]" src={game.banner} />
         <div className="py-[10px] pr-[12px]">
           <strong className="block text-[14px] max-[480px]:text-[14px]">{game.name}</strong>
           <span className="block text-gs-muted text-[12px] mt-[5px]">누적 {game.hours}시간 · 예시 기록</span>

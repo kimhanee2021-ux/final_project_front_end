@@ -82,3 +82,6 @@ body:has(.gs-dialog[open], .gs-mobile-drawer[open]) { overflow: hidden; }
 .gs-grow-x { transform-origin: left; animation: gs-grow-x .7s cubic-bezier(.2,.7,.2,1) both; }
 .gs-radar-in { animation: gs-radar-in .8s cubic-bezier(.2,.7,.2,1) both; }
 .gs-fade { animation: gs-fade .5s ease both; }
+/* 화면에 보이기 전에는 애니메이션을 멈춰 두고(처음 모습 유지), useRevealOnView가 data-inview를 달면 시작한다. */
+.gs-panel-page > *, .gs-stagger > *, .gs-grow-y, .gs-grow-x, .gs-radar-in, .gs-fade { animation-play-state: paused; }
+[data-inview] { animation-play-state: running !important; }

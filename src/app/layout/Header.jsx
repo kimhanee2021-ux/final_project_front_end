@@ -13,7 +13,7 @@ const iconButton =
 
 // 상단 고정 헤더바: 로고 · 메인 메뉴 · 검색 · 알림/테마 · 사용자 영역.
 export default function Header({ onMenu }) {
-  const { isSignedIn, signOut } = useAuth()
+  const { isAuthenticated, signOut } = useAuth()
   const location = useLocation()
   const returnTo = location.pathname + location.search + location.hash
   const { setQuery, player } = useGameSense()
@@ -37,7 +37,7 @@ export default function Header({ onMenu }) {
         <div className="flex items-center gap-[6px] shrink-0">
           <SettingsMenu />
         </div>
-        {isSignedIn ? (
+        {isAuthenticated ? (
           <div className="flex items-center gap-[4px] shrink-0">
             <NavLink
               to="/mypage"

@@ -1,4 +1,4 @@
-import { netAmount, isPaid, MIN_HOURS_FOR_HOURLY } from './spendingMetrics'
+import { netAmount, isPaid, MIN_HOURS_FOR_HOURLY } from './spendingMetrics.js'
 
 // 스팀 장르(영문) -> 화면 표시용 한글
 const GENRE_LABELS = {
@@ -60,7 +60,7 @@ export function toSpendingGame(game) {
   }
 }
 
-export const hourlyCost = game =>
+const hourlyCost = game =>
   isPaid(game) && game.hours > 0 ? netAmount(game) / game.hours : null
 
 // 시간당 비용 순위. 금액을 알고 1시간 이상 플레이한 유료 게임만 대상으로 한다
