@@ -43,18 +43,20 @@ function BarRow({ item, percent }) {
   )
 }
 
-// 구매 내역을 가져오면 세일 습관·월별 지출·환불 가능 게임까지 분석할 수 있다는 안내와 가져오기 입구
+// 코치 화면 맨 아래에 길게 놓는 구매 내역 안내: 가져오면 세일 습관·월별 지출·환불 가능 게임까지 분석할 수 있다
 function HistoryNotice({ hasHistory, onOpenImport }) {
   return (
-    <div className="mt-[14px] rounded-[10px] border border-dashed border-border bg-surface px-[12px] py-[12px]">
-      <p className="text-[11px] font-[650]">{hasHistory ? '구매 내역이 반영됐어요' : '더 정확하게 분석받고 싶나요?'}</p>
-      <p className="mt-[4px] text-[10px] leading-[1.6] text-muted">
-        {hasHistory
-          ? '세일 습관, 월별 지출, 환불 가능 게임까지 물어볼 수 있어요.'
-          : '스팀 구매 내역을 가져오면 세일 습관, 월별 지출, 환불 가능 게임까지 분석해 드려요.'}
-      </p>
-      <button type="button" onClick={onOpenImport} className="mt-[8px] text-[11px] font-[650] text-primary-text hover:underline">
-        {hasHistory ? '구매 내역 다시 가져오기 →' : '구매 내역 가져오기 →'}
+    <div className="mt-[16px] flex items-center justify-between gap-[16px] rounded-[14px] border border-dashed border-border bg-surface-soft px-[22px] py-[16px] max-[760px]:flex-col max-[760px]:items-start">
+      <div className="min-w-0">
+        <p className="text-[13px] font-[700]">{hasHistory ? '구매 내역이 반영됐어요' : '더 정확하게 분석받고 싶나요?'}</p>
+        <p className="mt-[4px] text-[12px] leading-[1.6] text-muted">
+          {hasHistory
+            ? '세일 습관, 월별 지출, 환불 가능 게임까지 물어볼 수 있어요. 새로 산 게임이 있다면 다시 가져와 주세요.'
+            : '스팀 구매 내역을 가져오면 세일 습관, 월별 지출, 환불 가능 게임까지 분석해 드려요.'}
+        </p>
+      </div>
+      <button type="button" onClick={onOpenImport} className={PRIMARY_BUTTON + ' shrink-0'}>
+        {hasHistory ? '구매 내역 다시 가져오기' : '구매 내역 가져오기'}
       </button>
     </div>
   )
@@ -148,6 +150,7 @@ export default function CoachChat({ initialQuestion, onInitialQuestionSent, hasH
   }
 
   return (
+    <div>
     <section className="grid grid-cols-[minmax(240px,0.72fr)_minmax(0,1.65fr)] gap-[20px] h-[min(720px,calc(100vh-200px))] min-h-[580px] max-[1000px]:grid-cols-1 max-[1000px]:h-auto">
       {/* 왼쪽: 크게 보이는 코치 세나 사진 + 인사 + 추천 질문 */}
       <aside className="flex flex-col min-h-0 overflow-hidden rounded-[14px] bg-surface-soft border border-border">
@@ -171,7 +174,6 @@ export default function CoachChat({ initialQuestion, onInitialQuestionSent, hasH
               </button>
             ))}
           </div>
-          {onOpenImport && <HistoryNotice hasHistory={hasHistory} onOpenImport={onOpenImport} />}
         </div>
       </aside>
 
@@ -250,5 +252,7 @@ export default function CoachChat({ initialQuestion, onInitialQuestionSent, hasH
         </p>
       </div>
     </section>
+    {onOpenImport && <HistoryNotice hasHistory={hasHistory} onOpenImport={onOpenImport} />}
+    </div>
   )
 }

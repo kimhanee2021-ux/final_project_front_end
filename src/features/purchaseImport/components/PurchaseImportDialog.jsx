@@ -125,7 +125,7 @@ export default function PurchaseImportDialog({ open, hasHistory, onClose, onImpo
   return (
     <dialog
       ref={ref}
-      className="p-0 border-0 rounded-[24px] w-[560px] max-w-[calc(100vw-32px)] bg-surface text-text shadow-[0_24px_80px_#0004] backdrop:bg-[#11102199] backdrop:backdrop-blur-[4px]"
+      className="m-auto p-0 border-0 max-h-[calc(100vh-32px)] rounded-[24px] w-[560px] max-w-[calc(100vw-32px)] bg-surface text-text shadow-[0_24px_80px_#0004] backdrop:bg-[#11102199] backdrop:backdrop-blur-[4px]"
       aria-label="스팀 구매내역 가져오기"
       onCancel={close}
       onClick={e => {
