@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { barPercent, buildEvidenceBlocks, coachErrorMessage, parseBudgetInput, toHistory } from '../src/features/ai-coach/coachModel.js'
+import { HISTORY_QUESTIONS, barPercent, buildEvidenceBlocks, coachErrorMessage, parseBudgetInput, suggestedQuestions, toHistory } from '../src/features/ai-coach/coachModel.js'
 
 test('대화 기록은 오류 말풍선을 빼고 최근 10개만 user/model 역할로 보낸다', () => {
   const messages = [
@@ -63,4 +63,13 @@ test('막대 길이: 원·시간은 묶음 최댓값 기준, %는 100 기준, 0�
   assert.equal(barPercent(40, '%'), 40)
   assert.equal(barPercent(0, '원', group), 0)
   assert.equal(barPercent(1, '원', [{ amount: 100000 }]), 3)
+})
+
+test('추천 질문: 구매 내역이 없으면 결제 기록이 필요한 질문은 빼고, 가져오면 모두 보여준다', () => {
+  const basic = suggestedQuestions(false)
+  const full = suggestedQuestions(true)
+  assert.ok(basic.includes('내 소비 패턴을 분석해 줘'))
+  assert.ok(!basic.some(q => HISTORY_QUESTIONS.includes(q)))
+  assert.deepEqual(full.slice(0, basic.length), basic)
+  assert.ok(HISTORY_QUESTIONS.every(q => full.includes(q)))
 })

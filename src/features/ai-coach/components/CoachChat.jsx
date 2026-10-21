@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { GSIcon } from '@/shared/ui'
 import { PRIMARY_BUTTON } from '@/features/spending'
-import { COACH_NAME, MAX_MESSAGE_LENGTH, SUGGESTED_QUESTIONS, barPercent, buildEvidenceBlocks } from '../coachModel'
+import { COACH_NAME, MAX_MESSAGE_LENGTH, barPercent, buildEvidenceBlocks, suggestedQuestions } from '../coachModel'
 import CoachAvatar from './CoachAvatar'
 import CoachPortrait from './CoachPortrait'
 import { useCoachChat } from '../hooks/useCoachChat'
@@ -39,6 +39,23 @@ function BarRow({ item, percent }) {
       <div className="mt-[3px] h-[6px] rounded-full bg-surface-soft overflow-hidden" role="img" aria-label={`${item.label} ${item.value}`}>
         <div className="h-full rounded-full bg-primary" style={{ width: percent + '%' }} />
       </div>
+    </div>
+  )
+}
+
+// 구매 내역을 가져오면 세일 습관·월별 지출·환불 가능 게임까지 분석할 수 있다는 안내와 가져오기 입구
+function HistoryNotice({ hasHistory, onOpenImport }) {
+  return (
+    <div className="mt-[14px] rounded-[10px] border border-dashed border-border bg-surface px-[12px] py-[12px]">
+      <p className="text-[11px] font-[650]">{hasHistory ? '구매 내역이 반영됐어요' : '더 정확하게 분석받고 싶나요?'}</p>
+      <p className="mt-[4px] text-[10px] leading-[1.6] text-muted">
+        {hasHistory
+          ? '세일 습관, 월별 지출, 환불 가능 게임까지 물어볼 수 있어요.'
+          : '스팀 구매 내역을 가져오면 세일 습관, 월별 지출, 환불 가능 게임까지 분석해 드려요.'}
+      </p>
+      <button type="button" onClick={onOpenImport} className="mt-[8px] text-[11px] font-[650] text-primary-text hover:underline">
+        {hasHistory ? '구매 내역 다시 가져오기 →' : '구매 내역 가져오기 →'}
+      </button>
     </div>
   )
 }
@@ -106,7 +123,8 @@ function Message({ message }) {
 
 // AI 게임 소비 코치와의 대화 화면. 왼쪽에 큰 코치 캐릭터와 추천 질문, 오른쪽에 대화(답변에 추천 게임 카드).
 // initialQuestion: 다른 화면에서 /ai-coach?q=질문 으로 넘어왔을 때 처음 한 번 자동으로 보낼 질문
-export default function CoachChat({ initialQuestion, onInitialQuestionSent }) {
+// hasHistory: 구매 내역을 가져왔는지(가져온 뒤에만 세일 습관·월별 지출 같은 질문을 추천), onOpenImport: 구매 내역 가져오기 창 열기
+export default function CoachChat({ initialQuestion, onInitialQuestionSent, hasHistory = false, onOpenImport }) {
   const { messages, pending, send, reset } = useCoachChat()
   const initialSent = useRef(false)
   const [input, setInput] = useState('')
@@ -145,7 +163,7 @@ export default function CoachChat({ initialQuestion, onInitialQuestionSent }) {
           </p>
           <h3 className="mt-[16px] text-[11px] font-bold text-primary-text">이렇게 물어보세요</h3>
           <div className="mt-[8px] grid gap-[6px]">
-            {SUGGESTED_QUESTIONS.map(question => (
+            {suggestedQuestions(hasHistory).map(question => (
               <button key={question} type="button" onClick={() => submit(question)} disabled={pending}
                 className="group flex items-center gap-[10px] rounded-[10px] px-[12px] py-[9px] text-left text-[11px] font-[600] bg-surface border border-border transition-transform hover:-translate-y-[1px] hover:border-primary disabled:opacity-60">
                 <span className="flex-1">{question}</span>
@@ -153,6 +171,7 @@ export default function CoachChat({ initialQuestion, onInitialQuestionSent }) {
               </button>
             ))}
           </div>
+          {onOpenImport && <HistoryNotice hasHistory={hasHistory} onOpenImport={onOpenImport} />}
         </div>
       </aside>
 

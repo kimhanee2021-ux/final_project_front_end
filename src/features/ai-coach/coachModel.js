@@ -16,15 +16,24 @@ const MAX_HISTORY = 10
 const MAX_TURN_LENGTH = 2000
 export const MAX_BUDGET = 10_000_000
 
-export const SUGGESTED_QUESTIONS = [
+// 구매 내역이 없어도 답할 수 있는 질문 (보유 게임·플레이 시간·정가 추정 기준)
+export const BASIC_QUESTIONS = [
   '내 소비 패턴을 분석해 줘',
-  '이번 달 얼마 썼어?',
   '가성비 제일 좋은 게임은 뭐야?',
   '사 놓고 안 한 게임 중에 뭐부터 할까?',
-  '나 세일 때 너무 많이 사는 편이야?',
-  '지금 환불할 수 있는 게임 있어?',
-  '작년이랑 올해 지출 비교해 줘',
 ]
+// 실제 결제일·금액이 있어야 답할 수 있는 질문. 구매 내역을 가져온 뒤에만 추천한다.
+export const HISTORY_QUESTIONS = [
+  '이번 달 얼마 썼어?',
+  '나 세일 때 너무 많이 사는 편이야?',
+  '작년이랑 올해 지출 비교해 줘',
+  '지금 환불할 수 있는 게임 있어?',
+]
+
+// 구매 내역을 가져왔는지에 따라 보여줄 추천 질문
+export function suggestedQuestions(hasHistory) {
+  return hasHistory ? [...BASIC_QUESTIONS, ...HISTORY_QUESTIONS] : BASIC_QUESTIONS
+}
 
 // 다른 화면(소비 패턴 등)에서 질문을 들고 코치로 넘어갈 때 쓰는 주소. 코치 화면이 열리면 이 질문을 바로 보낸다.
 export function coachLink(question) {
