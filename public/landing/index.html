@@ -1,0 +1,239 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GameSense — 내 취향으로 이어지는 플레이</title><style>@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Noto+Sans+KR:wght@300;400;500;600&display=swap');
+:root{--night:#17121a;--text:#f4eee6;--light:#dcb99e}
+*{box-sizing:border-box}
+html{background:var(--night)}
+body{margin:0;background:var(--night);color:var(--text);font-family:'DM Sans','Noto Sans KR',sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer}
+button,a{-webkit-tap-highlight-color:transparent}
+a:focus-visible,button:focus-visible{outline:2px solid var(--light);outline-offset:7px}
+
+/* 하나의 고정 무대: 영상, 베일, 문장, 기록 패널이 같은 스크롤 시간축을 쓴다. */
+.experience{height:440svh}
+.stage{position:sticky;top:0;height:100svh;min-height:600px;overflow:hidden;isolation:isolate}
+.backdrop{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,#263b3e,transparent 70%),#17121a;z-index:-3}
+.webgl-fallback .backdrop{background:radial-gradient(ellipse at 70% 45%,#665066,transparent 60%),#17121a}
+#renderer{position:absolute;inset:0;z-index:-2;will-change:opacity}
+#renderer canvas{display:block;width:100%;height:100%}
+.veil{position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,#17121a8c 0%,#17121a2a 45%,transparent 78%),linear-gradient(0deg,#17121ab0,transparent 55%,#17121a20)}
+
+/* 상단 메뉴 */
+.masthead{position:fixed;top:0;left:0;right:0;padding:22px 5.5%;display:flex;align-items:center;justify-content:space-between;z-index:30}
+.wordmark{display:flex;align-items:center;gap:9px;opacity:.9}
+.wordmark span{font-size:22px;letter-spacing:-1px;font-weight:500}
+.wordmark svg{width:33px;height:33px;stroke:var(--light);stroke-width:1.5;fill:none;stroke-linecap:round}
+.wordmark path:first-child{stroke-dasharray:100;animation:trace 7s ease-in-out infinite}
+.wordmark path:last-child{opacity:.55}
+@keyframes trace{0%,100%{stroke-dashoffset:0;opacity:.65}50%{stroke-dashoffset:14;opacity:1}}
+.main-nav{display:flex;gap:30px;align-items:center}
+.main-nav a{position:relative;padding:10px 0;font-size:12px;letter-spacing:-.2px;color:#d3d9d3;opacity:.85;text-shadow:0 1px 14px #10171b55;transition:color .25s,text-shadow .25s,transform .25s}
+.main-nav a:after{content:'';position:absolute;bottom:1px;left:-4px;right:-4px;height:1px;background:linear-gradient(90deg,transparent,#b9dcc8,transparent);transform:scaleX(0);transition:transform .3s}
+.main-nav a:before{content:'';position:absolute;left:-10px;top:50%;width:3px;height:3px;background:#b9dcc8;transform:rotate(45deg) scale(0);box-shadow:0 0 12px #b9dcc8;transition:transform .3s}
+.main-nav a:hover,.main-nav a:focus-visible{color:#fff;opacity:1;text-shadow:0 0 18px #b9dcc8;transform:translateY(-2px)}
+.main-nav a:hover:after,.main-nav a:focus-visible:after{transform:scaleX(1)}
+.main-nav a:hover:before,.main-nav a:focus-visible:before{transform:rotate(45deg) scale(1)}
+.main-nav a[aria-current=location]{color:#d1f2df;opacity:.95}
+.main-nav a[aria-current=location]:after{transform:scaleX(1)}
+
+/* 문장: 같은 좌표에서 서로 교차한다. */
+.narrative{position:absolute;left:9%;top:46%;width:48%;height:320px;transform:translateY(-35%);pointer-events:none}
+.moment{position:absolute;top:0;left:0;width:100%;visibility:hidden;opacity:0;will-change:transform,opacity}
+.moment.active{visibility:visible;opacity:1}
+.moment h1,.moment h2{font-size:clamp(33px,4.2vw,65px);font-weight:400;line-height:1.42;letter-spacing:-2.6px;margin:0;color:#e1e5e0;opacity:.95;text-shadow:0 2px 22px #10171b35}
+.moment em{font-style:normal;color:#b9d5c5}
+.moment p{font-weight:300;font-size:13px;line-height:2.05;margin:24px 0 35px;word-break:keep-all;color:#d5ded6;opacity:.85;text-shadow:0 1px 14px #10171b35}
+.section-entry{position:relative;display:inline-flex;align-items:center;gap:20px;pointer-events:auto;color:#d1e4d7;opacity:.9;font-size:11px;padding:8px 0;text-shadow:0 1px 12px #10171b55;transition:opacity .25s,color .25s,transform .25s,text-shadow .25s}
+.section-entry span{padding-bottom:5px}
+.section-entry svg{width:35px;height:22px;fill:none;stroke:currentColor;stroke-width:1;transition:transform .3s,filter .3s}
+.section-entry:after{content:"";position:absolute;left:-4px;right:47px;bottom:6px;height:1px;background:linear-gradient(90deg,transparent,#b9dcc8,transparent);transform:scaleX(.35);opacity:.4;transition:transform .3s,opacity .3s}
+.section-entry:before{content:"";position:absolute;left:-12px;top:45%;width:3px;height:3px;background:#b9dcc8;transform:rotate(45deg) scale(0);box-shadow:0 0 12px #b9dcc8;transition:transform .3s}
+.section-entry:hover,.section-entry:focus-visible{opacity:1;color:#e4f9eb;transform:translateY(-2px);text-shadow:0 0 18px #b9dcc8}
+.section-entry:hover svg{transform:translateX(6px);filter:drop-shadow(0 0 6px #b9dcc8)}
+.section-entry:hover:after,.section-entry:focus-visible:after{transform:scaleX(1);opacity:1}
+.section-entry:hover:before,.section-entry:focus-visible:before{transform:rotate(45deg) scale(1)}
+
+/* 기록 패널: 영상에서 이어진 빛이 막대로 자란다. */
+.insight{position:absolute;left:57%;top:28%;width:34%;opacity:0;pointer-events:none;will-change:opacity,transform}
+.insight-head{display:flex;justify-content:space-between;color:#b2cebd;font-size:12px;opacity:.9}
+.insight-head i{display:inline-block;width:5px;height:5px;border-radius:50%;background:#b9e2c9;margin-right:10px;box-shadow:0 0 0 5px #b9e2c912}
+.total{font-size:90px;letter-spacing:-5px;font-weight:400;margin:14px 0 20px;color:#e4f1e8;opacity:.9}
+.total small{font-size:15px;letter-spacing:0;margin-left:12px;color:#a8bcae}
+.bars{height:145px;display:flex;align-items:flex-end;gap:14px}
+.bars i{display:block;flex:1;height:var(--h);border-radius:22px 22px 4px 4px;transform-origin:bottom;background:linear-gradient(#b3d1b0,#73998688);box-shadow:0 0 35px #a4e4b315;will-change:transform}
+.bars i:last-child{background:linear-gradient(#d6f4c8,#6ca58d)}
+.days{display:flex;justify-content:space-around;font-size:9px;color:#98ac9e;margin-top:15px;opacity:.9}
+.insight-note{font-size:13px;color:#c2d5c6;margin:30px 0 16px;opacity:.9}
+.genres{display:flex;gap:18px;font-size:11px;color:#a4c3af;opacity:.9}
+.genres span{padding-bottom:6px;border-bottom:1px solid #abc9b544}
+
+/* 재생 제어와 상태 */
+.playback{position:absolute;right:5.5%;bottom:34px;z-index:5}
+.playback button{border:0;background:none;color:#dfcfc4;width:39px;height:39px;display:grid;place-items:center}
+.playback svg{width:17px;stroke:currentColor;stroke-width:1.4;fill:none}
+.media-status{position:absolute;bottom:100px;left:9%;color:#d4c1bc;font-size:11px;max-width:65%}
+.media-status button{border:0;border-bottom:1px solid #d4c1bc80;background:none;color:inherit;font-size:11px;margin-left:8px}
+
+@media(max-width:700px){
+.stage{min-height:640px}
+.veil{background:linear-gradient(180deg,#17121ac0,#17121a55 46%,#17121a15 70%,#17121ab0)}
+.masthead{padding:16px 7% 13px;flex-wrap:wrap;gap:13px}
+.wordmark span{font-size:20px}
+.wordmark svg{width:28px}
+.main-nav{width:100%;justify-content:space-between;gap:10px}
+.main-nav a{font-size:10px;padding:6px 0}
+.narrative{left:8%;top:22%;width:84%;height:260px;transform:none}
+.moment h1,.moment h2{font-size:32px;letter-spacing:-1.8px}
+.moment p{font-size:11px;margin:18px 0 17px}
+.section-entry{font-size:10px;gap:16px;padding:3px 0}
+.section-entry svg{width:29px;height:19px}
+.insight{left:12%;top:56%;width:76%}
+.insight-head{font-size:10px}
+.total{font-size:50px;margin:5px 0 10px}
+.bars{height:78px;gap:12px}
+.days{font-size:8px;margin-top:10px}
+.insight-note{font-size:11px;margin:15px 0 10px}
+.genres{font-size:10px;gap:14px}
+.playback{right:7%;bottom:20px}
+.media-status{left:8%;bottom:22px;font-size:9px;max-width:70%}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style><script type="module">
+// 게임 영상 3개(DAVE THE DIVER, Hades, COCOON). index.html 기준 상대 경로이며, 반드시 HTTP 서버로 열어야 한다.
+const MEDIA=['videos/dave-the-diver.mp4','videos/hades.mp4','videos/cocoon.mp4'];
+const SCENES=[0,.30,.61,.88];
+
+const ui={root:document.querySelector('.experience'),stage:document.querySelector('.stage'),host:document.querySelector('#renderer'),moments:[...document.querySelectorAll('.moment')],motion:document.querySelector('#motion'),icon:document.querySelector('#motion-icon'),status:document.querySelector('#media-status'),retry:document.querySelector('#retry')};
+const reduced=matchMedia('(prefers-reduced-motion:reduce)');
+const state={target:0,progress:0,paused:reduced.matches,x:0,y:0,elapsed:0,frame:0,disposed:false};
+const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n));
+const smooth=n=>{n=clamp(n);return n*n*(3-2*n)};
+const mix=(a,b,t)=>a+(b-a)*t;
+const disposables=[];
+const videos=[];
+let renderer,scene,camera,screens=[],paths=[],clock;
+
+function scrollProgress(){const r=ui.root.getBoundingClientRect();state.target=clamp(-r.top/Math.max(1,ui.root.offsetHeight-ui.stage.offsetHeight))}
+window.addEventListener('scroll',scrollProgress,{passive:true});
+// 상단 메뉴는 외부 페이지 대신 같은 무대의 네 설명 장면으로 이동한다.
+const sceneLinks=[...document.querySelectorAll('.main-nav a')];
+const sectionHashes=['#taste','#choice','#records','#my-games'];
+function moveToScene(index){const distance=ui.root.offsetHeight-ui.stage.offsetHeight;const progress=index===0?0:Math.min(SCENES[index]+.075,1);window.scrollTo({top:ui.root.offsetTop+progress*distance,behavior:reduced.matches?'instant':'smooth'});}
+sceneLinks.forEach((link,index)=>link.addEventListener('click',event=>{event.preventDefault();history.replaceState(null,'',sectionHashes[index]);moveToScene(index);}));
+window.addEventListener('pointermove',e=>{state.x=(e.clientX/innerWidth-.5)*2;state.y=(e.clientY/innerHeight-.5)*2},{passive:true});
+
+// 보이지 않는 문장으로 Tab 포커스가 가지 않게 inert도 함께 갱신한다.
+function updateCopy(p){
+  let selected=0;for(let i=0;i<SCENES.length;i++)if(p>=SCENES[i])selected=i;
+  sceneLinks.forEach((link,index)=>{if(index===selected)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');});
+  ui.moments.forEach((el,i)=>{
+    const start=SCENES[i],end=SCENES[i+1]??1.2;
+    // 이전 문장을 먼저 걷고 다음 문장을 올려 서로 겹쳐 읽히지 않게 한다.
+    const fadeIn=i===0?1:smooth((p-(start+.002))/.045);
+    const fadeOut=i===3?1:1-smooth((p-(end-.045))/.043);
+    const alpha=clamp(fadeIn*fadeOut);
+    el.style.opacity=alpha;el.style.visibility=alpha>.04?'visible':'hidden';
+    el.style.transform=`translate3d(0,${(1-fadeIn)*45-(1-fadeOut)*45}px,0)`;
+    el.classList.toggle('active',i===selected);el.inert=i!==selected;
+    el.setAttribute('aria-hidden',String(i!==selected));
+  });
+  // 영상과 기록은 같은 스크롤 시간축을 쓴다.
+  const chart=smooth((p-.51)/.09)*(1-smooth((p-.76)/.09));
+  const panel=document.querySelector('.insight');panel.style.opacity=chart;panel.style.transform=`translate3d(${(1-chart)*45}px,${(1-chart)*28}px,0)`;panel.setAttribute('aria-hidden',String(chart<.5));
+  const growth=smooth((p-.52)/.18);document.querySelector('#hours').textContent=Math.round(48*growth);
+  document.querySelectorAll('.bars i').forEach((bar,index)=>bar.style.transform=`scaleY(${smooth(growth*1.6-index*.11)})`);
+  ui.host.style.opacity=1-chart*.75;
+}
+function syncMotion(){ui.motion.setAttribute('aria-pressed',String(state.paused));ui.motion.setAttribute('aria-label',state.paused?'움직임 재생':'움직임 일시정지');ui.icon.setAttribute('d',state.paused?'M7 4l8 6-8 6z':'M7 5v10M13 5v10')}
+function playMedia(){if(state.paused||document.hidden)return;videos.forEach(v=>v.play().catch(()=>{ui.status.hidden=false}))}
+ui.motion.addEventListener('click',()=>{state.paused=!state.paused;videos.forEach(v=>state.paused?v.pause():v.play().catch(()=>{ui.status.hidden=false}));syncMotion()});
+ui.retry.addEventListener('click',()=>{if(!renderer){location.reload();return;}ui.status.hidden=true;videos.forEach(v=>{if(v.error)v.load()});playMedia()});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)videos.forEach(v=>v.pause());else playMedia()});
+reduced.addEventListener('change',e=>{state.paused=e.matches;videos.forEach(v=>state.paused?v.pause():v.play().catch(()=>{}));syncMotion()});
+
+async function init(){
+ try{
+  // 라이브러리는 고정 버전으로 사용. 실패 시 문구와 링크는 그대로 이용 가능하다.
+  const THREE=await import('https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js');
+  if(state.disposed)return;
+  renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));renderer.outputColorSpace=THREE.SRGBColorSpace;
+  ui.host.appendChild(renderer.domElement);
+  scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x17121a,.015);
+  camera=new THREE.PerspectiveCamera(48,1,.1,120);
+  clock=new THREE.Clock();
+
+  // 영상의 사각 경계를 알파 마스크로 녹이고, 곡면 정점으로 원근을 만든다. 영상은 22단위 간격으로 배치된다.
+  // ShaderMaterial은 출력 색공간 변환을 자동으로 넣지 않으므로 마지막에 colorspace_fragment를 직접 포함한다.
+  const vertex=`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`;
+  const fragment=`uniform sampler2D movie;uniform float strength;uniform float time;varying vec2 vUv;
+   void main(){vec2 uv=vUv;uv.x+=sin(uv.y*4.+time*.17)*.003;vec4 c=texture2D(movie,uv);
+    float edge=smoothstep(0.,.19,uv.x)*smoothstep(0.,.19,1.-uv.x)*smoothstep(0.,.18,uv.y)*smoothstep(0.,.18,1.-uv.y);
+    float lum=dot(c.rgb,vec3(.2126,.7152,.0722));vec3 color=mix(vec3(lum),c.rgb,.76);
+    gl_FragColor=vec4(color,edge*strength);
+    #include <colorspace_fragment>
+   }`;
+  for(let i=0;i<MEDIA.length;i++){
+    const video=document.createElement('video');video.crossOrigin='anonymous';video.muted=true;video.loop=true;video.playsInline=true;video.preload='auto';video.src=MEDIA[i];video.hidden=true;video.setAttribute('aria-hidden','true');ui.host.appendChild(video);
+    // 세 번째 영상은 실제 게임 플레이 부분(8~37초)만 반복한다.
+    if(i===2){video.addEventListener('loadedmetadata',()=>{video.currentTime=8;});video.addEventListener('timeupdate',()=>{if(video.currentTime>37)video.currentTime=8;});}
+    video.addEventListener('error',()=>{ui.status.hidden=false});video.addEventListener('playing',()=>{if(videos.every(v=>!v.error))ui.status.hidden=true});videos.push(video);
+    const texture=new THREE.VideoTexture(video);texture.colorSpace=THREE.SRGBColorSpace;
+    const geometry=new THREE.PlaneGeometry(24,13.5,72,24),positions=geometry.attributes.position;
+    for(let n=0;n<positions.count;n++){const x=positions.getX(n);positions.setZ(n,-Math.pow(x/12,2)*3.2)}geometry.computeVertexNormals();
+    const material=new THREE.ShaderMaterial({uniforms:{movie:{value:texture},strength:{value:0},time:{value:0}},vertexShader:vertex,fragmentShader:fragment,transparent:true,depthWrite:false,side:THREE.DoubleSide});
+    const screen=new THREE.Mesh(geometry,material);screen.position.set(i%2===0?3:1.8,1,-22*i);screen.rotation.y=i%2===0?-.12:.13;scene.add(screen);screens.push(screen);
+    // 바닥 반사는 같은 영상 텍스처를 공유한다.
+    const reflection=screen.clone();reflection.material=material.clone();reflection.material.uniforms.strength.value=0;reflection.position.y=-10.5;reflection.scale.y=-.48;scene.add(reflection);screen.userData.reflection=reflection;
+    disposables.push(geometry,material,reflection.material,texture);
+  }
+
+  // 여러 선택 경로가 스크롤 후 하나로 수렴한다.
+  for(let j=0;j<17;j++){
+    const values=new Float32Array(110*3),geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(values,3));
+    const material=new THREE.LineBasicMaterial({color:j===8?0xe3b9a0:0x756079,transparent:true,opacity:j===8?.62:.13});
+    const line=new THREE.Line(geometry,material);scene.add(line);paths.push(line);disposables.push(geometry,material);
+  }
+  // 작은 빛은 전진 방향의 깊이 기준점 역할을 한다.
+  const particlePositions=new Float32Array(150*3);for(let n=0;n<150;n++){particlePositions[n*3]=(Math.random()-.5)*35;particlePositions[n*3+1]=(Math.random()-.5)*16;particlePositions[n*3+2]=-Math.random()*95}
+  const particleGeometry=new THREE.BufferGeometry();particleGeometry.setAttribute('position',new THREE.BufferAttribute(particlePositions,3));
+  const particleMaterial=new THREE.PointsMaterial({color:0xd9bbaa,size:.025,transparent:true,opacity:.35});scene.add(new THREE.Points(particleGeometry,particleMaterial));disposables.push(particleGeometry,particleMaterial);
+  function resize(){renderer.setSize(ui.stage.clientWidth,ui.stage.clientHeight);camera.aspect=ui.stage.clientWidth/ui.stage.clientHeight;camera.fov=innerWidth<700?60:48;camera.updateProjectionMatrix();scrollProgress()}
+  addEventListener('resize',resize);resize();syncMotion();playMedia();animate();
+ }catch(error){ui.stage.classList.add('webgl-fallback');ui.status.hidden=false;ui.status.firstChild.textContent='입체 화면을 불러오지 못했어요. ';console.error('입체 연출 초기화 실패:',error);fallback()}
+}
+function animate(){
+ if(state.disposed)return;
+ const delta=Math.min(clock.getDelta(),.05);if(!state.paused&&!document.hidden)state.elapsed+=delta;
+ // 프레임 속도에 독립적인 보간. 빠른 스크롤에서도 장면 전환이 튀지 않는다.
+ state.progress=mix(state.progress,state.target,reduced.matches?1:1-Math.exp(-delta*7));const p=state.progress,t=state.elapsed;
+ updateCopy(p);
+ const mobile=innerWidth<700;
+ camera.position.set((mobile?0:-2.3)+state.x*.3,1+state.y*.18,13-Math.min(p,.78)*60);
+ camera.lookAt(2.5, mobile?1.7:.3,camera.position.z-18);
+ for(let i=0;i<screens.length;i++){
+  const screen=screens[i],distance=camera.position.z-screen.position.z;
+  // 카메라 뒤 영상은 숨기고, 접근 시 크게 펼쳐지게 한다.
+  const strength=smooth((distance+1)/5)*(1-smooth((distance-20)/18));
+  screen.material.uniforms.strength.value=strength;screen.material.uniforms.time.value=t;
+  screen.position.y=1+(reduced.matches?0:Math.sin(t*.12+i)*.17);
+  screen.userData.reflection.material.uniforms.strength.value=strength*.16;screen.userData.reflection.material.uniforms.time.value=t;
+  screen.visible=strength>.001;screen.userData.reflection.visible=screen.visible;
+ }
+ const merge=smooth((p-.15)/.48);
+ paths.forEach((line,j)=>{const attribute=line.geometry.attributes.position;for(let n=0;n<110;n++){const z=9-n*.8;const spread=mix((j-8)*.8,(j-8)*.065,merge);const x=2.5+spread+Math.sin(z*.08+t*.13+j*.14)*mix(1.7,.35,merge);const y=-4.1+Math.cos(z*.1+j*.13)*.15;attribute.setXYZ(n,x,y,z)}attribute.needsUpdate=true;line.material.opacity=j===8?.5:mix(.12,.025,merge)});
+ renderer.render(scene,camera);state.frame=requestAnimationFrame(animate);
+}
+function fallback(){function tick(){if(state.disposed)return;state.progress=state.target;updateCopy(state.progress);state.frame=requestAnimationFrame(tick)}tick()}
+// WebGL 리소스와 디코더를 명시적으로 해제하여 탭 이동 시 누적을 막는다.
+addEventListener('pagehide',()=>{state.disposed=true;cancelAnimationFrame(state.frame);videos.forEach(v=>{v.pause();v.removeAttribute('src');v.load()});disposables.forEach(r=>r.dispose());renderer?.dispose()},{once:true});
+scrollProgress();syncMotion();init();
+</script></head><body>
+<main class="experience" id="experience"><div class="stage"><div class="backdrop" aria-hidden="true"></div><div id="renderer" aria-hidden="true"></div><div class="veil" aria-hidden="true"></div>
+<header class="masthead"><a class="wordmark" href="#experience" aria-label="GameSense 처음으로"><svg viewBox="0 0 42 42" aria-hidden="true"><path d="M32 11C19-2 1 13 8 27c5 11 22 12 28 0H22"/><path d="M31 16C22 7 11 15 14 24c2 6 10 8 15 4"/></svg><span>GameSense</span></a><nav class="main-nav" aria-label="서비스 소개"><a href="#taste">취향 발견</a><a href="#choice">맞춤 선택</a><a href="#records">플레이 기록</a><a href="#my-games">내 게임 관리</a></nav></header>
+<div class="narrative">
+<section class="moment active"><h1>게임은 많으니까.<br><em>내 취향부터.</em></h1><p>무엇을 할지 고민하는 시간은 줄이고,<br>좋아하는 게임을 즐기는 시간은 더 길게.</p><a class="section-entry" href="/start"><span>취향에 맞는 게임 찾기</span><svg viewBox="0 0 35 22" aria-hidden="true"><path d="M1 11h30M22 2l10 9-10 9"/></svg></a></section>
+<section class="moment" aria-hidden="true" inert><h2>좋아하는 걸 말하면,<br><em>선택이 쉬워져요.</em></h2><p>장르 이름을 몰라도 괜찮아요.<br>지금 원하는 플레이를 AI에게 이야기해 보세요.</p><a class="section-entry" href="/start"><span>맞춤 추천 받기</span><svg viewBox="0 0 35 22" aria-hidden="true"><path d="M1 11h30M22 2l10 9-10 9"/></svg></a></section>
+<section class="moment" aria-hidden="true" inert><h2>플레이가 쌓이면,<br><em>내가 보여요.</em></h2><p>어떤 게임에 오래 머물렀는지,<br>시간과 비용을 어디에 썼는지 한눈에.</p><a class="section-entry" href="/start"><span>내 플레이 기록 보기</span><svg viewBox="0 0 35 22" aria-hidden="true"><path d="M1 11h30M22 2l10 9-10 9"/></svg></a></section>
+<section class="moment" aria-hidden="true" inert><h2>발견한 게임도,<br><em>나답게 관리해요.</em></h2><p>관심 있는 게임을 모아두고,<br>다음에 즐길 게임을 한곳에서.</p><a class="section-entry" href="/start"><span>내 라이브러리 열기</span><svg viewBox="0 0 35 22" aria-hidden="true"><path d="M1 11h30M22 2l10 9-10 9"/></svg></a></section></div>
+<div class="insight" aria-hidden="true"><div class="insight-head"><span><i></i>나의 게임 생활</span><span>이번 달</span></div><div class="total"><span id="hours">48</span><small>시간</small></div><div class="bars"><i style="--h:30%"></i><i style="--h:48%"></i><i style="--h:39%"></i><i style="--h:68%"></i><i style="--h:76%"></i><i style="--h:96%"></i></div><div class="days"><span>1주</span><span>2주</span><span>3주</span><span>4주</span><span>5주</span><span>6주</span></div><p class="insight-note">나의 시간을 채운 게임들.</p><div class="genres"><span>탐험</span><span>이야기</span><span>새로운 발견</span></div></div>
+<div class="playback"><button id="motion" aria-label="움직임 일시정지" aria-pressed="false"><svg viewBox="0 0 20 20" aria-hidden="true"><path id="motion-icon" d="M7 5v10M13 5v10"/></svg></button></div><div class="media-status" id="media-status" hidden>영상을 불러오지 못했어요. <button id="retry">다시 불러오기</button></div></div></main></body></html>

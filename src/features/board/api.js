@@ -1,9 +1,9 @@
-import apiClient from '../../utils/apiClient'
+import apiClient from '@/shared/lib/apiClient'
 
 // 백엔드 BoardController/BoardCommentController/BoardLikeController(/api/board/**) 연동.
 // 게시글 조회를 포함한 모든 /api/board/** 엔드포인트가 로그인(JWT)을 요구한다.
-export const BOARD_PAGE_SIZE = 20
-export const COMMENT_PAGE_SIZE = 20
+const BOARD_PAGE_SIZE = 20
+const COMMENT_PAGE_SIZE = 20
 
 export async function fetchPosts({ page = 0, category, keyword, signal } = {}) {
   const { data } = await apiClient.get('/api/board', {

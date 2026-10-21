@@ -4,7 +4,7 @@ const shape = (label, color, matrix) => ({
   matrix
 });
 export const SHAPES = [shape('ㄱ', '#28e6bf', [[1, 1, 1], [0, 0, 1], [0, 0, 1]]), shape('ㄴ', '#54baff', [[1, 0, 0], [1, 0, 0], [1, 1, 1]]), shape('ㄷ', '#ffa254', [[1, 1, 1], [1, 0, 0], [1, 1, 1]]), shape('ㅁ', '#ae82ff', [[1, 1, 1], [1, 0, 1], [1, 1, 1]]), shape('ㅏ', '#f5d45c', [[1, 0, 0], [1, 1, 0], [1, 0, 0]]), shape('ㅓ', '#f5d45c', [[0, 0, 1], [0, 1, 1], [0, 0, 1]]), shape('ㅗ', '#ff83bd', [[0, 1, 0], [1, 1, 1], [0, 0, 0]]), shape('ㅜ', '#ff83bd', [[0, 0, 0], [1, 1, 1], [0, 1, 0]]), shape('ㅡ', '#b4e965', [[0, 0, 0], [1, 1, 1], [0, 0, 0]]), shape('ㅣ', '#b4e965', [[0, 1, 0], [0, 1, 0], [0, 1, 0]])];
-export const ITEM_TYPES = ['bomb', 'freeze', 'swap', 'hammer', 'eraser'];
+const ITEM_TYPES = ['bomb', 'freeze', 'swap', 'hammer', 'eraser'];
 // 직접 구성한 시작 배치. 각 숫자는 해당 줄의 두 칸짜리 빈 공간 시작 위치다.
 export const TEMPLATES = [[0, 0, 0, 0], [8, 8, 8, 8], [4, 4, 4, 4], [0, 2, 4, 6], [6, 4, 2, 0], [2, 3, 4, 5], [5, 4, 3, 2], [1, 1, 6, 6], [7, 7, 2, 2], [3, 5, 3, 5]];
 export function stageTarget(stage) {
@@ -26,7 +26,7 @@ const spawn = s => ({
   x: 3,
   y: 0
 });
-export const fits = (board, p) => cells(p).every(([x, y]) => x >= 0 && x < 10 && y >= 0 && y < 20 && !board[y][x]);
+const fits = (board, p) => cells(p).every(([x, y]) => x >= 0 && x < 10 && y >= 0 && y < 20 && !board[y][x]);
 export function makeGame(stage = 1, rng = Math.random) {
   stageTarget(stage);
   const template = Math.min(9, Math.floor(rng() * 10));

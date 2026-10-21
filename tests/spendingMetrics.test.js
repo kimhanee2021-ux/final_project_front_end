@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { summarize, filterPeriod, monthlySpending, genreSpending } from '../src/features/dashboard/spendingMetrics.js'
+import { summarize } from '../src/features/spending/model/spendingMetrics.js'
 const game = overrides => ({ amount: 10000, refund: 0, hours: 10, genre: 'RPG', purchasedAt: '2026-09-15', ...overrides })
 test('unknown prices and free or fully refunded games do not distort paid averages', () => {
   const result = summarize([game({}), game({ amount: null, hours: 200 }), game({ amount: 0, hours: 100 }), game({ refund: 10000 })])
@@ -16,14 +16,17 @@ test('no time or no games never produces Infinity or NaN', () => {
 test('partial refunds change every monetary aggregate consistently', () => {
   const result = summarize([game({ refund: 3000 })]); assert.equal(result.total, 7000); assert.equal(result.average, 7000); assert.equal(result.hourly, 700)
 })
-test('six-month periods cross years correctly and exclude future purchases', () => {
-  const games = [game({ purchasedAt: '2025-09-30' }), game({ purchasedAt: '2025-10-01' }), game({ purchasedAt: '2026-03-31' }), game({ purchasedAt: '2026-04-01' })]
-  assert.equal(filterPeriod(games, 'six', '2026-03-31').length, 2)
-  const months = monthlySpending(games, 'six', '2026-03-31')
-  assert.equal(months.length, 6); assert.equal(months[0].key, '2025-10'); assert.equal(months[1].total, 0)
-})
-test('monthly and genre totals reconcile with selected spending', () => {
-  const games = [game({}), game({ genre: '액션', amount: 20000 }), game({ amount: null })]
-  assert.equal(monthlySpending(games, 'month', '2026-09-30')[0].total, summarize(games).total)
-  assert.equal(genreSpending(games).reduce((sum, g) => sum + g.amount, 0), summarize(games).total)
+test('hourly cost is only shown from one hour of play so a few minutes never explode the number', async () => {
+  const { hourlyText, hoursText } = await import('../src/features/spending/model/spendingMetrics.js')
+  // 1시간 미만(미플레이 포함)은 구매 금액이 그대로 시간당 비용
+  assert.equal(hourlyText(game({ amount: 5930, hours: 0.1 })), '₩5,930')
+  assert.equal(hourlyText(game({ amount: 10000, hours: 0 })), '₩10,000')
+  assert.equal(hourlyText(game({ amount: 10000, hours: null })), '계산 전')
+  assert.equal(hourlyText(game({ amount: 10000, hours: 4 })), '₩2,500')
+  assert.equal(hourlyText(game({ amount: 0, amountSource: 'FREE', hours: 100 })), '무료')
+  assert.equal(hourlyText(game({ amount: null, amountSource: 'NO_RECORD' })), '-')
+  assert.equal(hoursText(0.05), '3분')
+  assert.equal(hoursText(0.001), '1분')
+  assert.equal(hoursText(0.5), '30분')
+  assert.equal(hoursText(86.5), '86.5시간')
 })

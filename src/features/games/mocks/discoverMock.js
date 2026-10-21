@@ -1,15 +1,5 @@
 // All ratings, reviews, play times and release dates are illustrative demo data.
 const image = name => `/images/${name}.jpg`
-export const genres = [
-  'All',
-  'Action',
-  'RPG',
-  'Adventure',
-  'Strategy',
-  'Simulation',
-  'Sports',
-  'Indie',
-]
 
 export const discoverGames = [
   {
@@ -180,51 +170,5 @@ export const discoverGames = [
     owned: false,
     description:
       '작은 정착지에서 시작해 나만의 문명을 이끌어보세요. 발견, 외교, 그리고 선택으로 역사를 만들어갑니다.',
-  },
-]
-
-export const recommendedIds = ['sea', 'hades', 'persona', 'dave', 'baldur', 'elden']
-export const recentActivity = [
-  { gameId: 'hades', when: '3시간 전', duration: '2시간 30분', achievement: '새로운 무기 해금' },
-  { gameId: 'zelda', when: '1일 전', duration: '1시간 45분', achievement: '새로운 사당 발견' },
-  { gameId: 'stellar', when: '3일 전', duration: '3시간 10분', achievement: '스토리 챕터 완료' },
-  { gameId: 'cyberpunk', when: '5일 전', duration: '2시간 15분', achievement: '나이트 시티 탐험' },
-]
-export const playHistory = [18, 24, 21, 30, 43, 48]
-export const genrePreferences = [
-  { name: 'RPG', value: 35, color: '#8661ff' },
-  { name: 'Action', value: 25, color: '#41b7ff' },
-  { name: 'Adventure', value: 18, color: '#59dfb1' },
-  { name: 'Strategy', value: 10, color: '#f49abd' },
-  { name: 'Simulation', value: 7, color: '#ce91ea' },
-  { name: '기타', value: 5, color: '#677ca7' },
-]
-export const upcomingGames = [
-  {
-    id: 'upcoming-1',
-    name: 'Echoes of the Wild',
-    image: '/images/fantasy-world.png',
-    genres: ['Adventure', 'RPG'],
-    date: '2026. 11. 12',
-    description: '잊혀진 왕국에서 시작되는 새로운 모험',
-    demo: true,
-  },
-  {
-    id: 'upcoming-2',
-    name: 'Midnight Circuit',
-    image: image('cyberpunk-wide'),
-    genres: ['Action', 'Sports'],
-    date: '2026. 12. 04',
-    description: '네온 빛 도시를 가로지르는 질주',
-    demo: true,
-  },
-  {
-    id: 'upcoming-3',
-    name: 'Little Blue Ocean',
-    image: image('dave-wide'),
-    genres: ['Simulation', 'Indie'],
-    date: '2027. 01. 15',
-    description: '당신만의 바다 이야기를 만들어보세요',
-    demo: true,
   },
 ]

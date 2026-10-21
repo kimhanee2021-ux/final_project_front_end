@@ -1,123 +1,76 @@
-import GSIcon from '../../../components/common/GSIcon'
-import { useGameSense } from '../../../contexts/GameSenseContext'
+import { GSIcon } from '@/shared/ui'
+import { useGameSense } from '@/shared/state'
 import { profileAvatars, profileCovers } from '../mocks/playerMock'
 
+// 값 하나를 라벨 아래에 보여주는 요약 항목
+function Fact({ label, value }) {
+  return (
+    <div className="min-w-0">
+      <small className="block text-[12px] text-faint">{label}</small>
+      <strong className="block mt-[4px] text-[15px] font-[600]">{value}</strong>
+    </div>
+  )
+}
+
+// 마이페이지 맨 위 프로필: 커버 → 아바타·이름·소개 → 요약 세 가지. 수정 버튼은 오른쪽에 둘만 둔다.
 export default function ProfileHero({ onEdit }) {
   const { player } = useGameSense()
   const { profile, preferences } = player
   const cover = profileCovers.find(item => item.id === profile.cover)
   const avatar = profileAvatars.find(item => item.id === profile.avatar)
   return (
-    <section
-      className="mp-profile"
-      aria-labelledby="mp-profile-name"
-      style={{ '--mp-cover': `url('${cover.image}')` }}
-    >
-      <div className="mp-profile-shade" />
-      <button className="mp-cover-button" onClick={() => onEdit('cover')}>
-        <GSIcon name="image" size={16} />
-        커버 이미지 변경
-      </button>
-      <div className="mp-profile-main">
-        <div className="mp-avatar-wrap">
-          <img className="mp-avatar" src={avatar.image} alt={`${profile.name}의 프로필`} />
-          <button aria-label="프로필 아바타 변경" onClick={() => onEdit('avatar')}>
-            <GSIcon name="camera" size={20} />
+    <section aria-labelledby="mp-profile-name">
+      <div className="relative h-[180px] rounded-[20px] overflow-hidden bg-bg max-[600px]:h-[130px]">
+        <img className="w-full h-full object-cover" src={cover.image} alt="" />
+        <button
+          className="absolute right-[14px] top-[14px] inline-flex items-center gap-[8px] h-[34px] px-[14px] rounded-full bg-surface/90 text-text text-[13px] shadow-[var(--shadow)]"
+          onClick={() => onEdit('cover')}
+        >
+          <GSIcon name="image" size={16} />
+          커버 변경
+        </button>
+      </div>
+      <div className="flex items-end gap-[20px] px-[8px] -mt-[44px] max-[600px]:flex-wrap">
+        <div className="relative shrink-0">
+          <img
+            className="w-[96px] h-[96px] rounded-full object-cover border-4 border-surface bg-bg"
+            src={avatar.image}
+            alt={`${profile.name}의 프로필`}
+          />
+          <button
+            className="absolute right-0 bottom-0 grid place-items-center w-[32px] h-[32px] rounded-full bg-surface text-muted shadow-[var(--shadow)] hover:text-text"
+            aria-label="프로필 아바타 변경"
+            onClick={() => onEdit('avatar')}
+          >
+            <GSIcon name="camera" size={16} />
           </button>
         </div>
-        <div className="mp-identity">
-          <div className="mp-name-line">
-            <h1 id="mp-profile-name">{profile.name}</h1>
-            <span className="mp-demo-label">DEMO PROFILE</span>
-          </div>
-          <div className="mp-level">
-            <strong>Lv. 12</strong>
-            <div
-              className="mp-xp-track"
-              role="meter"
-              aria-label="데모 경험치"
-              aria-valuemin={0}
-              aria-valuemax={1000}
-              aria-valuenow={320}
-            >
-              <span />
-            </div>
-            <span>320 / 1,000 XP</span>
-          </div>
-          <p className="mp-bio">{profile.bio || '나만의 게임 이야기를 소개해보세요.'}</p>
-          <div className="mp-profile-tags">
-            {preferences.tags.map(tag => (
-              <span key={tag}>{tag}</span>
-            ))}
-            <button aria-label="취향 태그 수정" onClick={() => onEdit('preferences')}>
-              <GSIcon name="plus" size={16} />
-            </button>
-          </div>
+        <div className="flex-1 min-w-0 pb-[4px]">
+          <h1 className="!m-0 text-[26px] font-[750] tracking-[-0.8px] leading-[1.3] [overflow-wrap:anywhere]" id="mp-profile-name">
+            {profile.name}
+            <span className="ml-[10px] text-[13px] font-[500] text-faint">Lv. 12 · 데모 프로필</span>
+          </h1>
+        </div>
+        <div className="flex gap-[8px] pb-[4px] max-[600px]:w-full">
+          <button className="gs-primary-button" onClick={() => onEdit('profile')}>
+            <GSIcon name="edit" size={16} />
+            프로필 수정
+          </button>
         </div>
       </div>
-      <div className="mp-profile-bottom">
-        <div className="mp-profile-meta">
-          <span>
-            <GSIcon name="calendar" size={16} />
-            2024년 3월 15일 가입 · 예시
-          </span>
-          <span>
-            <GSIcon name="pin" size={16} />
-            {profile.location || '나만의 게임 세계'}
-          </span>
-        </div>
-        <div className="mp-profile-facts">
-          <div>
-            <span className="mp-fact-icon">
-              <GSIcon name="gamepad" />
-            </span>
-            <span>
-              <small>주로 즐기는 방식</small>
-              <strong>{preferences.playStyle}</strong>
-            </span>
-          </div>
-          <div>
-            <span className="mp-fact-icon">
-              <GSIcon name="chart" />
-            </span>
-            <span>
-              <small>월 플레이 목표</small>
-              <strong>
-                {preferences.monthlyHours ? `${preferences.monthlyHours}시간` : '설정 안 함'}
-              </strong>
-            </span>
-          </div>
-          <div>
-            <span className="mp-fact-icon">
-              <GSIcon name="wallet" />
-            </span>
-            <span>
-              <small>월 게임 예산</small>
-              <strong>
-                {preferences.budget
-                  ? `${preferences.budget.toLocaleString('ko-KR')}원`
-                  : '설정 안 함'}
-              </strong>
-            </span>
-          </div>
-        </div>
+      <p className="mt-[20px] px-[8px] max-w-[640px] text-[15px] leading-[1.8] text-muted whitespace-pre-line [overflow-wrap:anywhere]">
+        {profile.bio || '나만의 게임 이야기를 소개해보세요.'}
+      </p>
+      <div className="flex flex-wrap items-center gap-[8px] mt-[16px] px-[8px]">
+        {preferences.tags.map(tag => (
+          <span key={tag} className="h-[30px] inline-flex items-center px-[14px] rounded-full bg-bg text-muted text-[13px]">{tag}</span>
+        ))}
       </div>
-      <div className="mp-profile-actions">
-        <p>
-          좋은 게임이
-          <br />더 좋은 일상을 만든다.
-          <em>
-            with <b>GameSense</b>
-          </em>
-        </p>
-        <button className="gs-primary-button" onClick={() => onEdit('profile')}>
-          <GSIcon name="edit" size={17} />
-          프로필 수정
-        </button>
-        <button className="mp-outline-button" onClick={() => onEdit('preferences')}>
-          <GSIcon name="settings" size={17} />
-          취향 수정
-        </button>
+      <div className="grid grid-cols-4 gap-[24px] mt-[32px] pt-[24px] px-[8px] border-t border-border max-[760px]:grid-cols-2">
+        <Fact label="가입일" value="2024년 3월 15일 (예시)" />
+        <Fact label="주로 즐기는 방식" value={preferences.playStyle} />
+        <Fact label="월 플레이 목표" value={preferences.monthlyHours ? `${preferences.monthlyHours}시간` : '설정 안 함'} />
+        <Fact label="월 게임 예산" value={preferences.budget ? `${preferences.budget.toLocaleString('ko-KR')}원` : '설정 안 함'} />
       </div>
     </section>
   )
