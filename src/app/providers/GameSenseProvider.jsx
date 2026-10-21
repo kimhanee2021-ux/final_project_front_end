@@ -22,12 +22,12 @@ function save(key, value) {
 }
 
 export default function GameSenseProvider({ children }) {
-  const { isSignedIn, user } = useAuth()
+  const { isAuthenticated, user } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
   const playerData = usePlayerData()
-  // 위시리스트는 계정별로 저장한다(데모 체험은 'demo' 하나를 쓴다).
-  const { wishlist, isWishlisted, toggle: toggleStoredWishlist } = useWishlist(user ? `user-${user.id}` : 'demo')
+  // 위시리스트는 계정별로 저장한다(로그인 전에는 'guest' 하나를 쓰지만, 담기는 로그인 후에만 된다).
+  const { wishlist, isWishlisted, toggle: toggleStoredWishlist } = useWishlist(user ? `user-${user.id}` : 'guest')
   const [language, setLanguage] = useState(() =>
     readStored('gamesense-language', 'ko', value => ['en', 'ko'].includes(value))
   )
@@ -36,7 +36,7 @@ export default function GameSenseProvider({ children }) {
   const [toast, setToast] = useState(null)
   const notify = message => setToast({ message, id: Date.now() })
   const toggleWishlist = game => {
-    if (!isSignedIn) {
+    if (!isAuthenticated) {
       setSelectedGame(null)
       navigate(authLink('login', location.pathname + location.search + location.hash), { state: { loginRequired: true } })
       return

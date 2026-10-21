@@ -1,4 +1,4 @@
-import { money, number } from '@/shared/utils/formatters'
+import { money, number } from '../../../shared/utils/formatters.js'
 
 // 시간당 비용은 최소 1시간으로 나눈다. 1시간이 안 된 게임(미플레이 포함)은 구매 금액이 그대로 시간당 비용이다.
 // 몇 분만 켜 본 게임을 그대로 나누면 6분 플레이에 5,930원이 시간당 59,300원처럼 튀어 오해를 만든다.

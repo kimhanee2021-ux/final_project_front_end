@@ -26,9 +26,15 @@ export function useSteamLibrary(userId) {
     if (!needsInitialSync) return
     let active = true
     syncSteamLibrary()
-      .then(games => { if (active) setState(successState(userId, games)) })
-      .catch(error => { if (active) setState(current => failureState(current, error)) })
-    return () => { active = false }
+      .then(games => {
+        if (active) setState(successState(userId, games))
+      })
+      .catch(error => {
+        if (active) setState(current => failureState(current, error))
+      })
+    return () => {
+      active = false
+    }
   }, [userId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const sync = useCallback(async () => {

@@ -22,7 +22,6 @@ export const headerMenus = [
     id: 'explore',
     label: '게임 탐색',
     children: [
-      { to: '/recommendations', label: 'AI 추천 게임', description: '내 취향에 맞춘 추천' },
       { to: '/explore', label: '스팀 전체 게임', description: '장르별 · 출시 예정 · 인기 게임' },
     ],
   },
@@ -31,7 +30,7 @@ export const headerMenus = [
     label: 'PC 분석',
     children: [
       { to: '/pc-check', label: '내 PC 사양', description: '사양 입력과 부품 정보 확인' },
-      { to: '/pc-check/evaluation', label: '내 PC 종합평가', description: '점수 · 게임별 성능 · 업그레이드' },
+      { to: '/pc-check/evaluation', label: '내 PC 종합평가', description: '등급 · 게임별 성능 · 개선 방향' },
     ],
   },
 ]
