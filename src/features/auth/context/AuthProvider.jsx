@@ -64,6 +64,10 @@ export default function AuthProvider({ children }) {
     signOut()
   }
 
+  async function unlinkSteam() {
+    await userApi.unlinkSteam()
+  }
+
   // 스팀 OpenID 로그인 페이지로 전체 이동. 완료 후 백엔드가 프론트로 ?steamLinked=true를 붙여 돌려보낸다.
   function startSteamLink() {
     const token = readAccessToken(browserStores())
@@ -85,6 +89,7 @@ export default function AuthProvider({ children }) {
         updateAccount,
         deleteAccount,
         startSteamLink,
+        unlinkSteam,
       }}
     >
       {children}

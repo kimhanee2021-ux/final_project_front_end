@@ -3,24 +3,28 @@ import { PRIMARY_BUTTON } from '@/features/spending'
 import { topicVisual } from '../model/insightVisual'
 
 // 도넛: 왼쪽에 도넛(가운데에 전체 숫자), 오른쪽에 장르별 범례를 한 줄씩(색 점 · 이름 · 비중)
+// 가운데 숫자가 길면(예: 1,314.5시간) 링 안쪽 지름을 넘지 않도록 글자를 줄여 맞춘다.
+const centerSize = text => (text.length > 9 ? 'text-[16px]' : text.length > 6 ? 'text-[19px]' : 'text-[22px]')
+
 function DonutBlock({ visual }) {
   const slices = donutSlices(visual.items)
   if (!slices.length) return <p className="py-[40px] text-center text-[13px] text-muted">표시할 데이터가 아직 없어요.</p>
   const { caption, value, format } = visual.center
   return (
-    <div className="flex-1 flex items-center gap-[24px] max-[420px]:flex-col max-[420px]:items-stretch">
-      <DonutChart items={visual.items} size={170}>
+    <div className="flex-1 flex flex-wrap items-center justify-center gap-[16px_18px]">
+      <DonutChart items={visual.items} size={210}>
         <span className="text-[12px] text-muted">{caption}</span>
-        <strong className="text-[22px] font-[750] tracking-[-0.5px] tabular-nums">
+        <strong className={`${centerSize(format(value))} font-[750] tracking-[-0.5px] tabular-nums whitespace-nowrap`}>
           <CountUp value={value} format={format} />
         </strong>
       </DonutChart>
-      <ul className="list-none m-0 p-0 flex-1 min-w-0 grid gap-[12px] text-[14px]">
+      {/* 이름과 비중을 같은 줄 바로 옆에 두도록 열 3개짜리 격자를 쓴다 (비중 열은 오른쪽 정렬로 숫자가 가지런하다). */}
+      <ul className="list-none m-0 p-0 min-w-[150px] grid justify-start grid-cols-[auto_auto_auto] gap-x-[10px] gap-y-[12px] items-center text-[14px]">
         {slices.map((slice, index) => (
-          <li key={slice.label} className="flex items-center gap-[8px] min-w-0">
+          <li key={slice.label} className="col-span-3 grid grid-cols-subgrid items-center min-w-0">
             <span className="w-[9px] h-[9px] rounded-full shrink-0" style={{ background: chartColor(index) }} aria-hidden="true" />
-            <span className="truncate">{slice.label}</span>
-            <strong className="ml-auto tabular-nums">{slice.percent}%</strong>
+            <span className="truncate max-w-[9em]">{slice.label}</span>
+            <strong className="text-right tabular-nums">{slice.percent}%</strong>
           </li>
         ))}
       </ul>

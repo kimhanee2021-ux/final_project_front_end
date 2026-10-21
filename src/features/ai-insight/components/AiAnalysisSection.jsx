@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { GSIcon, PageHeading } from '@/shared/ui'
-import { TEXT_BUTTON } from '@/features/spending'
+import { TEXT_BUTTON, useMySpendingContext } from '@/features/spending'
+import { PurchaseImportDialog } from '@/features/purchaseImport'
 import { PURCHASE_HISTORY_HINT, defaultTopic } from '../insightModel'
 import { useInsightOverview } from '../hooks/useInsightOverview'
 import ProfileCard from './ProfileCard'
@@ -8,7 +9,8 @@ import TopicTags from './TopicTags'
 import TopicResult, { Failure } from './TopicResult'
 import VisualSkeleton from './VisualSkeleton'
 
-const BADGE = 'inline-flex items-center gap-[6px] px-[12px] py-[4px] rounded-full bg-primary text-on-primary text-[12px] font-[700]'
+// 분석 주제 태그(둥근 알약)와 헷갈리지 않도록 모서리가 각진 그라데이션 라벨 + 반짝이는 별로 "AI가 만든 결과"임을 따로 표시한다.
+const BADGE = 'ai-badge relative inline-flex items-center gap-[6px] px-[11px] py-[4px] rounded-[6px] text-[12px] font-[800] tracking-[0.4px] text-[#14131c] overflow-hidden'
 
 // 영역 제목 + AI 분석 배지. 스팀 연동 전과 후가 같은 모양을 쓴다.
 function Heading({ title, description }) {
@@ -16,8 +18,8 @@ function Heading({ title, description }) {
     <>
       <PageHeading title={title} description={description} />
       <span className={BADGE + ' mb-[16px]'}>
-        <GSIcon name="spark" size={14} />
-        AI 분석
+        <GSIcon name="spark" size={14} className="ai-badge-spark" />
+        AI분석
       </span>
     </>
   )
@@ -47,6 +49,8 @@ function ProfileLoading() {
 // 아래쪽: 고른 태그의 AI 결과 카드 (전체 폭).
 function Analysis({ title, description, renderVisual, ask }) {
   const { status, overview, error, retry } = useInsightOverview()
+  const { reload } = useMySpendingContext()
+  const [importOpen, setImportOpen] = useState(false)
   const [picked, setPicked] = useState(null)
   const ready = status === 'ready'
   // 고르기 전에는 서버가 알려 준 첫 번째 태그를 보여준다
@@ -62,7 +66,14 @@ function Analysis({ title, description, renderVisual, ask }) {
             <>
               <ProfileCard profile={overview.profile} />
               <TopicTags topics={overview.topics} selected={selected} onSelect={setPicked} />
-              {!overview.hasPurchaseHistory && <p className="mt-[12px] text-[13px] text-muted">{PURCHASE_HISTORY_HINT}</p>}
+              {!overview.hasPurchaseHistory && (
+                <p className="mt-[12px] text-[13px] text-muted">
+                  {PURCHASE_HISTORY_HINT}{' '}
+                  <button type="button" className={TEXT_BUTTON + ' !py-0 align-baseline'} onClick={() => setImportOpen(true)}>
+                    구매내역 가져오는 법 →
+                  </button>
+                </p>
+              )}
             </>
           )}
         </div>
@@ -75,6 +86,8 @@ function Analysis({ title, description, renderVisual, ask }) {
         </div>
       )}
       {ready && ask}
+      {/* 가져오기가 끝나면 소비 분석을 다시 받아 오므로(화면이 새로 그려진다) 로딩 상태와 상관없이 항상 이 자리에 둔다. */}
+      <PurchaseImportDialog open={importOpen} hasHistory={Boolean(overview?.hasPurchaseHistory)} onClose={() => setImportOpen(false)} onImported={reload} />
     </>
   )
 }

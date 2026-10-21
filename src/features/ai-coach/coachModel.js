@@ -2,10 +2,10 @@
 
 export const COACH_NAME = '노바'
 export const COACH_PATH = '/ai-coach'
-// 코치 노바 그림 (직접 그린 로봇 캐릭터 일러스트). 바꾸려면 public/images의 파일만 교체
-// PORTRAIT: 코치 화면 왼쪽 큰 그림(배경 투명), FACE: 말풍선 옆 동그란 얼굴용 정사각형
-export const COACH_PORTRAIT = '/images/ai-coach-character.svg'
-export const COACH_FACE = '/images/ai-coach-avatar.svg'
+// 코치 노바 그림 (로봇 캐릭터 일러스트). 바꾸려면 public/images의 파일만 교체
+// PORTRAIT: 코치 화면 왼쪽 큰 그림, FACE: 말풍선 옆 동그란 얼굴용 (같은 이미지를 쓴다)
+export const COACH_PORTRAIT = '/images/ai-coach.png'
+export const COACH_FACE = '/images/ai-coach.png'
 
 export const MAX_MESSAGE_LENGTH = 500
 // 백엔드는 최근 10개까지 받고 그중 6개만 AI에 보낸다

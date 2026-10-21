@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { Card, EmptyState, GSIcon } from '@/shared/ui'
 import GameIdentity from './GameIdentity'
 import PlayStatusBadge from './PlayStatusBadge'
@@ -187,8 +186,7 @@ export default function PurchasedGamesTable({
       )}
       {needsHistory && (
         <p className="pt-[8px] text-[12px] text-muted">
-          구매 금액과 시간당 비용은 실제 결제 기록이 있어야 알 수 있어요.{' '}
-          <Link to="/purchases" className="font-[650] text-primary-text hover:underline">구매 내역 가져오러 가기 →</Link>
+          구매 금액과 시간당 비용은 실제 결제 기록이 있어야 알 수 있어요.
         </p>
       )}
     </Card>

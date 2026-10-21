@@ -95,7 +95,7 @@ export default function PcSpecDialog({ open, saved, onSave, onReset, onClose }) 
   return (
     <dialog
       ref={ref}
-      className="pc-dialog pc-spec-dialog"
+      className="pc-dialog pc-spec-dialog gs-mint-dark"
       aria-labelledby="pc-spec-title"
       onCancel={onClose}
       onClose={onClose}

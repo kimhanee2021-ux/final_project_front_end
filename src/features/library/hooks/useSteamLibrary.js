@@ -5,6 +5,12 @@ import { getErrorMessage } from '@/shared/lib/apiClient'
 // 동기화는 매번 스팀 API를 호출하므로, 같은 계정이면 페이지를 오가도 마지막 결과를 재사용한다.
 const cache = { userId: null, games: null }
 
+// 스팀 연동을 해제하면 저장해 둔 목록도 버려서 내 라이브러리가 예전 게임을 보여주지 않게 한다.
+export function resetSteamLibraryCache() {
+  cache.userId = null
+  cache.games = null
+}
+
 function successState(userId, games) {
   cache.userId = userId
   cache.games = games
