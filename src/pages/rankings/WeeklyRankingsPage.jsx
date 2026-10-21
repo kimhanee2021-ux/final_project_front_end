@@ -3,7 +3,7 @@ import { fetchRankingOptions, fetchWeeklyProducts } from '@/features/rankings/ap
 import { Link, useSearchParams } from 'react-router-dom'
 import { GSIcon, PageHeading, Panel, PanelPage } from '@/shared/ui'
 import { GAMER_COUNTRIES } from '@/shared/config'
-import { RankingList, DEFAULT_WEEK, readRankingSelection, getSteamChartUrl, getWeekOptions, formatWeekPeriod, shiftWeek } from '@/features/rankings'
+import { RankingList, readRankingSelection, getSteamChartUrl, getWeekOptions, formatWeekPeriod, shiftWeek } from '@/features/rankings'
 
 // This archive uses Korean interface copy; original Steam product names are preserved.
 const t = (english, korean) => korean ?? english
@@ -13,9 +13,10 @@ const buttonStyle = 'inline-flex items-center justify-center gap-[8px] rounded-[
 export default function WeeklyRankingsPage() {
   const language = 'ko'
   const [searchParams, setSearchParams] = useSearchParams()
-  const selection = readRankingSelection(searchParams, GAMER_COUNTRIES)
-  const { country, week } = selection
   const [options, setOptions] = useState([])
+  const [optionsLoaded, setOptionsLoaded] = useState(false)
+  const selection = readRankingSelection(searchParams, GAMER_COUNTRIES, options)
+  const { country, week } = selection
   const [optionsError, setOptionsError] = useState(false)
   const [request, setRequest] = useState(null)
   const [retry, setRetry] = useState(0)
@@ -29,21 +30,23 @@ export default function WeeklyRankingsPage() {
   useEffect(() => {
     const controller = new AbortController()
     fetchRankingOptions(controller.signal).then(data => {
-      if (!controller.signal.aborted) { setOptions(data); setOptionsError(false) }
+      if (!controller.signal.aborted) { setOptions(data); setOptionsError(false); setOptionsLoaded(true) }
     }).catch(() => {
-      if (!controller.signal.aborted) setOptionsError(true)
+      if (!controller.signal.aborted) { setOptionsError(true); setOptionsLoaded(true) }
     })
     return () => controller.abort()
   }, [retry])
   useEffect(() => {
     const controller = new AbortController()
+    // 저장된 주차 목록을 확인한 뒤 실제 순위 API를 호출한다.
+    if (!optionsLoaded) return () => controller.abort()
     fetchWeeklyProducts(country, week, controller.signal).then(data => {
       if (!controller.signal.aborted) setRequest({ key: requestKey, snapshot: data })
     }).catch(() => {
       if (!controller.signal.aborted) setRequest({ key: requestKey, error: true })
     })
     return () => controller.abort()
-  }, [country, week, requestKey])
+  }, [country, week, requestKey, optionsLoaded])
   const available = item => ['VERIFIED', 'VERIFIED_GAPS'].includes(item.status)
   const countriesWithData = options.filter(item => item.week === week && available(item)).map(item => item.country)
   const availableWeeks = options.filter(item => item.country === country && available(item)).map(item => item.week)
@@ -118,7 +121,7 @@ export default function WeeklyRankingsPage() {
               <p className="mt-[9px] max-w-[460px] text-[13px] leading-[1.8] text-muted">{loading ? t('Reading the saved weekly chart.', '저장된 주간 차트를 조회하고 있습니다.') : error ? t('Check the server connection and try again.', '서버 연결을 확인한 후 다시 시도해 주세요.') : unavailable ? t('Steam does not provide a public weekly chart for this country in the collected archive.', '수집 자료 기준으로 Steam이 이 국가의 공식 주간 차트를 제공하지 않습니다.') : t('Choose a week marked Available. No other week is substituted.', '자료 있음으로 표시된 주차를 선택해 주세요. 다른 주차의 순위로 대체하지 않습니다.')}</p>
               <div className="mt-[21px] flex flex-wrap justify-center gap-[8px]">
                 {error && <button type="button" className={buttonStyle} onClick={() => setRetry(value => value + 1)}>{t('Retry', '다시 시도')}</button>}
-                <button type="button" className={`${buttonStyle} !border-primary-soft !bg-primary-soft text-primary-text`} onClick={() => updateSelection({ country: 'KR', week: DEFAULT_WEEK })}>{t('Reset country and week', '국가·주차 초기화')}</button>
+                <button type="button" className={`${buttonStyle} !border-primary-soft !bg-primary-soft text-primary-text`} onClick={() => setSearchParams(previous => { const next = new URLSearchParams(previous); next.set('country', 'KR'); next.delete('week'); return next })}>{t('Reset country and week', '국가·주차 초기화')}</button>
               </div>
             </div>
           )}

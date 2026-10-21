@@ -73,3 +73,17 @@ test('ranking sorting preserves source positions without changing the input', ()
   assert.deepEqual(getTopGames(entries, 2).map(entry => entry.sourceRank), [2, 4])
   assert.deepEqual(entries.map(entry => entry.sourceRank), [6, 2, 4])
 })
+
+test('최신 저장 주차를 국가별로 선택하고 명시한 과거 주차는 유지한다', () => {
+  const countries = [{ code: 'KR' }, { code: 'US' }]
+  const options = [
+    { country: 'KR', week: '2026-10-06', status: 'VERIFIED' },
+    { country: 'KR', week: '2026-10-13', status: 'VERIFIED' },
+    { country: 'KR', week: '2026-10-20', status: 'WEEK_UNAVAILABLE' },
+    { country: 'US', week: '2026-10-06', status: 'VERIFIED_GAPS' },
+  ]
+  assert.equal(readRankingSelection(new URLSearchParams(), countries, options).week, '2026-10-13')
+  assert.equal(readRankingSelection(new URLSearchParams('country=US'), countries, options).week, '2026-10-06')
+  assert.equal(readRankingSelection(new URLSearchParams('country=KR&week=2026-09-22'), countries, options).week, '2026-09-22')
+  assert.equal(readRankingSelection(new URLSearchParams('week=invalid'), countries, options).week, '2026-10-13')
+})

@@ -14,15 +14,20 @@ export function shiftWeek(week, amount) {
   return new Date(new Date(`${week}T00:00:00Z`).getTime() + amount * 7 * DAY).toISOString().slice(0, 10)
 }
 
-export function readRankingSelection(searchParams, countries) {
+export function readRankingSelection(searchParams, countries, options = []) {
   const requestedCountry = searchParams.get('country')
   const requestedWeek = searchParams.get('week')
   const country = requestedCountry?.toUpperCase() || DEFAULT_COUNTRY
   const invalidCountry = Boolean(requestedCountry) && !countries.some(item => item.code === country)
   const invalidWeek = Boolean(requestedWeek) && !isValidWeek(requestedWeek)
+  const selectedCountry = invalidCountry ? DEFAULT_COUNTRY : country
+  // 주차를 지정하지 않으면 해당 국가에서 검증된 최신 저장 주차를 선택한다.
+  const latestWeek = options.filter(item => item.country === selectedCountry
+    && ['VERIFIED', 'VERIFIED_GAPS'].includes(item.status) && isValidWeek(item.week))
+    .map(item => item.week).sort().at(-1) || DEFAULT_WEEK
   return {
-    country: invalidCountry ? DEFAULT_COUNTRY : country,
-    week: !requestedWeek || invalidWeek ? DEFAULT_WEEK : requestedWeek,
+    country: selectedCountry,
+    week: !requestedWeek || invalidWeek ? latestWeek : requestedWeek,
     invalidCountry,
     invalidWeek,
   }
