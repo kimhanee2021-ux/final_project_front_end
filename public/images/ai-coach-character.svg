@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 360" role="img" aria-label="손을 흔드는 AI 게임 마스터 노바">
+  <!-- GameSense AI 게임 마스터 노바 상반신 (직접 그린 로봇 캐릭터 일러스트, 외부 저작물 아님). 배경은 투명이라 화면 색 위에 그린다 -->
+  <defs>
+    <linearGradient id="shell" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6f3ff"/>
+      <stop offset="1" stop-color="#b3a5ff"/>
+    </linearGradient>
+  </defs>
+  <!-- 반짝이 -->
+  <path d="M40 90 l5 12 l12 5 l-12 5 l-5 12 l-5 -12 l-12 -5 l12 -5 Z" fill="#c9bfff"/>
+  <path d="M262 120 l4 9 l9 4 l-9 4 l-4 9 l-4 -9 l-9 -4 l9 -4 Z" fill="#35edbe"/>
+  <path d="M60 210 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 Z" fill="#35edbe"/>
+  <!-- 몸 -->
+  <path d="M60 360 C62 252 98 206 150 206 C202 206 238 252 240 360 Z" fill="#17104a"/>
+  <path d="M108 214 L150 250 L192 214" stroke="#35edbe" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M150 270 l6 12 l13 2 l-9.5 9 l2.5 13 l-12 -6.5 l-12 6.5 l2.5 -13 l-9.5 -9 l13 -2 Z" fill="#35edbe"/>
+  <!-- 흔드는 팔 -->
+  <path d="M234 262 C260 246 268 232 258 214" stroke="#17104a" stroke-width="30" stroke-linecap="round" fill="none"/>
+  <circle cx="257" cy="204" r="18" fill="#b3a5ff"/>
+  <!-- 안테나 -->
+  <line x1="150" y1="52" x2="150" y2="26" stroke="#d9d2ff" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="150" cy="20" r="11" fill="#35edbe"/>
+  <!-- 머리 -->
+  <rect x="70" y="50" width="160" height="150" rx="62" fill="url(#shell)"/>
+  <rect x="52" y="104" width="22" height="44" rx="11" fill="#8f7dff"/>
+  <rect x="226" y="104" width="22" height="44" rx="11" fill="#8f7dff"/>
+  <!-- 바이저 -->
+  <rect x="88" y="88" width="124" height="82" rx="38" fill="#120c3a"/>
+  <rect x="88" y="88" width="124" height="82" rx="38" fill="none" stroke="#6a4bff" stroke-width="3.5"/>
+  <rect x="108" y="112" width="26" height="34" rx="13" fill="#35edbe"/>
+  <rect x="166" y="112" width="26" height="34" rx="13" fill="#35edbe"/>
+  <circle cx="116" cy="121" r="5" fill="#fff"/>
+  <circle cx="174" cy="121" r="5" fill="#fff"/>
+  <path d="M128 186 Q150 198 172 186" stroke="#6a4bff" stroke-width="6" fill="none" stroke-linecap="round"/>
+</svg>

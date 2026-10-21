@@ -44,9 +44,6 @@ export default function PcSpecPage() {
               <li key={step}>{step}</li>
             ))}
           </ol>
-          <p className="mt-[20px] text-[13px] text-faint">
-            브라우저는 내 PC의 부품을 직접 읽을 수 없어서 이 방식으로 받아요. 입력한 내용은 이 브라우저에만 저장돼요.
-          </p>
         </AnalysisPanel>
       </Panel>
     </PanelPage>

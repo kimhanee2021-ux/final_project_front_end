@@ -1,8 +1,9 @@
-import { PageHeading, PanelPage, Panel, AnalysisPanel, ColumnChart, CountUp } from '@/shared/ui'
+import { useState } from 'react'
+import { Panel, AnalysisPanel, ColumnChart, CountUp } from '@/shared/ui'
 import GameThumb from './GameThumb'
 import ValueRankList from './ValueRankList'
 import { overallStats } from '../model/gameAnalysisModel'
-import { netAmount, hoursText } from '@/features/spending'
+import { GameDetailDialog, PurchasedGamesTable, netAmount, hoursText } from '@/features/spending'
 import { money, number } from '@/shared/utils/formatters'
 import { br, hl } from '@/shared/utils/headline'
 
@@ -79,17 +80,32 @@ function OverallPanel({ tag, label, stats }) {
   )
 }
 
-// "나의 분석 > 종합 분석": 지표 하나가 패널 하나를 차지한다.
-export default function OverallAnalysisView({ games }) {
+// AI 분석 페이지의 종합 데이터: 지표 하나가 패널 하나를 차지한다.
+// hasHistory가 false(구매 내역을 아직 안 가져옴)이면 게임 목록의 구매 금액·시간당 비용 칸을 "확인 필요"로 보여준다.
+// 데모처럼 값이 없으면(undefined) 평소대로 보여준다.
+export default function OverallAnalysisPanels({ games, hasHistory }) {
   const stats = overallStats(games)
+  const [filter, setFilter] = useState('all')
+  const [selectedGame, setSelectedGame] = useState(null)
   return (
-    <PanelPage>
-      {TAGS.map(({ id, label }, index) => (
+    <>
+      {TAGS.map(({ id, label }) => (
         <Panel key={id} id={id}>
-          {index === 0 && <PageHeading title="종합 분석" description="패널마다 숫자 하나씩, 내 게임 생활을 짚어 볼게요." />}
           <OverallPanel tag={id} label={label} stats={stats} />
         </Panel>
       ))}
-    </PanelPage>
+      <Panel id="games">
+        <PurchasedGamesTable
+          games={games}
+          filter={filter}
+          setFilter={setFilter}
+          genre={null}
+          clearGenre={() => {}}
+          onSelect={setSelectedGame}
+          needsHistory={hasHistory === false}
+        />
+        <GameDetailDialog game={selectedGame} onClose={() => setSelectedGame(null)} />
+      </Panel>
+    </>
   )
 }

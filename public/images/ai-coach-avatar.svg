@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="AI 게임 마스터 노바">
+  <!-- GameSense AI 게임 마스터 노바 (직접 그린 로봇 캐릭터 일러스트, 외부 저작물 아님) -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#241766"/>
+      <stop offset="1" stop-color="#6a4bff"/>
+    </linearGradient>
+    <linearGradient id="shell" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6f3ff"/>
+      <stop offset="1" stop-color="#b3a5ff"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#35edbe" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#35edbe" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="round"><circle cx="60" cy="60" r="60"/></clipPath>
+  </defs>
+  <g clip-path="url(#round)">
+    <rect width="120" height="120" fill="url(#bg)"/>
+    <circle cx="60" cy="62" r="54" fill="url(#glow)"/>
+    <!-- 반짝이 -->
+    <path d="M16 26 l2 5 l5 2 l-5 2 l-2 5 l-2 -5 l-5 -2 l5 -2 Z" fill="#c9bfff"/>
+    <path d="M102 34 l1.6 4 l4 1.6 l-4 1.6 l-1.6 4 l-1.6 -4 l-4 -1.6 l4 -1.6 Z" fill="#35edbe"/>
+    <!-- 몸 -->
+    <path d="M14 124 C16 98 34 84 60 84 C86 84 104 98 106 124 Z" fill="#17104a"/>
+    <path d="M44 88 L60 100 L76 88" stroke="#35edbe" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- 안테나 -->
+    <line x1="60" y1="22" x2="60" y2="12" stroke="#d9d2ff" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="60" cy="10" r="4.5" fill="#35edbe"/>
+    <!-- 머리 -->
+    <rect x="26" y="22" width="68" height="62" rx="26" fill="url(#shell)"/>
+    <rect x="19" y="46" width="9" height="18" rx="4.5" fill="#8f7dff"/>
+    <rect x="92" y="46" width="9" height="18" rx="4.5" fill="#8f7dff"/>
+    <!-- 바이저 -->
+    <rect x="34" y="37" width="52" height="34" rx="16" fill="#120c3a"/>
+    <rect x="34" y="37" width="52" height="34" rx="16" fill="none" stroke="#6a4bff" stroke-width="1.5"/>
+    <rect x="43" y="49" width="11" height="14" rx="5.5" fill="#35edbe"/>
+    <rect x="66" y="49" width="11" height="14" rx="5.5" fill="#35edbe"/>
+    <circle cx="46.5" cy="52.5" r="2" fill="#fff"/>
+    <circle cx="69.5" cy="52.5" r="2" fill="#fff"/>
+    <path d="M52 76 Q60 81 68 76" stroke="#6a4bff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

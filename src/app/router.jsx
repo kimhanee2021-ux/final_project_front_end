@@ -6,6 +6,7 @@ import LandingPage from '@/pages/landing/LandingPage'
 import StartPage from '@/pages/landing/StartPage'
 import ExplorePage from '@/pages/explore/ExplorePage'
 import SettingsPage from '@/pages/settings/SettingsPage'
+import AiCoachPage from '@/pages/aiCoach/AiCoachPage'
 import AnalysisPage from '@/pages/analysis/AnalysisPage'
 import PurchasesPage from '@/pages/purchases/PurchasesPage'
 import WishlistPage from '@/pages/wishlist/WishlistPage'
@@ -60,14 +61,10 @@ const router = createBrowserRouter([
               { path: 'community/new', element: contained(<CommunityWritePage />) },
               { path: 'community/:id', element: contained(<CommunityPostPage />) },
               { path: 'community/:id/edit', element: contained(<CommunityWritePage />) },
-              {
-                path: 'analysis',
-                element: <AnalysisPage view="analysis" />,
-              },
-              {
-                path: 'analysis/overall',
-                element: <AnalysisPage view="overall" />,
-              },
+              { path: 'analysis', element: <AnalysisPage /> },
+              // 종합 분석은 AI 분석 페이지로 합쳐졌다 (예전 주소로 들어와도 열리게 한다)
+              { path: 'analysis/overall', element: <Navigate to="/analysis" replace /> },
+              { path: 'ai-coach', element: <AiCoachPage /> },
               {
                 path: 'purchases',
                 element: contained(<PurchasesPage />),
