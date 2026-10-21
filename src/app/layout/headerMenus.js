@@ -15,9 +15,8 @@ export const headerMenus = [
     id: 'analysis',
     label: '나의 분석',
     children: [
-      { to: '/analysis', icon: 'chart', label: '게임별 분석', description: '장르 · 가성비 · 최근 활동' },
-      { to: '/analysis/overall', icon: 'chart', label: '종합 분석', description: '소비 금액 · 플레이타임 · 미플레이' },
-      { to: '/ai-coach', icon: 'spark', label: 'AI 소비 코치', description: '소비 패턴 분석 · 예산 · 게임 추천' },
+      { to: '/analysis', icon: 'chart', label: 'AI 분석', description: '소비 유형 · 소비 패턴 · 가성비 · 라이브러리' },
+      { to: '/ai-coach', icon: 'chat', label: '노바와 채팅', description: '소비 · 가성비 · 다음에 할 게임을 대화로 물어보기' },
     ],
   },
   {

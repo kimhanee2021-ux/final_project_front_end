@@ -1,9 +1,8 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { AnalysisPanel, EmptyState, PageHeading, Panel, PanelPage } from '@/shared/ui'
 import { useAuth } from '@/features/auth'
 import { BudgetCard, CoachChat } from '@/features/ai-coach'
-import { PurchaseImportDialog } from '@/features/purchaseImport'
 import { TEXT_BUTTON, useMySpendingContext } from '@/features/spending'
 
 const TIPS = [
@@ -15,9 +14,8 @@ const TIPS = [
 // AI 게임 소비 코치(/ai-coach): 코치와 대화하는 패널 → 예산 패널 순서. 실제 회원만 이용한다 (데모 체험은 소비 데이터가 없어 안내만).
 export default function AiCoachPage() {
   const { isAuthenticated } = useAuth()
-  const { data, reload } = useMySpendingContext()
+  const { data } = useMySpendingContext()
   const hasHistory = Boolean(data?.hasPurchaseHistory)
-  const [importOpen, setImportOpen] = useState(false)
   // 다른 화면에서 /ai-coach?q=질문 으로 오면 그 질문을 바로 보내고, 새로고침해도 다시 보내지 않게 주소에서 지운다
   const [searchParams, setSearchParams] = useSearchParams()
   const initialQuestion = searchParams.get('q')?.trim() || null
@@ -41,16 +39,15 @@ export default function AiCoachPage() {
   return (
     <PanelPage>
       <Panel>
-        <PageHeading title="AI 소비 코치" description="지출, 가성비, 다음에 할 게임을 코치 세나에게 물어보세요." />
+        <PageHeading title="AI 소비 코치" description="지출, 가성비, 다음에 할 게임을 코치 노바에게 물어보세요." />
         <CoachChat
           initialQuestion={initialQuestion}
           onInitialQuestionSent={clearQuestion}
           hasHistory={hasHistory}
-          onOpenImport={() => setImportOpen(true)}
         />
       </Panel>
       <Panel>
-        <AnalysisPanel eyebrow="이번 달 예산" headline="예산을 정해 두면 세나가 남은 금액을 알려 줘요.">
+        <AnalysisPanel eyebrow="이번 달 예산" headline="예산을 정해 두면 노바가 남은 금액을 알려 줘요.">
           <div className="grid grid-cols-2 gap-[32px] items-start max-[760px]:grid-cols-1">
             <BudgetCard />
             <div>
@@ -58,12 +55,11 @@ export default function AiCoachPage() {
               <ul className="list-none m-0 mt-[14px] p-0 grid gap-[10px] text-[13px] leading-[1.6] text-muted">
                 {TIPS.map(tip => <li key={tip}>{tip}</li>)}
               </ul>
-              <Link to="/analysis/overall" className={TEXT_BUTTON + ' mt-[14px]'}>종합 분석으로 보기 →</Link>
+              <Link to="/analysis" className={TEXT_BUTTON + ' mt-[14px]'}>AI 분석으로 보기 →</Link>
             </div>
           </div>
         </AnalysisPanel>
       </Panel>
-      <PurchaseImportDialog open={importOpen} hasHistory={hasHistory} onClose={() => setImportOpen(false)} onImported={reload} />
     </PanelPage>
   )
 }

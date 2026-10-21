@@ -22,7 +22,7 @@ export default function PcEvaluationPage() {
       <Panel id="score">
         <PageHeading
           title="내 PC 종합평가"
-          description={ready ? '입력한 사양을 AI가 분석한 결과예요. 실측이 아닌 추정이에요.' : '사양을 입력하고 로그인하면 내 PC 기준으로 분석해요.'}
+          description={ready ? undefined : '사양을 입력하고 로그인하면 내 PC 기준으로 분석해요.'}
           action={<PcSpecButton />}
         />
         <AnalysisPanel

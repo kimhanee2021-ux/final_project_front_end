@@ -1,14 +1,11 @@
 // AI 게임 소비 코치 화면의 순수 로직 (네트워크·React 없이 테스트한다)
 
-export const COACH_NAME = '코치 세나'
+export const COACH_NAME = '노바'
 export const COACH_PATH = '/ai-coach'
-// 코치 세나 사진 (AI 이미지 도구로 만든 가상 인물, 실존 인물 아님). 바꾸려면 public/images의 파일만 교체
-// PORTRAIT: 코치 화면 왼쪽 큰 사진(세로 3:4), FACE: 말풍선 옆 동그란 얼굴용으로 얼굴만 잘라 둔 정사각형
-export const COACH_PORTRAIT = '/images/ai-coach-sena.jpg'
-export const COACH_FACE = '/images/ai-coach-sena-face.jpg'
-// 사진 파일이 없을 때 대신 쓰는 직접 그린 일러스트
-export const COACH_AVATAR_FALLBACK = '/images/ai-coach-avatar.svg'
-export const COACH_CHARACTER_FALLBACK = '/images/ai-coach-character.svg'
+// 코치 노바 그림 (직접 그린 로봇 캐릭터 일러스트). 바꾸려면 public/images의 파일만 교체
+// PORTRAIT: 코치 화면 왼쪽 큰 그림(배경 투명), FACE: 말풍선 옆 동그란 얼굴용 정사각형
+export const COACH_PORTRAIT = '/images/ai-coach-character.svg'
+export const COACH_FACE = '/images/ai-coach-avatar.svg'
 
 export const MAX_MESSAGE_LENGTH = 500
 // 백엔드는 최근 10개까지 받고 그중 6개만 AI에 보낸다
@@ -35,7 +32,7 @@ export function suggestedQuestions(hasHistory) {
   return hasHistory ? [...BASIC_QUESTIONS, ...HISTORY_QUESTIONS] : BASIC_QUESTIONS
 }
 
-// 다른 화면(소비 패턴 등)에서 질문을 들고 코치로 넘어갈 때 쓰는 주소. 코치 화면이 열리면 이 질문을 바로 보낸다.
+// 다른 화면(AI 분석 등)에서 질문을 들고 코치로 넘어갈 때 쓰는 주소. 코치 화면이 열리면 이 질문을 바로 보낸다.
 export function coachLink(question) {
   const text = String(question ?? '').trim().slice(0, MAX_MESSAGE_LENGTH)
   return text ? COACH_PATH + '?q=' + encodeURIComponent(text) : COACH_PATH

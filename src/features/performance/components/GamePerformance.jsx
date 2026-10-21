@@ -275,9 +275,6 @@ export default function GamePerformance({ evaluation, onDetails }) {
           {error}
         </p>
       )}
-      <p className="mt-[16px] text-[12px] text-faint">
-        AI 추정 등급 · A 144 FPS↑ / B 60↑ / C 30↑ / D 20↑ / E 20 미만 · 실측이나 프레임 유지 보장이 아니에요
-      </p>
     </section>
   )
 }

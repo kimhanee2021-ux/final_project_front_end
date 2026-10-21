@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { PageHeading, PanelPage, Panel } from '@/shared/ui'
+import { Panel } from '@/shared/ui'
 import GenrePanel from './GenrePanel'
 import GenreCountPanel from './GenreCountPanel'
 import ValueBandPanel from './ValueBandPanel'
@@ -18,8 +18,8 @@ const SECTIONS = [
   { id: 'list', label: '플레이 시간 & 가성비 목록' },
 ]
 
-// "나의 분석 > 게임별 분석": 패널 하나에 정보 하나씩 나열하는 구성.
-export default function GameAnalysisView({ games, asOf }) {
+// AI 분석 페이지의 게임별 데이터: 패널 하나에 정보 하나씩 나열하는 구성.
+export default function GameAnalysisPanels({ games, asOf }) {
   const [selectedGame, setSelectedGame] = useState(null)
   const panels = {
     genre: label => <GenrePanel eyebrow={label} overview={genreOverview(games)} />,
@@ -30,14 +30,13 @@ export default function GameAnalysisView({ games, asOf }) {
     list: label => <GameListPanel eyebrow={label} rows={playtimeList(games)} onSelect={setSelectedGame} />,
   }
   return (
-    <PanelPage>
-      {SECTIONS.map(({ id, label }, index) => (
+    <>
+      {SECTIONS.map(({ id, label }) => (
         <Panel key={id} id={id}>
-          {index === 0 && <PageHeading title="게임별 분석" description="패널마다 하나씩, 내 게임을 살펴보세요." />}
           {panels[id](label)}
         </Panel>
       ))}
       <GameDetailDialog game={selectedGame} onClose={() => setSelectedGame(null)} />
-    </PanelPage>
+    </>
   )
 }

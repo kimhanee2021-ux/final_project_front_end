@@ -185,11 +185,6 @@ export default function PurchasedGamesTable({
           </table>
         </div>
       )}
-      <div className="flex items-center gap-[8px] text-faint text-[12px] pt-[20px] max-[580px]:items-start max-[580px]:leading-[1.8]">
-        <GSIcon name="info" size={14} className="shrink-0" />
-        플레이 시간은 누적 기준이고, 1시간 미만 플레이한 게임은 구매 금액을 그대로 시간당 비용으로 보여줘요. 금액이 없는
-        게임은 지출 계산에서 제외됩니다.
-      </div>
       {needsHistory && (
         <p className="pt-[8px] text-[12px] text-muted">
           구매 금액과 시간당 비용은 실제 결제 기록이 있어야 알 수 있어요.{' '}
