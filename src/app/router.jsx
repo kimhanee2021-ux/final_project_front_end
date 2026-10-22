@@ -10,6 +10,7 @@ import AiCoachPage from '@/pages/aiCoach/AiCoachPage'
 import AnalysisPage from '@/pages/analysis/AnalysisPage'
 import PurchasesPage from '@/pages/purchases/PurchasesPage'
 import WishlistPage from '@/pages/wishlist/WishlistPage'
+import RecommendationsPage from '@/pages/recommendations/RecommendationsPage'
 import PcDiagnosisPage from '@/pages/performance/PcDiagnosisPage'
 import HangulBlocks from '@/pages/blocks/HangulBlocks'
 import MyPage from '@/pages/mypage/MyPage'
@@ -59,6 +60,7 @@ const router = createBrowserRouter([
             children: [
               { path: 'library', element: <LibraryPage /> },
               { path: 'wishlist', element: contained(<WishlistPage />) },
+              { path: 'recommendations', element: contained(<RecommendationsPage />) },
               { path: 'settings', element: <SettingsPage /> },
               { path: 'mypage', element: <MyPage /> },
               { path: 'community', element: contained(<CommunityPage />) },

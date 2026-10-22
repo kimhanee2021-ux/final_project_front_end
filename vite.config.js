@@ -8,6 +8,8 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig(({ mode }) => {
   // 백엔드(스프링) 주소. 기본값은 application.yaml의 server.port(8080)
   const env = loadEnv(mode, process.cwd(), '')
+  // 게임 추천 서버(FastAPI, final_project_fast_api). 기본값은 uvicorn 기본 실행 포트(8000)
+  const recommendUrl = process.env.RECOMMEND_API_TARGET || env.RECOMMEND_API_TARGET || 'http://localhost:8000'
   const backendUrl = process.env.AI_API_TARGET || env.AI_API_TARGET || env.VITE_BACKEND_URL || 'http://localhost:8080'
   return {
   plugins: [react(), tailwindcss()],// React, Tailwind 플러그인 적용
@@ -20,6 +22,11 @@ export default defineConfig(({ mode }) => {
     open:false,
     // /api 요청을 백엔드로 넘긴다. 브라우저 입장에서는 같은 출처라 CORS 설정과 무관하게 동작한다.
     proxy:{
+      // 게임 추천(/api/v1)만 FastAPI로 보낸다. 객체 순서대로 먼저 맞는 규칙이 쓰이므로 /api보다 앞에 둬야 한다.
+      '/api/v1':{
+        target:recommendUrl,
+        configure:proxy=>proxy.on('proxyReq',proxyReq=>proxyReq.removeHeader('origin')),
+      },
       '/api':{
         target:backendUrl,
         // Origin 헤더가 남아 있으면 스프링이 CORS 요청으로 보고 허용 목록(기본 5173)과 대조해 403을 낸다

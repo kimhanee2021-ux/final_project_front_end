@@ -24,6 +24,7 @@ export const headerMenus = [
     label: '게임 탐색',
     children: [
       { to: '/explore', icon: 'compass', label: '스팀 전체 게임', description: '장르별 · 출시 예정 · 인기 게임' },
+      { to: '/recommendations', icon: 'spark', label: 'AI 게임 추천', description: '내가 플레이한 게임 취향으로 다음 게임 추천' },
     ],
   },
   {
