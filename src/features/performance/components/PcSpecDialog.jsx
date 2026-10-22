@@ -264,7 +264,7 @@ export default function PcSpecDialog({ open, saved, onSave, onReset, onClose }) 
               <>
                 {' '}
                 분석은{' '}
-                <Link to="/login?next=%2Fpc-check%2Fevaluation" className="text-primary-text underline">
+                <Link to="/login?next=%2Fpc-check" className="text-primary-text underline">
                   로그인
                 </Link>{' '}
                 후에 진행돼요.

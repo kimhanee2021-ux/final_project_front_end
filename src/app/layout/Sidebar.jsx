@@ -24,7 +24,7 @@ export default function Sidebar({ onClose }) {
   const returnTo = location.pathname + location.search + location.hash
   // 지금 보고 있는 페이지가 속한 묶음은 처음부터 펼쳐 둔다.
   const [openId, setOpenId] = useState(
-    () => headerMenus.find(menu => menu.children.some(child => child.to === location.pathname))?.id ?? null
+    () => headerMenus.find(menu => menu.children?.some(child => child.to === location.pathname))?.id ?? null
   )
   const follow = () => {
     setQuery('')
@@ -61,15 +61,21 @@ export default function Sidebar({ onClose }) {
         <strong className="text-[22px] tracking-[-0.6px] leading-[1.2] font-[720] max-[1350px]:text-[20px]">GameSense</strong>
       </NavLink>
       <div className="grid gap-[6px]">
-        {headerMenus.map(menu => (
-          <SidebarMenuGroup
-            key={menu.id}
-            menu={menu}
-            open={openId === menu.id}
-            onToggle={() => setOpenId(openId === menu.id ? null : menu.id)}
-            renderLinks={nav}
-          />
-        ))}
+        {headerMenus.map(menu =>
+          menu.children ? (
+            <SidebarMenuGroup
+              key={menu.id}
+              menu={menu}
+              open={openId === menu.id}
+              onToggle={() => setOpenId(openId === menu.id ? null : menu.id)}
+              renderLinks={nav}
+            />
+          ) : (
+            <nav key={menu.id} aria-label={menu.label} className="grid">
+              {nav([menu])}
+            </nav>
+          )
+        )}
       </div>
       <div className="mt-auto">
         <SidebarSteamCard />

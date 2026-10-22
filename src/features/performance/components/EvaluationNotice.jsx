@@ -12,7 +12,7 @@ export default function EvaluationNotice({ status, showLogin = false }) {
     >
       <p className="text-[14px] text-muted leading-[1.7]">{STATUS_MESSAGES[status]}</p>
       {status === 'login' && showLogin && (
-        <Link to="/login?next=%2Fpc-check%2Fevaluation" className="gs-primary-button shrink-0">
+        <Link to="/login?next=%2Fpc-check" className="gs-primary-button shrink-0">
           로그인하기
         </Link>
       )}

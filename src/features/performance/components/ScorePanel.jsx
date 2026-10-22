@@ -1,7 +1,9 @@
 import { GSIcon, RadarChart } from '@/shared/ui'
 import EvaluationNotice from './EvaluationNotice'
+import GradeScale from './GradeScale'
+import PartStatusList from './PartStatusList'
 import { overallPerformanceExplanation } from '../model/pcGrade'
-import { VERDICTS, unknownGradeHint } from '../model/pcEvaluation'
+import { VERDICTS, gradeOneLiner, unknownGradeHint } from '../model/pcEvaluation'
 
 const verdictByValue = Object.fromEntries(Object.values(VERDICTS).map(item => [item.value, item.label]))
 
@@ -27,6 +29,7 @@ export default function ScorePanel({ evaluation }) {
   const judged = judgements.some(item => item.verdict)
   const sections = overallPerformanceExplanation(overview ? { overview } : {}).map(toSection)
   const hasTitles = sections.every(section => section.title)
+  const oneLiner = grade.band ? gradeOneLiner(judgements) : ''
   return (
     <div className="grid gap-[32px]">
       <div className="grid grid-cols-[1fr_1.2fr] gap-[48px] items-center max-[900px]:grid-cols-1 max-[900px]:gap-[32px]">
@@ -35,15 +38,20 @@ export default function ScorePanel({ evaluation }) {
             <strong className="text-[72px] font-[750] tracking-[-3px] leading-none">{grade.grade ?? (grade.unknown ? '?' : '—')}</strong>
             <span className="ml-[8px] text-[20px] text-faint">등급</span>
           </p>
-          <strong className="block mt-[20px] text-[20px] font-[700]">
-            {grade.band
-              ? grade.band.status
-              : analyzing
+          {/* 등급이 정해지면 등급 이름은 위 제목에 이미 있으니 눈금과 AI 판단으로 보여주고, 아직이면 상태 문구를 보여준다 */}
+          {grade.band ? (
+            <GradeScale grade={grade.grade} />
+          ) : (
+            <strong className="block mt-[20px] text-[20px] font-[700]">
+              {analyzing
                 ? `AI 분석 중… ${diagnosis.elapsed ?? 0}초`
                 : grade.unknown
                   ? '등급을 판정할 수 없어요'
                   : '등급을 계산하는 중이에요'}
-          </strong>
+            </strong>
+          )}
+          {oneLiner && <p className="mt-[16px] text-[16px] font-[600] leading-[1.7]">{oneLiner}</p>}
+          {grade.band && judged && <PartStatusList judgements={judgements} />}
           {grade.unknown && !analyzing && (
             <p role="status" className="mt-[10px] text-[13px] text-muted leading-[1.7]">{unknownGradeHint(specs)}</p>
           )}

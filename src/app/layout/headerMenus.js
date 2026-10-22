@@ -1,6 +1,6 @@
 // 헤더바 메인 메뉴 (왼쪽부터 표시 순서).
 // 모바일 사이드바(Sidebar.jsx)도 이 목록을 그대로 쓰므로 메뉴를 바꾸면 양쪽이 함께 바뀐다.
-// children이 있으면 메뉴를 눌렀을 때 아래로 서브 메뉴가 펼쳐지고, 없으면 바로 이동한다.
+// children이 있으면 메뉴를 눌렀을 때 아래로 서브 메뉴가 펼쳐지고, 없으면 to로 바로 이동한다(그때는 icon·description도 함께 적는다).
 // 설정·마이페이지는 오른쪽 영역(Header.jsx)에서 따로 그린다.
 export const headerMenus = [
   {
@@ -28,10 +28,9 @@ export const headerMenus = [
   },
   {
     id: 'pc',
-    label: 'PC 분석',
-    children: [
-      { to: '/pc-check/evaluation', icon: 'chart', label: '내 PC 종합평가', description: '등급 · 게임별 성능 · 개선 방향' },
-      { to: '/pc-check', icon: 'monitor', label: '내 PC 사양', description: '사양 입력과 부품 정보 확인' },
-    ],
+    label: 'AI PC 진단',
+    to: '/pc-check',
+    icon: 'monitor',
+    description: '등급 · 내 부품 · 게임별 성능 · 개선 방향',
   },
 ]

@@ -59,3 +59,17 @@ export function unknownGradeHint(specs) {
   if (!gpu) return 'GPU 모델이 입력되지 않아서 등급을 정할 수 없어요. 사양 입력에서 GPU를 적어 주세요.'
   return 'GPU·CPU 모델이나 RAM을 정확히 확인할 수 없거나 GPU가 여러 개로 보여서 등급을 정할 수 없어요. 사양 입력에서 실제로 쓰는 GPU 하나를 모델명까지 적어 주세요.'
 }
+
+// 종합 등급 아래에 한 줄로 보여줄 AI 판단 설명. 부품 판정에서 가장 중요한 것 하나만 말한다:
+// 교체를 검토할 부품이 있으면 그것, 없으면 확인이 필요한 부품, 모두 괜찮으면 지금 구성으로 충분하다는 말.
+// 부품 이름 뒤에 받침에 따라 달라지는 조사를 붙이지 않도록 "교체를 검토해 보세요"처럼 이름과 조사가 이어지지 않게 쓴다.
+// 아직 판정이 하나도 없으면 빈 문자열이다.
+export function gradeOneLiner(judgements) {
+  if (!judgements.some(item => item.verdict)) return ''
+  const names = verdict => judgements.filter(item => item.verdict?.label === verdict.label).map(item => item.label).join(' · ')
+  const upgrade = names(VERDICTS.UPGRADE)
+  if (upgrade) return `AI 판단: ${upgrade} 교체를 검토해 보세요.`
+  const check = names(VERDICTS.CHECK)
+  if (check) return `AI 판단: ${check} 상태를 한 번 확인해 보세요.`
+  return 'AI 판단: 모든 부품이 유지 가능해요. 지금 구성으로 충분히 즐길 수 있어요.'
+}
