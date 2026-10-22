@@ -4,14 +4,13 @@
 
 ## 실행과 구조
 
-프로젝트 루트에서 `npm run dev`를 실행한 뒤 `/gamer-map`을 연다.
+프로젝트 루트에서 `npm run dev`를 실행한 뒤 랜딩 페이지(`/`)의 두 번째 장면에서 본다. 지도만 보려면 `/landing-map`을 연다.
 독립 `index.html`이나 별도의 9192 포트는 사용하지 않는다.
-앱 라우트는 `pages/gamerMap`, 국가·연도 query와 주간랭킹 연결은 `features/gamerMap`에서 관리한다.
+앱 라우트는 `pages/landing/LandingMapPage.jsx`이고, 랜딩(`public/landing/index.html`)이 이 화면을 iframe으로 띄운다.
 
 - `index.js`: 앱에서 사용하는 공개 export와 지도 CSS.
-- `jsx/GamerMap.jsx`: 지도와 연도 재생 조합. 국가·연도는 상위 컴포넌트와 공유한다.
-- `jsx/PixelWorldMap.jsx`: SVG 블록·국가 이름표·확대·이동.
-- `jsx/TimeExplorer.jsx`: 2010~2025년 선택과 재생 버튼.
+- `jsx/GamerMapEmbed.jsx`: 랜딩용 지도. 툴바·줌·설명 없이 2010→2025를 자동 재생한다.
+- `jsx/CanvasMosaic.jsx`: 블록을 canvas 한 장에 그리고, 연도가 바뀔 때 이전 자리에서 새 자리로 옮긴다. 블록(약 6,600개)을 SVG 요소로 만들면 랜딩의 3D 영상과 함께 돌 때 화면이 끊겨서 canvas로 바꿨다.
 - `js/playerData.js`, `js/data/playerSeries*`: PC 19개국의 제공 시계열.
 - `js/mosaic*`, `js/data/worldBlocks*`: 원본 지도 기하 계산·윤곽·연도별 보정.
 - `js/cartogram.test.js`: 원본의 지도·데이터 검증.
@@ -22,7 +21,7 @@
 자료는 백만 명 단위이며 원출처를 따로 검증하지 않은 제공값이다.
 지도 면적은 국가별로 다른 고정 단위를 사용하므로 국가 간 이용자 수 순위를 의미하지 않는다.
 중국·인도는 1블록=75만 명, 다른 국가는 25만 명이다. 블록은 모두 6×6이며 간격은 2다.
-주변 회청색 지형은 통계가 아니다. 제공 게임 목록과 Steam 주간 매출 순위는 별도의 데이터다.
+주변 회청색 지형은 통계가 아니다.
 
 ## 확인
 

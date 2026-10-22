@@ -2,9 +2,9 @@ import { AnalysisPanel, GSIcon } from '@/shared/ui'
 import { activityHeadline } from '../model/gameAnalysisModel'
 
 // 시계열형 데이터 → 타임라인
-export default function ActivityPanel({ activities, eyebrow }) {
+export default function ActivityPanel({ activities, eyebrow, icon }) {
   return (
-    <AnalysisPanel eyebrow={eyebrow} headline={activityHeadline(activities)}>
+    <AnalysisPanel eyebrow={eyebrow} icon={icon} headline={activityHeadline(activities)}>
       <ul>
         {activities.map(item => (
           <li key={item.id} className="flex items-center gap-[16px] py-[16px] border-b border-border last:border-0">

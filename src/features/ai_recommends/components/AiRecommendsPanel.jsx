@@ -7,7 +7,7 @@ import { MAX_CARD_TAGS, tagLabel } from '@/shared/utils/gameTags'
 import { WishlistButton } from '@/features/wishlist'
 import { useAiDiagnosed } from '../hooks/useAiDiagnosed'
 import { useAiRecommendations } from '../hooks/useAiRecommendations'
-import { genreShares, matchLevel, reasonFor, tasteGenres, topPlayedGames } from '../model/recommendation'
+import { genreShares, matchLevel, reasonFor, tasteGenres, topPlayedGames, totalPlayHours } from '../model/recommendation'
 import { MEDALS } from '../model/medals'
 import RankBadge from './RankBadge'
 
@@ -28,7 +28,7 @@ const noticeClass =
 // AI 분석 화면(AiAnalysisSection)과 같은 각진 그라데이션 라벨 + 반짝이는 별로 "AI가 만든 결과"임을 표시한다.
 function AiBadge() {
   return (
-    <span className="ai-badge relative inline-flex items-center gap-[6px] mb-[20px] px-[11px] py-[4px] rounded-[6px] text-[12px] font-[800] tracking-[0.4px] text-[#14131c] overflow-hidden">
+    <span className="ai-badge relative inline-flex items-center gap-[6px] px-[11px] py-[4px] rounded-[6px] text-[12px] font-[800] tracking-[0.4px] text-[#14131c] overflow-hidden">
       <GSIcon name="spark" size={14} className="ai-badge-spark" />
       AI추천
     </span>
@@ -170,32 +170,76 @@ function RecommendCard({ game, match, reason, rank = game.rank }) {
   )
 }
 
+// 분석 요약 숫자 3칸: AI가 얼마나 많은 데이터를 보고 골랐는지 보여준다
+function AnalysisStats({ stats }) {
+  return (
+    <dl className="grid grid-cols-3 gap-[8px]">
+      {stats.map(stat => (
+        <div key={stat.label} className="rounded-[16px] bg-surface px-[14px] py-[12px] min-w-0">
+          <dt className="text-[12px] text-muted truncate">{stat.label}</dt>
+          <dd className="mt-[2px] text-[22px] font-[750] tracking-[-0.5px] tabular-nums truncate">
+            {stat.value}
+            <small className="ml-[2px] text-[12px] font-[500] text-muted">{stat.unit}</small>
+          </dd>
+        </div>
+      ))}
+    </dl>
+  )
+}
+
+// 추천 결과 영역의 배지 줄: AI추천 배지 + 작은 제목
+function ResultBadge() {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <AiBadge />
+      <span className="text-[14px] font-[650] text-primary-text">AI가 찾은 내 취향</span>
+    </div>
+  )
+}
+
+// 추천 새로 받기: 섹션 제목 줄 오른쪽 끝에 둔다
+function Reanalyze({ loading, onReload }) {
+  return (
+    <p className="text-[13px]">
+      <button
+        type="button"
+        className="inline-flex items-center gap-[4px] font-[650] text-primary-text hover:underline disabled:opacity-50 disabled:no-underline"
+        onClick={onReload}
+        disabled={loading}
+      >
+        {loading ? 'AI가 다시 분석하는 중...' : '추천 새로 받기'}
+        {!loading && <GSIcon name="refresh" size={13} />}
+      </button>
+    </p>
+  )
+}
+
 // AI가 참고한 게임: 내 라이브러리에서 가장 오래 플레이한 게임. 막대는 1위 게임 대비 플레이시간이다.
 function SeedGames({ games }) {
   const max = games[0]?.playtimeForever || 1
   return (
-    <aside className="rounded-[20px] bg-surface p-[20px]" aria-label="AI가 참고한 게임">
-      <p className="flex items-center gap-[8px] text-[14px] font-[700]">
-        <GSIcon name="library" size={16} className="text-primary-text" />
+    <aside className="rounded-[20px] bg-surface p-[24px]" aria-label="AI가 참고한 게임">
+      <p className="flex items-center gap-[8px] text-[15px] font-[700]">
+        <GSIcon name="library" size={17} className="text-primary-text" />
         AI가 참고한 게임
       </p>
-      <p className="mt-[4px] mb-[16px] text-[12px] text-muted">가장 오래 플레이한 게임으로 취향을 읽었어요</p>
-      <ol className="list-none m-0 p-0 flex flex-col gap-[14px]">
+      <p className="mt-[4px] mb-[18px] text-[13px] text-muted">가장 오래 플레이한 게임으로 취향을 읽었어요</p>
+      <ol className="list-none m-0 p-0 flex flex-col gap-[16px]">
         {games.map(game => (
           <li key={game.appId} className="flex items-center gap-[12px] min-w-0">
             <GameImage
-              className="w-[72px] aspect-[460/215] rounded-[8px] object-cover shrink-0"
+              className="w-[96px] aspect-[460/215] rounded-[10px] object-cover shrink-0"
               src={`https://cdn.akamai.steamstatic.com/steam/apps/${game.appId}/header.jpg`}
               iconSize={16}
             />
             <div className="flex-1 min-w-0">
               <div className="flex items-baseline justify-between gap-[8px]">
-                <strong className="text-[13px] font-[600] truncate">{game.name}</strong>
-                <span className="shrink-0 text-[12px] text-muted tabular-nums">
+                <strong className="text-[14px] font-[600] truncate">{game.name}</strong>
+                <span className="shrink-0 text-[13px] text-muted tabular-nums">
                   {Math.round(game.playtimeForever / 60).toLocaleString('ko-KR')}시간
                 </span>
               </div>
-              <div className="mt-[6px] h-[4px] rounded-full bg-bg overflow-hidden" aria-hidden="true">
+              <div className="mt-[8px] h-[6px] rounded-full bg-bg overflow-hidden" aria-hidden="true">
                 <div className="h-full rounded-full bg-primary" style={{ width: `${(game.playtimeForever / max) * 100}%` }} />
               </div>
             </div>
@@ -207,44 +251,69 @@ function SeedGames({ games }) {
 }
 
 // 취향 장르 비중: 추천 게임 중 그 장르가 차지하는 비율을 가로 막대로 보여준다.
+// 오른쪽 "AI가 참고한 게임"과 같은 카드 모양으로 따로 묶는다.
 function GenreShares({ games, genres }) {
   return (
-    <div className="max-w-[520px]">
-      <p className="mb-[12px] text-[12px] text-muted">AI 추천 {games.length}개 중 장르 비중</p>
-      <ul className="list-none m-0 p-0 flex flex-col gap-[10px]" aria-label="내 취향 장르 비중">
+    <section className="max-w-[560px] rounded-[20px] bg-surface p-[24px]" aria-label="내 취향 장르 비중">
+      <p className="flex items-center gap-[8px] text-[15px] font-[700]">
+        <GSIcon name="chart" size={17} className="text-primary-text" />
+        취향 장르 비중
+      </p>
+      <p className="mt-[4px] mb-[18px] text-[13px] text-muted">AI가 추천한 게임 {games.length}개 중 이 장르가 들어 있는 비율이에요</p>
+      <ul className="list-none m-0 p-0 flex flex-col gap-[12px]">
         {genreShares(games, genres).map(({ genre, share }) => (
           <li key={genre} className="grid grid-cols-[88px_minmax(0,1fr)_44px] items-center gap-[12px]">
-            <span className="text-[13px] font-[700] text-primary-text truncate">#{tagLabel(genre)}</span>
-            <span className="h-[8px] rounded-full bg-surface overflow-hidden" aria-hidden="true">
+            <span className="text-[14px] font-[700] text-primary-text truncate">#{tagLabel(genre)}</span>
+            <span className="h-[8px] rounded-full bg-bg overflow-hidden" aria-hidden="true">
               <span className="block h-full rounded-full bg-primary" style={{ width: `${share}%` }} />
             </span>
-            <span className="text-[13px] font-[700] text-right tabular-nums">{share}%</span>
+            <span className="text-[14px] font-[700] text-right tabular-nums">{share}%</span>
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   )
 }
 
 // 추천 결과: 위쪽 왼쪽에 AI가 읽은 취향, 오른쪽에 그 근거(AI가 참고한 게임). 그 아래 "그래서 추천한" TOP 3를 크게.
-function Result({ data, games, cards, seeds, loading }) {
+function Result({ data, games, cards, seeds, totalHours, loading }) {
   const taste = tasteGenres(games)
   const top = cards.slice(0, TOP_COUNT)
   const tasteText = taste.slice(0, 2).map(tagLabel).join(' · ')
   return (
     <div className={`transition-opacity ${loading ? 'opacity-50' : ''}`}>
-      <div className={`grid gap-[32px] items-start ${seeds.length ? 'grid-cols-[minmax(0,1fr)_minmax(280px,360px)] max-[860px]:grid-cols-1' : ''}`}>
-        <AnalysisPanel
-          eyebrow="AI가 찾은 내 취향"
-          headline={
-            tasteText
-              ? ['플레이한 게임 ', hl(`${data.usedGameCount}개`), '를 분석해 보니', br, hl(tasteText), ' 취향이 가장 짙어요.']
-              : ['플레이한 게임 ', hl(`${data.usedGameCount}개`), '로 취향을 분석했어요.']
-          }
-        >
+      {/* 2칸: 왼쪽은 배지 줄 → 헤드라인 → 장르 비중 카드, 오른쪽은 분석 요약 숫자 → AI가 참고한 게임 카드.
+          두 칸의 아래 끝을 맞춰 두 카드의 아래쪽 선이 같다 (카드 크기는 각자 내용만큼). 좁은 화면에서는 위아래로 쌓인다. */}
+      <div
+        className={`grid gap-x-[32px] gap-y-[20px] -mt-[16px] ${
+          seeds.length ? 'grid-cols-[minmax(0,1fr)_minmax(300px,400px)] items-end max-[860px]:grid-cols-1' : ''
+        }`}
+      >
+        <div className="flex flex-col gap-[20px] min-w-0">
+          <ResultBadge />
+          <div className="[&_h2]:!mb-0">
+            <AnalysisPanel
+              headline={
+                tasteText
+                  ? ['플레이한 게임 ', hl(`${data.usedGameCount}개`), '를 분석해 보니', br, hl(tasteText), ' 취향이 가장 짙어요.']
+                  : ['플레이한 게임 ', hl(`${data.usedGameCount}개`), '로 취향을 분석했어요.']
+              }
+            />
+          </div>
           {taste.length > 0 && <GenreShares games={games} genres={taste} />}
-        </AnalysisPanel>
-        {seeds.length > 0 && <SeedGames games={seeds} />}
+        </div>
+        {seeds.length > 0 && (
+          <div className="flex flex-col gap-[10px] min-w-0">
+            <AnalysisStats
+              stats={[
+                { label: '분석한 게임', value: data.usedGameCount.toLocaleString('ko-KR'), unit: '개' },
+                { label: '총 플레이', value: totalHours.toLocaleString('ko-KR'), unit: '시간' },
+                { label: '추천 후보', value: games.length.toLocaleString('ko-KR'), unit: '개' },
+              ]}
+            />
+            <SeedGames games={seeds} />
+          </div>
+        )}
       </div>
 
       <div className="mt-[36px] mb-[16px] flex items-center gap-[10px]">
@@ -315,6 +384,7 @@ export default function AiRecommendsPanel({ libraryGames }) {
   })
   const games = useMemo(() => data?.games ?? [], [data])
   const seeds = useMemo(() => topPlayedGames(libraryGames), [libraryGames])
+  const totalHours = useMemo(() => totalPlayHours(libraryGames), [libraryGames])
   // 카드마다 잘 맞는 정도와 이유를 붙인다
   const cards = useMemo(() => {
     const taste = tasteGenres(games)
@@ -324,6 +394,7 @@ export default function AiRecommendsPanel({ libraryGames }) {
   const showLists = diagnosed && !error && !noPlayed && cards.length > TOP_COUNT
 
   let body
+  let showResult = false
   if (!diagnosed) {
     body = (
       <div className="flex flex-col gap-[20px]">
@@ -365,7 +436,8 @@ export default function AiRecommendsPanel({ libraryGames }) {
   } else if (data && !games.length) {
     body = <EmptyState title="추천할 게임이 없어요" description="잠시 후 다시 추천받아 보세요." />
   } else if (data) {
-    body = <Result data={data} games={games} cards={cards} seeds={seeds} loading={loading} />
+    showResult = true
+    body = <Result data={data} games={games} cards={cards} seeds={seeds} totalHours={totalHours} loading={loading} />
   }
 
   return (
@@ -374,8 +446,14 @@ export default function AiRecommendsPanel({ libraryGames }) {
         <PageHeading
           title="AI 게임 추천"
           description="내가 플레이한 게임의 취향을 분석해, 아직 보유하지 않은 게임을 추천해 드려요."
+          action={showResult ? <Reanalyze loading={loading} onReload={reload} /> : undefined}
         />
-        <AiBadge />
+        {/* 추천 결과가 있으면 배지 줄은 결과 영역 왼쪽 칸 맨 위에 둔다(Result). 그 밖의 상태는 여기서 제목 쪽으로 당겨 둔다 */}
+        {!showResult && (
+          <div className="-mt-[16px] mb-[14px]">
+            <AiBadge />
+          </div>
+        )}
         {body}
       </section>
 

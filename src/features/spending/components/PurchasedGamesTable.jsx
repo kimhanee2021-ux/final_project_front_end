@@ -1,12 +1,23 @@
 import { useState } from 'react'
 import { Card, EmptyState, GSIcon } from '@/shared/ui'
 import GameIdentity from './GameIdentity'
-import PlayStatusBadge from './PlayStatusBadge'
+import PlaytimeCell from './PlaytimeCell'
 import { money, dateLabel } from '@/shared/utils/formatters'
-import { netAmount, hourlyText, hoursText } from '../model/spendingMetrics'
+import { netAmount, hourlyText, hourlyTone } from '../model/spendingMetrics'
 import { noRecordLabel } from '@/features/purchaseImport'
 const BADGE =
   'inline-block ml-[6px] px-[8px] py-[2px] rounded-full bg-bg text-[11px] font-medium text-muted align-middle'
+// 열 제목: 사이트 보라 테마의 옅은 띠. 양 끝 칸만 둥글게 깎아 한 줄짜리 알약처럼 보이게 한다.
+const TH =
+  'text-[12px] font-[650] text-primary-text bg-primary-soft px-[10px] py-[12px] first:rounded-l-[12px] last:rounded-r-[12px]'
+// 시간당 비용 알약 색: 쌀수록 초록, 비쌀수록 복숭아색 (AI 분석 '게임 가성비' 구간과 같은 기준)
+const HOURLY_TONES = {
+  great: 'bg-mint-bg text-mint-text',
+  good: 'bg-primary-soft text-primary-text',
+  fair: 'bg-bg text-text',
+  poor: 'bg-peach-bg text-peach-text',
+}
+const isUnplayedPaid = game => game.hours === 0 && netAmount(game) > 0
 const NO_AMOUNT_LABELS ={ NO_RECORD: '구매 기록 없음', UNKNOWN: '가격 정보 없음' }
 const amountText = game =>
   game.amountSource === 'FREE'
@@ -25,17 +36,24 @@ export default function PurchasedGamesTable({
   onSelect,
   library,
   needsHistory = false,
+  scrollable = false,
+  icon,
 }) {
   // 스팀 연동 분석은 구매일이 없으므로 구매일 열/정렬 대신 최근 플레이를 보여준다
   const hasPurchaseDates = games.some(game => game.purchasedAt)
   const [sort, setSort] = useState(hasPurchaseDates ? 'recent' : 'hours')
   const [query, setQuery] = useState('')
-  const filtered = games.filter(
-    game =>
-      (filter !== 'unplayed' || (game.hours === 0 && netAmount(game) > 0)) &&
-      (!genre || game.genre === genre) &&
-      game.name.toLowerCase().includes(query.toLowerCase())
+  // 탭 옆 개수가 검색·장르 결과와 맞도록, 플레이 상태 필터만 빼고 먼저 거른다
+  const base = games.filter(
+    game => (!genre || game.genre === genre) && game.name.toLowerCase().includes(query.toLowerCase())
   )
+  const filtered = filter === 'unplayed' ? base.filter(isUnplayedPaid) : base
+  const tabs = [
+    { key: 'all', label: '전체 게임', count: base.length },
+    { key: 'unplayed', label: '미플레이', count: base.filter(isUnplayedPaid).length },
+  ]
+  // 플레이 시간 미니 막대의 기준(100%): 보유 게임 중 가장 오래 한 게임
+  const maxHours = Math.max(0, ...games.map(game => game.hours || 0))
   const sorted = [...filtered].sort((a, b) =>
     sort === 'price'
       ? (netAmount(b) ?? -1) - (netAmount(a) ?? -1)
@@ -45,6 +63,7 @@ export default function PurchasedGamesTable({
   )
   return (
     <Card
+      icon={icon}
       title={library ? '내 게임 라이브러리' : hasPurchaseDates ? '구매한 게임, 얼마나 즐겼을까요?' : '보유 게임, 얼마나 즐겼을까요?'}
       subtitle={
         needsHistory
@@ -57,21 +76,33 @@ export default function PurchasedGamesTable({
       action={<span className="text-[13px] text-faint whitespace-nowrap">{filtered.length}개 게임</span>}
     >
       <div className="flex justify-between gap-[15px] items-center mt-[28px] mb-[16px] max-[1000px]:items-start max-[1000px]:flex-col">
-        <div className="flex items-center gap-[17px]" role="group" aria-label="플레이 상태 필터">
-          <button
-            className={`py-[6px] bg-transparent text-[14px] whitespace-nowrap ${filter === 'all' ? 'text-text font-bold' : 'text-muted'}`}
-            aria-pressed={filter === 'all'}
-            onClick={() => setFilter('all')}
-          >
-            전체 게임
-          </button>
-          <button
-            className={`py-[6px] bg-transparent text-[14px] whitespace-nowrap ${filter === 'unplayed' ? 'text-text font-bold' : 'text-muted'}`}
-            aria-pressed={filter === 'unplayed'}
-            onClick={() => setFilter('unplayed')}
-          >
-            미플레이
-          </button>
+        <div className="flex items-center gap-[12px] flex-wrap">
+          {/* 세그먼트 탭: 옅은 틀 안에서 고른 탭만 흰 카드처럼 떠오른다 */}
+          <div className="inline-flex p-[4px] rounded-full bg-bg" role="group" aria-label="플레이 상태 필터">
+            {tabs.map(tab => {
+              const active = filter === tab.key
+              return (
+                <button
+                  key={tab.key}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setFilter(tab.key)}
+                  className={`inline-flex items-center gap-[8px] h-[34px] px-[16px] rounded-full text-[13px] whitespace-nowrap transition-[background,color,box-shadow] duration-200 ${
+                    active ? 'bg-surface text-primary-text font-[700] shadow-[var(--shadow)]' : 'text-muted hover:text-text'
+                  }`}
+                >
+                  {tab.label}
+                  <span
+                    className={`min-w-[22px] px-[6px] py-[1px] rounded-full text-[11px] font-[650] tabular-nums ${
+                      active ? 'bg-primary-soft text-primary-text' : 'bg-surface text-faint'
+                    }`}
+                  >
+                    {tab.count}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
           {genre && (
             <button className="flex items-center gap-[6px] px-[12px] py-[5px] bg-bg text-text text-[13px] rounded-full" onClick={clearGenre}>
               {genre}
@@ -122,23 +153,25 @@ export default function PurchasedGamesTable({
           }
         />
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse text-[14px] text-left whitespace-nowrap max-[580px]:block max-[580px]:whitespace-normal">
+        // scrollable: 표가 길면 이 칸 안에서만 세로로 스크롤하고, 열 제목은 위에 붙어 있게 한다 (AI 분석 페이지에서 쓴다).
+        <div
+          className={`overflow-x-auto ${scrollable ? 'max-h-[480px] overflow-y-auto overscroll-contain [&_th]:sticky [&_th]:top-0 [&_th]:z-[1]' : ''}`}
+        >
+          <table className="w-full border-separate border-spacing-0 text-[14px] text-left whitespace-nowrap max-[580px]:block max-[580px]:whitespace-normal">
             <thead className="max-[580px]:absolute max-[580px]:w-[1px] max-[580px]:h-[1px] max-[580px]:overflow-hidden max-[580px]:[clip:rect(0,0,0,0)]">
               <tr>
-                <th className="text-[12px] font-medium text-faint px-[10px] py-[12px] border-b border-border">게임</th>
-                <th className="text-[12px] font-medium text-faint px-[10px] py-[12px] border-b border-border">구매 금액</th>
-                <th className="text-[12px] font-medium text-faint px-[10px] py-[12px] border-b border-border">{hasPurchaseDates ? '구매일' : '최근 플레이'}</th>
-                <th className="text-[12px] font-medium text-faint px-[10px] py-[12px] border-b border-border">플레이 시간</th>
-                <th className="text-[12px] font-medium text-faint px-[10px] py-[12px] border-b border-border">시간당 비용</th>
-                <th className="text-[12px] font-medium text-faint px-[10px] py-[12px] border-b border-border">상태</th>
+                <th className={TH}>게임</th>
+                <th className={TH}>구매 금액</th>
+                <th className={TH}>{hasPurchaseDates ? '구매일' : '최근 플레이'}</th>
+                <th className={TH}>플레이 시간</th>
+                <th className={TH}>시간당 비용</th>
               </tr>
             </thead>
             <tbody className="max-[580px]:block">
               {sorted.map((game, index) => (
                 <tr
                   key={game.id}
-                  className={`max-[580px]:grid max-[580px]:grid-cols-2 max-[580px]:gap-[10px] max-[580px]:py-[17px] max-[580px]:border-t max-[580px]:border-border ${index === sorted.length - 1 ? '' : '[&_td]:border-b [&_td]:border-border max-[580px]:[&_td]:border-b-0'}`}
+                  className={`transition-colors [&:hover_td]:bg-surface-soft max-[580px]:grid max-[580px]:grid-cols-2 max-[580px]:gap-[10px] max-[580px]:py-[17px] max-[580px]:border-t max-[580px]:border-border ${index === sorted.length - 1 ? '' : '[&_td]:border-b [&_td]:border-border max-[580px]:[&_td]:border-b-0'}`}
                 >
                   <td className="px-[10px] py-[16px] max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[14px] max-[580px]:[grid-column:1/-1] max-[580px]:mb-[3px]">
                     <button className="bg-transparent p-0 text-left rounded-[6px]" onClick={() => onSelect(game)}>
@@ -170,13 +203,18 @@ export default function PurchasedGamesTable({
                         : '기록 없음'}
                   </td>
                   <td className="px-[10px] py-[16px] max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[14px] max-[580px]:before:content-['플레이_시간'] max-[580px]:before:block max-[580px]:before:text-muted max-[580px]:before:text-[12px] max-[580px]:before:font-normal max-[580px]:before:mb-[3px]">
-                    {hoursText(game.hours)}
+                    <PlaytimeCell hours={game.hours} maxHours={maxHours} />
                   </td>
                   <td className="px-[10px] py-[16px] max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[14px] max-[580px]:before:content-['시간당_비용'] max-[580px]:before:block max-[580px]:before:text-muted max-[580px]:before:text-[12px] max-[580px]:before:font-normal max-[580px]:before:mb-[3px]">
-                    {needsHistory ? <span className="text-faint">확인 필요</span> : hourlyText(game)}
-                  </td>
-                  <td className="px-[10px] py-[16px] max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[14px]">
-                    <PlayStatusBadge hours={game.hours} />
+                    {needsHistory ? (
+                      <span className="text-faint">확인 필요</span>
+                    ) : hourlyTone(game) ? (
+                      <span className={`inline-block px-[10px] py-[3px] rounded-full text-[13px] font-[650] tabular-nums whitespace-nowrap ${HOURLY_TONES[hourlyTone(game)]}`}>
+                        {hourlyText(game)}
+                      </span>
+                    ) : (
+                      <span className="text-muted">{hourlyText(game)}</span>
+                    )}
                   </td>
                 </tr>
               ))}

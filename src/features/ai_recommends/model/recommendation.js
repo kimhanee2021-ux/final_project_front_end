@@ -67,6 +67,11 @@ export function reasonFor(game, taste) {
   return `취향 일치 · ${shared.map(tagLabel).join(' · ')}`
 }
 
+// 스팀 라이브러리 전체 플레이시간 (시간 단위, 반올림)
+export function totalPlayHours(libraryGames) {
+  return Math.round((libraryGames ?? []).reduce((sum, game) => sum + (game.playtimeForever ?? 0), 0) / 60)
+}
+
 // 취향을 만든 게임: 내 스팀 라이브러리에서 플레이시간이 가장 긴 게임
 export function topPlayedGames(libraryGames, count = 3) {
   return [...(libraryGames ?? [])]

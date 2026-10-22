@@ -30,6 +30,8 @@
   --color-mint-text: var(--mint-text);
   --color-peach-bg: var(--peach-bg);
   --color-peach-text: var(--peach-text);
+  --color-rose-bg: var(--rose-bg);
+  --color-rose-text: var(--rose-text);
 
   /* -- gamesense.css 쪽 (gs-shell 전용) 토큰. 이름이 겹치지 않으니 공용 토큰과 같이 둬도 안전하다. */
   --color-gs-bg: var(--gs-bg);

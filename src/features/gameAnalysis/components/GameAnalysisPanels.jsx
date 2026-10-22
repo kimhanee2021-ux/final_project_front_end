@@ -1,39 +1,35 @@
 import { useState } from 'react'
 import { Panel } from '@/shared/ui'
 import GenrePanel from './GenrePanel'
-import GenreCountPanel from './GenreCountPanel'
 import ValueBandPanel from './ValueBandPanel'
-import ValueRankPanel from './ValueRankPanel'
 import ActivityPanel from './ActivityPanel'
-import GameListPanel from './GameListPanel'
 import { GameDetailDialog } from '@/features/spending'
-import { bestValueList, genreCounts, genreOverview, playtimeList, recentActivities, valueBands } from '../model/gameAnalysisModel'
-
-const SECTIONS = [
-  { id: 'genre', label: '장르별 보유 게임 가격' },
-  { id: 'genreCount', label: '보유 게임 장르 분석' },
-  { id: 'valueBand', label: '게임 가성비' },
-  { id: 'activity', label: '최근 활동' },
-  { id: 'value', label: '가성비 랭킹' },
-  { id: 'list', label: '플레이 시간 & 가성비 목록' },
-]
+import { genreCounts, genreOverview, recentActivities, valueBands } from '../model/gameAnalysisModel'
+import { GAME_SECTIONS } from '../model/analysisSections'
 
 // AI 분석 페이지의 게임별 데이터: 패널 하나에 정보 하나씩 나열하는 구성.
-export default function GameAnalysisPanels({ games, asOf }) {
+// genreView: 장르 패널의 기준(금액/보유·플레이). AI 분석에서 고른 주제에 맞춰 바깥에서 바꿀 수 있게 받는다.
+export default function GameAnalysisPanels({ games, asOf, genreView, onGenreViewChange }) {
   const [selectedGame, setSelectedGame] = useState(null)
   const panels = {
-    genre: label => <GenrePanel eyebrow={label} overview={genreOverview(games)} />,
-    genreCount: label => <GenreCountPanel eyebrow={label} counts={genreCounts(games)} />,
-    valueBand: label => <ValueBandPanel eyebrow={label} bands={valueBands(games)} onSelect={setSelectedGame} />,
-    activity: label => <ActivityPanel eyebrow={label} activities={recentActivities(games, asOf)} />,
-    value: label => <ValueRankPanel eyebrow={label} ranking={bestValueList(games)} />,
-    list: label => <GameListPanel eyebrow={label} rows={playtimeList(games)} onSelect={setSelectedGame} />,
+    genre: (label, icon) => (
+      <GenrePanel
+        eyebrow={label}
+        icon={icon}
+        overview={genreOverview(games)}
+        counts={genreCounts(games)}
+        view={genreView}
+        onViewChange={onGenreViewChange}
+      />
+    ),
+    valueBand: (label, icon) => <ValueBandPanel eyebrow={label} icon={icon} bands={valueBands(games)} onSelect={setSelectedGame} />,
+    activity: (label, icon) => <ActivityPanel eyebrow={label} icon={icon} activities={recentActivities(games, asOf)} />,
   }
   return (
     <>
-      {SECTIONS.map(({ id, label }) => (
+      {GAME_SECTIONS.map(({ id, label, icon }) => (
         <Panel key={id} id={id}>
-          {panels[id](label)}
+          {panels[id](label, icon)}
         </Panel>
       ))}
       <GameDetailDialog game={selectedGame} onClose={() => setSelectedGame(null)} />

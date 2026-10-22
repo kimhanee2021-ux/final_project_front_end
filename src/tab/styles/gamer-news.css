@@ -212,3 +212,24 @@
 @media (prefers-reduced-motion: reduce) {
   .gs-atlas *, .gs-atlas *::before, .gs-atlas *::after { transition: none !important; animation: none !important; }
 }
+
+/* 랜딩 페이지에 끼워 넣는 지도(GamerMapEmbed). 랜딩의 어두운 배경 위에 바탕 없이 지도만 띄우고, 툴바 · 줌 · 설명은 숨긴다. */
+.gs-atlas.gs-atlas--embed { color: #f4eee6; pointer-events: none; user-select: none; }
+.gs-atlas--embed .gs-atlas__map { border: 0; border-radius: 0; background: transparent; }
+.gs-atlas--embed .gs-atlas__map-kicker,
+.gs-atlas--embed .gs-atlas__map-footer,
+.gs-atlas--embed .gs-atlas__map-readout { display: none; }
+/* 캔버스(1680×1060)에서 블록이 있는 부분만 잘라 폭을 꽉 채운다.
+   2010~2025년 전체 블록 범위(x 72~1408, y 72~864)에 8px씩 여유를 둔 x 64~1416, y 64~872 (1352×808).
+   margin의 %는 부모 폭 기준이라 잘라낼 왼쪽 · 위쪽 여백(64 / 1352)을 그대로 비율로 적는다. */
+.gs-atlas--embed .gs-atlas__map-scroll { overflow: hidden; aspect-ratio: 1352 / 808; }
+.gs-atlas--embed .gs-atlas__map-plane { width: 124.26% !important; min-width: 0 !important; margin: -4.73% 0 0 -4.73%; }
+.gs-atlas--embed .gs-atlas__country-label { font-size: 11px; }
+.gs-atlas--embed .gs-atlas__embed-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
+.gs-atlas--embed .gs-atlas__embed-head strong { font-size: 44px; font-weight: 400; letter-spacing: -2px; color: #e4f1e8; font-variant-numeric: tabular-nums; }
+.gs-atlas--embed .gs-atlas__embed-head span { font-size: 13px; color: #b2cebd; }
+.gs-atlas--embed .gs-atlas__embed-head b { margin: 0 3px 0 6px; font-size: 18px; font-weight: 600; color: #b9d5c5; }
+@media (max-width: 700px) {
+  .gs-atlas--embed .gs-atlas__embed-head strong { font-size: 30px; }
+  .gs-atlas--embed .gs-atlas__embed-head span { font-size: 11px; }
+}

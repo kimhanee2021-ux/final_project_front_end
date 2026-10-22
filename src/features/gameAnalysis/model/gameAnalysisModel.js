@@ -1,4 +1,4 @@
-import { genreSpending, hourlyText, isPaid, netAmount, summarize, valueRanking } from '@/features/spending'
+import { genreSpending, isPaid, netAmount, summarize, valueRanking } from '@/features/spending'
 import { money, number } from '@/shared/utils/formatters'
 import { hl, plain } from '@/shared/utils/headline'
 import { groupMinorGenres } from './groupMinorGenres'
@@ -26,14 +26,6 @@ export function genreOverview(games) {
 export function genreHeadline({ top }) {
   if (!top) return ['아직 금액이 확인된 보유 게임이 없어요.']
   return [`보유 게임의 ${top.countPercent}%가 ${top.name}이고, 금액으로는 `, hl(money(top.amount)), '이에요.']
-}
-
-// 가성비 랭킹: 시간당 비용이 낮은 순 상위 N개 (1시간 이상 플레이한 유료 게임만)
-export const bestValueList = (games, size = 5) => valueRanking(games, size).best
-
-export function valueHeadline(list) {
-  if (!list.length) return ['가성비를 비교할 만큼 플레이한 유료 게임이 아직 없어요.']
-  return ['플레이 시간 대비 가격이 가장 낮은 건 ', hl(list[0].game.name), '예요.']
 }
 
 // 오늘 기준 며칠 전인지 문구로 바꾼다
@@ -74,10 +66,6 @@ export function activityHeadline(activities) {
   if (!activities.length) return ['아직 최근 활동 기록이 없어요.']
   return [`${activities[0].when} `, ...activities[0].parts, '.']
 }
-
-// 플레이 시간 & 가성비 목록: 플레이 시간이 긴 순
-export const playtimeList = games =>
-  [...games].sort((a, b) => (b.hours ?? 0) - (a.hours ?? 0)).map(game => ({ game, hourly: hourlyText(game) }))
 
 // 장르 분석: 금액이 아니라 '몇 개 가졌고 얼마나 했는지' 기준. 무료 게임도 포함한다.
 export function genreCounts(games) {
@@ -151,6 +139,7 @@ export function overallStats(games) {
     topHours,
     priceBands,
     unplayed: [...summary.unplayed].sort((a, b) => netAmount(b) - netAmount(a)),
-    ranking: valueRanking(games, 3),
+    // 시간당 가성비 상위 5개 (게임별 데이터에 있던 가성비 랭킹을 이 패널로 합쳤다)
+    ranking: valueRanking(games, 5),
   }
 }

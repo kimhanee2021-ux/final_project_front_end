@@ -30,3 +30,18 @@ test('hourly cost is only shown from one hour of play so a few minutes never exp
   assert.equal(hoursText(0.5), '30분')
   assert.equal(hoursText(86.5), '86.5시간')
 })
+test('playtime markers: 0 hours or less is unplayed, up to 2 hours is very low, unknown has none', async () => {
+  const { playtimeMarker } = await import('../src/features/spending/model/spendingMetrics.js')
+  assert.equal(playtimeMarker(0), 'unplayed'); assert.equal(playtimeMarker(-1), 'unplayed')
+  assert.equal(playtimeMarker(0.1), 'low'); assert.equal(playtimeMarker(2), 'low')
+  assert.equal(playtimeMarker(2.1), null); assert.equal(playtimeMarker(null), null)
+})
+test('hourly tone follows the value bands and skips free or unknown games', async () => {
+  const { hourlyTone } = await import('../src/features/spending/model/spendingMetrics.js')
+  assert.equal(hourlyTone(game({ amount: 9990, hours: 10 })), 'great')
+  assert.equal(hourlyTone(game({ amount: 10000, hours: 10 })), 'good')
+  assert.equal(hourlyTone(game({ amount: 30000, hours: 10 })), 'fair')
+  assert.equal(hourlyTone(game({ amount: 10000, hours: 0 })), 'poor')
+  assert.equal(hourlyTone(game({ amount: 0, amountSource: 'FREE' })), null)
+  assert.equal(hourlyTone(game({ hours: null })), null)
+})

@@ -7,12 +7,12 @@ import { money } from '@/shared/utils/formatters'
 
 // 분포형 데이터 → 세로 막대(구간별 게임 수) + 고른 구간에 속한 게임 목록.
 // 막대를 누르면 그 구간에 어떤 게임이 있는지 아래 박스에 보여준다. 처음에는 게임이 가장 많은 구간이 열려 있다.
-export default function ValueBandPanel({ bands, eyebrow, onSelect }) {
+export default function ValueBandPanel({ bands, eyebrow, icon, onSelect }) {
   const biggest = bands.reduce((best, band) => (band.count > best.count ? band : best), bands[0])
   const [bandId, setBandId] = useState(biggest.id)
   const band = bands.find(item => item.id === bandId) ?? biggest
   return (
-    <AnalysisPanel eyebrow={eyebrow} headline={valueBandHeadline(bands)}>
+    <AnalysisPanel eyebrow={eyebrow} icon={icon} headline={valueBandHeadline(bands)}>
       <p className="mb-[20px] text-[14px] text-muted">막대를 눌러 구간별 게임을 확인해 보세요 ↓</p>
       <ColumnChart
         items={bands.map(item => ({ key: item.id, label: item.label, value: item.count, text: `${item.count}개` }))}
@@ -26,7 +26,8 @@ export default function ValueBandPanel({ bands, eyebrow, onSelect }) {
           <span className="ml-[10px] text-[14px] font-[600] text-muted">{band.count}개</span>
         </h3>
         {band.items.length ? (
-          <ul className="gs-stagger grid grid-cols-2 gap-[12px] max-[760px]:grid-cols-1">
+          // 구간에 게임이 많으면 이 박스 안에서만 스크롤한다.
+          <ul className="gs-stagger grid grid-cols-2 gap-[12px] max-h-[480px] overflow-y-auto overscroll-contain pr-[6px] max-[760px]:grid-cols-1">
             {band.items.map(({ game, hourly }) => (
               <li key={game.id} className="min-w-0">
                 <button

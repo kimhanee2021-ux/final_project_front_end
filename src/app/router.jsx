@@ -20,7 +20,7 @@ import AiRecommendsPage from '@/pages/ai_recommends/AiRecommendsPage'
 import CommunityPage from '@/pages/community/CommunityPage'
 import CommunityPostPage from '@/pages/community/CommunityPostPage'
 import CommunityWritePage from '@/pages/community/CommunityWritePage'
-import { GamerMapRoute, WeeklyRankingsRoute } from '@/pages/DiscoveryRoutes'
+import LandingMapPage from '@/pages/landing/LandingMapPage'
 
 // 스크롤 섹션으로 만들지 않은 목록·글 화면은 가운데 정렬된 컨테이너 안에 놓는다.
 const contained = element => <PageBox>{element}</PageBox>
@@ -38,6 +38,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <LandingPage /> },
       { path: 'start', element: <StartPage /> },
+      // 랜딩 페이지(public/landing) 안에 iframe으로 끼워 넣는 게이머 지도 화면
+      { path: 'landing-map', element: <LandingMapPage /> },
       ...authRoutes,
       {
         // 가입·로그인 직후 스팀 연동(필수)과 추가 정보(선택)를 받는 단계
@@ -48,9 +50,9 @@ const router = createBrowserRouter([
         element: <GameSenseLayout />,
         children: [
           { path: 'explore', element: <ExplorePage /> },
-          { path: 'gamer-map', element: <GamerMapRoute /> },
-          { path: 'weekly-rankings', element: <WeeklyRankingsRoute /> },
-          { path: 'pro-streamer-play', lazy: async () => ({ Component: (await import('@/pages/proStreamer/ProStreamerPage')).default }) },
+          // 게이머 지도는 랜딩 페이지로, 프로·스트리머 영상은 AI 게임 추천 카드로 옮겼다 (예전 주소로 들어와도 열리게 한다)
+          { path: 'gamer-map', element: <Navigate to="/" replace /> },
+          { path: 'pro-streamer-play', element: <Navigate to="/ai-recommends" replace /> },
           { path: 'trending', element: <Navigate to="/explore" replace /> },
           { path: 'pc-check', element: <PcDiagnosisPage /> },
           // 종합평가는 AI PC 진단 페이지로 합쳐졌다 (예전 주소로 들어와도 열리게 한다)

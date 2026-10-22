@@ -4,14 +4,15 @@ import { money, number } from '@/shared/utils/formatters'
 // AI 분석 태그마다 옆에 보여줄 시각 데이터. 모두 이 페이지의 데이터 패널이 쓰는 값을 그대로 가져온다.
 // kind 'donut': 장르별 비중 도넛 (items: [{ label, value }], center: 가운데 숫자 { caption, value, format })
 // kind 'columns': 구간별 게임 수 막대 (items: [{ label, value, text }])
-// detailId: 눌렀을 때 이동할 원본 데이터 패널의 id
+// detailId: 눌렀을 때 이동할 원본 데이터 패널의 id, detailView: 그 패널에서 열어 둘 보기 (장르 패널의 금액/보유·플레이 기준)
 
-const donut = ({ title, items, caption, value, format, detailId }) => ({
+const donut = ({ title, items, caption, value, format, detailId, detailView }) => ({
   kind: 'donut',
   title,
   items,
   center: { caption, value, format },
   detailId,
+  detailView,
 })
 
 const columns = ({ title, items, detailId }) => ({
@@ -34,6 +35,7 @@ const VISUALS = {
       value: sum(genres, 'amount'),
       format: money,
       detailId: 'genre',
+      detailView: 'amount',
     })
   },
   // 라이브러리 분석 → 장르별 보유 게임 수
@@ -45,7 +47,8 @@ const VISUALS = {
       caption: '보유 게임',
       value: games.length,
       format: count => `${Math.round(count)}개`,
-      detailId: 'genreCount',
+      detailId: 'genre',
+      detailView: 'count',
     })
   },
   // 최근 활동 → 장르별 플레이 시간
@@ -57,7 +60,8 @@ const VISUALS = {
       caption: '총 플레이 시간',
       value: sum(genres, 'hours'),
       format: hours => `${number(hours)}시간`,
-      detailId: 'list',
+      detailId: 'genre',
+      detailView: 'count',
     })
   },
   // 가성비 분석 → 시간당 비용 구간별 게임 수
