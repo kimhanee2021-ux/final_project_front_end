@@ -1,6 +1,6 @@
 // 페이지별 푸터 안내 문구. 목록에 없는 경로는 안내 문구를 보여주지 않는다.
 const notes = {
-  '/pc-check/evaluation': ['내 PC 종합평가', '입력한 사양을 AI가 분석한 추정 결과예요.'],
+  '/pc-check': ['AI PC 진단', '입력한 사양을 AI가 분석한 추정 결과예요.'],
   '/hangul-blocks': ['HANGUL BLOCKS', '개인 기록은 현재 브라우저에 저장됩니다.'],
 }
 

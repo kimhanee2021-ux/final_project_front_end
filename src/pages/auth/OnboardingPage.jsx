@@ -55,10 +55,8 @@ function SteamStep({ next, status, onRetry }) {
   const { startSteamLink, signOut } = useAuth()
   const loading = status === 'loading'
   const failed = status === 'error'
-  const connect = () => {
-    rememberOnboarding(next)
-    startSteamLink()
-  }
+  // 새 창으로 열리면 이 화면이 그대로여서 따로 기억할 게 없다. 팝업이 막혀 이 창이 스팀으로 넘어가는 경우에만 돌아올 곳을 남긴다.
+  const connect = () => startSteamLink({ beforeRedirect: () => rememberOnboarding(next) })
   return (
     <>
       <Intro eyebrow="STEP 2 · STEAM" title={<>보유 게임을 불러와야<br /><em className="not-italic text-[#b9d5c5]">분석이 시작돼요.</em></>}>

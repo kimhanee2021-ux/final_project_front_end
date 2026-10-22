@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { AuthContext } from './AuthContext'
 import { clearAccessToken, readAccessToken, saveAccessToken } from '@/shared/lib/tokenStorage'
 import * as authApi from '../api'
+import { STEAM_LINKED_EVENT, listenSteamLinked, openSteamPopup } from '../model/steamLinkChannel'
 import { userApi } from '@/features/user'
 import { browserStores, UNAUTHORIZED_EVENT } from '@/shared/lib/apiClient'
 
@@ -68,10 +69,21 @@ export default function AuthProvider({ children }) {
     await userApi.unlinkSteam()
   }
 
-  // 스팀 OpenID 로그인 페이지로 전체 이동. 완료 후 백엔드가 프론트로 ?steamLinked=true를 붙여 돌려보낸다.
-  function startSteamLink() {
+  // 새 창(팝업)에서 연동이 끝나면 이 창은 그대로 둔 채, 연동 여부에 따라 달라지는 화면들에게 이벤트로 알린다.
+  useEffect(
+    () => listenSteamLinked(() => window.dispatchEvent(new Event(STEAM_LINKED_EVENT))),
+    []
+  )
+
+  // 스팀 OpenID 로그인을 새 창으로 띄운다. 이 창은 그대로여서 로그인·가입 화면에서 처음으로 돌아가는 일이 없다.
+  // 끝나면 백엔드가 팝업을 프론트로 돌려보내고(?steamLinked=true&popup=true), 팝업이 이 창에 알린 뒤 스스로 닫힌다.
+  // 팝업이 차단되면 예전처럼 이 창 전체를 스팀으로 보낸다 (beforeRedirect는 그 직전에 한 번 불린다).
+  // 버튼의 onClick에 그대로 넘겨도 되도록, 첫 인자가 옵션이 아니라 클릭 이벤트여도 무시한다.
+  function startSteamLink(options) {
     const token = readAccessToken(browserStores())
     if (!token) return false
+    if (openSteamPopup(authApi.steamLinkUrl(token, { popup: true }))) return true
+    options?.beforeRedirect?.()
     window.location.assign(authApi.steamLinkUrl(token))
     return true
   }

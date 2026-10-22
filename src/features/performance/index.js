@@ -2,6 +2,7 @@
 export { default as DetailsDialog } from './components/DetailsDialog'
 export { default as GamePerformance } from './components/GamePerformance'
 export { default as HardwareCard } from './components/HardwareCard'
+export { default as PcPartsPanel } from './components/PcPartsPanel'
 export { default as PcSpecButton } from './components/PcSpecButton'
 export { default as PcSpecProvider } from './context/PcSpecProvider'
 export { default as ScorePanel } from './components/ScorePanel'

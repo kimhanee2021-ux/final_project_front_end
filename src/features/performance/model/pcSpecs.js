@@ -12,7 +12,10 @@ export const EMPTY_SPECS = { cpu: '', gpu: '', ram: '', storage: '' }
 // 윈도우 PowerShell에서 실행하면 CPU/GPU/RAM/저장장치를 JSON 한 줄로 출력하는 명령어.
 // 브라우저는 내 PC 부품을 읽을 수 없어서, 이 결과를 복사해 붙여넣는 방식으로 받는다.
 export const SPEC_COMMAND =
-  '$c=Get-CimInstance Win32_Processor|select -First 1;$g=Get-CimInstance Win32_VideoController|select -First 1;' +
+  // 그래픽 장치는 여러 개일 수 있다(내장 GPU, 외장 카드, 원격·가상 디스플레이). 실제 PCI 장치 중 메모리가 가장 큰 것(외장 카드)을 고르고,
+  // PCI 장치가 하나도 없으면(가상 머신 등) 첫 번째 장치를 쓴다.
+  '$c=Get-CimInstance Win32_Processor|select -First 1;' +
+  "$v=Get-CimInstance Win32_VideoController;$g=$v|?{$_.PNPDeviceID -like 'PCI*'}|sort {[uint64]$_.AdapterRAM} -Descending|select -First 1;if(-not $g){$g=$v|select -First 1};" +
   '$m=[math]::Round((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory/1GB);' +
   '$d=(Get-CimInstance Win32_DiskDrive|%{"$($_.Model) $([math]::Round($_.Size/1GB))GB"}) -join ", ";' +
   '[pscustomobject]@{cpu=$c.Name.Trim();gpu=$g.Name;ram="$m GB";storage=$d}|ConvertTo-Json -Compress'

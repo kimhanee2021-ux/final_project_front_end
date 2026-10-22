@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { PageHeading, PanelPage, Panel, AnalysisPanel } from '@/shared/ui'
 import { hl } from '@/shared/utils/headline'
-import { useSharedPcEvaluation, PcSpecButton, ScorePanel, UpgradeList, GamePerformance, DetailsDialog } from '@/features/performance'
+import { useSharedPcEvaluation, PcPartsPanel, PcSpecButton, ScorePanel, UpgradeList, GamePerformance, DetailsDialog } from '@/features/performance'
 import '@/features/performance/styles/performance.css'
 import '@/features/performance/styles/pcDiagnosis.css'
 
-// 내 PC 종합평가: 종합 등급, 게임별 성능, 부품별 개선 방향을 패널 하나씩 보여준다.
+// AI PC 진단: 맨 위에 AI가 진단한 종합 등급, 그 아래로 내 부품 정보(입력한 사양) → 게임별 성능 → 개선 방향이 이어진다.
+// 사양 입력 버튼은 제목 줄에 한 번만 둔다. 사양이 없으면 부품 정보 칸이 입력 방법을 안내한다.
 // 입력한 사양을 AI가 분석한 결과이고, 로그인·동의가 없으면 각 칸에서 확인할 수 없다고 안내한다.
-export default function PcEvaluationPage() {
+export default function PcDiagnosisPage() {
   const [details, setDetails] = useState(null)
   // 분석 결과는 PcEvaluationProvider가 들고 있어서 이 화면을 다시 열어도 그대로 보인다.
   const evaluation = useSharedPcEvaluation()
@@ -21,8 +22,8 @@ export default function PcEvaluationPage() {
     <PanelPage>
       <Panel id="score">
         <PageHeading
-          title="내 PC 종합평가"
-          description={ready ? undefined : '사양을 입력하고 로그인하면 내 PC 기준으로 분석해요.'}
+          title="AI PC 진단"
+          description={ready ? undefined : '사양을 입력하고 로그인하면 AI가 내 PC를 진단해요.'}
           action={<PcSpecButton />}
         />
         <AnalysisPanel
@@ -31,6 +32,9 @@ export default function PcEvaluationPage() {
         >
           <ScorePanel evaluation={evaluation} />
         </AnalysisPanel>
+      </Panel>
+      <Panel id="parts">
+        <PcPartsPanel />
       </Panel>
       <Panel id="games">
         <AnalysisPanel eyebrow="게임별 성능" headline="내 PC로 게임을 얼마나 즐길 수 있는지 살펴봐요.">
