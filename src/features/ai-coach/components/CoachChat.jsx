@@ -3,35 +3,8 @@ import { GSIcon, PRIMARY_BUTTON } from '@/shared/ui'
 import { COACH_NAME, MAX_MESSAGE_LENGTH, suggestedQuestions } from '../model/coachModel'
 import CoachAvatar from './CoachAvatar'
 import CoachPortrait from './CoachPortrait'
-import { Evidence, GameCards } from './CoachAnswerParts'
 import { useCoachChat } from '../hooks/useCoachChat'
-
-const BUBBLE = 'rounded-[14px] px-[16px] py-[12px] text-[12px] leading-[1.75] whitespace-pre-line'
-function Message({ message }) {
-  if (message.role === 'user') {
-    return (
-      <div className="flex justify-end">
-        <p className={BUBBLE + ' max-w-[85%] bg-primary text-bg rounded-br-[4px]'}>{message.text}</p>
-      </div>
-    )
-  }
-  return (
-    <div className="flex gap-[10px] items-start">
-      <CoachAvatar />
-      <div className="max-w-[85%] min-w-0">
-        <span className="block mb-[4px] text-[11px] font-[650]">{COACH_NAME}</span>
-        <p
-          className={BUBBLE + ' rounded-tl-[4px] ' + (message.error ? 'bg-surface-soft text-muted border border-border' : 'bg-surface-soft')}
-          role={message.error ? 'alert' : undefined}
-        >
-          {message.text}
-        </p>
-        <GameCards games={message.games} />
-        <Evidence items={message.evidence} />
-      </div>
-    </div>
-  )
-}
+import Message from './chat/Message'
 
 // AI 게임 소비 코치와의 대화 화면. 왼쪽에 큰 코치 캐릭터와 추천 질문, 오른쪽에 대화(답변에 추천 게임 카드).
 // initialQuestion: 다른 화면에서 /ai-coach?q=질문 으로 넘어왔을 때 처음 한 번 자동으로 보낼 질문
