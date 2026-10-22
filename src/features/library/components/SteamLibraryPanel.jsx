@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { AiRecommendTeaser } from '@/features/ai_recommends'
+import { AiRecommendTeaser } from '@/features/ai-recommends'
 import { useAuth } from '@/features/auth'
 import { useMySpendingContext } from '@/features/spending'
 import { GameImage, GSIcon, PageHeading, Panel } from '@/shared/ui'

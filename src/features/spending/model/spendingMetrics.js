@@ -39,7 +39,7 @@ export function genreSpending(games) {
 }
 
 // 플레이 시간 마커: 0시간 이하는 '미플레이', 2시간 이하는 '플레이타임 매우 적음'. 시간을 모르거나 충분히 했으면 null
-export const LOW_PLAYTIME_HOURS = 2
+const LOW_PLAYTIME_HOURS = 2
 export function playtimeMarker(hours) {
   if (hours == null) return null
   if (hours <= 0) return 'unplayed'

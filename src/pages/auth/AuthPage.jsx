@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useLocation, useSearchParams } from 'react-router-dom'
 import { GSIcon } from '@/shared/ui'
-import { useAuth, authLink, safeReturnTo, checkEmailAvailability, checkNicknameAvailability } from '@/features/auth'
+import { useAuth, authLink, safeReturnTo, checkEmailAvailability, checkNicknameAvailability, onboardingLink } from '@/features/auth'
 import { getErrorMessage } from '@/shared/lib/apiClient'
 import AuthShell, { CARD, Stepper } from './AuthShell'
-import { onboardingLink } from './onboardingFlow'
 
 const content = {
   login: { eyebrow: 'WELCOME BACK', title: '다시 만나 반가워요', subtitle: 'GameSense에서 나의 게임 라이프를 이어가세요.', action: '로그인' },

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { PageHeading, Panel, PanelPage } from '@/shared/ui';
-import { act, advance, cells, dropInterval, ghost, makeGame, readRecords, seoulDate, SHAPES, stageTarget, activateItem, hammerCell, chooseReward } from '../engine';
+import { act, advance, cells, dropInterval, ghost, makeGame, readRecords, seoulDate, SHAPES, stageTarget, activateItem, hammerCell, chooseReward } from '../model/engine';
 import '@/shared/styles/blocks.css';
-import { keyAction } from '../keys';
+import { keyAction } from '../model/keys';
 const KEY = 'gamesense-hangul-records-v1';
 const itemTypes = [['bomb', '💣 폭탄', '1'], ['freeze', '❄ 시간 얼리기', '2'], ['swap', '🔄 블록 바꾸기', '3'], ['hammer', '🔨 한 칸 망치', '4'], ['eraser', '🧹 줄 지우개', '5']];
 function loadRecords(key = KEY) {

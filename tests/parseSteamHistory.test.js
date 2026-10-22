@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { parseSteamHistory, parseDate, parseMoney, hashKey } from '../src/features/purchaseImport/model/parseSteamHistory.js'
+import { parseSteamHistory, parseDate, parseMoney, hashKey } from '../src/features/purchase-import/model/parseSteamHistory.js'
 
 // 실제 스팀 구매내역 페이지와 같은 구조의 가짜 데이터 (개인정보 없음)
 const row = ({ id, date, items, type, total = '', base = '', appid, refunded = false }) => `

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { BASIC_QUESTIONS, COACH_NAME, COACH_PATH, coachLink } from '../coachModel'
+import { BASIC_QUESTIONS, COACH_NAME, COACH_PATH, coachLink } from '../model/coachModel'
 import CoachAvatar from './CoachAvatar'
 
 // AI 분석 영역 안의 작은 "AI에게 직접 물어보기" 섹션. 입력창 없이 핵심 질문 몇 개만 보여주고,

@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react'
 
 // 지도 데이터가 커서 이 화면을 열 때만 불러온다.
-const GamerMapEmbed = lazy(() => import('@/tab').then(module => ({ default: module.GamerMapEmbed })))
+const GamerMapEmbed = lazy(() => import('@/features/gamer-map').then(module => ({ default: module.GamerMapEmbed })))
 
 // 랜딩 페이지(public/landing)의 "전 세계 PC 게이머" 장면에 iframe으로 들어가는 화면.
 // 랜딩의 어두운 배경이 비쳐 보이도록 페이지 바탕을 투명하게 둔다.

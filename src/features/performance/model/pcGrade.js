@@ -5,9 +5,6 @@ export const gradeBands = [
   { grade: 'D', min: 20, label: '20 이상~30 미만', status: '개선 권장' },
   { grade: 'E', min: 0, label: '20 FPS 미만', status: '개선 필요' },
 ]
-export function gradeForFps(fps) {
-  return typeof fps === 'number' && Number.isFinite(fps) && fps >= 0 ? gradeBands.find(b => fps >= b.min).grade : null
-}
 export function resolutionTarget(result, resolution) {
   if (result?.explanationStatus !== 'READY')
     return {
@@ -34,16 +31,6 @@ export function gamePerformanceGrade(result) {
   const target = resolutionTarget(result, 'FHD')
   return target.grade ? target : null
 }
-export function overallPerformanceGrade(results) {
-  const all = Object.values(results ?? {}),
-    values = all
-      .map(gamePerformanceGrade)
-      .filter(Boolean)
-      .sort((a, b) => a.grade.localeCompare(b.grade))
-  if (!values.length) return { grade: null, count: 0, total: all.length }
-  return { grade: values[Math.floor(values.length / 2)].grade, count: values.length, total: all.length }
-}
-
 export function latestOverallResult(results) {
   return Object.values(results ?? {})
     .filter(

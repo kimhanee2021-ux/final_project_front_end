@@ -1,4 +1,4 @@
-import { COACH_NAME, COACH_PORTRAIT } from '../coachModel'
+import { COACH_NAME, COACH_PORTRAIT } from '../model/coachModel'
 
 // 코치 화면 왼쪽의 큰 노바 그림. 배경이 투명한 일러스트라 아래에 맞춰 그린다.
 export default function CoachPortrait() {

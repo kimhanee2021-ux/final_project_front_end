@@ -2,7 +2,7 @@
 // 모션 줄이기 설정이면 바로 이동한다.
 const DURATION_MS = 350
 
-export function scrollToY(top, duration = DURATION_MS) {
+function scrollToY(top, duration = DURATION_MS) {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const from = window.scrollY
   if (reduced || from === top) {

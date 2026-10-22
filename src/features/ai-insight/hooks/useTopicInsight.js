@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { fetchInsight } from '../api'
-import { insightErrorMessage } from '../insightModel'
+import { insightErrorMessage } from '../model/insightModel'
 import { getErrorMessage } from '@/shared/lib/apiClient'
 
 // 같은 태그의 요청이 겹쳐도 서버에는 한 번만 보낸다. 끝나면 지워서 다음에 고를 때는 다시 묻는다 (서버가 저장해 둔 결과를 바로 돌려준다).

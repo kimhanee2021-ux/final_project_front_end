@@ -1,4 +1,4 @@
-import { insightRows } from '../insightModel'
+import { insightRows } from '../model/insightModel'
 
 // 다음 행동에서 AI가 권하는 내 보유 게임
 function RecommendedGames({ games }) {

@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react'
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { GSIcon } from '@/shared/ui'
-import { useAuth, safeReturnTo } from '@/features/auth'
+import {
+  useAuth,
+  safeReturnTo,
+  forgetOnboarding,
+  isOnboardingDone,
+  markOnboardingDone,
+  rememberOnboarding,
+} from '@/features/auth'
 import { MySpendingProvider, useMySpendingContext, useSpendingStatus } from '@/features/spending'
-import { PurchaseImportDialog } from '@/features/purchaseImport'
+import { PurchaseImportDialog } from '@/features/purchase-import'
 import { usePcSpecs } from '@/features/performance'
 import AuthShell, { CARD, Stepper } from './AuthShell'
-import { forgetOnboarding, isOnboardingDone, markOnboardingDone, rememberOnboarding } from './onboardingFlow'
 
 // 가입 직후 "내 게임 라이프"를 시작하는 곳. 로그인 주소 '/'는 랜딩이라 기본 목적지는 내 라이브러리로 둔다.
 const DEFAULT_NEXT = '/library'

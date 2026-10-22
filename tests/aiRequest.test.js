@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { createAiRequest } from '../src/features/ai-common/request.js'
+import { createAiRequest } from '../src/shared/lib/aiRequest.js'
 
 test('공통 클라이언트로 이미지와 인증을 전달하고 AI 응답 대기는 화면 취소 타이머가 제어한다', async () => {
   const body = new FormData()

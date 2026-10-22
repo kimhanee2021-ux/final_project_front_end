@@ -1,4 +1,4 @@
-import { COACH_FACE } from '../coachModel'
+import { COACH_FACE } from '../model/coachModel'
 
 // 코치 노바의 동그란 얼굴 그림
 export default function CoachAvatar({ size = 40 }) {

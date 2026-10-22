@@ -1,5 +1,5 @@
 import { GSIcon } from '@/shared/ui'
-import { barPercent, buildEvidenceBlocks } from '../coachModel'
+import { barPercent, buildEvidenceBlocks } from '../model/coachModel'
 
 // 답변에서 AI가 권하는 내 보유 게임 카드
 export function GameCards({ games }) {

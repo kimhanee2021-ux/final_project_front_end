@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { HISTORY_QUESTIONS, barPercent, buildEvidenceBlocks, coachErrorMessage, parseBudgetInput, suggestedQuestions, toHistory } from '../src/features/ai-coach/coachModel.js'
+import { HISTORY_QUESTIONS, barPercent, buildEvidenceBlocks, coachErrorMessage, parseBudgetInput, suggestedQuestions, toHistory } from '../src/features/ai-coach/model/coachModel.js'
 
 test('대화 기록은 오류 말풍선을 빼고 최근 10개만 user/model 역할로 보낸다', () => {
   const messages = [
@@ -34,7 +34,7 @@ test('예산 입력은 쉼표·원·만 단위를 이해하고 범위를 벗어�
 })
 
 test('다른 화면에서 코치로 넘어가는 주소는 질문을 인코딩하고 길이를 제한한다', async () => {
-  const { coachLink, MAX_MESSAGE_LENGTH } = await import('../src/features/ai-coach/coachModel.js')
+  const { coachLink, MAX_MESSAGE_LENGTH } = await import('../src/features/ai-coach/model/coachModel.js')
   assert.equal(coachLink(), '/ai-coach')
   assert.equal(coachLink('  '), '/ai-coach')
   assert.equal(coachLink('이번 달 얼마 썼어?'), '/ai-coach?q=' + encodeURIComponent('이번 달 얼마 썼어?'))

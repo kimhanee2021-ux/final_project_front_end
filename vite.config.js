@@ -31,11 +31,6 @@ export default defineConfig(({ mode }) => {
         rewrite:path=>path.replace(/^\/recommend-api/,''),
         configure:proxy=>proxy.on('proxyReq',proxyReq=>proxyReq.removeHeader('origin')),
       },
-      // 게임 추천(/api/v1)을 그대로 FastAPI로 보낸다. /recommendations 페이지가 쓴다. 객체 순서대로 먼저 맞는 규칙이 쓰이므로 /api보다 앞에 둬야 한다.
-      '/api/v1':{
-        target:recommendUrl,
-        configure:proxy=>proxy.on('proxyReq',proxyReq=>proxyReq.removeHeader('origin')),
-      },
       '/api':{
         target:backendUrl,
         // Origin 헤더가 남아 있으면 스프링이 CORS 요청으로 보고 허용 목록(기본 5173)과 대조해 403을 낸다

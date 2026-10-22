@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { Card } from '@/shared/ui'
+import { Card, PRIMARY_BUTTON, TEXT_BUTTON } from '@/shared/ui'
 import { money } from '@/shared/utils/formatters'
-import { PRIMARY_BUTTON, TEXT_BUTTON } from '@/features/spending'
-import { parseBudgetInput } from '../coachModel'
+import { parseBudgetInput } from '../model/coachModel'
 import { useBudget } from '../hooks/useBudget'
 
 // 이번 달 게임 지출 예산. 정해 두면 코치가 이번 달 지출과 비교해 남은 금액을 알려 준다.

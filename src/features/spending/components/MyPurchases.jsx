@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { useAuth } from '@/features/auth'
 import { useMySpendingContext } from '../context/MySpendingContext'
-import { Skeleton, EmptyState, GSIcon } from '@/shared/ui'
+import { Skeleton, EmptyState, GSIcon, TEXT_BUTTON } from '@/shared/ui'
 import DashboardIntro from './DashboardIntro'
-import { PurchaseImportDialog } from '@/features/purchaseImport'
+import { PurchaseImportDialog } from '@/features/purchase-import'
 import PurchasedGamesTable from './PurchasedGamesTable'
 import GameDetailDialog from './GameDetailDialog'
-import { NOTICE, TEXT_BUTTON } from '../styles'
+
+// 표 아래 안내 한 줄
+const NOTICE = 'flex items-start gap-[8px] mt-[24px] text-faint text-[12px]'
 
 const BADGE = '스팀 연동 · 정가 추정'
 const HISTORY_BADGE = '구매내역 연동 · 실제 결제액'

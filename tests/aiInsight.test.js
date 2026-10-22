@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { PURCHASE_HISTORY_HINT, defaultTopic, insightErrorMessage, insightRows } from '../src/features/ai-insight/insightModel.js'
+import { PURCHASE_HISTORY_HINT, defaultTopic, insightErrorMessage, insightRows } from '../src/features/ai-insight/model/insightModel.js'
 
 test('정해진 에러 code는 안내 문구로, 나머지는 서버 문구를 그대로 쓴다', () => {
   assert.match(insightErrorMessage('AI_NOT_CONFIGURED', '서버'), /Gemini 키/)

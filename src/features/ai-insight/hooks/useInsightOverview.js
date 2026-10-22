@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { fetchInsightOverview } from '../api'
-import { insightErrorMessage } from '../insightModel'
+import { insightErrorMessage } from '../model/insightModel'
 import { getErrorMessage } from '@/shared/lib/apiClient'
 
 // 요청이 겹쳐도(개발 모드가 효과를 두 번 실행하는 경우 등) 서버에는 한 번만 보낸다. 끝나면 지워서 다음 방문에는 다시 묻는다.

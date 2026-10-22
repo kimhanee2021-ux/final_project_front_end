@@ -2,7 +2,7 @@ import { gpuCandidates, preparePcPhoto } from '../model/pcHardware'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { GSIcon } from '@/shared/ui'
-import { extractPcPhoto, loadPcProvider } from '../api/pcApi'
+import { extractPcPhoto, loadPcProvider } from '../api'
 import { normalizeSpecs } from '../model/pcDiagnosis'
 
 const fields = [

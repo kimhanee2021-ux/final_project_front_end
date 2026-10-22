@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { announceSteamLinked } from '@/features/auth'
-import { onboardingLink, peekOnboardingReturn } from '@/pages/auth/onboardingFlow'
+import { announceSteamLinked, onboardingLink, peekOnboardingReturn } from '@/features/auth'
 
 // 스팀 연동을 새 창으로 띄웠다면 이 화면이 그 창의 마지막이다: 원래 창에 알리고 스스로 닫는다.
 function SteamLinkedPopup() {

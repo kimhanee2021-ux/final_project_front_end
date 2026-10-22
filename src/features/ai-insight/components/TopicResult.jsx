@@ -1,6 +1,6 @@
-import { TEXT_BUTTON } from '@/features/spending'
 import { useTopicInsight } from '../hooks/useTopicInsight'
 import InsightCard from './InsightCard'
+import { TEXT_BUTTON } from '@/shared/ui'
 
 function Loading() {
   return (

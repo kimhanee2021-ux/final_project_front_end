@@ -4,7 +4,7 @@ import GameIdentity from './GameIdentity'
 import PlaytimeCell from './PlaytimeCell'
 import { money, dateLabel } from '@/shared/utils/formatters'
 import { netAmount, hourlyText, hourlyTone } from '../model/spendingMetrics'
-import { noRecordLabel } from '@/features/purchaseImport'
+import { noRecordLabel } from '@/features/purchase-import'
 const BADGE =
   'inline-block ml-[6px] px-[8px] py-[2px] rounded-full bg-bg text-[11px] font-medium text-muted align-middle'
 // 열 제목: 사이트 보라 테마의 옅은 띠. 양 끝 칸만 둥글게 깎아 한 줄짜리 알약처럼 보이게 한다.

@@ -3,7 +3,7 @@ import { analysisRequestKey, searchOverviewFrom } from '../model/pcAnalysisCache
 import { evaluationForView } from '../model/pcEvaluationScope'
 import { pendingGames } from '../model/pcHardware'
 import { useEffect, useRef, useState } from 'react'
-import { assessPc, assessPcBatch, assessPcOverview, loadPcParts } from '../api/pcApi'
+import { assessPc, assessPcBatch, assessPcOverview, loadPcParts } from '../api'
 import { normalizeSpecs } from '../model/pcDiagnosis'
 import { loadEvaluation, saveEvaluation } from '../model/pcEvaluationStore'
 

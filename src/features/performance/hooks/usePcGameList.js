@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { getErrorMessage } from '@/shared/lib/apiClient'
 import { syncSteamLibrary } from '../../library/api'
-import { searchPcGames } from '../api/pcApi'
+import { searchPcGames } from '../api'
 import { ownedPage } from '../model/pcDiagnosis'
 import { pendingGames } from '../model/pcHardware'
 import { gameViewGames } from '../model/pcGameSelection'

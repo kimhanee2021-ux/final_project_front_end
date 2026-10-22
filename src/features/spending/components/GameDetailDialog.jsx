@@ -3,7 +3,7 @@ import { GSIcon } from '@/shared/ui'
 import GameIdentity from './GameIdentity'
 import { money, dateLabel } from '@/shared/utils/formatters'
 import { netAmount, hourlyText, hoursText } from '../model/spendingMetrics'
-import { METHOD_LABELS, noRecordLabel } from '@/features/purchaseImport'
+import { METHOD_LABELS, noRecordLabel } from '@/features/purchase-import'
 const AMOUNT_LABELS = {
   CONFIRMED: '실제 구매 금액 (구매일 환율 원화 환산)',
   ESTIMATED: '추정 금액 (현재 한국 정가)',
