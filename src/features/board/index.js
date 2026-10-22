@@ -1,10 +1,4 @@
 // 이 폴더의 공개 목록(public API). 다른 폴더는 여기서 내보낸 것만 가져다 쓴다.
-export { BOARD_CATEGORIES } from './model/boardModel'
-export { createPost } from './api'
-export { dateTimeLabel } from './model/boardModel'
-export { deletePost } from './api'
-export { fetchPost } from './api'
-export { postAuthorLabel } from './model/boardModel'
-export { updatePost } from './api'
-export { useBoardPost } from './hooks/useBoardPost'
-export { useBoardPosts } from './hooks/useBoardPosts'
+export { default as BoardPost } from './components/post/BoardPost'
+export { default as CommunityBoard } from './components/list/CommunityBoard'
+export { default as PostEditor } from './components/editor/PostEditor'
