@@ -39,7 +39,7 @@ export default function ProStreamerPage() {
           <span className="rounded-[8px] bg-surface-soft px-[12px] py-[8px]">게임별 영상 <b>4개 구성</b></span>
           <span className="rounded-[8px] bg-surface-soft px-[12px] py-[8px]">12개국 · 수집된 5주 기준</span>
         </div>
-        <p className="mt-[14px] text-[11px] leading-[1.8] text-muted">2026.09.08–10.06 시작 주차의 TOP 10 등장 횟수순입니다. 동률은 이름순이며, 판매량이나 영상 인기도를 뜻하지 않습니다. 하드웨어·DLC는 제외했습니다.</p>
+        <p className="mt-[14px] text-[11px] leading-[1.8] text-muted">2026.09.08–10.06 시작 주차의 TOP 10 등장 횟수 기준 상위 50개 게임입니다. 동률은 이름순이며, 판매량이나 영상 인기도를 뜻하지 않습니다. 하드웨어·DLC는 제외했습니다.</p>
       </Panel>
       <div className="grid grid-cols-[280px_minmax(0,1fr)] items-start gap-[20px] max-[900px]:grid-cols-1">
         <Panel>
