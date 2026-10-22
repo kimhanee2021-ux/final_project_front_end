@@ -18,7 +18,7 @@ function pickRandom(list, count) {
 }
 
 // 다른 화면(내 라이브러리)에 덧붙이는 AI 추천 안내.
-// 진단 전에는 AI 추천 탭으로 가는 바로가기, 진단 후에는 추천 게임 3개를 보여준다.
+// 추천받기 전에는 AI 추천 탭으로 가는 바로가기, 받은 뒤에는 추천 게임 3개를 보여준다.
 export default function AiRecommendTeaser() {
   const { user } = useAuth()
   const [diagnosed] = useAiDiagnosed(user?.id)
@@ -33,11 +33,11 @@ export default function AiRecommendTeaser() {
           <div>
             <h2 className="text-[16px] font-[700]">AI 게임 추천</h2>
             <p className="mt-[4px] text-[13px] text-muted">
-              내 플레이 기록으로 취향을 진단하고 새 게임을 추천받아 보세요.
+              내 플레이 기록으로 취향을 분석해 새 게임을 추천받아 보세요.
             </p>
           </div>
           <Link className="gs-primary-button" to="/ai-recommends">
-            진단하러 가기
+            추천받으러 가기
           </Link>
         </div>
       </Panel>

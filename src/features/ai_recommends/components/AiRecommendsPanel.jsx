@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '@/features/auth'
-import { EmptyState, GameImage, GSIcon, PageHeading, Panel } from '@/shared/ui'
+import { EmptyState, GameImage, PageHeading, Panel } from '@/shared/ui'
 import { MAX_CARD_TAGS, tagLabel } from '@/shared/utils/gameTags'
 import { MAX_LIMIT } from '../api'
 import { useAiDiagnosed } from '../hooks/useAiDiagnosed'
@@ -59,7 +59,7 @@ export default function AiRecommendsPanel() {
   })
   const games = data?.games ?? []
 
-  // 아직 진단하지 않은 사용자: 진단하기를 누르면 그때부터 추천을 불러온다.
+  // 아직 추천을 받아본 적 없는 사용자: 추천받기를 누르면 그때부터 추천을 불러온다.
   if (!diagnosed) {
     return (
       <Panel>
@@ -68,11 +68,11 @@ export default function AiRecommendsPanel() {
           description="내가 플레이한 게임의 취향을 분석해, 아직 보유하지 않은 게임을 추천해 드려요."
         />
         <EmptyState
-          title="아직 취향 진단을 하지 않았어요"
-          description="진단하기를 누르면 내 플레이 기록으로 취향을 분석해 게임을 추천해 드려요."
+          title="아직 추천을 받지 않았어요"
+          description="추천받기를 누르면 내 플레이 기록으로 취향을 분석해 게임을 추천해 드려요."
           action={
             <button type="button" className="gs-primary-button" onClick={diagnose}>
-              진단하기
+              추천받기
             </button>
           }
         />
@@ -103,10 +103,6 @@ export default function AiRecommendsPanel() {
                   ))}
                 </select>
               </label>
-              <button type="button" className="gs-secondary-button" onClick={reload} disabled={loading}>
-                <GSIcon name="refresh" size={16} />
-                {loading ? '분석 중...' : '다시 추천받기'}
-              </button>
             </div>
           }
         />

@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-// "진단하기"를 한 번이라도 눌렀는지 계정별로 브라우저에 기억한다. 서버에는 이 값이 없다.
+// "추천받기"를 한 번이라도 눌렀는지 계정별로 브라우저에 기억한다. 서버에는 이 값이 없다.
 const keyOf = userId => `gs:ai-diagnosed:${userId}`
 
 function read(userId) {
@@ -19,7 +19,7 @@ export function useAiDiagnosed(userId) {
     try {
       localStorage.setItem(keyOf(userId), '1')
     } catch {
-      // 저장이 막혀 있어도 이번 화면에서는 진단을 진행한다.
+      // 저장이 막혀 있어도 이번 화면에서는 추천을 진행한다.
     }
     setDiagnosed(true)
   }, [userId])

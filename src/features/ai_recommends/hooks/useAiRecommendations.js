@@ -7,7 +7,7 @@ const cache = { userId: null, limit: null, data: null }
 
 const cachedFor = (userId, limit) => (cache.userId === userId && cache.limit === limit ? cache.data : null)
 
-// enabled=false면 요청하지 않는다. "진단하기"를 누르기 전에는 모델 추론을 돌리지 않기 위한 값이다.
+// enabled=false면 요청하지 않는다. "추천받기"를 누르기 전에는 모델 추론을 돌리지 않기 위한 값이다.
 export function useAiRecommendations(userId, { enabled = true } = {}) {
   const [limit, setLimit] = useState(DEFAULT_LIMIT)
   const [refresh, setRefresh] = useState(0)
