@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { AiRecommendTeaser } from '@/features/ai_recommends'
 import { useAuth } from '@/features/auth'
 import { useMySpendingContext } from '@/features/spending'
 import { GameImage, GSIcon, PageHeading, Panel } from '@/shared/ui'
@@ -91,6 +92,8 @@ export default function SteamLibraryPanel() {
           />
         </label>
       </Panel>
+
+      {ready && <AiRecommendTeaser />}
 
       <div className="grid grid-cols-[260px_minmax(0,1fr)] gap-[16px] items-start max-[900px]:grid-cols-1">
         <Panel className="!p-[24px]">
