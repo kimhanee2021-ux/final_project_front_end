@@ -3,8 +3,8 @@
 // 오른쪽: 지금 vs 기대 할인 막대 + AI가 그렇게 판단한 이유 — buy-advice · ai-summary
 import { useEffect, useState } from 'react'
 import { GSIcon } from '@/shared/ui'
-import { fetchDiscountOutlook } from './api'
-import { useWishlistSummary } from './WishlistSummaryContext'
+import { fetchDiscountOutlook } from '../../api'
+import { useWishlistSummary } from '../../context/WishlistSummaryContext'
 import WishlistDiscountCompare from './WishlistDiscountCompare'
 
 const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1)

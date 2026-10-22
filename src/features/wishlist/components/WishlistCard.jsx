@@ -1,8 +1,8 @@
 import WishlistButton from './WishlistButton'
 // [변경] AI 구매 판단을 카드의 주인공으로: 판단 칩 → 이름 · 가격 → AI 문장.
 // 할인 기록 · 지금 vs 기대 막대 같은 자세한 근거는 위쪽 AI 영역에서 게임 태그를 눌러 본다.
-import WishlistVerdictBadge from '../analysis/WishlistVerdictBadge'
-import WishlistCardSummary from '../analysis/WishlistCardSummary'
+import WishlistVerdictBadge from './analysis/WishlistVerdictBadge'
+import WishlistCardSummary from './analysis/WishlistCardSummary'
 
 // 위시리스트 화면의 게임 한 칸 (가로 카드): 왼쪽 커버(누르면 스팀 상점 새 탭, 하트로 빼기), 오른쪽 AI 판단과 그 근거.
 export default function WishlistCard({ item }) {

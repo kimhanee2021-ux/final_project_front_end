@@ -3,7 +3,7 @@
 // - 스팀 게임만 AI 문장을 보여 준다 (데모 게임은 아무것도 그리지 않는다).
 // - "기대 할인율" 줄은 없앴다. AI 문장만 남긴다.
 import { GSIcon } from '@/shared/ui'
-import { useWishlistSummary } from './WishlistSummaryContext'
+import { useWishlistSummary } from '../../context/WishlistSummaryContext'
 
 export default function WishlistCardSummary({ item }) {
   const { items, loading } = useWishlistSummary()

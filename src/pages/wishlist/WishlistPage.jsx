@@ -3,10 +3,8 @@ import { EmptyState, PageHeading, Panel, PanelPage } from '@/shared/ui'
 import { useGameSense } from '@/shared/state'
 import { matchesSearch } from '@/shared/utils/searchMatch'
 import { searchTextOf } from '@/shared/utils/gameTags'
-import { WishlistCard } from '@/features/wishlist'
-// [변경] 위시리스트를 열면 AI 분석이 자동으로 돈다. 요약 보기 버튼은 쓰지 않는다
-import { WishlistSummaryProvider } from '@/features/wishlist/analysis/WishlistSummaryContext'
-import WishlistAiOverview from '@/features/wishlist/analysis/WishlistAiOverview'
+// 위시리스트를 열면 AI 분석이 자동으로 돈다(WishlistSummaryProvider). 요약 보기 버튼은 쓰지 않는다
+import { WishlistAiOverview, WishlistCard, WishlistSummaryProvider } from '@/features/wishlist'
 
 const linkClass = 'gs-primary-button'
 

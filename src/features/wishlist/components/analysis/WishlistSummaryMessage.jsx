@@ -1,7 +1,7 @@
 // [변경] AI 전체 요약 한 문단.
 // - 분석 중이면 회전 아이콘과 자리표시 막대를 보여 준다. 쿨다운 대기 중이면 남은 초를 함께 보여 준다.
 // - 실패하면 실패 문구, 완료되면 전체 요약을 보여 준다.
-import { useWishlistSummary } from './WishlistSummaryContext'
+import { useWishlistSummary } from '../../context/WishlistSummaryContext'
 
 // 공통 상자 모양
 function Box({ children }) {

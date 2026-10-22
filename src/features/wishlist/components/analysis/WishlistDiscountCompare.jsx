@@ -1,6 +1,6 @@
 // [추가] AI 판단의 근거: 지금 할인율과 남은 기간의 기대 할인율(작년 같은 달 최대)을 막대 두 줄로 비교한다.
 // 판단에 쓴 숫자가 없으면(데이터 부족 · 신작 · 12월) 막대 대신 판단이 어려운 이유만 보여 준다.
-import { useWishlistSummary } from './WishlistSummaryContext'
+import { useWishlistSummary } from '../../context/WishlistSummaryContext'
 
 function Bar({ label, percent, strong }) {
   return (

@@ -4,10 +4,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnalysisPanel, GSIcon } from '@/shared/ui'
 import { hl } from '@/shared/utils/headline'
-import { useWishlistSummary } from './WishlistSummaryContext'
+import { useWishlistSummary } from '../../context/WishlistSummaryContext'
 import WishlistSummaryMessage from './WishlistSummaryMessage'
 import WishlistSaleHistory from './WishlistSaleHistory'
-import { VERDICTS, countVerdicts, verdictKind } from './verdict'
+import { VERDICTS, countVerdicts, verdictKind } from '../../model/verdict'
 
 // 판단 개수 → 헤드라인 조각
 function headlineOf(total, counts, done) {

@@ -1,8 +1,8 @@
 // [변경] 카드 오른쪽 맨 위의 AI 구매 판단 칩. 썸네일 위 작은 배지에서 카드의 주인공 자리로 옮겼다.
 // 스팀 게임(숫자 id)만 보여 주고, 판단 결과는 WishlistSummaryContext가 페이지 단위로 받아 둔 것을 읽는다.
 import { GSIcon } from '@/shared/ui'
-import { useWishlistSummary } from './WishlistSummaryContext'
-import { VERDICTS, verdictKind } from './verdict'
+import { useWishlistSummary } from '../../context/WishlistSummaryContext'
+import { VERDICTS, verdictKind } from '../../model/verdict'
 
 export default function WishlistVerdictBadge({ item }) {
   const { advice } = useWishlistSummary()
