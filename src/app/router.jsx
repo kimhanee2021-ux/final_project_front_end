@@ -15,6 +15,7 @@ import PcEvaluationPage from '@/pages/performance/PcEvaluationPage'
 import HangulBlocks from '@/pages/blocks/HangulBlocks'
 import MyPage from '@/pages/mypage/MyPage'
 import AuthPage from '@/pages/auth/AuthPage'
+import OnboardingPage from '@/pages/auth/OnboardingPage'
 import { RequireAuth } from '@/features/auth'
 import LibraryPage from '@/pages/library/LibraryPage'
 import AiRecommendsPage from '@/pages/ai_recommends/AiRecommendsPage'
@@ -39,6 +40,11 @@ const router = createBrowserRouter([
       { index: true, element: <LandingPage /> },
       { path: 'start', element: <StartPage /> },
       ...authRoutes,
+      {
+        // 가입·로그인 직후 스팀 연동(필수)과 추가 정보(선택)를 받는 단계
+        element: <RequireAuth />,
+        children: [{ path: 'onboarding', element: <OnboardingPage /> }],
+      },
       {
         element: <GameSenseLayout />,
         children: [

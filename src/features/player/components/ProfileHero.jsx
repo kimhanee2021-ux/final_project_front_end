@@ -16,19 +16,13 @@ function Fact({ label, value }) {
 export default function ProfileHero({ onEdit }) {
   const { player } = useGameSense()
   const { profile, preferences } = player
-  const cover = profileCovers.find(item => item.id === profile.cover)
+  // 커버 사진은 바꿀 수 없는 고정 이미지다.
+  const cover = profileCovers[0]
   const avatar = profileAvatars.find(item => item.id === profile.avatar)
   return (
     <section aria-labelledby="mp-profile-name">
       <div className="relative h-[180px] rounded-[20px] overflow-hidden bg-bg max-[600px]:h-[130px]">
         <img className="w-full h-full object-cover" src={cover.image} alt="" />
-        <button
-          className="absolute right-[14px] top-[14px] inline-flex items-center gap-[8px] h-[34px] px-[14px] rounded-full bg-surface/90 text-text text-[13px] shadow-[var(--shadow)]"
-          onClick={() => onEdit('cover')}
-        >
-          <GSIcon name="image" size={16} />
-          커버 변경
-        </button>
       </div>
       <div className="flex items-end gap-[20px] px-[8px] -mt-[44px] max-[600px]:flex-wrap">
         <div className="relative shrink-0">

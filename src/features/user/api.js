@@ -14,3 +14,8 @@ export async function updateMyInfo({ nickname, currentPassword, newPassword }) {
 export async function deleteMyAccount() {
   await apiClient.delete('/api/users/me')
 }
+
+// 스팀 연동을 끊는다. 연동한 계정에서 동기화한 보유 게임은 서버가 지우고, 직접 가져온 구매내역은 남긴다.
+export async function unlinkSteam() {
+  await apiClient.delete('/api/users/me/steam')
+}
