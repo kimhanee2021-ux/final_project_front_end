@@ -2,8 +2,6 @@
 export { default as AuthProvider } from './context/AuthProvider'
 export { default as RequireAuth } from './components/RequireAuth'
 export { authLink } from './model/authSession'
-export { checkEmailAvailability } from './api'
-export { checkNicknameAvailability } from './api'
 export { safeReturnTo } from './model/authSession'
 export {
   forgetOnboarding,

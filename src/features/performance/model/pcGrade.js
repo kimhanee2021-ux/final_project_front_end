@@ -27,10 +27,6 @@ export function resolutionTarget(result, resolution) {
     reason: target.reason || '성능 비교에 필요한 정보가 부족해요.',
   }
 }
-export function gamePerformanceGrade(result) {
-  const target = resolutionTarget(result, 'FHD')
-  return target.grade ? target : null
-}
 export function latestOverallResult(results) {
   return Object.values(results ?? {})
     .filter(

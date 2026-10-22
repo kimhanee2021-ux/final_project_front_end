@@ -1,7 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {
-  gamePerformanceGrade,
   overallPerformanceExplanation,
   latestOverallResult,
   resolutionTarget,
@@ -22,10 +21,10 @@ const result = grade => ({
   ],
 })
 test('only new completed AI estimates produce grades', () => {
-  assert.equal(gamePerformanceGrade(result('C')).grade, 'C')
-  assert.equal(gamePerformanceGrade(result('UNKNOWN')), null)
-  assert.equal(gamePerformanceGrade({ ...result('A'), explanationStatus: 'UNAVAILABLE' }), null)
-  assert.equal(gamePerformanceGrade({}), null)
+  assert.equal(resolutionTarget(result('C'), 'FHD').grade, 'C')
+  assert.equal(resolutionTarget(result('UNKNOWN'), 'FHD').grade, null)
+  assert.equal(resolutionTarget({ ...result('A'), explanationStatus: 'UNAVAILABLE' }, 'FHD').grade, null)
+  assert.equal(resolutionTarget({}, 'FHD').grade, null)
 })
 test('rate limit is a service state rather than insufficient evidence', () => {
   assert.match(resolutionTarget({ explanationStatus: 'RATE_LIMITED' }, 'FHD').label, /이용 한도/)
