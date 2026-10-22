@@ -24,3 +24,17 @@ export async function fetchAiSummary(appIds) {
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   return res.json()
 }
+
+// [추가] 할인 달 전망 (appId: 스팀 appid). 작년 · 올해 30% 이상 할인한 달과 남은 달의 할인 확률(%).
+// 응답: { status, reason, threshold, lastYearSaleMonths, thisYearSaleMonths, upcoming: [{ month, percent }] }
+// 같은 appid는 캐시된 결과를 쓴다 (태그를 다시 눌러도 다시 부르지 않는다)
+const outlookCache = new Map()
+export function fetchDiscountOutlook(appId) {
+  if (!outlookCache.has(appId)) {
+    outlookCache.set(appId, fetch(`${API_BASE}/api/games/discount-outlook?appId=${appId}`).then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      return res.json()
+    }))
+  }
+  return outlookCache.get(appId)
+}

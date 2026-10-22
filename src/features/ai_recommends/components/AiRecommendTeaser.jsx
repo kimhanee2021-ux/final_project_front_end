@@ -11,6 +11,7 @@ const TEASER_COUNT = 3
 
 // 다른 화면(내 라이브러리)에 덧붙이는 AI 추천 안내.
 // 추천받기 전에는 AI 추천 탭으로 가는 바로가기, 받은 뒤에는 AI 게임 추천의 1~3위를 금 · 은 · 동으로 보여준다.
+// 카드 오른쪽 줄에 위아래로 순위 배지(위) → 하트(아래)를 둔다.
 export default function AiRecommendTeaser() {
   const { user } = useAuth()
   const [diagnosed] = useAiDiagnosed(user?.id)
@@ -57,15 +58,13 @@ export default function AiRecommendTeaser() {
                 href={game.storeUrl}
                 target="_blank"
                 rel="noreferrer"
-                className={`relative flex items-center gap-[12px] p-[12px] pr-[52px] rounded-[16px] bg-bg ring-2 transition-transform duration-200 hover:-translate-y-[2px] ${
+                className={`relative flex items-center gap-[12px] min-h-[88px] p-[12px] pr-[64px] rounded-[16px] bg-bg ring-2 transition-transform duration-200 hover:-translate-y-[2px] ${
                   MEDALS[game.rank]?.ring ?? 'ring-transparent'
                 }`}
                 aria-label={`${game.name} 스팀 상점 보기`}
               >
-                <span className="relative block w-[96px] shrink-0 overflow-hidden rounded-[10px]">
-                  <GameImage className="block w-full aspect-[460/215] object-cover" src={game.image} iconSize={22} />
-                  <RankBadge rank={game.rank} medal size="sm" />
-                </span>
+                <GameImage className="block w-[96px] shrink-0 aspect-[460/215] rounded-[10px] object-cover" src={game.image} iconSize={22} />
+                <RankBadge rank={game.rank} medal size="sm" position="right-[10px] top-[10px]" />
                 <strong className="flex-1 min-w-0 text-[14px] font-[600] leading-[1.4] [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2] overflow-hidden">
                   {game.name}
                 </strong>

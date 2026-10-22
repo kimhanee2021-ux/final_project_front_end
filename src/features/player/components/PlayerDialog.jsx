@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { GSIcon, GameImage } from '@/shared/ui'
+import { GSIcon } from '@/shared/ui'
 import { useGameSense } from '@/shared/state'
 import {
-  gameStatuses,
   playStyles,
   preferenceTags,
   profileAvatars,
@@ -13,7 +12,6 @@ import { getErrorMessage } from '@/shared/lib/apiClient'
 const titles = {
   profile: '프로필 수정',
   avatar: '프로필 아바타 변경',
-  game: '나의 게임 기록',
 }
 
 function FormActions({ onClose, label = '저장하기' }) {
@@ -237,78 +235,6 @@ function ImagePicker({ type, onClose }) {
   )
 }
 
-function GameRecordForm({ game, onClose }) {
-  const { player, updateGameRecord, notify } = useGameSense()
-  const [draft, setDraft] = useState(player.games[game.id])
-  const progress =
-    draft.status === 'completed' ? 100 : draft.status === 'planned' ? 0 : draft.progress
-  const submit = event => {
-    event.preventDefault()
-    updateGameRecord(game, { ...draft, progress, note: draft.note.trim() })
-    notify(`${game.shortName || game.name} · 게임 기록을 저장했어요.`)
-    onClose()
-  }
-  return (
-    <form className="[&>label]:flex [&>label]:flex-col" onSubmit={submit}>
-      <div className="flex items-center gap-[15px] m-[22px_0] bg-gs-raised rounded-[14px] overflow-hidden max-[480px]:gap-[11px]">
-        <GameImage className="w-[115px] h-[77px] object-cover max-[480px]:w-[88px] max-[480px]:h-[73px]" src={game.banner} />
-        <div className="py-[10px] pr-[12px]">
-          <strong className="block text-[14px] max-[480px]:text-[14px]">{game.name}</strong>
-          <span className="block text-gs-muted text-[12px] mt-[5px]">누적 {game.hours}시간 · 예시 기록</span>
-        </div>
-      </div>
-      <label className={labelClass}>
-        플레이 상태
-        <select
-          className={fieldClass}
-          value={draft.status}
-          onChange={event => setDraft(previous => ({ ...previous, status: event.target.value }))}
-        >
-          {gameStatuses.map(status => (
-            <option key={status.id} value={status.id}>
-              {status.label}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label className={labelClass}>
-        <span className="flex justify-between">
-          나의 진행률 <strong className="text-gs-mint">{progress}%</strong>
-        </span>
-        <input
-          className="m-[15px_0_3px] accent-gs-mint w-full"
-          type="range"
-          min={0}
-          max={100}
-          step={1}
-          value={progress}
-          disabled={['completed', 'planned'].includes(draft.status)}
-          onChange={event =>
-            setDraft(previous => ({ ...previous, progress: Number(event.target.value) }))
-          }
-        />
-        <small className="self-end block text-gs-muted text-[12px] font-normal mt-[6px] leading-[1.6]">직접 기록하는 진행률입니다. 완료는 100%, 플레이 예정은 0%로 표시합니다.</small>
-      </label>
-      <label className={labelClass}>
-        다음에 할 일 · 한 줄 메모
-        <textarea
-          className={`${fieldClass} resize-y min-h-[90px] max-h-[240px] leading-[1.8]`}
-          rows={3}
-          value={draft.note}
-          maxLength={180}
-          placeholder="다음에 이어서 하고 싶은 일이나 감상을 남겨보세요."
-          onChange={event => setDraft(previous => ({ ...previous, note: event.target.value }))}
-        />
-        <small className="self-end block text-gs-muted text-[12px] font-normal mt-[6px] leading-[1.6]">{draft.note.length} / 180자</small>
-      </label>
-      <p className="flex items-start gap-[7px] text-gs-muted text-[12px] leading-[1.8]">
-        게임 실행이나 실제 플레이 시간 측정은 지원하지 않는 데모입니다.
-      </p>
-      <FormActions onClose={onClose} />
-    </form>
-  )
-}
-
 export default function PlayerDialog({ dialog, onClose }) {
   const ref = useRef(null)
   useEffect(() => {
@@ -344,9 +270,6 @@ export default function PlayerDialog({ dialog, onClose }) {
           {dialog.type === 'profile' && <ProfileForm onClose={onClose} />}
           {dialog.type === 'avatar' && (
             <ImagePicker key={dialog.type} type={dialog.type} onClose={onClose} />
-          )}
-          {dialog.type === 'game' && (
-            <GameRecordForm key={dialog.game.id} game={dialog.game} onClose={onClose} />
           )}
         </div>
       )}

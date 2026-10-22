@@ -7,7 +7,7 @@
 //     기다리는 동안 남은 초(retryIn)를 화면에 보여 준다.
 //  4) AI 문장이 하나도 없으면(전부 규칙 문장) 저장하지 않아서, 다음 방문 때 다시 시도한다.
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { fetchAiSummary } from './api'
+import { fetchAiSummary, fetchBuyAdvice } from './api'
 
 const RETRY_MS = 30_000                     // 쿨다운에 걸렸을 때 다시 시도할 간격 (백엔드 쿨다운과 같은 30초)
 const STORAGE_KEY = 'gamesense-ai-analysis' // 브라우저에 저장할 때 쓰는 키
@@ -53,6 +53,8 @@ export function WishlistSummaryProvider({ appIds, children }) {
   const [error, setError] = useState(false)
   const [retryAt, setRetryAt] = useState(0)  // 쿨다운 재시도 예정 시각 (0이면 기다리는 중이 아님)
   const [now, setNow] = useState(Date.now()) // 남은 초를 계산하려고 1초마다 갱신하는 현재 시각
+  // [추가] 게임별 구매 판단 (appid -> 판단 결과). 카드와 상단 요약이 같이 쓴다
+  const [advice, setAdvice] = useState({})
 
   const runId = useRef(0)          // 요청마다 번호를 매긴다. 목록이 바뀐 뒤 늦게 온 응답은 버리기 위해서다
   const startedKey = useRef(null)  // 이 찜 목록으로 이미 요청을 시작했는지 (StrictMode에서 두 번 부르지 않게 막는다)
@@ -81,6 +83,18 @@ useEffect(() => {
     if (startedKey.current === idsKey) return   // 이미 이 목록으로 시작했으면 다시 시작하지 않는다
     startedKey.current = idsKey
     run(idsKey, appIds, false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idsKey])
+
+  // [추가] 구매 판단은 규칙 계산이라 AI 요약을 기다리지 않고 페이지가 열리면 바로 받는다 (appid별 캐시는 api.js)
+  useEffect(() => {
+    let alive = true
+    appIds.forEach(id => {
+      fetchBuyAdvice(id)
+        .then(d => { if (alive) setAdvice(map => ({ ...map, [id]: d })) })
+        .catch(() => { if (alive) setAdvice(map => ({ ...map, [id]: { verdict: 'UNKNOWN', status: 'ERROR' } })) })
+    })
+    return () => { alive = false } // 페이지를 떠나면 상태 업데이트를 막는다
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idsKey])
 
@@ -132,8 +146,8 @@ useEffect(() => {
   const retryIn = retryAt ? Math.max(0, Math.ceil((retryAt - now) / 1000)) : 0
 
   const value = useMemo(
-    () => ({ items, message, loading, error, retryIn }),
-    [items, message, loading, error, retryIn]
+    () => ({ items, message, loading, error, retryIn, advice }),
+    [items, message, loading, error, retryIn, advice]
   )
   return <SummaryContext.Provider value={value}>{children}</SummaryContext.Provider>
 }
@@ -141,6 +155,6 @@ useEffect(() => {
 // 메시지와 카드가 분석 상태를 읽을 때 쓴다
 export function useWishlistSummary() {
   const ctx = useContext(SummaryContext)
-  if (!ctx) return { items: null, message: null, loading: false, error: false, retryIn: 0 }
+  if (!ctx) return { items: null, message: null, loading: false, error: false, retryIn: 0, advice: {} }
   return ctx
 }

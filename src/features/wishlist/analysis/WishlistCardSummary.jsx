@@ -2,6 +2,7 @@
 // - 분석 중이면 카드 자리에 자리표시 막대를 보여 준다. 문장이 오면 실제 문장으로 바뀐다.
 // - 스팀 게임만 AI 문장을 보여 준다 (데모 게임은 아무것도 그리지 않는다).
 // - "기대 할인율" 줄은 없앴다. AI 문장만 남긴다.
+import { GSIcon } from '@/shared/ui'
 import { useWishlistSummary } from './WishlistSummaryContext'
 
 export default function WishlistCardSummary({ item }) {
@@ -13,7 +14,7 @@ export default function WishlistCardSummary({ item }) {
   if (!items) {
     if (!loading) return null
     return (
-      <div className="flex flex-col gap-[6px] rounded-[8px] bg-surface p-[10px]">
+      <div className="flex flex-col gap-[6px] rounded-[12px] bg-surface p-[12px]">
         {/* [추가] 문장이 올 자리 표시 (분석 중에만 보인다) */}
         <div className="h-[8px] w-[80%] animate-pulse rounded bg-text opacity-10" />
         <div className="h-[8px] w-[55%] animate-pulse rounded bg-text opacity-10" />
@@ -25,12 +26,15 @@ export default function WishlistCardSummary({ item }) {
   if (!summary) return null
 
   return (
-    <div className="rounded-[8px] bg-surface p-[10px] text-[12px] leading-[1.6] text-text">
+    // [변경] 카드 바탕(bg) 위에서 구분되도록 한 단계 밝은 바탕(surface)을 쓴다
+    <div className="rounded-[12px] bg-surface p-[12px] text-[12px] leading-[1.6] text-text">
       {/* 출처 표시: AI가 만든 문장인지, 기본 규칙 문장인지 */}
-      <span className="mb-[4px] inline-block rounded-full border border-border px-[8px] py-[1px] text-[10px] text-muted">
+      <span className="mb-[4px] inline-flex items-center gap-[4px] text-[11px] font-[700] text-primary-text">
+        <GSIcon name="spark" size={12} />
         {summary.source === 'AI' ? 'AI 분석' : '기본 분석'}
       </span>
-      <p>{summary.sentence}</p>
+      {/* [변경] 카드에서는 두 줄까지만. 전체 문장은 위쪽 AI 영역에서 본다 */}
+      <p className="[display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2] overflow-hidden" title={summary.sentence}>{summary.sentence}</p>
     </div>
   )
 }

@@ -8,11 +8,12 @@ const SIZES = {
 }
 
 // 커버 왼쪽 위 순위 배지. medal이면 1~3위를 금 · 은 · 동으로 칠한다. size는 sm(작은 썸네일) · md · lg(1위 큰 카드).
-export default function RankBadge({ rank, isNew, medal = false, size = 'md' }) {
+// position을 주면 기본 자리(왼쪽 위) 대신 그 자리에 둔다.
+export default function RankBadge({ rank, isNew, medal = false, size = 'md', position }) {
   const style = medal ? MEDALS[rank] : null
   const { box, badge, icon } = SIZES[size]
   return (
-    <span className={`absolute flex items-center gap-[6px] ${box}`}>
+    <span className={`absolute flex items-center gap-[6px] ${position ?? box}`}>
       <span
         className={`inline-flex items-center gap-[5px] rounded-full font-[800] tabular-nums shadow-[0_2px_10px_#0006] ${badge} ${
           style ? style.badge : 'bg-[#14131ce6] text-white'

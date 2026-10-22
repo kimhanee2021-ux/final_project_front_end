@@ -17,7 +17,7 @@
 }
 html { scrollbar-color: #b9b3d0 var(--gs-bg); scrollbar-width: thin; }
 body:has(.gs-shell) { background: var(--gs-bg); }
-body:has(.gs-dialog[open], .gs-mobile-drawer[open]) { overflow: hidden; }
+body:has(.gs-mobile-drawer[open]) { overflow: hidden; }
 
 /* -- gs-shell: 앱 전체를 감싸는 루트. 자기 자신의 배경/색은 GameSenseLayout.jsx에서
    유틸리티로 직접 주지만, font-family/line-height와 모든 하위 엘리먼트에 거는
@@ -28,7 +28,7 @@ body:has(.gs-dialog[open], .gs-mobile-drawer[open]) { overflow: hidden; }
   line-height: 1.5;
   font-size: 14px;
 }
-.gs-shell *, .gs-dialog * { box-sizing: border-box; }
+.gs-shell * { box-sizing: border-box; }
 .gs-shell button, .gs-shell select { -webkit-tap-highlight-color: transparent; }
 .gs-shell button { transition: background .18s, color .18s, border-color .18s, transform .18s; }
 .gs-shell button:focus-visible, .gs-shell a:focus-visible, .gs-shell input:focus-visible, .gs-shell select:focus-visible { outline: 2px solid var(--gs-accent); outline-offset: 4px; }
@@ -42,9 +42,8 @@ body:has(.gs-dialog[open], .gs-mobile-drawer[open]) { overflow: hidden; }
 .gs-nav-link.active > svg:has(path[d^='m3 10']) { fill: currentColor; }
 
 /* -- 다이얼로그 배경(backdrop)은 CSS로만 스타일링할 수 있어서(Tailwind의 backdrop:
-   변형은 안 쓰고 여기서 공유), GameDialog와 모바일 드로어가 gs-dialog/gs-mobile-drawer
-   클래스를 계속 들고 있다. */
-.gs-dialog::backdrop, .gs-mobile-drawer::backdrop { background: #03080db5; backdrop-filter: blur(7px); }
+   변형은 안 쓰고 여기서 둔다), 모바일 드로어가 gs-mobile-drawer 클래스를 계속 들고 있다. */
+.gs-mobile-drawer::backdrop { background: #03080db5; backdrop-filter: blur(7px); }
 
 @keyframes gs-appear { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
