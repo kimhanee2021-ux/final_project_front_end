@@ -1,9 +1,9 @@
 import { GSIcon, RadarChart } from '@/shared/ui'
-import EvaluationNotice from './EvaluationNotice'
+import EvaluationNotice from '../EvaluationNotice'
 import GradeScale from './GradeScale'
 import PartStatusList from './PartStatusList'
-import { overallPerformanceExplanation } from '../model/pcGrade'
-import { VERDICTS, gradeOneLiner, unknownGradeHint } from '../model/pcEvaluation'
+import { overallPerformanceExplanation } from '../../model/pcGrade'
+import { VERDICTS, gradeOneLiner, unknownGradeHint } from '../../model/pcEvaluation'
 
 const verdictByValue = Object.fromEntries(Object.values(VERDICTS).map(item => [item.value, item.label]))
 

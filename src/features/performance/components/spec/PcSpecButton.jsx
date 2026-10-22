@@ -1,5 +1,5 @@
 import { GSIcon } from '@/shared/ui'
-import { usePcSpecs } from '../hooks/usePcSpecs'
+import { usePcSpecs } from '../../hooks/usePcSpecs'
 
 // 어느 화면에서든 같은 사양 입력 창을 여는 버튼. 사양을 이미 입력했다면 "사양 입력 완료!"로 바뀌고, 눌러서 고칠 수 있다.
 export default function PcSpecButton({ className = '' }) {

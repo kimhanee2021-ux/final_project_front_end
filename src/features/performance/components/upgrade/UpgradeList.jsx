@@ -1,5 +1,5 @@
 import { GSIcon } from '@/shared/ui'
-import EvaluationNotice from './EvaluationNotice'
+import EvaluationNotice from '../EvaluationNotice'
 
 // 개선·업그레이드 방향: 부품 네 개를 타일로 보여주고, 누르면 AI가 분석한 자세한 안내를 다이얼로그로 연다.
 export default function UpgradeList({ evaluation, onSelect }) {

@@ -1,5 +1,5 @@
-import { upgradePresentation } from '../model/pcUpgradePresentation'
-import { partPriceLabel } from '../model/pcParts'
+import { upgradePresentation } from '../../model/pcUpgradePresentation'
+import { partPriceLabel } from '../../model/pcParts'
 
 // 사양 카드 안에서 해당 부품에 관한 분석만 펼친다. 별도 업그레이드 영역은 만들지 않는다.
 export default function PcUpgradePanel({ result, category, specs, partOffers = [], partsLoading = false }) {

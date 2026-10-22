@@ -1,4 +1,4 @@
-import { gradeBands } from '../model/pcGrade'
+import { gradeBands } from '../../model/pcGrade'
 
 // A~E 다섯 단계 눈금: 내 등급 칸만 강조해서 "5단계 중 어디쯤인지"를 보여준다. 칸은 왼쪽부터 차례로 나타난다.
 export default function GradeScale({ grade }) {

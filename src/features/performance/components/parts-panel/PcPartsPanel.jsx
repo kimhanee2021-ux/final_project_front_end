@@ -1,7 +1,7 @@
 import { AnalysisPanel } from '@/shared/ui'
 import { hl } from '@/shared/utils/headline'
-import { hardwareFromSpecs, hasSpecs } from '../model/pcSpecs'
-import { usePcSpecs } from '../hooks/usePcSpecs'
+import { hardwareFromSpecs, hasSpecs } from '../../model/pcSpecs'
+import { usePcSpecs } from '../../hooks/usePcSpecs'
 import HardwareCard from './HardwareCard'
 
 const HOW_TO_STEPS = [

@@ -1,4 +1,4 @@
-import { resolutionTarget } from '../model/pcGrade'
+import { resolutionTarget } from '../../model/pcGrade'
 export default function PcPerformanceTarget({ result, resolution }) {
   const target = resolutionTarget(result, resolution)
   return (
