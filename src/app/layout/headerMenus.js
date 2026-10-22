@@ -25,6 +25,9 @@ export const headerMenus = [
     children: [
       { to: '/ai-recommends', icon: 'spark', label: 'AI 게임 추천', description: '내가 플레이한 게임 취향으로 다음 게임 추천' },
       { to: '/explore', icon: 'compass', label: '스팀 전체 게임', description: '장르별 · 출시 예정 · 인기 게임' },
+      { to: '/gamer-map', icon: 'globe', label: '게이머 지도', description: '전세계 19개국 PC 게이머의 연도별 변화' },
+      { to: '/weekly-rankings', icon: 'chart', label: '국가별 주간랭킹', description: 'Steam 국가별 주간 매출 순위' },
+      { to: '/pro-streamer-play', icon: 'play', label: '프로·스트리머', description: '게임별 플레이 · 하이라이트 · 공략 영상' },
     ],
   },
   {

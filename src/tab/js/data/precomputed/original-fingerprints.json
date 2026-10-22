@@ -1,0 +1,107 @@
+{
+  "grid": {
+    "width": 1680,
+    "height": 1060,
+    "step": 8,
+    "gap": 2
+  },
+  "neutralColor": "#53647a",
+  "years": {
+    "2010": {
+      "geometryHash": "539f7d5950f5580b612e47a863ed09e4a7a771b56335d0061fa10c376d76abf7",
+      "metadataHash": "a1f4020d51d6a5e1bb3d785d02a2b44c477b40604bcd7bf64feeed88a8abaacd",
+      "dataCells": 1166,
+      "neutralCells": 2043
+    },
+    "2011": {
+      "geometryHash": "4552706657349c01b1ec05da5514814f0b96644507b35fa2b9250afd4302677e",
+      "metadataHash": "9c664914e78670356527cd040aa79e3e37fdc0373e2c34ec12e747ded852f655",
+      "dataCells": 1238,
+      "neutralCells": 2229
+    },
+    "2012": {
+      "geometryHash": "a27195d5741ec4ca860f80f307028d38ff6a312ac5a9a0bee211669c93c7c8a8",
+      "metadataHash": "570f370d274c2996c8178234e24bf86e431c7c4368681f7a42dd405a7f4734cd",
+      "dataCells": 1309,
+      "neutralCells": 2428
+    },
+    "2013": {
+      "geometryHash": "40d3d5f5222f5f627ee693485a714dee9bc765bc2961ef1d7be18b4d8962a5d7",
+      "metadataHash": "c31dc09ed72be114a73593b663ae92f0792cf501eeee8a9c2b42a94d5a33f67d",
+      "dataCells": 1384,
+      "neutralCells": 2578
+    },
+    "2014": {
+      "geometryHash": "ed0df4d9f3e37c94b9d281cda8ee38cd284ebe1709ce0eb777d7f029ecf8842d",
+      "metadataHash": "398f4ce07f450e14033699b0b9c45f34c98a0f16f77057cebee611bd0b0efe2c",
+      "dataCells": 1449,
+      "neutralCells": 2579
+    },
+    "2015": {
+      "geometryHash": "03970f5f82a2ca5dade36668e018634457fd05a61e00e50275aefe98e128237a",
+      "metadataHash": "ad966a6e1adb5ffd97d8117a18100c00718ad76061da52a01105f2c2fa2dd040",
+      "dataCells": 1500,
+      "neutralCells": 3149
+    },
+    "2016": {
+      "geometryHash": "11defa44f8721399659c74fcef60d286a2f19bf4292c9a7e43a6e1357da491ed",
+      "metadataHash": "aa138c4599f5bb28df854d69a0849c26114d6fdeb281ca1782d46dd2c286df7a",
+      "dataCells": 1570,
+      "neutralCells": 3337
+    },
+    "2017": {
+      "geometryHash": "546434338d0cf0493715d2a8043aac86b1462b50a8a7b02fa9a92b77be65d623",
+      "metadataHash": "1ce9f7b21e4590a0c34e5970378554f9acb821b51d211bc04f8f422495f371dc",
+      "dataCells": 1656,
+      "neutralCells": 3492
+    },
+    "2018": {
+      "geometryHash": "01218a4835dc6c4617acf7c80605279c4cf90971af49b922e1c0c3d74fd00144",
+      "metadataHash": "c643527bc0df439bdeae3eb47a4d8f91c04fa43ce9d62f7088cbbf237ae216f6",
+      "dataCells": 1716,
+      "neutralCells": 3649
+    },
+    "2019": {
+      "geometryHash": "f42aefe201b12ed76ac98512b728f95fcdf6ed1a40a3030595eca5a38dc259a3",
+      "metadataHash": "458fa3fa0642aaa6760a21b62e68fb2d31cae45af8fea6ddd337165e77cafa18",
+      "dataCells": 1760,
+      "neutralCells": 3794
+    },
+    "2020": {
+      "geometryHash": "3cf10c306987e06ea8fc371efd53f7bc5269929802b8c2ef4f3037628c4c2062",
+      "metadataHash": "e33403a3c9d9894c0cf7d14eb5449674db53097e89259273d2199da85f6cdc6b",
+      "dataCells": 1899,
+      "neutralCells": 4225
+    },
+    "2021": {
+      "geometryHash": "1ade1e8b472b16253f2a1a590531b01b401ed0c2c1921b54bad117e31cd92846",
+      "metadataHash": "44cb1734442ba43264394c57468b0f707954360564ba0ad9f8cd6fa8c0283994",
+      "dataCells": 1960,
+      "neutralCells": 4360
+    },
+    "2022": {
+      "geometryHash": "d20cb91f9b645f5449082ed6586ad4c77609f65b426bae7efca76313c5d26f9a",
+      "metadataHash": "de4289d9fb847d24d595154b09e20253cec260629c840c69b83d076b471becc6",
+      "dataCells": 1944,
+      "neutralCells": 4322
+    },
+    "2023": {
+      "geometryHash": "bee3aaa775eccdad2d91abdf58082d9bd626f38bb273661484dbc5700a3d8da0",
+      "metadataHash": "1782addf317eed2d5b7816378b414f31a046ef2a5638aee77c5b544d6f15974c",
+      "dataCells": 1977,
+      "neutralCells": 4412
+    },
+    "2024": {
+      "geometryHash": "6035ffea630496c4fd1df56666ab87a64ac04e6dcde6a43deb4d1bc0c89c42ab",
+      "metadataHash": "6df5220f72722e073f28c9312b3f95d6b497178abd963d5239ca0787fa4dced2",
+      "dataCells": 2013,
+      "neutralCells": 4489
+    },
+    "2025": {
+      "geometryHash": "cd775ab2d0fa8373aa81a11f75d58704a2e5124dfa96e86abeabbf3a724b03d5",
+      "metadataHash": "b99b92080eae5ccec13a178b249f63f7b064903082928f7559338399a45f0f40",
+      "dataCells": 2035,
+      "neutralCells": 4566
+    }
+  }
+}
