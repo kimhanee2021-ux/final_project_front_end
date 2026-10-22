@@ -1,12 +1,21 @@
 import { genreSpending, hourlyText, isPaid, netAmount, summarize, valueRanking } from '@/features/spending'
 import { money, number } from '@/shared/utils/formatters'
 import { hl, plain } from '@/shared/utils/headline'
-import { groupMinorGenres } from './groupMinorGenres'
 
 const DAY = 24 * 60 * 60 * 1000
 const MAX_ACTIVITY = 8
 
-export { groupMinorGenres }
+const CHART_GENRES = 5
+
+// 차트가 너무 길어지지 않게 상위 장르만 두고 나머지는 '기타'로 묶는다 (amount/count/hours/percent 합산)
+export function groupMinorGenres(genres) {
+  if (genres.length <= CHART_GENRES) return genres
+  const sum = key => genres.slice(CHART_GENRES - 1).reduce((total, genre) => total + (genre[key] || 0), 0)
+  return [
+    ...genres.slice(0, CHART_GENRES - 1),
+    { name: '기타', amount: sum('amount'), count: sum('count'), hours: sum('hours'), percent: sum('percent') },
+  ]
+}
 
 // 장르별 보유 게임: 금액순 장르 목록과 상단 요약 문구에 쓸 값.
 // 게임 수 비율(42%)과 금액(₩186,000)을 같이 말해야 해서 상위 장르의 게임 수도 센다.
@@ -37,7 +46,7 @@ export function valueHeadline(list) {
 }
 
 // 오늘 기준 며칠 전인지 문구로 바꾼다
-function relativeDay(date, asOf) {
+export function relativeDay(date, asOf) {
   const diff = Math.round((new Date(asOf) - new Date(date)) / DAY)
   if (diff <= 0) return '오늘'
   if (diff === 1) return '어제'

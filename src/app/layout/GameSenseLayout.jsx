@@ -1,22 +1,18 @@
 import { useEffect, useRef } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { useRevealOnView } from '@/shared/hooks'
 import { useGameSense } from '@/shared/state'
 import { GSIcon } from '@/shared/ui'
 import { GameDialog } from '@/features/games'
 import { MySpendingProvider } from '@/features/spending'
 import Header from '@/app/layout/Header'
 import Sidebar from '@/app/layout/Sidebar'
-import { footerNote } from '@/app/layout/footerNotes'
 import '@/shared/styles/gamesense.css'
 
 function Shell() {
   const mobileMenu = useRef(null)
-  useRevealOnView()
   const { pathname, search, hash } = useLocation()
   const navigate = useNavigate()
   const { toast, setToast, notify } = useGameSense()
-  const note = footerNote(pathname)
   // 스팀 연동 콜백이 끝나면 백엔드가 프론트 루트로 ?steamLinked=true를 붙여 돌려보낸다.
   useEffect(() => {
     if (new URLSearchParams(search).get('steamLinked') !== 'true') return
@@ -90,14 +86,10 @@ function Shell() {
           <Outlet />
         </main>
         <footer className="flex justify-between items-center gap-[15px] max-w-[1100px] mx-auto px-[24px] py-[24px] max-[600px]:px-[16px] text-gs-muted text-[12px]">
-          {/* 안내할 문구가 없는 화면에서는 왼쪽을 비워 두고, "Made for..."만 오른쪽에 둔다. */}
           <span className="flex items-center gap-[7px] max-[600px]:block max-[600px]:leading-[1.9]">
-            {note && (
-              <>
-                <i className="w-[4px] h-[4px] rounded-full bg-gs-mint max-[600px]:inline-block max-[600px]:mr-[5px] max-[600px]:mb-[2px]" />
-                {note[0]} <span className="p-[0_3px] opacity-40">/</span> {note[1]}
-              </>
-            )}
+            <i className="w-[4px] h-[4px] rounded-full bg-gs-mint max-[600px]:inline-block max-[600px]:mr-[5px] max-[600px]:mb-[2px]" />
+            DEMO EXPERIENCE <span className="p-[0_3px] opacity-40">/</span> 모든 플레이 기록과 추천은
+            더미 데이터입니다.
           </span>
           <span className="tracking-[1px] max-[900px]:hidden">Made for the way you play.</span>
         </footer>

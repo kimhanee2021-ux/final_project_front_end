@@ -1,11 +1,15 @@
 import { useRef, useState } from 'react'
 import { GSIcon } from '@/shared/ui'
-import { useTheme } from '@/shared/state'
+import { useGameSense, useTheme } from '@/shared/state'
 import { useDismiss } from '@/shared/hooks'
 
 const THEMES = [
   ['light', '라이트', 'sun'],
   ['dark', '다크', 'moon'],
+]
+const LANGUAGES = [
+  ['ko', '한국어'],
+  ['en', 'English'],
 ]
 
 const choice = selected =>
@@ -13,9 +17,10 @@ const choice = selected =>
     selected ? 'bg-gs-accent text-gs-on-accent' : 'bg-transparent text-gs-muted hover:text-gs-text'
   }`
 
-// 설정 메뉴: 다크/라이트 모드 전환.
+// 설정 메뉴: 다크/라이트 모드 전환과 언어 선택.
 export default function SettingsMenu() {
   const { theme, setTheme } = useTheme()
+  const { language, changeLanguage } = useGameSense()
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
   useDismiss(ref, open, () => setOpen(false))
@@ -39,6 +44,16 @@ export default function SettingsMenu() {
               {THEMES.map(([value, label, icon]) => (
                 <button key={value} type="button" className={choice(theme === value)} aria-pressed={theme === value} onClick={() => setTheme(value)}>
                   <GSIcon name={icon} size={15} />
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="text-[12px] text-gs-muted mb-[8px]">언어</p>
+            <div className="flex p-[3px] rounded-full bg-gs-raised" role="group" aria-label="언어">
+              {LANGUAGES.map(([value, label]) => (
+                <button key={value} type="button" className={choice(language === value)} aria-pressed={language === value} onClick={() => changeLanguage(value)}>
                   {label}
                 </button>
               ))}

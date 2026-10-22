@@ -1,5 +1,5 @@
 import { useGameSense } from '@/shared/state'
-import { GSIcon, GameImage } from '@/shared/ui'
+import { GSIcon } from '@/shared/ui'
 import { WishlistButton } from '@/features/wishlist'
 
 export function PlatformIcons({ platforms }) {
@@ -27,10 +27,11 @@ export default function GameCard({ game, view = 'grid' }) {
         onClick={() => setSelectedGame(game)}
         aria-label={`${game.name} 상세 보기`}
       >
-        <GameImage
+        <img
           className="block w-full aspect-[0.83] object-cover transition-transform duration-[350ms] group-hover:scale-[1.04]"
           src={game.image}
-          iconSize={34}
+          alt=""
+          loading="lazy"
         />
       </button>
       <div className="flex flex-col gap-[6px] min-w-0 flex-1">

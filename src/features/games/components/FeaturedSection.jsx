@@ -19,7 +19,7 @@ const NO_EXTRA_GAMES = []
 // 스팀 추천 게임 전체 목록 + 검색어 필터.
 // extraGames: 검색할 때 함께 뒤질 다른 목록(트렌드 게임). 같은 게임(appId)은 한 번만 나온다.
 export default function FeaturedSection({ view, className = '', extraGames = NO_EXTRA_GAMES }) {
-  const { query, setQuery } = useGameSense()
+  const { query, setQuery, t } = useGameSense()
   const { games, loading, error, retry } = useFeaturedGames()
 
   const filtered = useMemo(() => {
@@ -49,7 +49,7 @@ export default function FeaturedSection({ view, className = '', extraGames = NO_
     <section className={`min-w-0 ${className}`} aria-labelledby="gs-featured-title" aria-busy={loading}>
       <SectionHeader
         id="gs-featured-title"
-        title="추천 게임"
+        title={t('Featured Games', '추천 게임')}
         count={!loading && !error ? filtered.length : null}
         description="스팀이 지금 추천하는 게임들을 둘러보세요."
       />

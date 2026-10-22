@@ -7,7 +7,7 @@ const TITLES = {
 }
 
 // 소비 분석·구매 내역 화면 맨 위. 데이터 출처와 기준일은 제목 아래 한 줄로만 알린다.
-export default function DashboardIntro({ view, asOf, badgeLabel = '스팀 데이터' }) {
+export default function DashboardIntro({ view, asOf, badgeLabel = '데모 데이터' }) {
   const description =
     view === 'library'
       ? '구매한 게임과 함께한 시간을 한눈에 살펴보세요.'

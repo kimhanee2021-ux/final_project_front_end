@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { GameImage, GSIcon, PanelPage, Panel } from '@/shared/ui'
+import { GSIcon, PanelPage, Panel } from '@/shared/ui'
 import { useGameSense } from '@/shared/state'
 import { discoverGames } from '@/features/games'
 import { gameStatuses, ProfileHero, PlayerDialog } from '@/features/player'
-import { hardwareFromSpecs, hasSpecs, usePcSpecs } from '@/features/performance'
+import { hardware, performanceSummary, mergeHardware, usePcSpecs } from '@/features/performance'
 import { AccountSettings } from '@/features/user'
 import { useAuth } from '@/features/auth'
 
@@ -70,7 +70,7 @@ function GameOverview({ onEditGame }) {
                 onClick={() => setSelectedGame(game)}
                 aria-label={`${game.name} 상세 보기`}
               >
-                <GameImage className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105" src={game.banner} />
+                <img className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105" src={game.banner} alt="" loading="lazy" />
               </button>
               <div className="min-w-0 flex-1">
                 <button className="block p-0 bg-transparent text-left text-[15px] font-[600] [overflow-wrap:anywhere] hover:underline" onClick={() => setSelectedGame(game)}>
@@ -110,28 +110,32 @@ function GameOverview({ onEditGame }) {
 }
 
 function GamingEnvironment() {
-  const { specs } = usePcSpecs()
-  const parts = hardwareFromSpecs(specs)
-  const entered = hasSpecs(specs)
+  const { specs: inputSpecs } = usePcSpecs()
+  const specs = [
+    ...mergeHardware(hardware, inputSpecs).map(item => ({ label: item.name, value: item.model })),
+    { label: '모니터', value: '2560 × 1440 (QHD)' },
+    { label: '주 사용 입력장치', value: 'Xbox 무선 컨트롤러' },
+  ]
   return (
     <section>
-      <PanelTitle title="내 게임 환경" to="/pc-check" linkLabel="AI PC 진단 보기" />
-      {entered ? (
+      <PanelTitle title="내 게임 환경" to="/pc-check" linkLabel="내 PC 사양 보기" />
+      <div className="grid grid-cols-[1fr_1.6fr] gap-[48px] items-center max-[900px]:grid-cols-1 max-[900px]:gap-[28px]">
+        <div role="img" aria-label={`예시 PC 성능 ${performanceSummary.score}점, ${performanceSummary.label}`}>
+          <p className="flex items-baseline gap-[14px]">
+            <strong className="text-[56px] font-[750] tracking-[-2px] leading-none tabular-nums">{performanceSummary.score}</strong>
+            <span className="text-[16px] font-[600] text-primary-text">{performanceSummary.label}</span>
+          </p>
+          <p className="mt-[12px] text-[14px] text-muted">내 PC는 대부분의 최신 게임을 쾌적하게 실행할 수 있어요! (Demo PC · 예시 사양)</p>
+        </div>
         <dl className="grid grid-cols-2 gap-[12px] max-[600px]:grid-cols-1">
-          {parts.map(part => (
-            <div key={part.id} className="p-[16px] rounded-[16px] bg-bg min-w-0">
-              <dt className="text-[13px] text-muted">{part.name}</dt>
-              <dd className={`mt-[4px] text-[14px] font-[500] [overflow-wrap:anywhere] ${part.model ? '' : 'text-faint'}`}>
-                {part.model || '아직 입력하지 않았어요'}
-              </dd>
+          {specs.map(spec => (
+            <div key={spec.label} className="p-[16px] rounded-[16px] bg-bg min-w-0">
+              <dt className="text-[13px] text-muted">{spec.label}</dt>
+              <dd className="mt-[4px] text-[14px] font-[500] [overflow-wrap:anywhere]">{spec.value}</dd>
             </div>
           ))}
         </dl>
-      ) : (
-        <p className="text-[14px] text-muted">
-          아직 입력한 PC 사양이 없어요. <Link className="text-primary-text underline" to="/pc-check">PC 사양 입력하고 AI 진단받기</Link>
-        </p>
-      )}
+      </div>
     </section>
   )
 }

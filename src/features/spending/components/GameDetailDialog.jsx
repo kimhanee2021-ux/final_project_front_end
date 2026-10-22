@@ -120,7 +120,9 @@ export default function GameDetailDialog({ game, onClose }) {
                 ? game.acquisitionMethod
                   ? '구매내역에 결제 기록이 없는 게임이에요 (라이선스 기준: ' + (METHOD_LABELS[game.acquisitionMethod] ?? '기타') + ').'
                   : '구매내역에 결제 기록이 없는 게임이에요 (선물·키 등록·무료 배포 등).'
-                : '스팀 보유 게임 · 금액은 현재 한국 정가 기준 추정치예요.'}
+                : game.platform === 'Steam' && game.amountSource
+                  ? '스팀 보유 게임 · 금액은 현재 한국 정가 기준 추정치예요.'
+                  : '데모 기록 · 실제 구매 내역이 아닙니다.'}
           </small>
         </div>
       )}

@@ -1,5 +1,15 @@
 // All ratings, reviews, play times and release dates are illustrative demo data.
 const image = name => `/images/${name}.jpg`
+export const genres = [
+  'All',
+  'Action',
+  'RPG',
+  'Adventure',
+  'Strategy',
+  'Simulation',
+  'Sports',
+  'Indie',
+]
 
 export const discoverGames = [
   {
@@ -171,4 +181,12 @@ export const discoverGames = [
     description:
       '작은 정착지에서 시작해 나만의 문명을 이끌어보세요. 발견, 외교, 그리고 선택으로 역사를 만들어갑니다.',
   },
+]
+
+export const recommendedIds = ['sea', 'hades', 'persona', 'dave', 'baldur', 'elden']
+export const recentActivity = [
+  { gameId: 'hades', when: '3시간 전', duration: '2시간 30분', achievement: '새로운 무기 해금' },
+  { gameId: 'zelda', when: '1일 전', duration: '1시간 45분', achievement: '새로운 사당 발견' },
+  { gameId: 'stellar', when: '3일 전', duration: '3시간 10분', achievement: '스토리 챕터 완료' },
+  { gameId: 'cyberpunk', when: '5일 전', duration: '2시간 15분', achievement: '나이트 시티 탐험' },
 ]

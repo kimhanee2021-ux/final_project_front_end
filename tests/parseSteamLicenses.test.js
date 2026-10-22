@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { parseSteamLicenses, isLicensesPage } from '../src/features/purchaseImport/model/parseSteamLicenses.js'
+import { parseSteamLicenses, isLicensesPage } from '../src/features/purchaseImport/parseSteamLicenses.js'
 
 // 실제 라이선스 페이지와 같은 구조의 가짜 데이터 (개인정보 없음)
 const row = (date, name, method, free = false) => `

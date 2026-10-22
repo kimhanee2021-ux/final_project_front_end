@@ -3,7 +3,6 @@ import { STEAM_NOT_LINKED_CODE, fetchMySpending } from '../api'
 import { syncSteamLibrary } from '@/features/library'
 import { toSpendingGame } from '../model/spendingModel'
 import { getErrorMessage } from '@/shared/lib/apiClient'
-import { STEAM_LINKED_EVENT } from '@/features/auth'
 
 const toState = data => ({
   data: { ...data, games: data.games.map(toSpendingGame) },
@@ -50,13 +49,6 @@ export function useMySpending(userId) {
       setState(current => toFailure(current, error))
     }
   }, [])
-
-  // 스팀 연동을 새 창에서 마치면 이 창에 이벤트가 오므로, 연동 전 상태(notLinked)를 지우고 다시 불러온다.
-  useEffect(() => {
-    if (!userId) return
-    window.addEventListener(STEAM_LINKED_EVENT, reload)
-    return () => window.removeEventListener(STEAM_LINKED_EVENT, reload)
-  }, [userId, reload])
 
   return { ...state, reload, sync }
 }

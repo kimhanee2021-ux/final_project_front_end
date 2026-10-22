@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useGameSense } from '@/shared/state'
 import { gameGridClass } from '../model/gameGridClass'
 import CatalogMessage from './CatalogMessage'
 import CategoryChips from './CategoryChips'
@@ -10,6 +11,7 @@ import SectionHeader from './SectionHeader'
 // 지금 스팀에서 주목받는 카테고리별 게임. 카테고리 선택 상태만 이 컴포넌트가 가진다.
 // source: useFeaturedCategories()의 결과({ categories, loading, error, retry })
 export default function TrendingSection({ view, source }) {
+  const { t } = useGameSense()
   const [categoryKey, setCategoryKey] = useState(null)
   const { categories, loading, error, retry } = source
   const activeKey = categoryKey ?? categories[0]?.key
@@ -36,7 +38,7 @@ export default function TrendingSection({ view, source }) {
 
   return (
     <section className="min-w-0" aria-labelledby="gs-trending-title" aria-busy={loading}>
-      <SectionHeader id="gs-trending-title" title="트렌드" description="지금 스팀에서 주목받는 카테고리별 게임을 만나보세요." />
+      <SectionHeader id="gs-trending-title" title={t('Trending', '트렌드')} description="지금 스팀에서 주목받는 카테고리별 게임을 만나보세요." />
       {body}
     </section>
   )

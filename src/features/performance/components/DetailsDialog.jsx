@@ -1,19 +1,18 @@
 import { useEffect, useRef } from 'react'
 import { GSIcon } from '@/shared/ui'
-import PcGameAnalysisDetails from './PcGameAnalysisDetails'
-import PcUpgradePanel from './PcUpgradePanel'
+import { getPerformanceRating, resolutions } from '../mocks/performanceMock'
 
-// 게임 또는 부품 하나의 AI 분석 상세. details가 있으면 열리고 null이면 닫힌다.
-// 게임: { type: 'game', game, result }, 부품: { type: 'upgrade', item(부품 판정) }
-export default function DetailsDialog({ details, evaluation, onClose }) {
+export default function DetailsDialog({ details, onClose }) {
   const ref = useRef(null)
   useEffect(() => {
     const dialog = ref.current
     if (details && !dialog.open) dialog.showModal()
     else if (!details && dialog.open) dialog.close()
   }, [details])
-
-  const title = details?.type === 'game' ? details.game.name : `${details?.item.label} 개선 방향`
+  const title =
+    details?.type === 'game'
+      ? details.item.name
+      : details?.item.title
   return (
     <dialog
       ref={ref}
@@ -28,33 +27,70 @@ export default function DetailsDialog({ details, evaluation, onClose }) {
       {details && (
         <div className="pc-dialog-inner">
           <div className="pc-dialog-top">
-            <span className="pc-demo-badge">AI 분석</span>
-            <button autoFocus className="gs-icon-button" aria-label="상세 닫기" onClick={onClose}>
+            <span className="pc-demo-badge">DEMO DATA</span>
+            <button
+              autoFocus
+              className="gs-icon-button"
+              aria-label="성능 상세 닫기"
+              onClick={onClose}
+            >
               <GSIcon name="close" />
             </button>
           </div>
           <h2 id="pc-dialog-title">{title}</h2>
-          {details.type === 'game' &&
-            (details.result ? (
-              <>
-                <PcGameAnalysisDetails result={details.result} />
-              </>
-            ) : (
-              <p className="pc-dialog-callout">
-                아직 분석하지 않은 게임이에요. 분석이 끝나면 해상도별 등급과 설명을 볼 수 있어요.
+          {details.type === 'game' && (
+            <>
+              <p className="pc-dialog-lead">예시 PC · 그래픽 높음 설정</p>
+              {details.item.fps ? (
+                <div className="pc-dialog-fps">
+                  {resolutions.map(item => (
+                    <div key={item.id}>
+                      <span>
+                        {item.label} · {item.pixels}
+                      </span>
+                      <strong>
+                        {details.item.fps[item.id]}
+                        <small> FPS</small>
+                      </strong>
+                      <span>{getPerformanceRating(details.item.fps[item.id]).label}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="pc-dialog-callout">
+                  Nintendo Switch 게임으로 PC 성능 평가 대상에서 제외됩니다.
+                </p>
+              )}
+              <p>
+                {details.item.note ||
+                  '해상도를 낮추거나 그래픽 옵션을 조절하면 더 부드러운 플레이를 기대할 수 있습니다.'}
               </p>
-            ))}
+              <p className="pc-dialog-disclaimer">
+                모든 FPS는 인터페이스를 보여주기 위한 더미 데이터입니다. 실제 게임의 벤치마크나 측정
+                결과가 아닙니다.
+              </p>
+            </>
+          )}
           {details.type === 'upgrade' && (
-            <PcUpgradePanel
-              result={evaluation.overview}
-              category={details.item.category}
-              specs={evaluation.specs}
-              partOffers={evaluation.diagnosis.partOffers}
-              partsLoading={evaluation.diagnosis.partsLoading}
-            />
+            <>
+              <span className="pc-dialog-feature-icon">
+                <GSIcon name={details.item.id} size={35} />
+              </span>
+              <h3>{details.item.heading}</h3>
+              <p>{details.item.body}</p>
+              <ul className="pc-detail-tips">
+                {details.item.tips.map(tip => (
+                  <li key={tip}>
+                    <GSIcon name="check" size={17} />
+                    {tip}
+                  </li>
+                ))}
+              </ul>
+            </>
           )}
           <button className="gs-primary-button pc-dialog-confirm" onClick={onClose}>
             확인
+            <GSIcon name="check" size={17} />
           </button>
         </div>
       )}

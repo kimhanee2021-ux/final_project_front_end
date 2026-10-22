@@ -1,4 +1,4 @@
-import { hashKey, parseDate, textOf } from './parseSteamHistory.js'
+import { hashKey, parseDate, textOf } from './parseSteamHistory'
 
 // 스팀 "라이선스 및 제품 키 활성화" 페이지(store.steampowered.com/account/licenses/)를 저장한 HTML에서
 // 게임(라이선스)을 계정에 추가한 날짜와 획득 방법을 뽑는다. 금액 정보는 없다.

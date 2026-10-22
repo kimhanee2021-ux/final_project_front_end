@@ -29,9 +29,7 @@ apiClient.interceptors.request.use(config => {
 // 토큰 만료/위조로 401이 오면 AuthProvider가 로그아웃 처리하도록 알린다.
 // 단, "현재 비밀번호 불일치"처럼 서비스가 던진 401은 본문에 다른 메시지가 있으므로 세션 만료로 보지 않는다.
 // (시큐리티 401은 본문이 비어 있고, 컨트롤러 진입 후 인증 누락은 '로그인이 필요합니다'로 온다)
-// 스프링이 아닌 서버(추천 FastAPI 등)의 401은 세션 만료를 뜻하지 않으므로 요청에서 skipSessionExpiry로 제외한다.
 function isSessionExpired(error) {
-  if (error.config?.skipSessionExpiry) return false
   if (error.response?.status !== 401 || !error.config?.headers?.Authorization) return false
   const message = error.response.data?.error
   return !message || message === '로그인이 필요합니다'

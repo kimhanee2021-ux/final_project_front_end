@@ -11,7 +11,7 @@ const point = (index, count, ratio) => {
 }
 const toPoints = list => list.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ')
 
-export default function RadarChart({ items, max = 100, formatValue = value => `${value}점` }) {
+export default function RadarChart({ items, max = 100 }) {
   const count = items.length
   const data = items.map((item, index) => point(index, count, Math.min(item.value / max, 1)))
   return (
@@ -19,7 +19,7 @@ export default function RadarChart({ items, max = 100, formatValue = value => `$
       className="w-full max-w-[420px] mx-auto"
       viewBox={`0 0 ${SIZE} ${SIZE}`}
       role="img"
-      aria-label={items.map(item => `${item.label} ${formatValue(item.value)}`).join(', ')}
+      aria-label={items.map(item => `${item.label} ${item.value}점`).join(', ')}
     >
       {RINGS.map(ratio => (
         <polygon key={ratio} points={toPoints(items.map((_, index) => point(index, count, ratio)))} fill="none" stroke="var(--border)" strokeWidth="1" />
@@ -38,7 +38,7 @@ export default function RadarChart({ items, max = 100, formatValue = value => `$
           <text key={item.label} x={x} y={y} textAnchor="middle" dominantBaseline="middle" fill="var(--text)" fontSize="13" fontWeight="600">
             {item.label}
             <tspan x={x} dy="16" fill="var(--muted)" fontWeight="500" fontSize="12">
-              {formatValue(item.value)}
+              {item.value}점
             </tspan>
           </text>
         )

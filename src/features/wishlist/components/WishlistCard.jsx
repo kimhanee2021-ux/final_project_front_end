@@ -1,7 +1,6 @@
 import { useGameSense } from '@/shared/state'
 import { MAX_CARD_TAGS, tagLabel } from '@/shared/utils/gameTags'
 import WishlistButton from './WishlistButton'
-import { GameImage } from '@/shared/ui'
 
 // 위시리스트 화면의 게임 한 칸: 커버(하트로 빼기) → 이름 → 가격 → 태그.
 // 스팀 게임은 상점 페이지를 새 탭으로, 데모 게임은 상세 창을 연다.
@@ -19,10 +18,11 @@ export default function WishlistCard({ item }) {
       <div className="relative">
         <Cover {...coverProps} className="group block w-full p-0 overflow-hidden rounded-[16px] bg-bg" aria-label={`${item.name} 보기`}>
           {item.image && (
-            <GameImage
+            <img
               className="block w-full aspect-[460/215] object-cover transition-transform duration-[350ms] group-hover:scale-[1.04]"
               src={item.image}
-              iconSize={34}
+              alt=""
+              loading="lazy"
             />
           )}
         </Cover>

@@ -1,4 +1,3 @@
-import { GameImage } from '@/shared/ui'
 // size="large"는 GameDetailDialog에서 쓴다. 이전엔 ".dialog-content .game-art" 같은
 // CSS 컨텍스트 선택자로 크기를 바꿨는데, prop으로 직접 받는 쪽이 더 명확하다.
 export default function GameIdentity({ game, size = 'default' }) {
@@ -6,7 +5,7 @@ export default function GameIdentity({ game, size = 'default' }) {
   return (
     <div className="flex items-center gap-[11px]">
       <div className={`game-art art-${game.art} ${game.thumbnailUrl ? 'has-image' : ''} ${large ? 'w-[55px]! h-[65px]! text-[18px]!' : 'max-[580px]:w-[40px]! max-[580px]:h-[47px]!'}`} aria-hidden="true">
-        {game.thumbnailUrl ? <GameImage src={game.thumbnailUrl} fallback={<span>{game.initials}</span>} /> : <span>{game.initials}</span>}
+        {game.thumbnailUrl ? <img src={game.thumbnailUrl} alt="" loading="lazy" /> : <span>{game.initials}</span>}
       </div>
       <div className="min-w-0">
         <strong className={`font-[650] block ${large ? 'text-[19px]' : 'text-[14px] max-[580px]:text-[13px]'}`}>{game.name}</strong>
