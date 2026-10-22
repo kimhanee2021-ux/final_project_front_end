@@ -8,8 +8,7 @@ import { filterByPlayState, isUnplayedPaid, maxPlayHours, searchGames, sortGames
 // 열 제목: 사이트 보라 테마의 옅은 띠. 양 끝 칸만 둥글게 깎아 한 줄짜리 알약처럼 보이게 한다.
 const TH = 'text-[12px] font-[650] text-primary-text bg-primary-soft px-[10px] py-[12px] first:rounded-l-[12px] last:rounded-r-[12px]'
 
-function titleOf({ library, hasPurchaseDates }) {
-  if (library) return '내 게임 라이브러리'
+function titleOf({ hasPurchaseDates }) {
   return hasPurchaseDates ? '구매한 게임, 얼마나 즐겼을까요?' : '보유 게임, 얼마나 즐겼을까요?'
 }
 
@@ -20,8 +19,8 @@ function subtitleOf({ needsHistory, hasPurchaseDates }) {
 
 // 보유(구매한) 게임 표: 플레이 상태 탭 · 검색 · 정렬 + 게임별 금액/날짜/플레이 시간/시간당 비용.
 // filter는 바깥이 들고 있다 (AI 분석의 미플레이 패널이 표를 미플레이로 바꿔 열 수 있게).
-// library: 구매 내역 페이지 제목, needsHistory: 구매 내역이 없어 금액 칸을 "확인 필요"로, scrollable: 긴 표를 칸 안에서 스크롤.
-export default function PurchasedGamesTable({ games, filter, setFilter, onSelect, library, needsHistory = false, scrollable = false, icon }) {
+// needsHistory: 구매 내역이 없어 금액 칸을 "확인 필요"로, scrollable: 긴 표를 칸 안에서 스크롤.
+export default function PurchasedGamesTable({ games, filter, setFilter, onSelect, needsHistory = false, scrollable = false, icon }) {
   // 스팀 연동 분석은 구매일이 없으므로 구매일 열/정렬 대신 최근 플레이를 보여준다
   const hasPurchaseDates = games.some(game => game.purchasedAt)
   const [sort, setSort] = useState(hasPurchaseDates ? 'recent' : 'hours')
@@ -41,7 +40,7 @@ export default function PurchasedGamesTable({ games, filter, setFilter, onSelect
   return (
     <Card
       icon={icon}
-      title={titleOf({ library, hasPurchaseDates })}
+      title={titleOf({ hasPurchaseDates })}
       subtitle={subtitleOf({ needsHistory, hasPurchaseDates })}
       className=""
       action={<span className="text-[13px] text-faint whitespace-nowrap">{visible.length}개 게임</span>}

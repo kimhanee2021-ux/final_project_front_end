@@ -1,6 +1,5 @@
 // 이 폴더의 공개 목록(public API). 다른 폴더는 여기서 내보낸 것만 가져다 쓴다.
 export { default as GameDetailDialog } from './components/GameDetailDialog'
-export { default as MyPurchases } from './components/MyPurchases'
 export { default as PurchasedGamesTable } from './components/games-table/PurchasedGamesTable'
 export { default as MySpendingProvider } from './context/MySpendingProvider'
 export { genreSpending } from './model/spendingMetrics'

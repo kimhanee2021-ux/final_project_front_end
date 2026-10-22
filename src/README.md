@@ -25,8 +25,6 @@ src/
 │  ├─ ai-recommends/   AI 게임 추천
 │  ├─ games/           스팀 전체 게임 탐색
 │  ├─ performance/     AI PC 진단
-│  ├─ board/           커뮤니티 게시판
-│  ├─ hangul-blocks/   한글 테트리스
 │  └─ gamer-map/       랜딩의 PC 게이머 모자이크 지도
 └─ shared/                  여러 기능이 같이 쓰는 것
    ├─ ui/                   화면 부품 (layout / charts / controls / feedback / icons / media)
@@ -57,7 +55,7 @@ features/<기능>/
 ## 이름 규칙
 
 - 폴더 이름은 케밥 케이스 (`game-analysis`, `purchase-import`), 컴포넌트 파일은 파스칼 케이스 (`GenrePanel.jsx`), 그 밖의 파일은 카멜 케이스 (`gamesTable.js`).
-- `useRef`로 만든 값은 이름 끝을 `Ref`로 (`boardRef`, `softRef`) — React 컴파일러 lint가 ref로 알아본다.
+- `useRef`로 만든 값은 이름 끝을 `Ref`로 (`titleRef`, `inputRef`) — React 컴파일러 lint가 ref로 알아본다.
 
 ## import 규칙
 
