@@ -18,6 +18,7 @@ import AuthPage from '@/pages/auth/AuthPage'
 import OnboardingPage from '@/pages/auth/OnboardingPage'
 import { RequireAuth } from '@/features/auth'
 import LibraryPage from '@/pages/library/LibraryPage'
+import AiRecommendsPage from '@/pages/ai_recommends/AiRecommendsPage'
 import CommunityPage from '@/pages/community/CommunityPage'
 import CommunityPostPage from '@/pages/community/CommunityPostPage'
 import CommunityWritePage from '@/pages/community/CommunityWritePage'
@@ -59,6 +60,7 @@ const router = createBrowserRouter([
             element: <RequireAuth />,
             children: [
               { path: 'library', element: <LibraryPage /> },
+              { path: 'ai-recommends', element: <AiRecommendsPage /> },
               { path: 'wishlist', element: contained(<WishlistPage />) },
               { path: 'recommendations', element: contained(<RecommendationsPage />) },
               { path: 'settings', element: <SettingsPage /> },
