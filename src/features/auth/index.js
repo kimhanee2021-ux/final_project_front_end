@@ -15,4 +15,5 @@ export {
 } from './model/onboardingFlow'
 export { useAuth } from './context/AuthContext'
 export { useStartLink } from './hooks/useStartLink'
+export { useAuthForm } from './hooks/useAuthForm'
 export { STEAM_LINKED_EVENT, announceSteamLinked } from './model/steamLinkChannel'
