@@ -56,23 +56,24 @@ export function WishlistSummaryProvider({ appIds, children }) {
 
   const runId = useRef(0)          // 요청마다 번호를 매긴다. 목록이 바뀐 뒤 늦게 온 응답은 버리기 위해서다
   const startedKey = useRef(null)  // 이 찜 목록으로 이미 요청을 시작했는지 (StrictMode에서 두 번 부르지 않게 막는다)
+  const lastKey = useRef(null)     // [추가] 마지막으로 초기화한 찜 목록 (StrictMode의 두 번째 실행을 무시하려고)
   const retryTimer = useRef(null)  // 쿨다운 재시도 예약
-  // [추가] 마지막으로 처리한 찜 목록 키. 같은 목록이면 effect가 다시 실행돼도 아무것도 하지 않는다 (StrictMode 두 번 실행 대비)
-  const lastKey = useRef(null)
 
   // 찜 목록이 바뀌면 이전 요청을 무효로 하고, 그 목록의 저장된 분석을 다시 읽는다
-useEffect(() => {
-  if (lastKey.current === idsKey) return
-  lastKey.current = idsKey
-  runId.current++
-  clearTimeout(retryTimer.current)
-  const saved = readSaved(idsKey)
-  setItems(saved?.items ?? null)
-  setMessage(saved?.message ?? null)
-  setError(false)
-  setLoading(false)
-  setRetryAt(0)
-}, [idsKey])
+  useEffect(() => {
+    // [변경] 같은 찜 목록이면 다시 초기화하지 않는다. 개발 모드(StrictMode)에서 effect가 두 번 돌아도
+    // 진행 중인 요청을 무효로 만들지 않도록 막는다. 이게 없으면 AI 응답이 버려져 빈 화면이 된다.
+    if (lastKey.current === idsKey) return
+    lastKey.current = idsKey
+    runId.current++
+    clearTimeout(retryTimer.current)
+    const saved = readSaved(idsKey)
+    setItems(saved?.items ?? null)
+    setMessage(saved?.message ?? null)
+    setError(false)
+    setLoading(false)
+    setRetryAt(0)
+  }, [idsKey])
 
   // 저장된 분석이 없으면 페이지가 열릴 때 AI를 한 번 부른다
   useEffect(() => {
