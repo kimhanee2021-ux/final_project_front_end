@@ -21,6 +21,7 @@ import AiRecommendsPage from '@/pages/ai_recommends/AiRecommendsPage'
 import CommunityPage from '@/pages/community/CommunityPage'
 import CommunityPostPage from '@/pages/community/CommunityPostPage'
 import CommunityWritePage from '@/pages/community/CommunityWritePage'
+import { GamerMapRoute, WeeklyRankingsRoute } from '@/pages/DiscoveryRoutes'
 
 // 스크롤 섹션으로 만들지 않은 목록·글 화면은 가운데 정렬된 컨테이너 안에 놓는다.
 const contained = element => <PageBox>{element}</PageBox>
@@ -48,6 +49,9 @@ const router = createBrowserRouter([
         element: <GameSenseLayout />,
         children: [
           { path: 'explore', element: <ExplorePage /> },
+          { path: 'gamer-map', element: <GamerMapRoute /> },
+          { path: 'weekly-rankings', element: <WeeklyRankingsRoute /> },
+          { path: 'pro-streamer-play', lazy: async () => ({ Component: (await import('@/pages/proStreamer/ProStreamerPage')).default }) },
           { path: 'trending', element: <Navigate to="/explore" replace /> },
           { path: 'pc-check', element: <PcDiagnosisPage /> },
           // 종합평가는 AI PC 진단 페이지로 합쳐졌다 (예전 주소로 들어와도 열리게 한다)

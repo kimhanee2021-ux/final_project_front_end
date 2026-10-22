@@ -1,0 +1,71 @@
+{
+  "schema_version": "3.0.0",
+  "metadata": {
+    "dataset_name": "GameSense 19 Countries PC Gamers Time-Series",
+    "unit": "million_mau",
+    "metric": "monthly_active_users",
+    "years": [
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "total_countries": 19,
+    "excluded_country": "CAN",
+    "source_status": "user_provided",
+    "notes": [
+      "수치는 백만 명 단위입니다. 지도에서는 1,000,000을 곱해 명 단위로 환산합니다.",
+      "제공된 자료의 값과 출처 목록을 보존했습니다. 외부 원출처를 별도로 검증한 데이터는 아닙니다."
+    ],
+    "source_metadata": {
+      "PC": {
+        "dataset_name": "19 Countries PC Gamers Time-Series & Top 5 Games",
+        "platform": "PC",
+        "unit": "million_mau",
+        "excluded_country": "CAN",
+        "total_countries": 19,
+        "period": "2010-2025",
+        "sources": [
+          "Newzoo Global Games Market Report",
+          "Statista Digital Market Outlook",
+          "Niko Partners",
+          "World Bank Indicators API",
+          "SteamDB",
+          "Riot Games API"
+        ]
+      }
+    }
+  },
+  "annual_totals_19_countries_m": {
+    "PC": {
+      "2010": 415,
+      "2011": 442.5,
+      "2012": 471,
+      "2013": 502,
+      "2014": 528.5,
+      "2015": 551,
+      "2016": 576,
+      "2017": 608,
+      "2018": 629.5,
+      "2019": 648,
+      "2020": 702,
+      "2021": 721.5,
+      "2022": 714,
+      "2023": 726,
+      "2024": 737.5,
+      "2025": 748.3
+    }
+  }
+}
