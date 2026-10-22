@@ -23,11 +23,8 @@ export const headerMenus = [
     id: 'explore',
     label: '게임 탐색',
     children: [
-
-      { to: '/ai-recommends', label: 'AI 추천', description: '내 플레이 취향 기반 게임 추천' },
-
+      { to: '/ai-recommends', icon: 'spark', label: 'AI 게임 추천', description: '내가 플레이한 게임 취향으로 다음 게임 추천' },
       { to: '/explore', icon: 'compass', label: '스팀 전체 게임', description: '장르별 · 출시 예정 · 인기 게임' },
-      { to: '/recommendations', icon: 'spark', label: 'AI 게임 추천', description: '내가 플레이한 게임 취향으로 다음 게임 추천' },
     ],
   },
   {

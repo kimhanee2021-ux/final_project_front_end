@@ -8,26 +8,19 @@ const THEMES = [
   { key: 'dark', label: '다크' },
   { key: 'system', label: '시스템' },
 ]
-const LANGUAGES = [
-  { key: 'ko', label: '한국어' },
-  { key: 'en', label: 'English' },
-]
 
 const linkClass = 'inline-flex items-center gap-[8px] text-[16px] font-[600] text-primary-text hover:underline'
 
 // 설정: 항목 하나가 패널 하나.
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme()
-  const { language, changeLanguage, wishlist } = useGameSense()
+  const { wishlist } = useGameSense()
   return (
     <PanelPage>
       <SettingSection id="theme" title="화면 테마" description="편안한 밝기로 게임을 탐색하세요.">
         <SegmentedControl label="테마 설정" options={THEMES} value={theme} onChange={setTheme} />
       </SettingSection>
-      <SettingSection id="language" title="메뉴 언어" description="탐색 메뉴와 목록 제목의 표시 언어를 선택하세요.">
-        <SegmentedControl label="메뉴 언어 설정" options={LANGUAGES} value={language} onChange={changeLanguage} />
-      </SettingSection>
-      <SettingSection id="data" title="나의 데모 데이터" description={`위시리스트 ${wishlist.length}개 · 테마와 메뉴 언어는 이 브라우저에 저장됩니다.`}>
+      <SettingSection id="data" title="나의 데모 데이터" description={`위시리스트 ${wishlist.length}개 · 테마는 이 브라우저에 저장됩니다.`}>
         <Link to="/wishlist" className={linkClass}>
           찜 목록 보기
           <GSIcon name="arrow" size={18} />

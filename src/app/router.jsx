@@ -10,7 +10,6 @@ import AiCoachPage from '@/pages/aiCoach/AiCoachPage'
 import AnalysisPage from '@/pages/analysis/AnalysisPage'
 import PurchasesPage from '@/pages/purchases/PurchasesPage'
 import WishlistPage from '@/pages/wishlist/WishlistPage'
-import RecommendationsPage from '@/pages/recommendations/RecommendationsPage'
 import PcDiagnosisPage from '@/pages/performance/PcDiagnosisPage'
 import HangulBlocks from '@/pages/blocks/HangulBlocks'
 import MyPage from '@/pages/mypage/MyPage'
@@ -62,7 +61,8 @@ const router = createBrowserRouter([
               { path: 'library', element: <LibraryPage /> },
               { path: 'ai-recommends', element: <AiRecommendsPage /> },
               { path: 'wishlist', element: contained(<WishlistPage />) },
-              { path: 'recommendations', element: contained(<RecommendationsPage />) },
+              // AI 게임 추천은 /ai-recommends 하나로 합쳐졌다 (예전 주소로 들어와도 열리게 한다)
+              { path: 'recommendations', element: <Navigate to="/ai-recommends" replace /> },
               { path: 'settings', element: <SettingsPage /> },
               { path: 'mypage', element: <MyPage /> },
               { path: 'community', element: contained(<CommunityPage />) },

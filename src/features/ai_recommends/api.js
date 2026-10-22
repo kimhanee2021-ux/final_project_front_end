@@ -7,12 +7,15 @@ const RECOMMEND_BASE = import.meta.env.VITE_RECOMMEND_API_BASE_URL || '/recommen
 
 export const DEFAULT_LIMIT = 10
 export const MAX_LIMIT = 50
+// 추천 칸 중 학습에 없던 신작으로 채울 칸 수
+const NEW_SLOTS = 3
 
-// 응답: { recommendations: [{ rank, app_id, score, game: { name, genre, thumbnail_url } | null }],
+// 응답: { recommendations: [{ rank, app_id, score, source('main'|'new'), game: { name, genre, thumbnail_url } | null }],
 //         meta: { used_game_count, unplayed_game_count } }
+// score는 요청 안에서 순위를 매기는 값일 뿐 확률이나 일치율이 아니다.
 export async function fetchRecommendations({ limit = DEFAULT_LIMIT, signal } = {}) {
   const { data } = await apiClient.get(`${RECOMMEND_BASE}/api/v1/users/me/recommendations`, {
-    params: { limit },
+    params: { limit, new_slots: NEW_SLOTS },
     signal,
     // 추천 서버의 401로 전체 로그아웃되지 않게 한다. 토큰 만료는 스프링 API 호출에서 처리된다.
     skipSessionExpiry: true,

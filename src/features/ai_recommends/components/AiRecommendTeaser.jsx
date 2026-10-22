@@ -1,30 +1,21 @@
-import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '@/features/auth'
-import { GameImage, Panel } from '@/shared/ui'
+import { WishlistButton } from '@/features/wishlist'
+import { GameImage, GSIcon, Panel } from '@/shared/ui'
 import { useAiDiagnosed } from '../hooks/useAiDiagnosed'
 import { useAiRecommendations } from '../hooks/useAiRecommendations'
+import { MEDALS } from '../model/medals'
+import RankBadge from './RankBadge'
 
 const TEASER_COUNT = 3
 
-// Fisher-Yates 셔플로 원본을 건드리지 않고 count개를 뽑는다.
-function pickRandom(list, count) {
-  const copy = [...list]
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[copy[i], copy[j]] = [copy[j], copy[i]]
-  }
-  return copy.slice(0, count)
-}
-
 // 다른 화면(내 라이브러리)에 덧붙이는 AI 추천 안내.
-// 추천받기 전에는 AI 추천 탭으로 가는 바로가기, 받은 뒤에는 추천 게임 3개를 보여준다.
+// 추천받기 전에는 AI 추천 탭으로 가는 바로가기, 받은 뒤에는 AI 게임 추천의 1~3위를 금 · 은 · 동으로 보여준다.
 export default function AiRecommendTeaser() {
   const { user } = useAuth()
   const [diagnosed] = useAiDiagnosed(user?.id)
   const { data, loading, error, noPlayed } = useAiRecommendations(user?.id, { enabled: diagnosed })
-  // 추천 목록에서 무작위로 고른다. 리렌더마다 바뀌지 않게 추천 결과가 바뀔 때만 다시 뽑는다.
-  const games = useMemo(() => pickRandom(data?.games ?? [], TEASER_COUNT), [data])
+  const games = (data?.games ?? []).slice(0, TEASER_COUNT)
 
   if (!diagnosed) {
     return (
@@ -51,8 +42,9 @@ export default function AiRecommendTeaser() {
     <Panel className="!p-[24px] min-w-0">
       <div className="flex items-center justify-between gap-[12px] mb-[16px]">
         <h2 className="text-[16px] font-[700]">내 취향 추천 게임</h2>
-        <Link className="text-[13px] text-primary-text underline" to="/ai-recommends">
-          더 보기
+        <Link className="inline-flex items-center gap-[4px] text-[13px] font-[650] text-primary-text hover:underline" to="/ai-recommends">
+          더 많은 추천 게임 보기
+          <GSIcon name="arrow" size={14} />
         </Link>
       </div>
       {loading && !games.length ? (
@@ -65,13 +57,19 @@ export default function AiRecommendTeaser() {
                 href={game.storeUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-[12px] p-[12px] rounded-[16px] bg-bg transition-[transform,box-shadow] duration-200 hover:-translate-y-[2px] hover:shadow-[var(--shadow)]"
+                className={`relative flex items-center gap-[12px] p-[12px] pr-[52px] rounded-[16px] bg-bg ring-2 transition-transform duration-200 hover:-translate-y-[2px] ${
+                  MEDALS[game.rank]?.ring ?? 'ring-transparent'
+                }`}
                 aria-label={`${game.name} 스팀 상점 보기`}
               >
-                <GameImage className="w-[96px] aspect-[460/215] rounded-[10px] object-cover shrink-0" src={game.image} iconSize={22} />
+                <span className="relative block w-[96px] shrink-0 overflow-hidden rounded-[10px]">
+                  <GameImage className="block w-full aspect-[460/215] object-cover" src={game.image} iconSize={22} />
+                  <RankBadge rank={game.rank} medal size="sm" />
+                </span>
                 <strong className="flex-1 min-w-0 text-[14px] font-[600] leading-[1.4] [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2] overflow-hidden">
                   {game.name}
                 </strong>
+                <WishlistButton game={game} className="absolute right-[10px] bottom-[10px] !w-[32px] !h-[32px]" />
               </a>
             </li>
           ))}
