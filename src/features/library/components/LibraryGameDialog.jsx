@@ -1,16 +1,11 @@
-import { useEffect, useRef } from 'react'
 import { GameImage, GSIcon } from '@/shared/ui'
+import { useModalDialog } from '@/shared/hooks'
 import { formatHours, formatPlayedDate } from '../model/libraryList'
 
 // 라이브러리 게임 한 개의 상세 창. game이 있으면 열리고 null이면 닫힌다.
 // 보유 게임 응답에 들어 있는 정보(플레이시간·마지막 플레이)만 보여주고, 자세한 소개는 스팀 상점으로 연결한다.
 export default function LibraryGameDialog({ game, onClose }) {
-  const ref = useRef(null)
-  useEffect(() => {
-    const dialog = ref.current
-    if (game && !dialog.open) dialog.showModal()
-    else if (!game && dialog.open) dialog.close()
-  }, [game])
+  const ref = useModalDialog(game)
 
   const stats = game
     ? [

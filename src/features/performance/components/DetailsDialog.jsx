@@ -1,17 +1,12 @@
-import { useEffect, useRef } from 'react'
 import { GSIcon } from '@/shared/ui'
+import { useModalDialog } from '@/shared/hooks'
 import PcGameAnalysisDetails from './PcGameAnalysisDetails'
 import PcUpgradePanel from './PcUpgradePanel'
 
 // 게임 또는 부품 하나의 AI 분석 상세. details가 있으면 열리고 null이면 닫힌다.
 // 게임: { type: 'game', game, result }, 부품: { type: 'upgrade', item(부품 판정) }
 export default function DetailsDialog({ details, evaluation, onClose }) {
-  const ref = useRef(null)
-  useEffect(() => {
-    const dialog = ref.current
-    if (details && !dialog.open) dialog.showModal()
-    else if (!details && dialog.open) dialog.close()
-  }, [details])
+  const ref = useModalDialog(details)
 
   const title = details?.type === 'game' ? details.game.name : `${details?.item.label} 개선 방향`
   return (

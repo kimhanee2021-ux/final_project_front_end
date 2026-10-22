@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { GSIcon } from '@/shared/ui'
+import { useModalDialog } from '@/shared/hooks'
 import { useGameSense } from '@/shared/state'
 import {
   playStyles,
@@ -236,12 +237,7 @@ function ImagePicker({ type, onClose }) {
 }
 
 export default function PlayerDialog({ dialog, onClose }) {
-  const ref = useRef(null)
-  useEffect(() => {
-    const element = ref.current
-    if (dialog && !element.open) element.showModal()
-    else if (!dialog && element.open) element.close()
-  }, [dialog])
+  const ref = useModalDialog(dialog)
   return (
     <dialog
       ref={ref}

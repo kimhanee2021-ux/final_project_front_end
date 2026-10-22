@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react'
 import { GSIcon } from '@/shared/ui'
+import { useModalDialog } from '@/shared/hooks'
 import GameIdentity from './GameIdentity'
 import { money, dateLabel } from '@/shared/utils/formatters'
 import { hourlyText, hoursText } from '../model/spendingMetrics'
@@ -12,12 +12,7 @@ const AMOUNT_LABELS = {
   UNKNOWN: '구매 금액',
 }
 export default function GameDetailDialog({ game, onClose }) {
-  const ref = useRef(null)
-  useEffect(() => {
-    const dialog = ref.current
-    if (game && !dialog.open) dialog.showModal()
-    if (!game && dialog.open) dialog.close()
-  }, [game])
+  const ref = useModalDialog(game)
   return (
     <dialog
       aria-label={game ? game.name + ' 구매 상세' : '구매 상세'}

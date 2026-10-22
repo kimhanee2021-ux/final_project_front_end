@@ -1,5 +1,5 @@
 import { GSIcon } from '@/shared/ui'
-import { MEDALS } from '../model/medals'
+import { MEDALS } from '../../model/medals'
 
 const SIZES = {
   sm: { box: 'left-[6px] top-[6px]', badge: 'h-[22px] px-[8px] text-[11px]', icon: 11 },

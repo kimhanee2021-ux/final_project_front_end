@@ -5,7 +5,7 @@ import { GameImage, GSIcon, Panel } from '@/shared/ui'
 import { useAiDiagnosed } from '../hooks/useAiDiagnosed'
 import { useAiRecommendations } from '../hooks/useAiRecommendations'
 import { MEDALS } from '../model/medals'
-import RankBadge from './RankBadge'
+import RankBadge from './parts/RankBadge'
 
 const TEASER_COUNT = 3
 
