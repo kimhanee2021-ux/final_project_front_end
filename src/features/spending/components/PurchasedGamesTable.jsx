@@ -24,6 +24,7 @@ export default function PurchasedGamesTable({
   clearGenre,
   onSelect,
   library,
+  needsHistory = false,
 }) {
   // 스팀 연동 분석은 구매일이 없으므로 구매일 열/정렬 대신 최근 플레이를 보여준다
   const hasPurchaseDates = games.some(game => game.purchasedAt)
@@ -45,7 +46,13 @@ export default function PurchasedGamesTable({
   return (
     <Card
       title={library ? '내 게임 라이브러리' : hasPurchaseDates ? '구매한 게임, 얼마나 즐겼을까요?' : '보유 게임, 얼마나 즐겼을까요?'}
-      subtitle={hasPurchaseDates ? '구매 금액과 누적 이용 시간을 함께 살펴보세요.' : '정가(추정)와 누적 플레이 시간을 함께 살펴보세요.'}
+      subtitle={
+        needsHistory
+          ? '누적 플레이 시간을 살펴보세요. 구매 금액과 시간당 비용은 구매 내역을 가져오면 확인할 수 있어요.'
+          : hasPurchaseDates
+            ? '구매 금액과 누적 이용 시간을 함께 살펴보세요.'
+            : '정가(추정)와 누적 플레이 시간을 함께 살펴보세요.'
+      }
       className=""
       action={<span className="text-[13px] text-faint whitespace-nowrap">{filtered.length}개 게임</span>}
     >
@@ -91,7 +98,7 @@ export default function PurchasedGamesTable({
             className="bg-bg border-0 rounded-full h-[38px] px-[14px] text-text text-[13px]"
           >
             {hasPurchaseDates && <option value="recent">최근 구매순</option>}
-            <option value="price">구매 금액순</option>
+            {!needsHistory && <option value="price">구매 금액순</option>}
             <option value="hours">플레이 시간순</option>
           </select>
         </div>
@@ -139,11 +146,17 @@ export default function PurchasedGamesTable({
                     </button>
                   </td>
                   <td className="px-[10px] py-[16px] font-[650] tabular-nums max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[14px] max-[580px]:before:content-['구매_금액'] max-[580px]:before:block max-[580px]:before:text-muted max-[580px]:before:text-[12px] max-[580px]:before:font-normal max-[580px]:before:mb-[3px]">
-                    {amountText(game)}
-                    {game.amountSource === 'ESTIMATED' && <span className={BADGE}>추정</span>}
-                    {game.bundleAllocated && <span className={BADGE}>번들 배분</span>}
-                    {game.dlcCount > 0 && <span className={BADGE}>DLC {game.dlcCount}</span>}
-                    {game.refund > 0 && <span className={BADGE}>환불 반영</span>}
+                    {needsHistory ? (
+                      <span className="font-normal text-faint">확인 필요</span>
+                    ) : (
+                      <>
+                        {amountText(game)}
+                        {game.amountSource === 'ESTIMATED' && <span className={BADGE}>추정</span>}
+                        {game.bundleAllocated && <span className={BADGE}>번들 배분</span>}
+                        {game.dlcCount > 0 && <span className={BADGE}>DLC {game.dlcCount}</span>}
+                        {game.refund > 0 && <span className={BADGE}>환불 반영</span>}
+                      </>
+                    )}
                   </td>
                   <td className={`px-[10px] py-[16px] text-muted max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[14px] max-[580px]:before:block max-[580px]:before:text-muted max-[580px]:before:text-[12px] max-[580px]:before:font-normal max-[580px]:before:mb-[3px] ${hasPurchaseDates ? "max-[580px]:before:content-['구매일']" : "max-[580px]:before:content-['최근_플레이']"}`}>
                     {hasPurchaseDates
@@ -160,7 +173,7 @@ export default function PurchasedGamesTable({
                     {hoursText(game.hours)}
                   </td>
                   <td className="px-[10px] py-[16px] max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[14px] max-[580px]:before:content-['시간당_비용'] max-[580px]:before:block max-[580px]:before:text-muted max-[580px]:before:text-[12px] max-[580px]:before:font-normal max-[580px]:before:mb-[3px]">
-                    {hourlyText(game)}
+                    {needsHistory ? <span className="text-faint">확인 필요</span> : hourlyText(game)}
                   </td>
                   <td className="px-[10px] py-[16px] max-[580px]:border-0 max-[580px]:p-0 max-[580px]:text-[14px]">
                     <PlayStatusBadge hours={game.hours} />
@@ -171,11 +184,11 @@ export default function PurchasedGamesTable({
           </table>
         </div>
       )}
-      <div className="flex items-center gap-[8px] text-faint text-[12px] pt-[20px] max-[580px]:items-start max-[580px]:leading-[1.8]">
-        <GSIcon name="info" size={14} className="shrink-0" />
-        플레이 시간은 누적 기준이고, 1시간 미만 플레이한 게임은 구매 금액을 그대로 시간당 비용으로 보여줘요. 금액이 없는
-        게임은 지출 계산에서 제외됩니다.
-      </div>
+      {needsHistory && (
+        <p className="pt-[8px] text-[12px] text-muted">
+          구매 금액과 시간당 비용은 실제 결제 기록이 있어야 알 수 있어요.
+        </p>
+      )}
     </Card>
   )
 }

@@ -31,6 +31,7 @@ export async function getCurrentUser() {
 
 // 스팀 연동은 OpenID 리다이렉트 방식이라 axios가 아니라 페이지 전체 이동으로 시작해야 한다.
 // 최상위 이동에는 헤더를 붙일 수 없어 백엔드가 토큰을 쿼리 파라미터로 받는다.
-export function steamLinkUrl(token) {
-  return `${API_BASE_URL}/api/auth/steam?token=${encodeURIComponent(token)}`
+// popup: 새 창으로 띄우는 연동이면 true. 백엔드가 이 표시를 돌아오는 주소까지 이어 준다.
+export function steamLinkUrl(token, { popup = false } = {}) {
+  return `${API_BASE_URL}/api/auth/steam?token=${encodeURIComponent(token)}${popup ? '&popup=true' : ''}`
 }

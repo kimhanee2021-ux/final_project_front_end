@@ -1,5 +1,6 @@
 import { MAX_CARD_TAGS, tagLabel } from '@/shared/utils/gameTags'
 import { WishlistButton } from '@/features/wishlist'
+import { GameImage } from '@/shared/ui'
 
 // 탐색 탭은 스팀 "추천" 섹션 캐시(/api/games/featured)를 보여준다 — 가격과, 백엔드가 태그를 내려주면 대표 태그 3개까지 표시한다.
 // 상세 API가 아직 없어 카드를 누르면 스팀 상점 페이지를 새 탭으로 연다.
@@ -17,11 +18,10 @@ export default function GameListCard({ game, view = 'grid' }) {
           aria-label={`${game.name} 스팀 상점에서 보기`}
         >
           {game.image && (
-            <img
+            <GameImage
               className="block w-full aspect-[460/215] object-cover transition-transform duration-[350ms] group-hover:scale-[1.04]"
               src={game.image}
-              alt=""
-              loading="lazy"
+              iconSize={34}
             />
           )}
         </a>

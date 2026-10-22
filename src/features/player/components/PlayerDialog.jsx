@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { GSIcon } from '@/shared/ui'
+import { GSIcon, GameImage } from '@/shared/ui'
 import { useGameSense } from '@/shared/state'
 import {
   gameStatuses,
   playStyles,
   preferenceTags,
   profileAvatars,
-  profileCovers,
 } from '../mocks/playerMock'
 import { useAuth } from '@/features/auth'
 import { getErrorMessage } from '@/shared/lib/apiClient'
@@ -14,7 +13,6 @@ import { getErrorMessage } from '@/shared/lib/apiClient'
 const titles = {
   profile: '프로필 수정',
   avatar: '프로필 아바타 변경',
-  cover: '커버 이미지 변경',
   game: '나의 게임 기록',
 }
 
@@ -201,14 +199,13 @@ function ProfileForm({ onClose }) {
 function ImagePicker({ type, onClose }) {
   const { player, updateProfile, notify } = useGameSense()
   const [selected, setSelected] = useState(player.profile[type])
-  const options = type === 'avatar' ? profileAvatars : profileCovers
-  const isAvatar = type === 'avatar'
+  const options = profileAvatars
   return (
     <form
       onSubmit={event => {
         event.preventDefault()
         updateProfile({ [type]: selected })
-        notify(isAvatar ? '프로필 아바타를 변경했어요.' : '커버 이미지를 변경했어요.')
+        notify('프로필 아바타를 변경했어요.')
         onClose()
       }}
     >
@@ -224,7 +221,7 @@ function ImagePicker({ type, onClose }) {
             onClick={() => setSelected(option.id)}
           >
             <img
-              className={`block object-cover w-full h-[95px] max-[480px]:h-[70px] ${isAvatar ? 'aspect-square h-auto max-[480px]:h-auto rounded-full' : 'rounded-[6px]'}`}
+              className="block object-cover w-full aspect-square h-auto rounded-full"
               src={option.image}
               alt=""
             />
@@ -254,7 +251,7 @@ function GameRecordForm({ game, onClose }) {
   return (
     <form className="[&>label]:flex [&>label]:flex-col" onSubmit={submit}>
       <div className="flex items-center gap-[15px] m-[22px_0] bg-gs-raised rounded-[14px] overflow-hidden max-[480px]:gap-[11px]">
-        <img className="w-[115px] h-[77px] object-cover max-[480px]:w-[88px] max-[480px]:h-[73px]" src={game.banner} alt="" />
+        <GameImage className="w-[115px] h-[77px] object-cover max-[480px]:w-[88px] max-[480px]:h-[73px]" src={game.banner} />
         <div className="py-[10px] pr-[12px]">
           <strong className="block text-[14px] max-[480px]:text-[14px]">{game.name}</strong>
           <span className="block text-gs-muted text-[12px] mt-[5px]">누적 {game.hours}시간 · 예시 기록</span>
@@ -345,7 +342,7 @@ export default function PlayerDialog({ dialog, onClose }) {
           </div>
           <h2 className="m-[0_0_9px] text-[25px] leading-[1.4] tracking-[-0.7px] max-[480px]:text-[22px]" id="mp-dialog-title">{titles[dialog.type]}</h2>
           {dialog.type === 'profile' && <ProfileForm onClose={onClose} />}
-          {['avatar', 'cover'].includes(dialog.type) && (
+          {dialog.type === 'avatar' && (
             <ImagePicker key={dialog.type} type={dialog.type} onClose={onClose} />
           )}
           {dialog.type === 'game' && (

@@ -141,3 +141,52 @@ body:has(.mp-dialog[open]) { overflow: hidden; }
 /* 스팀 연동 개인 소비 분석 */
 .game-art.has-image::before { display: none; }
 .game-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* 랜딩 페이지 넘김 (LandingCover): 랜딩(iframe)이 왼쪽을 축으로 넘겨지며 아래에 이미 그려진 로그인 화면이 드러난다. */
+@keyframes landing-turn {
+  from { transform: rotateY(0); }
+  to { transform: rotateY(-100deg); }
+}
+@keyframes landing-shade { from { opacity: 0; } to { opacity: .85; } }
+.landing-cover { perspective: 2600px; overflow: hidden; }
+.landing-sheet { transform-origin: left center; backface-visibility: hidden; will-change: transform; box-shadow: -30px 0 80px #000a; }
+.landing-sheet.turning { animation: landing-turn 1.15s cubic-bezier(.6,.03,.25,1) forwards; }
+.landing-shade { opacity: 0; background: linear-gradient(90deg, #000, #0008); pointer-events: none; }
+.turning .landing-shade { animation: landing-shade 1.15s ease-in forwards; }
+
+/* 로그인 화면 등장 연출 (AuthShell): 넘겨지는 동안 문구 → 카드 순서로 올라온다. */
+@keyframes auth-enter { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+.auth-intro .auth-enter-copy { animation: auth-enter .9s .3s cubic-bezier(.2,.7,.2,1) both; }
+.auth-intro .auth-enter-card { animation: auth-enter .9s .55s cubic-bezier(.2,.7,.2,1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .auth-intro .auth-enter-copy, .auth-intro .auth-enter-card { animation: none; }
+}
+
+/* 입력 창(PC 사양 · 구매내역 가져오기)은 사이트 라이트/다크 설정과 상관없이 로그인·온보딩과 같은 어두운 민트 톤으로 고정한다.
+   색 변수만 이 창 안에서 바꿔 두면 안의 Tailwind 유틸리티와 gs 버튼이 모두 따라온다. */
+dialog.gs-mint-dark {
+  color-scheme: dark;
+  --bg: #0f171c; --surface: #172229; --surface-soft: #1c2931; --surface-hover: #22313b;
+  --text: #f4f6f9; --muted: #a5b5c8; --subtle: #b4c2d2; --faint: #8497ab; --border: #2d3d49;
+  --primary: #35edbe; --primary-strong: #69f5d0; --primary-soft: #11332b; --primary-text: #6af6d3; --on-primary: #062c23;
+  --shadow: 0 6px 24px #0005; --insight-bg: #10231f; --insight-border: #28483f;
+  --mint-bg: #10332b; --mint-text: #6af6d3; --peach-bg: #3a2b22; --peach-text: #edb581;
+  --gs-bg: #0f171c; --gs-panel: #172229; --gs-raised: #1d2931; --gs-hover: #22313b;
+  --gs-text: #f4f6f9; --gs-muted: #a5b5c8; --gs-border: #2d3d49; --gs-mint: #6af6d3;
+  --gs-accent: #35edbe; --gs-on-accent: #062c23; --gs-active: #11332b; --gs-search: #1d2931; --gs-shadow: 0 10px 34px #0008;
+  /* Tailwind의 --color-*는 :root에서 이미 계산돼 상속되므로 이 창 안에서 다시 연결한다. */
+  --color-bg: var(--bg); --color-surface: var(--surface); --color-surface-soft: var(--surface-soft); --color-surface-hover: var(--surface-hover); --color-text: var(--text); --color-muted: var(--muted); --color-subtle: var(--subtle); --color-faint: var(--faint); --color-border: var(--border); --color-primary: var(--primary); --color-primary-strong: var(--primary-strong); --color-primary-soft: var(--primary-soft); --color-primary-text: var(--primary-text); --color-on-primary: var(--on-primary); --color-chart-1: var(--chart-1); --color-chart-2: var(--chart-2); --color-chart-3: var(--chart-3); --color-chart-4: var(--chart-4); --color-chart-5: var(--chart-5); --color-insight-bg: var(--insight-bg); --color-insight-border: var(--insight-border); --color-mint-bg: var(--mint-bg); --color-mint-text: var(--mint-text); --color-peach-bg: var(--peach-bg); --color-peach-text: var(--peach-text); --color-gs-bg: var(--gs-bg); --color-gs-panel: var(--gs-panel); --color-gs-raised: var(--gs-raised); --color-gs-hover: var(--gs-hover); --color-gs-text: var(--gs-text); --color-gs-muted: var(--gs-muted); --color-gs-border: var(--gs-border); --color-gs-mint: var(--gs-mint); --color-gs-accent: var(--gs-accent); --color-gs-on-accent: var(--gs-on-accent); --color-gs-active: var(--gs-active); --color-gs-search: var(--gs-search);
+  background: var(--surface);
+  border: 1px solid #ffffff1f;
+  box-shadow: 0 30px 90px #000a;
+}
+dialog.gs-mint-dark::backdrop { background: #02070acc; backdrop-filter: blur(6px); }
+dialog.gs-mint-dark .gs-primary-button:hover { box-shadow: 0 4px 20px #35edbe33; }
+
+/* AI분석 라벨: 보라→민트 그라데이션 위로 빛이 천천히 지나가고, 별이 깜빡인다. */
+.ai-badge { background: linear-gradient(115deg, #a18afa 0%, #7bd8d0 55%, #35edbe 100%); box-shadow: 0 0 0 1px #ffffff2e inset, 0 4px 14px #35edbe33; }
+.ai-badge::after { content: ''; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, #ffffffa6 50%, transparent 70%); transform: translateX(-120%); animation: ai-sheen 3.6s ease-in-out infinite; }
+.ai-badge-spark { animation: ai-twinkle 1.8s ease-in-out infinite; }
+@keyframes ai-sheen { 0%, 55% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
+@keyframes ai-twinkle { 0%, 100% { transform: scale(1) rotate(0); opacity: 1; } 50% { transform: scale(1.25) rotate(18deg); opacity: .75; } }
+@media (prefers-reduced-motion: reduce) { .ai-badge::after, .ai-badge-spark { animation: none; } }

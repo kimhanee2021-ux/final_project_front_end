@@ -5,18 +5,19 @@ import GameSenseLayout from '@/app/layout/GameSenseLayout'
 import LandingPage from '@/pages/landing/LandingPage'
 import StartPage from '@/pages/landing/StartPage'
 import ExplorePage from '@/pages/explore/ExplorePage'
-import CollectionsPage from '@/pages/collections/CollectionsPage'
-import ActivityPage from '@/pages/activity/ActivityPage'
 import SettingsPage from '@/pages/settings/SettingsPage'
+import AiCoachPage from '@/pages/aiCoach/AiCoachPage'
 import AnalysisPage from '@/pages/analysis/AnalysisPage'
 import PurchasesPage from '@/pages/purchases/PurchasesPage'
 import WishlistPage from '@/pages/wishlist/WishlistPage'
-import PcSpecPage from '@/pages/performance/PcSpecPage'
-import PcEvaluationPage from '@/pages/performance/PcEvaluationPage'
+import PcDiagnosisPage from '@/pages/performance/PcDiagnosisPage'
+import HangulBlocks from '@/pages/blocks/HangulBlocks'
 import MyPage from '@/pages/mypage/MyPage'
 import AuthPage from '@/pages/auth/AuthPage'
-import { RequireDemoSession } from '@/features/auth'
-import { GameCatalog } from '@/features/games'
+import OnboardingPage from '@/pages/auth/OnboardingPage'
+import { RequireAuth } from '@/features/auth'
+import LibraryPage from '@/pages/library/LibraryPage'
+import AiRecommendsPage from '@/pages/ai_recommends/AiRecommendsPage'
 import CommunityPage from '@/pages/community/CommunityPage'
 import CommunityPostPage from '@/pages/community/CommunityPostPage'
 import CommunityWritePage from '@/pages/community/CommunityWritePage'
@@ -31,11 +32,6 @@ const authRoutes = ['login', 'signup', 'forgot-password'].map(mode => ({
   path: mode,
   element: <AuthPage key={mode} mode={mode} />,
 }))
-const catalogRoutes = modes =>
-  modes.map(mode => ({
-    path: mode,
-    element: contained(<GameCatalog key={mode} mode={mode} />),
-  }))
 
 const router = createBrowserRouter([
   {
@@ -45,6 +41,11 @@ const router = createBrowserRouter([
       { index: true, element: <LandingPage /> },
       { path: 'start', element: <StartPage /> },
       ...authRoutes,
+      {
+        // 가입·로그인 직후 스팀 연동(필수)과 추가 정보(선택)를 받는 단계
+        element: <RequireAuth />,
+        children: [{ path: 'onboarding', element: <OnboardingPage /> }],
+      },
       {
         element: <GameSenseLayout />,
         children: [
@@ -56,28 +57,30 @@ const router = createBrowserRouter([
           { path: 'pro-streamer-play', lazy: async () => ({ Component: (await import('@/pages/proStreamer/ProStreamerPage')).default }) },
           { path: 'pc-check', element: <PcSpecPage /> },
           { path: 'pc-check/evaluation', element: <PcEvaluationPage /> },
+          { path: 'pc-check', element: <PcDiagnosisPage /> },
+          // 종합평가는 AI PC 진단 페이지로 합쳐졌다 (예전 주소로 들어와도 열리게 한다)
+          { path: 'pc-check/evaluation', element: <Navigate to="/pc-check" replace /> },
+          { path: 'pc-check/diagnosis', element: <Navigate to="/pc-check" replace /> },
+          { path: 'hangul-blocks', element: <HangulBlocks /> },
           {
-            // 로그인(데모 세션)이 필요한 페이지
-            element: <RequireDemoSession />,
+            // 로그인이 필요한 페이지
+            element: <RequireAuth />,
             children: [
-              ...catalogRoutes(['library']),
+              { path: 'library', element: <LibraryPage /> },
+              { path: 'ai-recommends', element: <AiRecommendsPage /> },
               { path: 'wishlist', element: contained(<WishlistPage />) },
-              { path: 'collections', element: <CollectionsPage /> },
-              { path: 'activity', element: contained(<ActivityPage />) },
+              // AI 게임 추천은 /ai-recommends 하나로 합쳐졌다 (예전 주소로 들어와도 열리게 한다)
+              { path: 'recommendations', element: <Navigate to="/ai-recommends" replace /> },
               { path: 'settings', element: <SettingsPage /> },
               { path: 'mypage', element: <MyPage /> },
               { path: 'community', element: contained(<CommunityPage />) },
               { path: 'community/new', element: contained(<CommunityWritePage />) },
               { path: 'community/:id', element: contained(<CommunityPostPage />) },
               { path: 'community/:id/edit', element: contained(<CommunityWritePage />) },
-              {
-                path: 'analysis',
-                element: <AnalysisPage view="analysis" />,
-              },
-              {
-                path: 'analysis/overall',
-                element: <AnalysisPage view="overall" />,
-              },
+              { path: 'analysis', element: <AnalysisPage /> },
+              // 종합 분석은 AI 분석 페이지로 합쳐졌다 (예전 주소로 들어와도 열리게 한다)
+              { path: 'analysis/overall', element: <Navigate to="/analysis" replace /> },
+              { path: 'ai-coach', element: <AiCoachPage /> },
               {
                 path: 'purchases',
                 element: contained(<PurchasesPage />),
