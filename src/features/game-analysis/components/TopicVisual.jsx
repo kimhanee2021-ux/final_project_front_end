@@ -1,6 +1,6 @@
 import { ColumnChart, CountUp, DonutChart, chartColor, donutSlices, PRIMARY_BUTTON } from '@/shared/ui'
 import { topicVisual } from '../model/insightVisual'
-import { scrollToPanel } from './scrollToPanel'
+import { scrollToPanel } from '@/shared/utils/smoothScroll'
 
 // 도넛: 왼쪽에 도넛(가운데에 전체 숫자), 오른쪽에 장르별 범례를 한 줄씩(색 점 · 이름 · 비중)
 // 가운데 숫자가 길면(예: 1,314.5시간) 링 안쪽 지름을 넘지 않도록 글자를 줄여 맞춘다.

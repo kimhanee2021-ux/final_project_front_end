@@ -1,4 +1,4 @@
-import { hoursText, playtimeMarker } from '../model/spendingMetrics'
+import { hoursText, playtimeMarker } from '../../model/spendingMetrics'
 
 // 미플레이가 더 강한 경고(장미색), 플레이타임 매우 적음은 덜 위협적인 주의(복숭아색)
 const MARKERS = {

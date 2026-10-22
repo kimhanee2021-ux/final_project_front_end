@@ -1,5 +1,5 @@
 import { AnalysisPanel, GSIcon } from '@/shared/ui'
-import { activityHeadline } from '../model/gameAnalysisModel'
+import { activityHeadline } from '../../model/gameAnalysisModel'
 
 // 시계열형 데이터 → 타임라인
 export default function ActivityPanel({ activities, eyebrow, icon }) {

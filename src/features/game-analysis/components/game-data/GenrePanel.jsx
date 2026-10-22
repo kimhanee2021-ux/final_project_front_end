@@ -1,6 +1,6 @@
 import { AnalysisPanel, FilterChips, RatioStrip } from '@/shared/ui'
 import GenreStatCards from './GenreStatCards'
-import { genreCountHeadline, genreHeadline, groupMinorGenres } from '../model/gameAnalysisModel'
+import { genreCountHeadline, genreHeadline, groupMinorGenres } from '../../model/gameAnalysisModel'
 import { money, number } from '@/shared/utils/formatters'
 
 // 금액 기준: 유료 게임의 정가 합계로 장르를 나눈다. 보유·플레이 기준: 무료 게임까지 포함해 개수와 플레이 시간으로 나눈다.

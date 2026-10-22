@@ -4,8 +4,8 @@ import GenrePanel from './GenrePanel'
 import ValueBandPanel from './ValueBandPanel'
 import ActivityPanel from './ActivityPanel'
 import { GameDetailDialog } from '@/features/spending'
-import { genreCounts, genreOverview, recentActivities, valueBands } from '../model/gameAnalysisModel'
-import { GAME_SECTIONS } from '../model/analysisSections'
+import { genreCounts, genreOverview, recentActivities, valueBands } from '../../model/gameAnalysisModel'
+import { GAME_SECTIONS } from '../../model/analysisSections'
 
 // AI 분석 페이지의 게임별 데이터: 패널 하나에 정보 하나씩 나열하는 구성.
 // genreView: 장르 패널의 기준(금액/보유·플레이). AI 분석에서 고른 주제에 맞춰 바깥에서 바꿀 수 있게 받는다.

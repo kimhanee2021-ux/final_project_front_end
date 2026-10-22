@@ -2,15 +2,15 @@ import { useEffect, useRef } from 'react'
 import { GSIcon } from '@/shared/ui'
 import GameIdentity from './GameIdentity'
 import { money, dateLabel } from '@/shared/utils/formatters'
-import { netAmount, hourlyText, hoursText } from '../model/spendingMetrics'
-import { METHOD_LABELS, noRecordLabel } from '@/features/purchase-import'
+import { hourlyText, hoursText } from '../model/spendingMetrics'
+import { amountText } from '../model/amountText'
+import { METHOD_LABELS } from '@/features/purchase-import'
 const AMOUNT_LABELS = {
   CONFIRMED: '실제 구매 금액 (구매일 환율 원화 환산)',
   ESTIMATED: '추정 금액 (현재 한국 정가)',
   NO_RECORD: '구매 금액',
   UNKNOWN: '구매 금액',
 }
-const NO_AMOUNT_LABELS = { NO_RECORD: '구매 기록 없음', UNKNOWN: '가격 정보 없음' }
 export default function GameDetailDialog({ game, onClose }) {
   const ref = useRef(null)
   useEffect(() => {
@@ -47,15 +47,7 @@ export default function GameDetailDialog({ game, onClose }) {
           <dl>
             <div>
               <dt>{AMOUNT_LABELS[game.amountSource] ?? '실제 구매 금액'}</dt>
-              <dd>
-                {game.amountSource === 'FREE'
-                  ? '무료'
-                  : game.amount == null
-                    ? game.amountSource === 'NO_RECORD'
-                      ? noRecordLabel(game.acquisitionMethod)
-                      : NO_AMOUNT_LABELS[game.amountSource] ?? '금액 미확인'
-                    : money(netAmount(game))}
-              </dd>
+              <dd>{amountText(game)}</dd>
             </div>
             {game.amountSource === 'NO_RECORD' && game.listPrice != null && (
               <div>

@@ -5,10 +5,11 @@ import { FloatingDock, PageBox, PanelPage, Skeleton, EmptyState, TEXT_BUTTON } f
 import { CoachEntry } from '@/features/ai-coach'
 import { AiAnalysisSection } from '@/features/ai-insight'
 import DataSectionTitle from './DataSectionTitle'
-import GameAnalysisPanels from './GameAnalysisPanels'
-import OverallAnalysisPanels from './OverallAnalysisPanels'
+import GameAnalysisPanels from './game-data/GameAnalysisPanels'
+import OverallAnalysisPanels from './overall-data/OverallAnalysisPanels'
 import TopicVisual from './TopicVisual'
-import AnalysisToc, { AnalysisTocMenu } from './AnalysisToc'
+import AnalysisToc from './toc/AnalysisToc'
+import AnalysisTocMenu from './toc/AnalysisTocMenu'
 
 // 로그인 사용자: 스팀 보유 게임 데이터로 AI 분석 페이지(AI 분석 + 게임별·종합 데이터)를 보여준다. 데이터가 없을 때의 안내만 여기서 맡는다 (스팀 연동 전 안내는 AI 분석 영역이 대신 보여준다).
 export default function MyGameAnalysis() {

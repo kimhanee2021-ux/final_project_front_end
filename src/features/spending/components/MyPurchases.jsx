@@ -4,7 +4,7 @@ import { useMySpendingContext } from '../context/MySpendingContext'
 import { Skeleton, EmptyState, GSIcon, TEXT_BUTTON } from '@/shared/ui'
 import DashboardIntro from './DashboardIntro'
 import { PurchaseImportDialog } from '@/features/purchase-import'
-import PurchasedGamesTable from './PurchasedGamesTable'
+import PurchasedGamesTable from './games-table/PurchasedGamesTable'
 import GameDetailDialog from './GameDetailDialog'
 
 // 표 아래 안내 한 줄
@@ -92,8 +92,6 @@ export default function MyPurchases() {
         games={games}
         filter={filter}
         setFilter={setFilter}
-        genre={null}
-        clearGenre={() => {}}
         onSelect={setSelectedGame}
         library
       />

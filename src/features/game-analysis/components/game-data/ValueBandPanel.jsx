@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AnalysisPanel, ColumnChart } from '@/shared/ui'
-import GameThumb from './GameThumb'
-import { valueBandHeadline } from '../model/gameAnalysisModel'
+import GameThumb from '../parts/GameThumb'
+import { valueBandHeadline } from '../../model/gameAnalysisModel'
 import { hoursText } from '@/features/spending'
 import { money } from '@/shared/utils/formatters'
 
