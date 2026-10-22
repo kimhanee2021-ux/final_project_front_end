@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { STEAM_NOT_LINKED_MESSAGE, syncSteamLibrary } from '../api'
 import { getErrorMessage } from '@/shared/lib/apiClient'
+import { STEAM_LINKED_EVENT } from '@/features/auth'
 
 // 동기화는 매번 스팀 API를 호출하므로, 같은 계정이면 페이지를 오가도 마지막 결과를 재사용한다.
 const cache = { userId: null, games: null }
@@ -52,6 +53,13 @@ export function useSteamLibrary(userId) {
       setState(current => failureState(current, error))
     }
   }, [userId])
+
+  // 스팀 연동을 새 창에서 마치면 이 창에 이벤트가 오므로, 바로 보유 게임을 불러온다.
+  useEffect(() => {
+    if (!userId) return
+    window.addEventListener(STEAM_LINKED_EVENT, sync)
+    return () => window.removeEventListener(STEAM_LINKED_EVENT, sync)
+  }, [userId, sync])
 
   return { ...state, sync }
 }

@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { componentJudgements, evaluationStatus, overallGrade } from '../src/features/performance/model/pcEvaluation.js'
+import { componentJudgements, evaluationStatus, overallGrade, unknownGradeHint } from '../src/features/performance/model/pcEvaluation.js'
 
 test('사양 → 로그인 → 동의 순서로 상태를 정한다', () => {
   assert.equal(evaluationStatus({ hasSavedSpecs: false, signedIn: true, aiConsent: true }), 'no-specs')
@@ -28,4 +28,14 @@ test('알 수 없는 등급은 null로 둔다', () => {
   assert.equal(overallGrade({ overallGrade: 'B' }).grade, 'B')
   assert.equal(overallGrade({ overallGrade: 'Z' }).grade, null)
   assert.equal(overallGrade(null).grade, null)
+  // 서버가 근거 부족(UNKNOWN)으로 돌려주면 분석 중이 아니라 판정 불가로 본다
+  assert.equal(overallGrade({ overallGrade: 'UNKNOWN' }).unknown, true)
+  assert.equal(overallGrade({ overallGrade: 'B' }).unknown, false)
+  assert.equal(overallGrade(null).unknown, false)
+})
+
+test('등급을 판정할 수 없을 때 이유를 알려 준다', () => {
+  assert.match(unknownGradeHint({ gpuModel: 'AMD Radeon(TM) Graphics' }), /모델 번호가 없어요/)
+  assert.match(unknownGradeHint({ gpuModel: '' }), /GPU 모델이 입력되지 않아서/)
+  assert.match(unknownGradeHint({ gpuModel: 'NVIDIA GeForce RTX 3070' }), /GPU·CPU 모델이나 RAM/)
 })

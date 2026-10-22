@@ -30,8 +30,8 @@ export const headerMenus = [
     id: 'pc',
     label: 'PC 분석',
     children: [
-      { to: '/pc-check', icon: 'monitor', label: '내 PC 사양', description: '사양 입력과 부품 정보 확인' },
       { to: '/pc-check/evaluation', icon: 'chart', label: '내 PC 종합평가', description: '등급 · 게임별 성능 · 개선 방향' },
+      { to: '/pc-check', icon: 'monitor', label: '내 PC 사양', description: '사양 입력과 부품 정보 확인' },
     ],
   },
 ]
