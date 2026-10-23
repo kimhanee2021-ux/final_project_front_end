@@ -3,7 +3,6 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useRevealOnView } from '@/shared/hooks'
 import { useGameSense } from '@/shared/state'
 import { GSIcon } from '@/shared/ui'
-import { GameDialog } from '@/features/games'
 import { MySpendingProvider } from '@/features/spending'
 import Header from '@/app/layout/Header'
 import Sidebar from '@/app/layout/Sidebar'
@@ -102,7 +101,6 @@ function Shell() {
           <span className="tracking-[1px] max-[900px]:hidden">Made for the way you play.</span>
         </footer>
       </div>
-      <GameDialog />
       <div className="fixed bottom-[25px] left-1/2 -translate-x-1/2 z-[100] max-w-[calc(100vw-32px)] w-max pointer-events-none max-[600px]:bottom-[17px]" role="status" aria-live="polite">
         {toast && (
           <div className="flex items-center gap-[12px] p-[14px_18px] border border-gs-accent bg-gs-panel shadow-[var(--gs-shadow)] rounded-[12px] text-[12px] animate-[gs-appear_.2s_ease] pointer-events-auto max-[600px]:text-[11px] max-[600px]:p-[12px_14px]" key={toast.id}>

@@ -3,10 +3,12 @@ import { analysisRequestKey, searchOverviewFrom } from '../model/pcAnalysisCache
 import { evaluationForView } from '../model/pcEvaluationScope'
 import { pendingGames } from '../model/pcHardware'
 import { useEffect, useRef, useState } from 'react'
-import { assessPc, assessPcBatch, assessPcOverview, loadPcParts } from '../api/pcApi'
+import { assessPc, assessPcBatch, assessPcOverview, loadPcParts } from '../api'
 import { normalizeSpecs } from '../model/pcDiagnosis'
+import { loadEvaluation, saveEvaluation } from '../model/pcEvaluationStore'
 
-export function usePcDiagnosis() {
+// userId가 있으면 보유게임 기준 평가 결과를 그 계정의 이 브라우저 저장소에 보관하고, 같은 사양이면 저장본에서 이어받는다.
+export function usePcDiagnosis(userId) {
   const [specs, setSpecs] = useState(null),
     [ownedResults, setOwnedResults] = useState({}),
     [selected, setSelected] = useState(null),
@@ -60,16 +62,19 @@ export function usePcDiagnosis() {
     cancel()
     specsRef.current = pc
     setSpecs(pc)
-    setOwnedResults({})
+    // 같은 사양으로 저장해 둔 평가가 있으면 AI를 다시 부르지 않고 그대로 보여준다.
+    // 보유 게임 목록이 같으면 prepareOwnedOverview가 저장된 종합평가를 그대로 쓰고, 게임별 성능은 저장된 게임을 빼고 평가한다.
+    const saved = loadEvaluation(userId, pc)
+    setOwnedResults(saved.results)
     setSearchResults({})
-    resultCaches.current = { owned: {}, search: {} }
+    resultCaches.current = { owned: saved.results, search: {} }
     setErrorsByScope({ owned: {}, search: {} })
     setSelected(null)
     setError('')
     setOverviewError('')
-    setOwnedOverview(null)
+    setOwnedOverview(saved.overview?.result ?? null)
     setSearchOverview(null)
-    ownedCache.current = null
+    ownedCache.current = saved.overview
     setViewMode('owned')
     priceController.current?.abort()
     const request = new AbortController()
@@ -90,7 +95,11 @@ export function usePcDiagnosis() {
   }
   async function prepareOwnedOverview(games) {
     const pc = specsRef.current
-    if (!pc || !games.length) return
+    if (!pc) return
+    if (!games.length) {
+      setOwnedOverview(null)
+      return
+    }
     const ids = [...new Set(games.map(game => game.appId))].sort((a, b) => a - b),
       key = JSON.stringify([pc, ids])
     if (ownedCache.current?.key === key) {
@@ -116,6 +125,7 @@ export function usePcDiagnosis() {
         recommendations: [],
       }
       ownedCache.current = { key, result }
+      saveEvaluation(userId, pc, { overview: ownedCache.current })
       setOwnedOverview(result)
     } catch (e) {
       if (sequence.current === id)
@@ -174,6 +184,7 @@ export function usePcDiagnosis() {
         }
         const saveResults = scope === 'search' ? setSearchResults : setOwnedResults
         saveResults(resultCaches.current[scope])
+        if (scope === 'owned') saveEvaluation(userId, pc, { results: resultCaches.current.owned })
         if (scope === 'search' && values.length && games.length === 1) {
           const result = values[0]
           setSearchOverview(searchOverviewFrom(result))

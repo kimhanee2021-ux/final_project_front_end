@@ -1,0 +1,76 @@
+{
+  "region_id": "africa",
+  "region_name": "Africa",
+  "countries": [
+    {
+      "country_code": "EGY",
+      "country_iso2": "EG",
+      "country_name": "이집트",
+      "total_population_2025_m": 112,
+      "gamer_penetration_rate": 0.58,
+      "PC": {
+        "gamers_2025_m": 15,
+        "top_5_games": [
+          "League of Legends",
+          "PUBG",
+          "Valorant",
+          "CrossFire",
+          "EA Sports FC"
+        ],
+        "yearly_mau_m": {
+          "2010": 4.8,
+          "2011": 5.6,
+          "2012": 6.3,
+          "2013": 7.2,
+          "2014": 7.9,
+          "2015": 8.5,
+          "2016": 9.2,
+          "2017": 10.2,
+          "2018": 10.8,
+          "2019": 11.4,
+          "2020": 13,
+          "2021": 13.7,
+          "2022": 13.6,
+          "2023": 14.1,
+          "2024": 14.5,
+          "2025": 15
+        }
+      }
+    },
+    {
+      "country_code": "ZAF",
+      "country_iso2": "ZA",
+      "country_name": "남아공",
+      "total_population_2025_m": 61,
+      "gamer_penetration_rate": 0.56,
+      "PC": {
+        "gamers_2025_m": 8,
+        "top_5_games": [
+          "CS2",
+          "Dota 2",
+          "Minecraft",
+          "Valorant",
+          "Apex Legends"
+        ],
+        "yearly_mau_m": {
+          "2010": 1.8,
+          "2011": 2.2,
+          "2012": 2.8,
+          "2013": 2.9,
+          "2014": 3.1,
+          "2015": 3.6,
+          "2016": 4.3,
+          "2017": 5.1,
+          "2018": 5.6,
+          "2019": 6.1,
+          "2020": 7.8,
+          "2021": 7.9,
+          "2022": 7.8,
+          "2023": 7.9,
+          "2024": 8,
+          "2025": 8
+        }
+      }
+    }
+  ]
+}

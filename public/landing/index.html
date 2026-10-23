@@ -9,7 +9,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 a:focus-visible,button:focus-visible{outline:2px solid var(--light);outline-offset:7px}
 
 /* 하나의 고정 무대: 영상, 베일, 문장, 기록 패널이 같은 스크롤 시간축을 쓴다. */
-.experience{height:440svh}
+.experience{height:580svh}
 .stage{position:sticky;top:0;height:100svh;min-height:600px;overflow:hidden;isolation:isolate}
 .backdrop{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,#263b3e,transparent 70%),#17121a;z-index:-3}
 .webgl-fallback .backdrop{background:radial-gradient(ellipse at 70% 45%,#665066,transparent 60%),#17121a}
@@ -52,6 +52,14 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--light);outline-offs
 .section-entry:hover:after,.section-entry:focus-visible:after{transform:scaleX(1);opacity:1}
 .section-entry:hover:before,.section-entry:focus-visible:before{transform:rotate(45deg) scale(1)}
 
+/* 마지막 장면: 가입/로그인 진입 버튼 */
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;pointer-events:auto}
+.cta{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 26px;border-radius:999px;font-size:13px;letter-spacing:-.2px;border:1px solid #b9d5c5aa;color:#e4f1e8;text-shadow:0 1px 12px #10171b55;transition:background .25s,color .25s,transform .25s,box-shadow .25s}
+.cta-primary{background:#b9d5c5;color:#12201a;border-color:#b9d5c5;font-weight:500;text-shadow:none}
+.cta:hover,.cta:focus-visible{transform:translateY(-2px);box-shadow:0 0 22px #b9dcc855}
+.cta-primary:hover,.cta-primary:focus-visible{background:#d1f2df}
+.cta:not(.cta-primary):hover,.cta:not(.cta-primary):focus-visible{background:#b9d5c51f}
+
 /* 기록 패널: 영상에서 이어진 빛이 막대로 자란다. */
 .insight{position:absolute;left:57%;top:28%;width:34%;opacity:0;pointer-events:none;will-change:opacity,transform}
 .insight-head{display:flex;justify-content:space-between;color:#b2cebd;font-size:12px;opacity:.9}
@@ -65,6 +73,11 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--light);outline-offs
 .insight-note{font-size:13px;color:#c2d5c6;margin:30px 0 16px;opacity:.9}
 .genres{display:flex;gap:18px;font-size:11px;color:#a4c3af;opacity:.9}
 .genres span{padding-bottom:6px;border-bottom:1px solid #abc9b544}
+
+/* 게이머 지도 패널: 앱의 /landing-map 화면을 iframe으로 띄운다. 스크롤이 지도에 걸리지 않도록 입력은 받지 않는다.
+   데스크톱은 패널 가운데(--shift)를 왼쪽 문구의 높이(44%)에 맞춘다. */
+.world{position:absolute;left:45%;top:44%;width:52%;height:74%;--shift:-50%;opacity:0;pointer-events:none;will-change:opacity,transform}
+.world iframe{display:block;width:100%;height:100%;border:0;background:transparent;pointer-events:none}
 
 /* 재생 제어와 상태 */
 .playback{position:absolute;right:5.5%;bottom:34px;z-index:5}
@@ -86,7 +99,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--light);outline-offs
 .moment p{font-size:11px;margin:18px 0 17px}
 .section-entry{font-size:10px;gap:16px;padding:3px 0}
 .section-entry svg{width:29px;height:19px}
+.cta{min-height:44px;padding:0 22px;font-size:12px}
 .insight{left:12%;top:56%;width:76%}
+.world{left:3%;top:46%;width:94%;height:44%;--shift:0%}
 .insight-head{font-size:10px}
 .total{font-size:50px;margin:5px 0 10px}
 .bars{height:78px;gap:12px}
@@ -100,7 +115,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--light);outline-offs
 </style><script type="module">
 // 게임 영상 3개(DAVE THE DIVER, Hades, COCOON). index.html 기준 상대 경로이며, 반드시 HTTP 서버로 열어야 한다.
 const MEDIA=['videos/dave-the-diver.mp4','videos/hades.mp4','videos/cocoon.mp4'];
-const SCENES=[0,.30,.61,.88];
+// 장면이 바뀌는 스크롤 위치. 두 번째(게이머 지도) 장면은 첫 장면과 영상 사이에 끼운다.
+const SCENES=[0,.15,.30,.61,.82,.92];
 
 const ui={root:document.querySelector('.experience'),stage:document.querySelector('.stage'),host:document.querySelector('#renderer'),moments:[...document.querySelectorAll('.moment')],motion:document.querySelector('#motion'),icon:document.querySelector('#motion-icon'),status:document.querySelector('#media-status'),retry:document.querySelector('#retry')};
 const reduced=matchMedia('(prefers-reduced-motion:reduce)');
@@ -114,22 +130,29 @@ let renderer,scene,camera,screens=[],paths=[],clock;
 
 function scrollProgress(){const r=ui.root.getBoundingClientRect();state.target=clamp(-r.top/Math.max(1,ui.root.offsetHeight-ui.stage.offsetHeight))}
 window.addEventListener('scroll',scrollProgress,{passive:true});
-// 상단 메뉴는 외부 페이지 대신 같은 무대의 네 설명 장면으로 이동한다.
+// 상단 메뉴는 외부 페이지 대신 같은 무대의 설명 장면으로 이동한다.
 const sceneLinks=[...document.querySelectorAll('.main-nav a')];
-const sectionHashes=['#taste','#choice','#records','#my-games'];
+const sectionHashes=['#taste','#gamers','#choice','#records','#my-games','#start'];
 function moveToScene(index){const distance=ui.root.offsetHeight-ui.stage.offsetHeight;const progress=index===0?0:Math.min(SCENES[index]+.075,1);window.scrollTo({top:ui.root.offsetTop+progress*distance,behavior:reduced.matches?'instant':'smooth'});}
 sceneLinks.forEach((link,index)=>link.addEventListener('click',event=>{event.preventDefault();history.replaceState(null,'',sectionHashes[index]);moveToScene(index);}));
 window.addEventListener('pointermove',e=>{state.x=(e.clientX/innerWidth-.5)*2;state.y=(e.clientY/innerHeight-.5)*2},{passive:true});
 
 // 보이지 않는 문장으로 Tab 포커스가 가지 않게 inert도 함께 갱신한다.
+// 매 프레임 쓰는 요소는 한 번만 찾아 둔다.
+const panel=document.querySelector('.insight'),hours=document.querySelector('#hours'),bars=[...document.querySelectorAll('.bars i')];
+const world=document.querySelector('.world'),worldFrame=world.querySelector('iframe');
+const sceneOf=p=>{let selected=0;for(let i=0;i<SCENES.length;i++)if(p>=SCENES[i])selected=i;return selected};
+let lastCopy=-1;
 function updateCopy(p){
+  // 스크롤 위치가 그대로면 스타일을 다시 쓰지 않는다 (가만히 있을 때 매 프레임 레이아웃 작업을 없앤다).
+  if(Math.abs(p-lastCopy)<.00005)return;lastCopy=p;
   let selected=0;for(let i=0;i<SCENES.length;i++)if(p>=SCENES[i])selected=i;
   sceneLinks.forEach((link,index)=>{if(index===selected)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');});
   ui.moments.forEach((el,i)=>{
     const start=SCENES[i],end=SCENES[i+1]??1.2;
     // 이전 문장을 먼저 걷고 다음 문장을 올려 서로 겹쳐 읽히지 않게 한다.
     const fadeIn=i===0?1:smooth((p-(start+.002))/.045);
-    const fadeOut=i===3?1:1-smooth((p-(end-.045))/.043);
+    const fadeOut=i===SCENES.length-1?1:1-smooth((p-(end-.045))/.043);
     const alpha=clamp(fadeIn*fadeOut);
     el.style.opacity=alpha;el.style.visibility=alpha>.04?'visible':'hidden';
     el.style.transform=`translate3d(0,${(1-fadeIn)*45-(1-fadeOut)*45}px,0)`;
@@ -138,16 +161,53 @@ function updateCopy(p){
   });
   // 영상과 기록은 같은 스크롤 시간축을 쓴다.
   const chart=smooth((p-.51)/.09)*(1-smooth((p-.76)/.09));
-  const panel=document.querySelector('.insight');panel.style.opacity=chart;panel.style.transform=`translate3d(${(1-chart)*45}px,${(1-chart)*28}px,0)`;panel.setAttribute('aria-hidden',String(chart<.5));
-  const growth=smooth((p-.52)/.18);document.querySelector('#hours').textContent=Math.round(48*growth);
-  document.querySelectorAll('.bars i').forEach((bar,index)=>bar.style.transform=`scaleY(${smooth(growth*1.6-index*.11)})`);
-  ui.host.style.opacity=1-chart*.75;
+  panel.style.opacity=chart;panel.style.transform=`translate3d(${(1-chart)*45}px,${(1-chart)*28}px,0)`;panel.setAttribute('aria-hidden',String(chart<.5));
+  const growth=smooth((p-.52)/.18);hours.textContent=Math.round(48*growth);
+  bars.forEach((bar,index)=>bar.style.transform=`scaleY(${smooth(growth*1.6-index*.11)})`);
+  // 게이머 지도 장면: 장면 동안 패널을 띄우고, 보일 때만 지도를 재생한다 (안 보일 때 멈춰서 스크롤을 무겁게 하지 않는다).
+  if(p>.06)loadWorld();
+  const map=smooth((p-.13)/.04)*(1-smooth((p-.27)/.04));
+  if(map>.5&&!mapShown){mapShown=true;tellMap('play');}else if(map<.05&&mapShown){mapShown=false;tellMap('pause');}
+  world.style.opacity=map;world.style.transform=`translate3d(${(1-map)*45}px,var(--shift),0)`;
+  ui.host.style.opacity=1-Math.max(chart*.75,map*.8);
 }
 function syncMotion(){ui.motion.setAttribute('aria-pressed',String(state.paused));ui.motion.setAttribute('aria-label',state.paused?'움직임 재생':'움직임 일시정지');ui.icon.setAttribute('d',state.paused?'M7 4l8 6-8 6z':'M7 5v10M13 5v10')}
 function playMedia(){if(state.paused||document.hidden)return;videos.forEach(v=>v.play().catch(()=>{ui.status.hidden=false}))}
 ui.motion.addEventListener('click',()=>{state.paused=!state.paused;videos.forEach(v=>state.paused?v.pause():v.play().catch(()=>{ui.status.hidden=false}));syncMotion()});
 ui.retry.addEventListener('click',()=>{if(!renderer){location.reload();return;}ui.status.hidden=true;videos.forEach(v=>{if(v.error)v.load()});playMedia()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)videos.forEach(v=>v.pause());else playMedia()});
+
+// 게이머 지도: 앱의 /landing-map 화면. 스크롤 도중 앱이 뜨며 멈칫하지 않도록 첫 화면이 한가할 때 미리 불러온다.
+let mapShown=false,mapDone=false;
+function loadWorld(){if(!worldFrame.src)worldFrame.src=worldFrame.dataset.src}
+function tellMap(action){if(action==='play')mapDone=false;worldFrame.contentWindow?.postMessage({type:'gamesense:map',action},location.origin)}
+(window.requestIdleCallback||(fn=>setTimeout(fn,1200)))(loadWorld,{timeout:1500});
+window.addEventListener('message',event=>{
+  if(event.origin!==location.origin||event.source!==worldFrame.contentWindow)return;
+  // 지도가 늦게 준비됐으면 지금 보이는지에 맞춰 재생을 다시 알린다.
+  if(event.data?.type==='gamesense:map-ready'&&mapShown)tellMap('play');
+  if(event.data?.type==='gamesense:map-done')mapDone=true;
+});
+
+// 자동 넘김: 장면마다 2초 머문 뒤 다음 장면으로. 게이머 지도 장면은 지도가 2023→2025까지 다 커진 뒤 넘어간다.
+// 직접 스크롤(휠 · 터치 · 키보드 · 클릭)하면 멈추고, 5초 동안 가만히 있으면 그 자리에서 다시 이어 간다. 마지막(가입) 장면에서 멈춘다.
+// 움직임 줄이기 설정이나 일시정지 버튼을 누른 상태에서는 넘기지 않는다.
+const AUTO_STEP=2000,AUTO_RESUME=5000,MAP_SCENE=1,MAP_FALLBACK=14000;
+const auto={scene:-1,since:0,holdUntil:0};
+const holdAuto=()=>{auto.holdUntil=performance.now()+AUTO_RESUME;auto.scene=-1};
+['wheel','touchstart','keydown','pointerdown'].forEach(type=>window.addEventListener(type,holdAuto,{passive:true}));
+setInterval(()=>{
+  if(reduced.matches||state.paused||document.hidden)return;
+  const now=performance.now();if(now<auto.holdUntil)return;
+  const scene=sceneOf(state.target);
+  if(scene>=SCENES.length-1)return;
+  // 이전 장면에서 아직 움직이는 중이면 도착할 때까지 기다린다.
+  if(Math.abs(state.progress-state.target)>.01)return;
+  if(scene!==auto.scene){auto.scene=scene;auto.since=now;return}
+  const waited=now-auto.since;
+  const ready=scene===MAP_SCENE?(mapDone&&waited>=AUTO_STEP)||waited>=MAP_FALLBACK:waited>=AUTO_STEP;
+  if(ready){auto.scene=-1;moveToScene(scene+1)}
+},200);
 reduced.addEventListener('change',e=>{state.paused=e.matches;videos.forEach(v=>state.paused?v.pause():v.play().catch(()=>{}));syncMotion()});
 
 async function init(){
@@ -226,14 +286,25 @@ function animate(){
 function fallback(){function tick(){if(state.disposed)return;state.progress=state.target;updateCopy(state.progress);state.frame=requestAnimationFrame(tick)}tick()}
 // WebGL 리소스와 디코더를 명시적으로 해제하여 탭 이동 시 누적을 막는다.
 addEventListener('pagehide',()=>{state.disposed=true;cancelAnimationFrame(state.frame);videos.forEach(v=>{v.pause();v.removeAttribute('src');v.load()});disposables.forEach(r=>r.dispose());renderer?.dispose()},{once:true});
+// 가입/로그인/시작 링크: 앱 안(iframe)에서 열렸다면 앱이 이 화면을 책장처럼 넘기며 아래의 로그인 화면을 보여 준다.
+// 따로 열었을 때(부모가 없을 때)는 평범한 링크로 동작한다.
+const TURN_PATHS=['/signup','/login','/start'];
+document.addEventListener('click',event=>{
+  const link=event.target.closest('a[href]');if(!link||event.defaultPrevented||event.metaKey||event.ctrlKey||event.shiftKey||event.button!==0)return;
+  const path=link.getAttribute('href');if(!TURN_PATHS.includes(path)||window.parent===window)return;
+  event.preventDefault();window.parent.postMessage({type:'gamesense:go',path},location.origin);
+});
 scrollProgress();syncMotion();init();
 </script></head><body>
 <main class="experience" id="experience"><div class="stage"><div class="backdrop" aria-hidden="true"></div><div id="renderer" aria-hidden="true"></div><div class="veil" aria-hidden="true"></div>
-<header class="masthead"><a class="wordmark" href="#experience" aria-label="GameSense 처음으로"><svg viewBox="0 0 42 42" aria-hidden="true"><path d="M32 11C19-2 1 13 8 27c5 11 22 12 28 0H22"/><path d="M31 16C22 7 11 15 14 24c2 6 10 8 15 4"/></svg><span>GameSense</span></a><nav class="main-nav" aria-label="서비스 소개"><a href="#taste">취향 발견</a><a href="#choice">맞춤 선택</a><a href="#records">플레이 기록</a><a href="#my-games">내 게임 관리</a></nav></header>
+<header class="masthead"><a class="wordmark" href="#experience" aria-label="GameSense 처음으로"><svg viewBox="0 0 42 42" aria-hidden="true"><path d="M32 11C19-2 1 13 8 27c5 11 22 12 28 0H22"/><path d="M31 16C22 7 11 15 14 24c2 6 10 8 15 4"/></svg><span>GameSense</span></a><nav class="main-nav" aria-label="서비스 소개"><a href="#taste">취향 발견</a><a href="#gamers">게이머 지도</a><a href="#choice">맞춤 선택</a><a href="#records">플레이 기록</a><a href="#my-games">내 게임 관리</a><a href="#start">시작하기</a></nav></header>
 <div class="narrative">
 <section class="moment active"><h1>게임은 많으니까.<br><em>내 취향부터.</em></h1><p>무엇을 할지 고민하는 시간은 줄이고,<br>좋아하는 게임을 즐기는 시간은 더 길게.</p><a class="section-entry" href="/start"><span>취향에 맞는 게임 찾기</span><svg viewBox="0 0 35 22" aria-hidden="true"><path d="M1 11h30M22 2l10 9-10 9"/></svg></a></section>
+<section class="moment" aria-hidden="true" inert><h2>지금도 전 세계에서,<br><em>함께 플레이해요.</em></h2><p>2023년부터 2025년까지,<br>19개국 PC 게이머가 늘어 온 모습을 지도로.</p></section>
 <section class="moment" aria-hidden="true" inert><h2>좋아하는 걸 말하면,<br><em>선택이 쉬워져요.</em></h2><p>장르 이름을 몰라도 괜찮아요.<br>지금 원하는 플레이를 AI에게 이야기해 보세요.</p><a class="section-entry" href="/start"><span>맞춤 추천 받기</span><svg viewBox="0 0 35 22" aria-hidden="true"><path d="M1 11h30M22 2l10 9-10 9"/></svg></a></section>
 <section class="moment" aria-hidden="true" inert><h2>플레이가 쌓이면,<br><em>내가 보여요.</em></h2><p>어떤 게임에 오래 머물렀는지,<br>시간과 비용을 어디에 썼는지 한눈에.</p><a class="section-entry" href="/start"><span>내 플레이 기록 보기</span><svg viewBox="0 0 35 22" aria-hidden="true"><path d="M1 11h30M22 2l10 9-10 9"/></svg></a></section>
-<section class="moment" aria-hidden="true" inert><h2>발견한 게임도,<br><em>나답게 관리해요.</em></h2><p>관심 있는 게임을 모아두고,<br>다음에 즐길 게임을 한곳에서.</p><a class="section-entry" href="/start"><span>내 라이브러리 열기</span><svg viewBox="0 0 35 22" aria-hidden="true"><path d="M1 11h30M22 2l10 9-10 9"/></svg></a></section></div>
+<section class="moment" aria-hidden="true" inert><h2>발견한 게임도,<br><em>나답게 관리해요.</em></h2><p>관심 있는 게임을 모아두고,<br>다음에 즐길 게임을 한곳에서.</p><a class="section-entry" href="/start"><span>내 라이브러리 열기</span><svg viewBox="0 0 35 22" aria-hidden="true"><path d="M1 11h30M22 2l10 9-10 9"/></svg></a></section>
+<section class="moment" aria-hidden="true" inert><h2>이제,<br><em>시작해볼까요?</em></h2><p>스팀 계정만 연결하면 보유 게임과 소비 패턴을<br>바로 분석해 드려요.</p><div class="cta-row"><a class="cta cta-primary" href="/signup">회원가입</a><a class="cta" href="/login">로그인</a></div></section></div>
 <div class="insight" aria-hidden="true"><div class="insight-head"><span><i></i>나의 게임 생활</span><span>이번 달</span></div><div class="total"><span id="hours">48</span><small>시간</small></div><div class="bars"><i style="--h:30%"></i><i style="--h:48%"></i><i style="--h:39%"></i><i style="--h:68%"></i><i style="--h:76%"></i><i style="--h:96%"></i></div><div class="days"><span>1주</span><span>2주</span><span>3주</span><span>4주</span><span>5주</span><span>6주</span></div><p class="insight-note">나의 시간을 채운 게임들.</p><div class="genres"><span>탐험</span><span>이야기</span><span>새로운 발견</span></div></div>
+<div class="world" aria-hidden="true"><iframe title="전 세계 PC 게이머 지도" tabindex="-1" data-src="/landing-map"></iframe></div>
 <div class="playback"><button id="motion" aria-label="움직임 일시정지" aria-pressed="false"><svg viewBox="0 0 20 20" aria-hidden="true"><path id="motion-icon" d="M7 5v10M13 5v10"/></svg></button></div><div class="media-status" id="media-status" hidden>영상을 불러오지 못했어요. <button id="retry">다시 불러오기</button></div></div></main></body></html>

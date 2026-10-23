@@ -7,6 +7,7 @@
   --chart-1: #5E3FE8; --chart-2: #7B61FF; --chart-3: #A08BFF; --chart-4: #C4B5FF; --chart-5: #E0D8FF;
   --shadow: 0 6px 24px rgba(31,24,72,0.06), 0 1px 2px rgba(31,24,72,0.04); --insight-bg: #f1edff; --insight-border: #e5dcff;
   --mint-bg: #e7f5ee; --mint-text: #27866a; --peach-bg: #fff0e5; --peach-text: #bf7746;
+  --rose-bg: #ffe8ec; --rose-text: #d6304f;
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
@@ -16,4 +17,5 @@
   --chart-1: #a18afa; --chart-2: #c4afff; --chart-3: #75cbb8; --chart-4: #edb680; --chart-5: #9cafe6;
   --shadow: 0 5px 24px rgba(0,0,0,.05); --insight-bg: #29223d; --insight-border: #44335f;
   --mint-bg: #203c33; --mint-text: #8bdbba; --peach-bg: #423025; --peach-text: #edb581;
+  --rose-bg: #4a2230; --rose-text: #ff8fa3;
 }

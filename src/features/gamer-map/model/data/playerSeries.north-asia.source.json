@@ -1,0 +1,111 @@
+{
+  "region_id": "north-asia",
+  "region_name": "North Asia",
+  "countries": [
+    {
+      "country_code": "CHN",
+      "country_iso2": "CN",
+      "country_name": "중국",
+      "total_population_2025_m": 1410,
+      "gamer_penetration_rate": 0.74,
+      "PC": {
+        "gamers_2025_m": 320,
+        "top_5_games": [
+          "League of Legends",
+          "CrossFire",
+          "Dungeon & Fighter",
+          "Valorant",
+          "CS2"
+        ],
+        "yearly_mau_m": {
+          "2010": 175,
+          "2011": 189.2,
+          "2012": 203.8,
+          "2013": 219.8,
+          "2014": 233.4,
+          "2015": 245,
+          "2016": 255.5,
+          "2017": 269,
+          "2018": 277.8,
+          "2019": 285.5,
+          "2020": 308,
+          "2021": 313.4,
+          "2022": 310,
+          "2023": 313.3,
+          "2024": 316.7,
+          "2025": 320
+        }
+      }
+    },
+    {
+      "country_code": "KOR",
+      "country_iso2": "KR",
+      "country_name": "한국",
+      "total_population_2025_m": 51,
+      "gamer_penetration_rate": 0.74,
+      "PC": {
+        "gamers_2025_m": 21,
+        "top_5_games": [
+          "League of Legends",
+          "Valorant",
+          "FC Online",
+          "PUBG",
+          "Overwatch 2"
+        ],
+        "yearly_mau_m": {
+          "2010": 17.5,
+          "2011": 17.8,
+          "2012": 18.1,
+          "2013": 18.5,
+          "2014": 18.8,
+          "2015": 19,
+          "2016": 19.2,
+          "2017": 19.6,
+          "2018": 19.8,
+          "2019": 20,
+          "2020": 20.5,
+          "2021": 20.8,
+          "2022": 20.6,
+          "2023": 20.8,
+          "2024": 20.9,
+          "2025": 21
+        }
+      }
+    },
+    {
+      "country_code": "JPN",
+      "country_iso2": "JP",
+      "country_name": "일본",
+      "total_population_2025_m": 124,
+      "gamer_penetration_rate": 0.67,
+      "PC": {
+        "gamers_2025_m": 25,
+        "top_5_games": [
+          "Apex Legends",
+          "Valorant",
+          "Minecraft",
+          "FFXIV",
+          "League of Legends"
+        ],
+        "yearly_mau_m": {
+          "2010": 11,
+          "2011": 11.7,
+          "2012": 12.4,
+          "2013": 13.2,
+          "2014": 13.9,
+          "2015": 14.5,
+          "2016": 15.6,
+          "2017": 16.9,
+          "2018": 17.9,
+          "2019": 18.7,
+          "2020": 21,
+          "2021": 22.5,
+          "2022": 22.8,
+          "2023": 23.6,
+          "2024": 24.3,
+          "2025": 25
+        }
+      }
+    }
+  ]
+}

@@ -2,8 +2,16 @@
 export { default as AuthProvider } from './context/AuthProvider'
 export { default as RequireAuth } from './components/RequireAuth'
 export { authLink } from './model/authSession'
-export { checkEmailAvailability } from './api'
-export { checkNicknameAvailability } from './api'
 export { safeReturnTo } from './model/authSession'
+export {
+  forgetOnboarding,
+  isOnboardingDone,
+  markOnboardingDone,
+  onboardingLink,
+  peekOnboardingReturn,
+  rememberOnboarding,
+} from './model/onboardingFlow'
 export { useAuth } from './context/AuthContext'
 export { useStartLink } from './hooks/useStartLink'
+export { useAuthForm } from './hooks/useAuthForm'
+export { STEAM_LINKED_EVENT, announceSteamLinked } from './model/steamLinkChannel'

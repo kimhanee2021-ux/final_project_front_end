@@ -12,23 +12,17 @@ function Fact({ label, value }) {
   )
 }
 
-// 마이페이지 맨 위 프로필: 커버 → 아바타·이름·소개 → 요약 세 가지. 수정 버튼은 오른쪽에 둘만 둔다.
+// 마이페이지 맨 위 프로필: 커버 → 아바타·이름·소개 → 요약 세 가지(즐기는 방식 · 월 플레이 목표 · 월 예산). 수정 버튼은 오른쪽에 둘만 둔다.
 export default function ProfileHero({ onEdit }) {
   const { player } = useGameSense()
   const { profile, preferences } = player
-  const cover = profileCovers.find(item => item.id === profile.cover)
+  // 커버 사진은 바꿀 수 없는 고정 이미지다.
+  const cover = profileCovers[0]
   const avatar = profileAvatars.find(item => item.id === profile.avatar)
   return (
     <section aria-labelledby="mp-profile-name">
       <div className="relative h-[180px] rounded-[20px] overflow-hidden bg-bg max-[600px]:h-[130px]">
         <img className="w-full h-full object-cover" src={cover.image} alt="" />
-        <button
-          className="absolute right-[14px] top-[14px] inline-flex items-center gap-[8px] h-[34px] px-[14px] rounded-full bg-surface/90 text-text text-[13px] shadow-[var(--shadow)]"
-          onClick={() => onEdit('cover')}
-        >
-          <GSIcon name="image" size={16} />
-          커버 변경
-        </button>
       </div>
       <div className="flex items-end gap-[20px] px-[8px] -mt-[44px] max-[600px]:flex-wrap">
         <div className="relative shrink-0">
@@ -48,7 +42,6 @@ export default function ProfileHero({ onEdit }) {
         <div className="flex-1 min-w-0 pb-[4px]">
           <h1 className="!m-0 text-[26px] font-[750] tracking-[-0.8px] leading-[1.3] [overflow-wrap:anywhere]" id="mp-profile-name">
             {profile.name}
-            <span className="ml-[10px] text-[13px] font-[500] text-faint">Lv. 12 · 데모 프로필</span>
           </h1>
         </div>
         <div className="flex gap-[8px] pb-[4px] max-[600px]:w-full">
@@ -66,8 +59,7 @@ export default function ProfileHero({ onEdit }) {
           <span key={tag} className="h-[30px] inline-flex items-center px-[14px] rounded-full bg-bg text-muted text-[13px]">{tag}</span>
         ))}
       </div>
-      <div className="grid grid-cols-4 gap-[24px] mt-[32px] pt-[24px] px-[8px] border-t border-border max-[760px]:grid-cols-2">
-        <Fact label="가입일" value="2024년 3월 15일 (예시)" />
+      <div className="grid grid-cols-3 gap-[24px] mt-[32px] pt-[24px] px-[8px] border-t border-border max-[760px]:grid-cols-1">
         <Fact label="주로 즐기는 방식" value={preferences.playStyle} />
         <Fact label="월 플레이 목표" value={preferences.monthlyHours ? `${preferences.monthlyHours}시간` : '설정 안 함'} />
         <Fact label="월 게임 예산" value={preferences.budget ? `${preferences.budget.toLocaleString('ko-KR')}원` : '설정 안 함'} />

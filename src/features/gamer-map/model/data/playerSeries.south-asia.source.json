@@ -1,0 +1,181 @@
+{
+  "region_id": "south-asia",
+  "region_name": "South Asia",
+  "countries": [
+    {
+      "country_code": "IND",
+      "country_iso2": "IN",
+      "country_name": "인도",
+      "total_population_2025_m": 1430,
+      "gamer_penetration_rate": 0.53,
+      "PC": {
+        "gamers_2025_m": 40,
+        "top_5_games": [
+          "Valorant",
+          "GTA V",
+          "CS2",
+          "Minecraft",
+          "BGMI (Emulator)"
+        ],
+        "yearly_mau_m": {
+          "2010": 12,
+          "2011": 13.6,
+          "2012": 15.3,
+          "2013": 17.1,
+          "2014": 18.7,
+          "2015": 20,
+          "2016": 22.3,
+          "2017": 25.3,
+          "2018": 27.3,
+          "2019": 29,
+          "2020": 34,
+          "2021": 36.2,
+          "2022": 35.8,
+          "2023": 37.2,
+          "2024": 38.6,
+          "2025": 40
+        }
+      }
+    },
+    {
+      "country_code": "IDN",
+      "country_iso2": "ID",
+      "country_name": "인도네시아",
+      "total_population_2025_m": 277,
+      "gamer_penetration_rate": 0.69,
+      "PC": {
+        "gamers_2025_m": 45,
+        "top_5_games": [
+          "Valorant",
+          "Dota 2",
+          "Point Blank",
+          "CS2",
+          "League of Legends"
+        ],
+        "yearly_mau_m": {
+          "2010": 14,
+          "2011": 15.9,
+          "2012": 17.9,
+          "2013": 20.1,
+          "2014": 21.9,
+          "2015": 23.5,
+          "2016": 26.1,
+          "2017": 29.3,
+          "2018": 31.6,
+          "2019": 33.5,
+          "2020": 39,
+          "2021": 41.2,
+          "2022": 40.8,
+          "2023": 42.2,
+          "2024": 43.6,
+          "2025": 45
+        }
+      }
+    },
+    {
+      "country_code": "ISR",
+      "country_iso2": "IL",
+      "country_name": "이스라엘",
+      "total_population_2025_m": 9.5,
+      "gamer_penetration_rate": 0.6,
+      "PC": {
+        "gamers_2025_m": 2.5,
+        "top_5_games": [
+          "CS2",
+          "EA Sports FC",
+          "Valorant",
+          "Minecraft",
+          "League of Legends"
+        ],
+        "yearly_mau_m": {
+          "2010": 1.4,
+          "2011": 1.5,
+          "2012": 1.6,
+          "2013": 1.7,
+          "2014": 1.8,
+          "2015": 1.9,
+          "2016": 2,
+          "2017": 2.1,
+          "2018": 2.1,
+          "2019": 2.2,
+          "2020": 2.3,
+          "2021": 2.4,
+          "2022": 2.4,
+          "2023": 2.4,
+          "2024": 2.5,
+          "2025": 2.5
+        }
+      }
+    },
+    {
+      "country_code": "ARE",
+      "country_iso2": "AE",
+      "country_name": "UAE",
+      "total_population_2025_m": 10,
+      "gamer_penetration_rate": 0.73,
+      "PC": {
+        "gamers_2025_m": 3,
+        "top_5_games": [
+          "Valorant",
+          "PUBG",
+          "CS2",
+          "League of Legends",
+          "EA Sports FC"
+        ],
+        "yearly_mau_m": {
+          "2010": 1.2,
+          "2011": 1.4,
+          "2012": 1.5,
+          "2013": 1.7,
+          "2014": 1.9,
+          "2015": 2,
+          "2016": 2.1,
+          "2017": 2.3,
+          "2018": 2.4,
+          "2019": 2.5,
+          "2020": 2.7,
+          "2021": 2.8,
+          "2022": 2.8,
+          "2023": 2.9,
+          "2024": 2.9,
+          "2025": 3
+        }
+      }
+    },
+    {
+      "country_code": "AUS",
+      "country_iso2": "AU",
+      "country_name": "호주",
+      "total_population_2025_m": 26,
+      "gamer_penetration_rate": 0.68,
+      "PC": {
+        "gamers_2025_m": 8,
+        "top_5_games": [
+          "Minecraft",
+          "CS2",
+          "Fortnite",
+          "Valorant",
+          "League of Legends"
+        ],
+        "yearly_mau_m": {
+          "2010": 5.2,
+          "2011": 5.4,
+          "2012": 5.7,
+          "2013": 6,
+          "2014": 6.2,
+          "2015": 6.4,
+          "2016": 6.6,
+          "2017": 6.8,
+          "2018": 7,
+          "2019": 7.1,
+          "2020": 7.5,
+          "2021": 7.7,
+          "2022": 7.6,
+          "2023": 7.8,
+          "2024": 7.9,
+          "2025": 8
+        }
+      }
+    }
+  ]
+}

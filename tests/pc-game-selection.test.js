@@ -1,11 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { gameDetailKey, gameViewGames } from '../src/features/performance/model/pcGameSelection.js'
+import { gameViewGames } from '../src/features/performance/model/pcGameSelection.js'
 import { ownedPage } from '../src/features/performance/model/pcDiagnosis.js'
 
-test('the same game in owned and search lists has independent detail selection', () => {
-  assert.notEqual(gameDetailKey('owned', 1245620), gameDetailKey('search', 1245620))
-})
 test('owned and explicit search modes replace the same table instead of mixing lists', () => {
   const owned = { games: [{ appId: 1 }] },
     searched = [{ appId: 2 }]

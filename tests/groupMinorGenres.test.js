@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { groupMinorGenres } from '../src/features/gameAnalysis/model/groupMinorGenres.js'
+import { groupMinorGenres } from '../src/features/game-analysis/model/groupMinorGenres.js'
 
 test('상위 장르에 기타가 있어도 기타 항목은 하나만 남는다', () => {
   const genres = ['RPG', '기타', '액션', '전략', '퍼즐', '레이싱'].map(name => ({

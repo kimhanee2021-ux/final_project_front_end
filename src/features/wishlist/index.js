@@ -2,3 +2,5 @@
 export { default as WishlistButton } from './components/WishlistButton'
 export { default as WishlistCard } from './components/WishlistCard'
 export { useWishlist } from './hooks/useWishlist'
+export { default as WishlistSummaryProvider } from './context/WishlistSummaryProvider'
+export { default as WishlistAiOverview } from './components/analysis/WishlistAiOverview'

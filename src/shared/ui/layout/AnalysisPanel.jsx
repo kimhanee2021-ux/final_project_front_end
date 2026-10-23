@@ -1,11 +1,18 @@
-// 한 패널의 내용 틀: 작은 제목(eyebrow) → 굵은 한 줄 요약 → 시각화(children).
+import GSIcon from '../icons/GSIcon'
+
+// 한 패널의 내용 틀: 작은 제목(eyebrow, 앞에 아이콘을 붙일 수 있다) → 굵은 한 줄 요약 → 시각화(children).
 // headline은 글자 하나이거나 조각 배열(utils/headline.js)이다. 강조 조각만 포인트 색으로 그려서
 // 문장 안에서 가장 보여주고 싶은 값에 시선이 가게 한다.
-export default function AnalysisPanel({ eyebrow, headline, children }) {
+export default function AnalysisPanel({ eyebrow, icon, headline, children }) {
   const parts = Array.isArray(headline) ? headline : [headline]
   return (
     <div>
-      {eyebrow && <p className="mb-[10px] text-[14px] font-[650] text-primary-text">{eyebrow}</p>}
+      {eyebrow && (
+        <p className="mb-[10px] flex items-center gap-[6px] text-[14px] font-[650] text-primary-text">
+          {icon && <GSIcon name={icon} size={16} className="shrink-0" />}
+          {eyebrow}
+        </p>
+      )}
       <h2 className="mb-[28px] text-[clamp(24px,2.8vw,32px)] font-[750] tracking-[-1px] leading-[1.5] text-balance">
         {parts.map((part, index) =>
           typeof part === 'string' ? (

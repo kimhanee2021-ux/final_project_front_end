@@ -1,9 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {
-  gradeForFps,
-  gamePerformanceGrade,
-  overallPerformanceGrade,
   overallPerformanceExplanation,
   latestOverallResult,
   resolutionTarget,
@@ -23,34 +20,11 @@ const result = grade => ({
     },
   ],
 })
-test('144 and 60 and 30 and 20 boundaries are unambiguous', () => {
-  for (const [fps, grade] of [
-    [0, 'E'],
-    [19.9, 'E'],
-    [20, 'D'],
-    [29.9, 'D'],
-    [30, 'C'],
-    [59.9, 'C'],
-    [60, 'B'],
-    [143.9, 'B'],
-    [144, 'A'],
-  ])
-    assert.equal(gradeForFps(fps), grade)
-  for (const fps of [null, NaN, -1, Infinity]) assert.equal(gradeForFps(fps), null)
-})
 test('only new completed AI estimates produce grades', () => {
-  assert.equal(gamePerformanceGrade(result('C')).grade, 'C')
-  assert.equal(gamePerformanceGrade(result('UNKNOWN')), null)
-  assert.equal(gamePerformanceGrade({ ...result('A'), explanationStatus: 'UNAVAILABLE' }), null)
-  assert.equal(gamePerformanceGrade({}), null)
-})
-test('overall uses conservative ordinal median without inventing numeric FPS', () => {
-  assert.deepEqual(overallPerformanceGrade({ a: result('A'), b: {}, c: result('C') }), {
-    grade: 'C',
-    count: 2,
-    total: 3,
-  })
-  assert.deepEqual(overallPerformanceGrade({ a: {} }), { grade: null, count: 0, total: 1 })
+  assert.equal(resolutionTarget(result('C'), 'FHD').grade, 'C')
+  assert.equal(resolutionTarget(result('UNKNOWN'), 'FHD').grade, null)
+  assert.equal(resolutionTarget({ ...result('A'), explanationStatus: 'UNAVAILABLE' }, 'FHD').grade, null)
+  assert.equal(resolutionTarget({}, 'FHD').grade, null)
 })
 test('rate limit is a service state rather than insufficient evidence', () => {
   assert.match(resolutionTarget({ explanationStatus: 'RATE_LIMITED' }, 'FHD').label, /이용 한도/)

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { PcSpecContext } from './PcSpecContext'
-import PcSpecDialog from '../components/PcSpecDialog'
+import PcSpecDialog from '../components/spec/PcSpecDialog'
 import { EMPTY_SPECS, SPEC_FIELDS, hasSpecs } from '../model/pcSpecs'
 
 const STORAGE_KEY = 'gamesense-pc-specs'

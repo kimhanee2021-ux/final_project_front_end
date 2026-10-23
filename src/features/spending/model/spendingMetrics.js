@@ -38,6 +38,25 @@ export function genreSpending(games) {
     .map(([name, amount]) => ({ name, amount, percent: total ? (amount / total) * 100 : 0 }))
 }
 
+// 플레이 시간 마커: 0시간 이하는 '미플레이', 2시간 이하는 '플레이타임 매우 적음'. 시간을 모르거나 충분히 했으면 null
+const LOW_PLAYTIME_HOURS = 2
+export function playtimeMarker(hours) {
+  if (hours == null) return null
+  if (hours <= 0) return 'unplayed'
+  if (hours <= LOW_PLAYTIME_HOURS) return 'low'
+  return null
+}
+
+// 시간당 비용 구간: AI 분석 '게임 가성비'와 같은 기준(1,000 / 3,000 / 10,000원). 계산할 수 없으면(무료·금액/시간 모름) null
+export function hourlyTone(game) {
+  if (game.amount == null || game.amountSource === 'FREE' || game.hours == null) return null
+  const hourly = netAmount(game) / Math.max(game.hours, MIN_HOURS_FOR_HOURLY)
+  if (hourly < 1000) return 'great'
+  if (hourly < 3000) return 'good'
+  if (hourly < 10000) return 'fair'
+  return 'poor'
+}
+
 // 표·상세 창에 쓰는 시간당 비용 문구
 export function hourlyText(game) {
   if (game.amount == null) return '-'
