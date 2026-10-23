@@ -25,6 +25,7 @@ export const headerMenus = [
     children: [
       { to: '/ai-recommends', icon: 'spark', label: 'AI 게임 추천', description: '내가 플레이한 게임 취향으로 다음 게임 추천' },
       { to: '/explore', icon: 'compass', label: '스팀 전체 게임', description: '장르별 · 출시 예정 · 인기 게임' },
+      { to: '/bbs', icon: 'note', label: 'BBS', description: '게임별 공식 소식 · 한국어 AI 브리핑', matchChildren: true },
     ],
   },
   {

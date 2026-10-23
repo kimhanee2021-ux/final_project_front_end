@@ -27,7 +27,7 @@ export default function HeaderNav({ onNavigate }) {
           <div key={menu.id} className="relative h-full">
             <button
               type="button"
-              className={itemClass(menu.children.some(child => child.to.split(/[?#]/)[0] === pathname))}
+              className={itemClass(menu.children.some(child => child.to.split(/[?#]/)[0] === pathname || (child.matchChildren && pathname.startsWith(`${child.to}/`))))}
               aria-expanded={openId === menu.id}
               onClick={() => setOpenId(openId === menu.id ? null : menu.id)}
             >
@@ -40,7 +40,7 @@ export default function HeaderNav({ onNavigate }) {
                   <li key={child.to}>
                     <NavLink
                       to={child.to}
-                      end
+                      end={!child.matchChildren}
                       onClick={go}
                       className="block px-[14px] py-[10px] rounded-[14px] hover:bg-gs-hover"
                     >

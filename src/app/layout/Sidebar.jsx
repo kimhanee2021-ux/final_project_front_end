@@ -24,7 +24,7 @@ export default function Sidebar({ onClose }) {
   const returnTo = location.pathname + location.search + location.hash
   // 지금 보고 있는 페이지가 속한 묶음은 처음부터 펼쳐 둔다.
   const [openId, setOpenId] = useState(
-    () => headerMenus.find(menu => menu.children?.some(child => child.to === location.pathname))?.id ?? null
+    () => headerMenus.find(menu => menu.children?.some(child => child.to === location.pathname || (child.matchChildren && location.pathname.startsWith(`${child.to}/`))))?.id ?? null
   )
   const follow = () => {
     setQuery('')
@@ -38,8 +38,8 @@ export default function Sidebar({ onClose }) {
       navigate('/', { replace: true })
     })
   const nav = links =>
-    links.map(({ to, icon, label, description }) => (
-      <NavLink key={to} to={to} end onClick={follow} className={navLinkClass}>
+    links.map(({ to, icon, label, description, matchChildren }) => (
+      <NavLink key={to} to={to} end={!matchChildren} onClick={follow} className={navLinkClass}>
         <GSIcon name={icon} size={21} />
         <span className="min-w-0">
           {label}

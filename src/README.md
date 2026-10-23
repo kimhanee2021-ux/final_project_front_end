@@ -24,6 +24,7 @@ src/
 │  ├─ ai-coach/        코치 노바 채팅·예산
 │  ├─ ai-recommends/   AI 게임 추천
 │  ├─ games/           스팀 전체 게임 탐색
+│  ├─ game-news/       BBS 공식 소식 목록·상세, 게임 검색·분류·페이징
 │  ├─ performance/     AI PC 진단
 │  └─ gamer-map/       랜딩의 PC 게이머 모자이크 지도
 └─ shared/                  여러 기능이 같이 쓰는 것
