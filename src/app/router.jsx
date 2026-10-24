@@ -1,5 +1,6 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 import App from '@/app/App'
+import CommunityPage from '@/pages/community/CommunityPage'
 import GameSenseLayout from '@/app/layout/GameSenseLayout'
 import LandingPage from '@/pages/landing/LandingPage'
 import StartPage from '@/pages/landing/StartPage'
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
         element: <GameSenseLayout />,
         children: [
           { path: 'explore', element: <ExplorePage /> },
+          { path: 'community', element: <CommunityPage /> },
           // 게이머 지도는 랜딩 페이지로, 프로·스트리머 영상은 AI 게임 추천 카드로 옮겼다 (예전 주소로 들어와도 열리게 한다)
           { path: 'gamer-map', element: <Navigate to="/" replace /> },
           { path: 'pro-streamer-play', element: <Navigate to="/ai-recommends" replace /> },
