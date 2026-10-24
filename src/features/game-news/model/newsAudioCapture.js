@@ -1,4 +1,4 @@
-export const CAPTURE_TIMING = { initial: 10000, silence: 3000, maximum: 30000, poll: 100, flush: 2000 }
+export const CAPTURE_TIMING = { initial: 10000, silence: 2000, maximum: 30000, poll: 100, flush: 2000 }
 
 // Audio stays in memory. Completion and cancellation always release microphone tracks.
 export class NewsAudioCapture {

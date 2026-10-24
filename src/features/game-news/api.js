@@ -1,4 +1,6 @@
-import apiClient from '@/shared/lib/apiClient'
+import apiClient, { API_BASE_URL, browserStores } from '@/shared/lib/apiClient'
+import { readAccessToken } from '@/shared/lib/tokenStorage'
+import { readSpeechEvents } from './model/newsPcmStream'
 
 export async function transcribeNewsAudio(audio, appId, signal) {
   const form = new FormData()
@@ -42,4 +44,15 @@ export async function requestNewsSpeech(text, signal) {
     }
     throw error
   }
+}
+
+
+export async function streamNewsSpeech(text, signal, onChunk) {
+  const token = readAccessToken(browserStores())
+  const headers = { 'Content-Type': 'application/json', Accept: 'text/event-stream' }
+  if (token) headers.Authorization = `Bearer ${token}`
+  const response = await fetch(`${API_BASE_URL}/api/games/news/speech/stream`, {
+    method: 'POST', headers, body: JSON.stringify({ text }), credentials: 'include', signal,
+  })
+  await readSpeechEvents(response, onChunk)
 }

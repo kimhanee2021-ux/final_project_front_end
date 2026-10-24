@@ -1,48 +1,63 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { NewsAudioPlayer } from './src/features/game-news/model/newsAudioPlayer.js'
-import { spokenGameNames, spokenNewsDate } from './src/features/game-news/model/newsPronunciation.js'
+import { readSpeechEvents } from './src/features/game-news/model/newsPcmStream.js'
 
-function harness(request = async () => new Blob(['audio'], { type: 'audio/wav' })) {
-  const states = [], sounds = [], revoked = [], calls = []
+const tick = () => new Promise(resolve => setImmediate(resolve))
+function harness(stream) {
+  const states = [], sources = [], contexts = [], calls = []
   const player = new NewsAudioPlayer({
-    request: (...args) => { calls.push(args); return request(...args) },
-    update: state => states.push(state), createUrl: () => 'blob:test', revokeUrl: url => revoked.push(url),
-    audio: () => {
-      const sound = { paused: false, play() { this.onplaying(); return Promise.resolve() }, pause() { this.paused = true }, removeAttribute() {}, load() {} }
-      sounds.push(sound); return sound
+    stream: (...args) => { calls.push(args); return stream(...args) }, update: state => states.push(state),
+    context: () => {
+      const audio = {
+        currentTime: 0, destination: {}, resume: async () => {}, close: async () => { audio.closed = true },
+        createBuffer: (_, length, rate) => ({ duration: length / rate, getChannelData: () => new Float32Array(length) }),
+        createBufferSource: () => {
+          const source = { connect() {}, disconnect() {}, start(time) { this.started = time }, stop() { this.stopped = true } }
+          sources.push(source); return source
+        },
+      }
+      contexts.push(audio); return audio
     },
   })
-  return { player, states, sounds, revoked, calls }
+  return { player, states, sources, contexts, calls }
 }
-test('natural game hints and Korean date never confuse another sequel', () => {
-  assert.equal(spokenGameNames('Dota 2. Counter-Strike 2. Team Fortress 2.'), '도타 투. 카운터 스트라이크 투. 팀 포트리스 투.')
-  assert.equal(spokenGameNames('Dota 20, xDota 2, 도타2'), 'Dota 20, xDota 2, 도타 투')
-  assert.equal(spokenGameNames('도타2의 패치. Dota 2D.'), '도타 투의 패치. Dota 2D.')
-  assert.equal(spokenNewsDate('2026-10-23T16:00:00Z'), '2026년 10월 24일')
+
+test('playback starts on the first streamed chunk before generation finishes', async () => {
+  let writer
+  const body = new ReadableStream({ start(controller) { writer = controller } })
+  const response = new Response(body, { headers: { 'Content-Type': 'text/event-stream' } })
+  const h = harness((_, signal, receive) => readSpeechEvents(response, receive))
+  const pending = h.player.say('도타 투 소식', true)
+  await tick()
+  const encoder = new TextEncoder()
+  writer.enqueue(encoder.encode('event:audio\ndata:{"pcm":"AAABAA=="}\n\n'))
+  await tick()
+  assert.equal(h.states.at(-1).status, 'SPEAKING'); assert.equal(h.sources.length, 1)
+  writer.enqueue(encoder.encode('event:done\ndata:{"done":true}\n\n')); writer.close()
+  await pending
+  h.sources[0].onended()
+  assert.equal(h.states.at(-1).status, 'IDLE')
 })
-test('stop releases audio; replay reuses blob and original script', async () => {
-  const h = harness(); await h.player.say('Dota 2. 저장된 요약 7.40.', true)
-  assert.equal(h.states.at(-1).status, 'SPEAKING'); assert.equal(h.calls[0][0], '도타 투. 저장된 요약 7.40.')
-  h.player.stop(); assert(h.sounds[0].paused); assert.equal(h.states.at(-1).canReplay, true)
-  await h.player.replay(); assert.equal(h.calls.length, 1); assert.equal(h.sounds.length, 2)
-  h.sounds[1].onended(); assert.equal(h.states.at(-1).status, 'IDLE'); assert.equal(h.revoked.length, 2)
-  h.player.stop(true); assert.equal(h.states.at(-1).canReplay, false)
+
+test('stop aborts the stream and queued audio; late chunks cannot restart it', async () => {
+  let receive, finish
+  const h = harness((_, signal, chunk) => { receive = chunk; return new Promise(resolve => { finish = resolve }) })
+  const pending = h.player.say('저장된 요약', true)
+  await tick(); receive(new Uint8Array([0, 0, 1, 0]))
+  const signal = h.calls[0][1]
+  h.player.stop()
+  assert(signal.aborted); assert(h.sources.every(source => source.stopped)); assert(h.contexts[0].closed)
+  receive(new Uint8Array([0, 0])); finish(); await pending
+  assert.equal(h.sources.length, 1); assert.equal(h.states.at(-1).status, 'IDLE')
 })
-test('cancelling preparation aborts request and late audio cannot start', async () => {
-  let resolve; const h = harness(() => new Promise(done => { resolve = done }))
-  const pending = h.player.say('소식', true); const signal = h.calls[0][1]
-  h.player.stop(true); assert(signal.aborted)
-  resolve(new Blob(['late'])); await pending
-  assert.equal(h.sounds.length, 0); assert.equal(h.states.at(-1).canReplay, false)
-})
-test('errors keep text and replay; autoplay rejection retains prepared audio', async () => {
-  const error = new Error(); error.speechMessage = 'OpenAI 음성 키가 아직 설정되지 않았어요.'
-  const h = harness(async () => { throw error }); await h.player.say('저장된 요약', true)
-  assert.equal(h.states.at(-1).status, 'ERROR'); assert.match(h.states.at(-1).message, /키/)
-  assert.equal(h.states.at(-1).text, '저장된 요약'); assert(h.states.at(-1).canReplay)
-  const a = harness(); a.player.audio = () => ({ play: () => Promise.reject({ name: 'NotAllowedError' }), pause() {}, removeAttribute() {}, load() {} })
-  await a.player.say('요약', true); assert.match(a.states.at(-1).message, /자동 재생/)
-  a.player.audio = () => ({ play() { this.onplaying(); return Promise.resolve() }, pause() {}, removeAttribute() {}, load() {} })
-  await a.player.replay(); assert.equal(a.calls.length, 1); assert.equal(a.states.at(-1).status, 'SPEAKING'); a.player.stop(true)
+
+test('replay uses completed audio without another generation request', async () => {
+  const h = harness(async (_, signal, receive) => { receive(new Uint8Array([0, 0, 1, 0])) })
+  await h.player.say('저장된 요약', true)
+  h.sources[0].onended()
+  await h.player.replay()
+  assert.equal(h.calls.length, 1); assert.equal(h.sources.length, 2); assert.equal(h.states.at(-1).status, 'SPEAKING')
+  h.player.stop(true)
+  assert.equal(h.states.at(-1).canReplay, false)
 })
