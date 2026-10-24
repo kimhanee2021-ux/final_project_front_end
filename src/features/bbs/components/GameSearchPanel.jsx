@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { GSIcon } from '@/shared/ui'
 import GameImage from '@/shared/ui/media/GameImage'
 
-function SearchForm({ query, onSearch, loading }) {
+function SearchForm({ query, onSearch, loading, onManualInput }) {
   const [value, setValue] = useState(query)
   return <form className="bbs-search-form" role="search" onSubmit={event => {
     event.preventDefault()
@@ -11,7 +11,7 @@ function SearchForm({ query, onSearch, loading }) {
     <label htmlFor="bbs-game-query">어떤 게임의 소식이 궁금하세요?</label>
     <div className="bbs-search-field">
       <GSIcon name="search" size={21} />
-      <input id="bbs-game-query" type="search" value={value} onChange={event => setValue(event.target.value)}
+      <input id="bbs-game-query" type="search" value={value} onChange={event => { onManualInput?.(); setValue(event.target.value) }}
         placeholder="게임 이름 또는 Steam App ID" maxLength={255} autoComplete="off"
         aria-describedby="bbs-search-hint" />
       <button type="submit" className="bbs-button bbs-button-primary" disabled={!value.trim()}>
@@ -22,10 +22,10 @@ function SearchForm({ query, onSearch, loading }) {
   </form>
 }
 
-export default function GameSearchPanel({ query, selectedId, result, onSearch, onSelect }) {
+export default function GameSearchPanel({ query, selectedId, result, onSearch, onSelect, onManualInput }) {
   const games = result.data?.content ?? []
   return <section className="bbs-search-panel" aria-label="게임 찾기">
-    <SearchForm key={query} query={query} onSearch={onSearch} loading={result.loading} />
+    <SearchForm key={query} query={query} onSearch={onSearch} loading={result.loading} onManualInput={onManualInput} />
     {!query && <div className="bbs-search-suggestions">
       <span>이렇게 찾아보세요</span>
       {['Dota 2', 'Counter-Strike 2', 'Stardew Valley'].map(name =>

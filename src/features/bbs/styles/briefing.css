@@ -1,0 +1,15 @@
+.bbs-briefing { margin: 22px 0; padding: 20px; border: 1px solid var(--gs-border); border-radius: 14px; background: var(--gs-raised); overflow-wrap: anywhere; }
+.bbs-briefing-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--gs-mint); font-size: 12px; font-weight: 650; }
+.bbs-briefing-saved { font-size: 10px; color: var(--gs-muted); font-weight: 400; }
+.bbs-briefing h4 { margin: 16px 0; font-size: 19px; line-height: 1.55; letter-spacing: -.4px; }
+.bbs-briefing > p { margin: 14px 0; color: var(--gs-muted); font-size: 12px; line-height: 1.85; }
+.bbs-briefing-points { margin: 0; padding-left: 22px; list-style: decimal; display: grid; gap: 12px; font-size: 13px; line-height: 1.85; }
+.bbs-briefing-points li { padding-left: 3px; }
+.bbs-briefing-points li::marker { color: var(--gs-mint); font-weight: 650; }
+.bbs-briefing-script { margin-top: 20px; border-top: 1px solid var(--gs-border); padding-top: 15px; }
+.bbs-briefing-script summary { cursor: pointer; font-size: 12px; line-height: 1.8; }
+.bbs-briefing-script summary span { color: var(--gs-muted); font-size: 10px; margin-left: 7px; white-space: nowrap; }
+.bbs-briefing-script p { font-size: 13px; line-height: 1.95; white-space: pre-wrap; margin: 14px 0 0; }
+.bbs-briefing .bbs-briefing-note { font-size: 10px; margin: 17px 0 0; }
+.bbs-briefing button { min-height: 40px; }
+@media (max-width: 720px) { .bbs-briefing { padding: 16px; } .bbs-briefing h4 { font-size: 18px; } }
