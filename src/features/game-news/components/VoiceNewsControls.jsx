@@ -40,7 +40,7 @@ export default function VoiceNewsControls({ query, result, flow, onSelect, onSea
     say(intent.message)
   }, searchCancelRef, conversationRef)
   const loadingVoiceResult = flow?.mode === 'READ' && result.loading && stoppedFlow !== flow.id
-  const busy = voice.phase === 'LISTENING' || voice.phase === 'RESOLVING'
+  const busy = ['STARTING', 'LISTENING', 'TRANSCRIBING', 'RESOLVING'].includes(voice.phase)
     || speech.status === 'SPEAKING' || speech.status === 'QUEUED' || loadingVoiceResult
   const { holding, cancelHold, holdHandlers } = usePressToTalk(() => {
     if (!busy) listen(mode)
@@ -109,6 +109,8 @@ export default function VoiceNewsControls({ query, result, flow, onSelect, onSea
     replay()
   }
   const help = holding ? '계속 누르고 계세요 · 2초가 되면 음성 인식이 시작돼요'
+    : voice.phase === 'STARTING' ? '마이크를 준비하고 있어요'
+    : voice.phase === 'TRANSCRIBING' ? '말씀하신 음성을 인식하고 있어요'
     : voice.phase === 'LISTENING'
     ? (mode === 'CATEGORY' ? '듣고 있어요 · 원하는 소식 분류를 말씀해 주세요' : '듣고 있어요 · 게임명 또는 현재 후보 번호를 말씀해 주세요')
     : voice.phase === 'RESOLVING' ? '게임을 확인하고 있어요'
@@ -126,22 +128,23 @@ export default function VoiceNewsControls({ query, result, flow, onSelect, onSea
       </button>
     </div>
     <div className="news-voice-actions" role="group" aria-label="음성 소식 제어">
-      <button type="button" onClick={() => listen(mode)} disabled={voice.phase === 'LISTENING'}>{mode === 'CATEGORY' ? '카테고리 말하기' : '게임명 말하기'}</button>
+      <button type="button" onClick={() => listen(mode)} disabled={['STARTING', 'LISTENING', 'TRANSCRIBING', 'RESOLVING'].includes(voice.phase)}>{mode === 'CATEGORY' ? '카테고리 말하기' : '게임명 말하기'}</button>
+      {voice.phase === 'LISTENING' && <button type="button" onClick={voice.finish}>입력 완료</button>}
       <button type="button" onClick={stopAll} disabled={!busy}>중지</button>
       <button type="button" onClick={replaySummary} disabled={!speech.canReplay}>다시 듣기</button>
       {query.appId && <button type="button" onClick={() => listen('GAME', true)}>게임 바꾸기</button>}
     </div>
     <div className="news-wave-caption">
       <p id="news-wave-help">{help}</p>
-      <small>음성은 브라우저 인식 서비스로 전송될 수 있습니다. 앱 서버에 원본 음성을 저장하지 않습니다.</small>
+      <small>한국어·영어 음성과 게임 확인에 필요한 인식 문장·최근 대화를 OpenAI에 보냅니다. 앱 서버에 원본 음성을 저장하지 않습니다.</small>
       <small>낭독은 OpenAI가 생성한 AI 음성입니다. 읽을 문장이 OpenAI로 전송됩니다.</small>
       {!voice.supported && <small>이 브라우저는 음성 인식을 지원하지 않아요. 아래 검색창을 이용해 주세요.</small>}
-      <p className="news-wave-status" role="status" aria-live="polite">{notice || (['LISTENING', 'RESOLVING', 'ERROR'].includes(voice.phase) ? voice.message : speech.message || voice.message)}</p>
+      <p className="news-wave-status" role="status" aria-live="polite">{notice || (['STARTING', 'LISTENING', 'TRANSCRIBING', 'RESOLVING', 'ERROR'].includes(voice.phase) ? voice.message : speech.message || voice.message)}</p>
       {voice.transcript && <p className="news-wave-transcript">인식한 말: <q>{voice.transcript}</q></p>}
     </div>
     {voice.candidates.length > 0 && <div className="news-wave-candidates" role="group" aria-label="음성 게임 검색 후보">
       {voice.candidates.map((game, index) => <button type="button" key={game.appId}
-        disabled={voice.phase === 'RESOLVING' || voice.phase === 'LISTENING'} onClick={() => voice.selectCandidate(index + 1)}>
+        disabled={['STARTING', 'LISTENING', 'TRANSCRIBING', 'RESOLVING'].includes(voice.phase)} onClick={() => voice.selectCandidate(index + 1)}>
         <span>{index + 1}. {game.name}</span><small>Steam #{game.appId}</small>
       </button>)}
       <small>{voice.hasMore ? '후보가 더 있어요. 더 구체적인 게임명으로 다시 검색할 수 있어요.' : '게임을 누르거나 파동을 누른 뒤 “2번”처럼 말씀해 주세요.'}</small>

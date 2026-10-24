@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { interpretNewsVoice } from '../api'
+import { interpretNewsVoice, transcribeNewsAudio } from '../api'
 import { getErrorMessage } from '@/shared/lib/apiClient'
-import { NewsUtteranceSession } from '../model/newsUtteranceSession'
+import { NewsAudioCapture } from '../model/newsAudioCapture'
 
 const IDLE = { phase: 'IDLE', message: '', transcript: '', candidates: [], hasMore: false }
 const empty = () => ({ appId: null, category: null, allCategories: false, awaiting: 'GAME', candidateSetToken: null, candidateVersion: null })
@@ -14,7 +14,7 @@ export function useVoiceNewsIntent(query, flow, onAction, cancelRef, conversatio
     allCategories: flow?.mode === 'CATEGORY' ? false : !query.category,
     awaiting: flow?.mode === 'CATEGORY' ? 'CATEGORY' : null, candidateSetToken: null, candidateVersion: null })
   const [state, setState] = useState(IDLE)
-  const [supported] = useState(() => Boolean(window.SpeechRecognition || window.webkitSpeechRecognition))
+  const [supported] = useState(() => Boolean(navigator.mediaDevices?.getUserMedia && window.MediaRecorder && (window.AudioContext || window.webkitAudioContext)))
   const recognition = useRef(null), request = useRef(null), generation = useRef(0)
   const context = useRef(contextForQuery())
   const baseContext = useRef(contextForQuery())
@@ -81,17 +81,28 @@ export function useVoiceNewsIntent(query, flow, onAction, cancelRef, conversatio
     cancelWork()
     if (changeGame) { context.current = empty(); conversationStateRef.current.context = null; conversationStateRef.current.history = [] }
     const current = generation.current
-    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
-    if (!Recognition || !window.isSecureContext) {
+    if (!supported || !window.isSecureContext) {
       setState({ ...IDLE, phase: 'ERROR', message: '음성 인식을 지원하는 브라우저의 HTTPS 또는 localhost에서 이용해 주세요. 기존 검색창도 사용할 수 있어요.' }); return
     }
-    setState(previous => ({ ...previous, phase: 'LISTENING', transcript: '', message: '듣고 있어요. 잠시 쉬어도 괜찮아요. 말씀을 마친 뒤 약 3초 기다려 주세요.' }))
-    const session = new NewsUtteranceSession({
-      Recognition,
-      onPreview: transcript => {
-        if (generation.current === current) setState(previous => ({ ...previous, transcript }))
+    setState(previous => ({ ...previous, phase: 'STARTING', transcript: '', message: '마이크를 준비하고 있어요. 권한을 요청하면 허용해 주세요.' }))
+    const sourceLocation = window.location.href
+    const session = new NewsAudioCapture({
+      onReady: () => {
+        if (generation.current === current) setState(previous => ({ ...previous, phase: 'LISTENING', message: '듣고 있어요. 한국어나 영어로 말씀해 주세요. 말을 마친 뒤 3초 기다리거나 입력 완료를 눌러 주세요.' }))
       },
-      onFinal: transcript => { if (generation.current === current) interpret(transcript, current) },
+      onFinal: async audio => {
+        if (generation.current !== current || sourceLocation !== window.location.href) return
+        const controller = new AbortController(); request.current = controller
+        setState(previous => ({ ...previous, phase: 'TRANSCRIBING', message: '말씀하신 음성을 인식하고 있어요.' }))
+        try {
+          const transcript = await transcribeNewsAudio(audio, context.current.appId, controller.signal)
+          if (generation.current !== current || controller.signal.aborted || sourceLocation !== window.location.href) return
+          interpret(transcript, current)
+        } catch (error) {
+          if (generation.current !== current || controller.signal.aborted) return
+          setState(previous => ({ ...previous, phase: 'ERROR', message: getErrorMessage(error, '음성을 인식하지 못했어요. 다시 말씀해 주세요.') }))
+        }
+      },
       onError: message => {
         if (generation.current === current) setState(previous => ({ ...previous, phase: 'ERROR', message }))
       },
@@ -101,7 +112,8 @@ export function useVoiceNewsIntent(query, flow, onAction, cancelRef, conversatio
   }
   const stop = () => { cancelWork(); context.current.candidateSetToken = null; context.current.candidateVersion = null; conversationStateRef.current.context = { ...context.current }; setState(IDLE) }
   const selectCandidate = index => { cancelWork(); interpret(`${index}번`, generation.current) }
-  return { ...state, supported, start, stop, selectCandidate }
+  const finish = () => recognition.current?.finish()
+  return { ...state, supported, start, stop, finish, selectCandidate }
 }
 
 

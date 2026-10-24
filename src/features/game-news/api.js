@@ -1,5 +1,17 @@
 import apiClient from '@/shared/lib/apiClient'
 
+export async function transcribeNewsAudio(audio, appId, signal) {
+  const form = new FormData()
+  const mime = audio.type.split(';')[0]
+  const extension = mime === 'audio/mp4' ? 'mp4' : mime === 'audio/ogg' ? 'ogg' : 'webm'
+  form.append('audio', audio, `speech.${extension}`)
+  if (appId) form.append('appId', String(appId))
+  const { data } = await apiClient.post('/api/games/news/transcribe', form, {
+    signal, timeout: 40000, headers: { 'Content-Type': undefined },
+  })
+  return data.transcript
+}
+
 // BBS는 저장된 데이터 조회만 수행한다. 수집·AI 생성 요청을 보내지 않는다.
 export async function fetchNewsResource(path, signal) {
   const { data } = await apiClient.get(path, { signal })
@@ -12,7 +24,7 @@ export async function resolveNewsGame(payload, signal) {
 }
 
 export async function interpretNewsVoice(payload, signal) {
-  const { data } = await apiClient.post('/api/games/news/voice-intent', payload, { signal, withCredentials: true })
+  const { data } = await apiClient.post('/api/games/news/voice-intent', payload, { signal, withCredentials: true, timeout: 45000 })
   return data
 }
 
