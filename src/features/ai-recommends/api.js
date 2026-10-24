@@ -1,31 +1,24 @@
 import apiClient from '@/shared/lib/apiClient'
 
-// FastAPI 추천 서버(/api/v1/users/me/recommendations) 연동.
-// 스프링(/api)과 서버가 달라 개발 환경에서는 vite proxy의 /recommend-api 경로를 거친다.
-// 배포 등으로 추천 서버 주소가 다르면 VITE_RECOMMEND_API_BASE_URL에 지정한다.
-const RECOMMEND_BASE = import.meta.env.VITE_RECOMMEND_API_BASE_URL || '/recommend-api'
-
+// 스프링 추천 API(/api/recommendations) 연동. 모델 서버(FastAPI)는 스프링이 대신 호출하므로 프론트는 모른다.
+// 스프링이 마지막 추천을 저장해 두므로 같은 결과를 다시 받을 때는 빠르다.
 const DEFAULT_LIMIT = 10
 export const MAX_LIMIT = 50
-// 추천 칸 중 학습에 없던 신작으로 채울 칸 수
-const NEW_SLOTS = 3
 
-// 응답: { recommendations: [{ rank, app_id, score, source('main'|'new'), game: { name, genre, thumbnail_url } | null }],
-//         meta: { used_game_count, unplayed_game_count } }
+// 응답: { recommendations: [{ rank, appId, score, source('main'|'new'), game: { name, genre, thumbnailUrl } | null }],
+//         meta: { usedGameCount, unplayedGameCount } }
 // score는 요청 안에서 순위를 매기는 값일 뿐 확률이나 일치율이 아니다.
 export async function fetchRecommendations({ limit = DEFAULT_LIMIT, signal } = {}) {
-  const { data } = await apiClient.get(`${RECOMMEND_BASE}/api/v1/users/me/recommendations`, {
-    params: { limit, new_slots: NEW_SLOTS },
+  const { data } = await apiClient.get('/api/recommendations', {
+    params: { limit },
     signal,
-    // 추천 서버의 401로 전체 로그아웃되지 않게 한다. 토큰 만료는 스프링 API 호출에서 처리된다.
-    skipSessionExpiry: true,
-    // 모델 추론이 있어 일반 요청보다 오래 걸릴 수 있다.
+    // 저장된 추천이 없거나 오래되면 스프링이 모델 추론을 돌려서 일반 요청보다 오래 걸릴 수 있다.
     timeout: 60000,
   })
   return data
 }
 
-// FastAPI 에러 응답도 스프링과 같은 { code, error } 형식이다.
+// 추천 오류 응답도 { code, error } 형식이다.
 export function recommendErrorMessage(error) {
   const message = error?.response?.data?.error
   if (typeof message === 'string') return message
