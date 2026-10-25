@@ -6,7 +6,7 @@ import europe from './playerSeries.europe.source.json' with { type: 'json' }
 import africa from './playerSeries.africa.source.json' with { type: 'json' }
 
 // 프로젝트의 관리 영역입니다. 호주는 South Asia, 이집트·남아공은 Africa에 포함합니다.
-export const PLAYER_REGIONS = [americas, northAsia, southAsia, europe, africa]
+const PLAYER_REGIONS = [americas, northAsia, southAsia, europe, africa]
 
 // 국가 수치의 원본은 지역별 JSON 한 곳에만 둡니다.
 // 지역 사이 이동 중 중복 등록되면 합계가 부풀려지므로 즉시 알립니다.
