@@ -2,6 +2,7 @@
 export { default as SearchForm } from './components/SearchForm'
 export { default as SearchResults } from './components/SearchResults'
 export { default as GameAiBriefing } from './components/GameAiBriefing'
+export { default as QuickSearchResults } from './components/QuickSearchResults'
 export { useAiSearch } from './hooks/useAiSearch'
-export { rememberSearch, searchGames } from './api'
+export { MAX_QUERY_LENGTH, rememberSearch, searchGames } from './api'
 export { toBriefingCommand } from './model/searchResult'

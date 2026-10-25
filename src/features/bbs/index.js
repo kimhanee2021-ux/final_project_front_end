@@ -1,6 +1,7 @@
 // 이 폴더의 공개 목록(public API). 다른 폴더는 여기서 내보낸 것만 가져다 쓴다.
 export { default as BbsWorkspace } from './components/BbsWorkspace'
 export { default as BbsVoiceOrb } from './components/BbsVoiceOrb'
+export { default as BbsVoiceMiniOrb } from './components/BbsVoiceMiniOrb'
 export { default as BbsVoiceCommandStatus } from './components/BbsVoiceCommandStatus'
 export { useBbsVoiceSearch } from './hooks/useBbsVoiceSearch'
 export { useBbsResource } from './hooks/useBbsResource'

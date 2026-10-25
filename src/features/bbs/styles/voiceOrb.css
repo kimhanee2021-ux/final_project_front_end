@@ -52,6 +52,23 @@
 }
 .bbs-voice-trigger:focus-visible { outline: 2px solid #67e8f9; outline-offset: -4px; }
 .bbs-voice-orb .news-neon-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+/* 검색창 끝의 작은 음성 버튼 */
+.bbs-voice-mini {
+  position: relative; display: block; flex-shrink: 0; width: 32px; height: 32px; overflow: hidden;
+  border: 1.5px solid rgba(129, 140, 248, .3); border-radius: 50%; background: #060914;
+  transition: border-color .2s, box-shadow .25s, transform .2s;
+}
+.bbs-voice-mini:hover { transform: scale(1.08); border-color: rgba(129, 140, 248, .7); box-shadow: 0 0 12px rgba(129, 140, 248, .35); }
+.bbs-voice-mini:active { transform: scale(.94); }
+.bbs-voice-mini.is-busy { border-color: #a78bfa; }
+.bbs-voice-mini.is-listening { border-color: #67e8f9; box-shadow: 0 0 0 3px rgba(34, 211, 238, .22), 0 0 14px rgba(34, 211, 238, .4); }
+.bbs-voice-mini.has-error { border-color: #fb7185; }
+.bbs-voice-mini-trigger {
+  display: block; width: 100%; height: 100%; padding: 0; border: 0; border-radius: inherit; background: transparent; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.bbs-voice-mini .news-neon-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .bbs-voice-mini { transition: none; } }
 .bbs-voice-guide {
   width: min(100%, 620px); box-sizing: border-box; padding: 22px 26px 17px; text-align: center;
   border: 1px solid var(--gs-border); border-radius: 19px; background: var(--gs-panel); color: var(--gs-text);
