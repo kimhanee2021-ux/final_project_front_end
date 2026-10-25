@@ -3,9 +3,11 @@ import { analysisRequestKey, searchOverviewFrom } from '../model/pcAnalysisCache
 import { evaluationForView } from '../model/pcEvaluationScope'
 import { pendingGames } from '../model/pcHardware'
 import { useEffect, useRef, useState } from 'react'
-import { assessPc, assessPcBatch, assessPcOverview, loadPcParts } from '../api'
+import { assessPc, assessPcBatch, assessPcOverview } from '../api'
 import { normalizeSpecs } from '../model/pcDiagnosis'
 import { loadEvaluation, saveEvaluation } from '../model/pcEvaluationStore'
+import { useElapsedSeconds } from './useElapsedSeconds'
+import { usePartOffers } from './usePartOffers'
 
 // userId가 있으면 보유게임 기준 평가 결과를 그 계정의 이 브라우저 저장소에 보관하고, 같은 사양이면 저장본에서 이어받는다.
 export function usePcDiagnosis(userId) {
@@ -15,7 +17,7 @@ export function usePcDiagnosis(userId) {
     [busy, setBusy] = useState(null),
     [error, setError] = useState(''),
     [errorsByScope, setErrorsByScope] = useState({ owned: {}, search: {} })
-  const [elapsed, setElapsed] = useState(0),
+  const [elapsed, setElapsed] = useElapsedSeconds(busy),
     [viewMode, setViewMode] = useState('owned')
   const [searchResults, setSearchResults] = useState({})
   const results = viewMode === 'search' ? searchResults : ownedResults
@@ -26,28 +28,17 @@ export function usePcDiagnosis(userId) {
   const [ownedOverview, setOwnedOverview] = useState(null),
     [searchOverview, setSearchOverview] = useState(null),
     [overviewError, setOverviewError] = useState('')
-  const [partOffers, setPartOffers] = useState([]),
-    [partsLoading, setPartsLoading] = useState(false)
+  const parts = usePartOffers()
   const controller = useRef(null),
     sequence = useRef(0),
     specsRef = useRef(null),
     ownedCache = useRef(null),
-    priceController = useRef(null),
-    priceSequence = useRef(0),
     resultCaches = useRef({ owned: {}, search: {} }),
     activeRequestKey = useRef(null)
-  useEffect(() => {
-    if (busy === null) return
-    const started = Date.now()
-    const timer = setInterval(() => setElapsed(Math.floor((Date.now() - started) / 1000)), 1000)
-    return () => clearInterval(timer)
-  }, [busy])
   useEffect(
     () => () => {
       sequence.current++
       controller.current?.abort()
-      priceSequence.current++
-      priceController.current?.abort()
     },
     []
   )
@@ -76,22 +67,7 @@ export function usePcDiagnosis(userId) {
     setSearchOverview(null)
     ownedCache.current = saved.overview
     setViewMode('owned')
-    priceController.current?.abort()
-    const request = new AbortController()
-    priceController.current = request
-    const id = ++priceSequence.current
-    setPartOffers([])
-    setPartsLoading(true)
-    const timer = setTimeout(() => request.abort(), 150000)
-    loadPcParts(request.signal)
-      .then(offers => {
-        if (priceSequence.current === id) setPartOffers(Array.isArray(offers) ? offers : [])
-      })
-      .catch(() => {})
-      .finally(() => {
-        clearTimeout(timer)
-        if (priceSequence.current === id) setPartsLoading(false)
-      })
+    parts.reload()
   }
   async function prepareOwnedOverview(games) {
     const pc = specsRef.current
@@ -243,7 +219,7 @@ export function usePcDiagnosis(userId) {
     setViewMode,
     overviewResult,
     overviewError,
-    partOffers,
-    partsLoading,
+    partOffers: parts.partOffers,
+    partsLoading: parts.partsLoading,
   }
 }

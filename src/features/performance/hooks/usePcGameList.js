@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { getErrorMessage } from '@/shared/lib/apiClient'
-import { syncSteamLibrary } from '../../library/api'
+import { syncSteamLibrary } from '@/features/library'
 import { searchPcGames } from '../api'
 import { ownedPage } from '../model/pcDiagnosis'
 import { pendingGames } from '../model/pcHardware'

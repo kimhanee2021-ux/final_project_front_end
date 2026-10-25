@@ -2,15 +2,19 @@ import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { GSIcon } from '@/shared/ui'
 import { GameAiBriefing, SearchForm, SearchResults, rememberSearch, searchGames, toBriefingCommand, useAiSearch } from '@/features/ai-search'
-import { newsView } from '@/features/bbs/model/news'
-import BbsWorkspace from '@/features/bbs/components/BbsWorkspace'
-import BbsVoiceOrb from '@/features/bbs/components/BbsVoiceOrb'
-import BbsVoiceCommandStatus from '@/features/bbs/components/BbsVoiceCommandStatus'
-import { useBbsVoiceSearch } from '@/features/bbs/hooks/useBbsVoiceSearch'
-import { useBbsResource } from '@/features/bbs/hooks/useBbsResource'
-import { BbsAudioFocus, createBbsAudioFocus, useBbsAudioFocus } from '@/features/bbs/hooks/bbsAudioFocus'
-import { useVoiceBriefingFlow } from '@/features/bbs/hooks/useVoiceBriefingFlow'
-import { VoiceBriefingContext } from '@/features/bbs/hooks/voiceBriefingContext'
+import {
+  BbsAudioFocus,
+  BbsVoiceCommandStatus,
+  BbsVoiceOrb,
+  BbsWorkspace,
+  VoiceBriefingContext,
+  createBbsAudioFocus,
+  newsView,
+  useBbsAudioFocus,
+  useBbsResource,
+  useBbsVoiceSearch,
+  useVoiceBriefingFlow,
+} from '@/features/bbs'
 import '@/features/bbs/styles/bbs.css'
 
 // 음성 요청과 글 요청을 BBS 브리핑 흐름이 받는 명령으로 바꾼다. 해석은 AI 검색 API 한 번으로 한다 (BBS 별명 테이블을 쓰지 않는다).
