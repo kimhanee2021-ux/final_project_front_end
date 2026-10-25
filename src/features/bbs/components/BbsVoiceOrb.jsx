@@ -3,13 +3,13 @@ import NeonWaveCanvas from './NeonWaveCanvas'
 import { useHoldToSpeak } from '../hooks/useHoldToSpeak'
 import '../styles/voiceOrb.css'
 
-// 한 번이라도 음성 검색을 시작한 사람에게는 원 주변의 안내 물결을 더 보여주지 않는다.
+// 대기 중에는 원 주변에 안내 물결이 퍼진다. 한 번이라도 음성 검색을 시작한 사람에게는 간격을 길게 해서 덜 거슬리게 한다.
 const VOICE_USED_KEY = 'gs-bbs-voice-used'
 function readVoiceUsed() {
   try { return localStorage.getItem(VOICE_USED_KEY) === '1' } catch { return false }
 }
 function saveVoiceUsed() {
-  try { localStorage.setItem(VOICE_USED_KEY, '1') } catch { /* 저장 못 해도 물결만 계속 보인다 */ }
+  try { localStorage.setItem(VOICE_USED_KEY, '1') } catch { /* 저장 못 해도 물결 간격만 짧게 남는다 */ }
 }
 
 export default function BbsVoiceOrb({ phase, message, transcript = '', onStart, onCancel }) {
@@ -34,7 +34,7 @@ export default function BbsVoiceOrb({ phase, message, transcript = '', onStart, 
   const label = busy ? '0.5초간 눌러 음성 인식 취소' : '눌러서 음성으로 게임 검색'
   const activity = phase
   return <section className="bbs-voice-panel" aria-label="음성으로 게임 검색" data-state={activity}>
-    <div className="bbs-voice-stage" data-invite={!used && !busy ? '' : undefined}>
+    <div className="bbs-voice-stage" data-invite={busy ? undefined : used ? 'calm' : 'first'}>
       <span className="bbs-voice-ripple" aria-hidden="true" />
       <span className="bbs-voice-ripple" aria-hidden="true" />
       <div className={`bbs-voice-orb${holding ? ' is-holding' : ''}${phase === 'STARTING' ? ' is-starting' : ''}${phase === 'LISTENING' ? ' is-listening' : ''}${phase === 'TRANSCRIBING' ? ' is-processing' : ''}${phase === 'ERROR' ? ' has-error' : ''}`}>
