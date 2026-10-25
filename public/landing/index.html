@@ -243,7 +243,7 @@ async function init(){
     const material=new THREE.ShaderMaterial({uniforms:{movie:{value:texture},strength:{value:0},time:{value:0}},vertexShader:vertex,fragmentShader:fragment,transparent:true,depthWrite:false,side:THREE.DoubleSide});
     const screen=new THREE.Mesh(geometry,material);screen.position.set(i%2===0?3:1.8,1,-22*i);screen.rotation.y=i%2===0?-.12:.13;scene.add(screen);screens.push(screen);
     // 바닥 반사는 같은 영상 텍스처를 공유한다.
-    const reflection=screen.clone();reflection.material=material.clone();reflection.material.uniforms.strength.value=0;reflection.position.y=-10.5;reflection.scale.y=-.48;scene.add(reflection);screen.userData.reflection=reflection;
+    const reflection=screen.clone();reflection.material=material.clone();reflection.material.uniforms.strength.value=0;reflection.position.y=-10.5;reflection.scale.y=-.48;scene.add(reflection);screen.userData.reflection=reflection;screen.userData.video=video;
     disposables.push(geometry,material,reflection.material,texture);
   }
 
@@ -277,12 +277,14 @@ function animate(){
   screen.material.uniforms.strength.value=strength;screen.material.uniforms.time.value=t;
   screen.position.y=1+(reduced.matches?0:Math.sin(t*.12+i)*.17);
   screen.userData.reflection.material.uniforms.strength.value=strength*.16;screen.userData.reflection.material.uniforms.time.value=t;
-  screen.visible=strength>.001;screen.userData.reflection.visible=screen.visible;
+  screen.visible=strength>.001&&hasFrame(screen.userData.video);screen.userData.reflection.visible=screen.visible;
  }
  const merge=smooth((p-.15)/.48);
  paths.forEach((line,j)=>{const attribute=line.geometry.attributes.position;for(let n=0;n<110;n++){const z=9-n*.8;const spread=mix((j-8)*.8,(j-8)*.065,merge);const x=2.5+spread+Math.sin(z*.08+t*.13+j*.14)*mix(1.7,.35,merge);const y=-4.1+Math.cos(z*.1+j*.13)*.15;attribute.setXYZ(n,x,y,z)}attribute.needsUpdate=true;line.material.opacity=j===8?.5:mix(.12,.025,merge)});
  renderer.render(scene,camera);state.frame=requestAnimationFrame(animate);
 }
+// 로딩·구간 이동 중인 영상은 보여줄 프레임이 없어 GPU 업로드 시 경고가 난다. 그 동안은 그리지 않는다.
+function hasFrame(video){return video.readyState>=video.HAVE_CURRENT_DATA}
 function fallback(){function tick(){if(state.disposed)return;state.progress=state.target;updateCopy(state.progress);state.frame=requestAnimationFrame(tick)}tick()}
 // WebGL 리소스와 디코더를 명시적으로 해제하여 탭 이동 시 누적을 막는다.
 addEventListener('pagehide',()=>{state.disposed=true;cancelAnimationFrame(state.frame);videos.forEach(v=>{v.pause();v.removeAttribute('src');v.load()});disposables.forEach(r=>r.dispose());renderer?.dispose()},{once:true});
