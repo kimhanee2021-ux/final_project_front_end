@@ -1,16 +1,9 @@
 /* PC 분석 화면 전용 스타일. 색은 공용 토큰(--primary, --border 등)만 쓰고, 카드 테두리는 쓰지 않는다. */
-.pc-page button:disabled { opacity: .7; cursor: wait; }
-.pc-spinning { animation: pc-spin 1.4s linear infinite; }
 @keyframes pc-spin { to { transform: rotate(360deg); } }
 
 /* 사용률 막대 */
-.pc-meter { height: 8px; border-radius: 20px; background: var(--bg); overflow: hidden; }
-.pc-meter.pc-meter-on-tile { background: var(--surface); }
-.pc-meter > span { display: block; height: 100%; border-radius: inherit; background: var(--primary); }
 
 /* 진단 진행률 */
-.pc-scan-progress { height: 6px; max-width: 240px; min-width: 60px; flex: 1; background: var(--bg); border-radius: 10px; overflow: hidden; }
-.pc-scan-progress > span { display: block; height: 100%; background: var(--primary); transition: width .25s; }
 
 /* 게임별 예상 FPS 표 */
 .pc-table-scroll { overflow-x: auto; scrollbar-width: thin; }
@@ -31,7 +24,6 @@
 .pc-game-button { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 44px; padding: 0; background: none; text-align: left; font-size: 14px; font-weight: 600; line-height: 1.45; }
 .pc-game-button:hover { text-decoration: underline; }
 .pc-game-button img { height: 46px; width: 36px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: var(--bg); }
-.pc-unavailable { color: var(--faint); }
 .pc-rating { display: inline-flex; align-items: center; justify-content: center; min-width: 54px; border-radius: 24px; padding: 4px 10px; font-size: 12px; font-weight: 600; background: var(--bg); color: var(--muted); }
 
 /* 상세 다이얼로그 */
@@ -44,23 +36,7 @@ body:has(.pc-dialog[open]) { overflow: hidden; }
 .pc-dialog h2 { font-size: 24px; letter-spacing: -.6px; margin: 0 0 8px; line-height: 1.4; }
 .pc-dialog h3 { font-size: 17px; margin: 17px 0 12px; }
 .pc-dialog p { color: var(--muted); font-size: 14px; line-height: 1.8; }
-.pc-dialog .pc-dialog-lead { margin-bottom: 22px; font-size: 13px; }
-.pc-dialog-fps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 22px; }
-.pc-dialog-fps > div { display: flex; flex-direction: column; gap: 10px; padding: 18px 10px; text-align: center; border-radius: 16px; background: var(--bg); }
-.pc-dialog-fps span { font-size: 12px; color: var(--muted); }
-.pc-dialog-fps strong { font-size: 26px; color: var(--text); }
-.pc-dialog-fps small { font-size: 12px; }
-.pc-dialog .pc-dialog-disclaimer { padding: 14px 16px; background: var(--bg); border-radius: 14px; font-size: 12px; margin-top: 20px; }
 .pc-dialog-callout { padding: 18px; background: var(--bg); border-radius: 14px; margin-bottom: 20px; }
-.pc-dialog-feature-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 20px; margin-top: 25px; color: var(--muted); background: var(--bg); }
-.pc-detail-tips { list-style: none; margin: 23px 0; padding: 0; display: grid; gap: 13px; }
-.pc-detail-tips li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--muted); line-height: 1.7; }
-.pc-detail-tips svg { flex-shrink: 0; margin-top: 3px; color: var(--muted); }
-.pc-system-details { margin: 0; }
-.pc-system-details > div { padding: 16px 0; border-bottom: 1px solid var(--border); }
-.pc-system-details dt { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--muted); }
-.pc-system-details dd { margin: 8px 0 0 30px; font-size: 15px; }
-.pc-system-details dd p { font-size: 13px; margin-top: 5px; }
 .pc-dialog .pc-dialog-confirm { margin-top: 22px; width: 100%; min-height: 44px; }
 
 @media (max-width: 600px) {
@@ -74,10 +50,4 @@ body:has(.pc-dialog[open]) { overflow: hidden; }
   .pc-game-table td strong { font-size: 13px; }
   .pc-rating { min-width: 42px; font-size: 11px; padding: 4px 6px; }
   .pc-dialog-inner { padding: 20px; }
-  .pc-dialog-fps { gap: 6px; }
-  .pc-dialog-fps > div { padding: 12px 6px; }
-  .pc-dialog-fps strong { font-size: 22px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .pc-page *, .pc-page *::before { animation: none !important; transition: none !important; }
 }

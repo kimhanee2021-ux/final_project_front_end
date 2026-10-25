@@ -37,14 +37,3 @@ export async function fetchBbsResource(path, signal) {
   const { data } = await apiClient.get(path, { signal })
   return data
 }
-
-export async function transcribeBbsAudio(audio, signal) {
-  const form = new FormData()
-  const extension = audio.type.startsWith('audio/mp4') ? 'mp4' : 'webm'
-  form.append('audio', audio, `speech.${extension}`)
-  const { data } = await apiClient.post('/api/games/bbs/voice/transcriptions', form, {
-    signal, timeout: 35000, headers: { 'Content-Type': undefined },
-  })
-  if (typeof data?.transcript !== 'string' || !data.transcript.trim() || data.transcript.length > 255) throw new Error('Invalid transcription')
-  return data.transcript.trim()
-}

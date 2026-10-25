@@ -120,22 +120,9 @@
    mp-status-pill, mp-event-icon 등이 이 클래스를 같이 받아서 var(--mp-tone)과
    color-mix()로 테두리/배경 농도를 계산한다. color-mix()는 Tailwind 유틸리티가
    없어서, 각 컴포넌트는 var(--mp-tone)을 임의값으로 그대로 참조한다. */
-.mp-mint { --mp-tone: var(--gs-mint); }
-.mp-blue { --mp-tone: #52c4f3; }
-.mp-pink { --mp-tone: #ef7795; }
-.mp-gold { --mp-tone: #efbd6a; }
-.mp-purple { --mp-tone: #ad90eb; }
-:root:not([data-theme="dark"]) .mp-blue { --mp-tone: #1979ab; }
-:root:not([data-theme="dark"]) .mp-pink { --mp-tone: #bc4667; }
-:root:not([data-theme="dark"]) .mp-gold { --mp-tone: #966317; }
-:root:not([data-theme="dark"]) .mp-purple { --mp-tone: #8058be; }
 
 /* -- PC 성능 게이지(SVG path) 색상. stroke는 Tailwind 유틸리티로도 되지만,
    라이트모드 전용 override까지 포함하면 plain CSS가 더 간단하다. */
-.mp-gauge-track, .mp-gauge-value { fill: none; stroke-width: 14px; stroke-linecap: round; }
-.mp-gauge-track { stroke: #1c3c3c; }
-.mp-gauge-value { stroke: url('#mp-gauge-gradient'); filter: drop-shadow(0 0 5px #11d6b618); }
-:root:not([data-theme="dark"]) .mp-gauge-track { stroke: #d3e8e1; }
 
 /* 마이페이지 다이얼로그가 열려 있을 때 배경 스크롤 막기. */
 body:has(.mp-dialog[open]) { overflow: hidden; }
