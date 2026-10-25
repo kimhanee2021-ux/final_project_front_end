@@ -23,7 +23,8 @@ export default function Analysis({ title, description, renderVisual, ask }) {
   const selected = ready ? picked ?? defaultTopic(overview.topics) : null
   return (
     <>
-      <div className="grid grid-cols-[minmax(0,max-content)_minmax(340px,1fr)] gap-[32px] items-stretch max-[860px]:grid-cols-1">
+      {/* 오른쪽 최소 폭 440px: 도넛과 범례를 옆으로 나란히 둘 수 있는 폭 */}
+      <div className="grid grid-cols-[minmax(0,max-content)_minmax(440px,1fr)] gap-[32px] items-stretch max-[860px]:grid-cols-1">
         <div className="min-w-0">
           <Heading title={title} description={description} />
           {status === 'loading' && <ProfileLoading />}

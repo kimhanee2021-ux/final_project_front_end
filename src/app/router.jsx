@@ -1,11 +1,9 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 import App from '@/app/App'
-import CommunityPage from '@/pages/community/CommunityPage'
 import GameSenseLayout from '@/app/layout/GameSenseLayout'
 import LandingPage from '@/pages/landing/LandingPage'
 import StartPage from '@/pages/landing/StartPage'
 import ExplorePage from '@/pages/explore/ExplorePage'
-import BbsPage from '@/pages/bbs/BbsPage'
 import AiCoachPage from '@/pages/ai-coach/AiCoachPage'
 import AnalysisPage from '@/pages/analysis/AnalysisPage'
 import WishlistPage from '@/pages/wishlist/WishlistPage'
@@ -16,6 +14,7 @@ import OnboardingPage from '@/pages/auth/OnboardingPage'
 import { RequireAuth } from '@/features/auth'
 import LibraryPage from '@/pages/library/LibraryPage'
 import AiRecommendsPage from '@/pages/ai-recommends/AiRecommendsPage'
+import AiSearchPage from '@/pages/ai-search/AiSearchPage'
 import LandingMapPage from '@/pages/landing/LandingMapPage'
 
 // 같은 컴포넌트를 mode만 바꿔 쓰는 라우트는 key로 구분해 페이지 이동 시 상태를 초기화한다.
@@ -43,8 +42,9 @@ const router = createBrowserRouter([
         element: <GameSenseLayout />,
         children: [
           { path: 'explore', element: <ExplorePage /> },
-          { path: 'community', element: <CommunityPage /> },
-          { path: 'bbs', element: <BbsPage /> },
+          // BBS(음성 검색 · 공식 소식)와 AI 게임 브리핑은 AI 게임 검색으로 합쳐졌다 (예전 주소로 들어와도 열리게 한다)
+          { path: 'community', element: <Navigate to="/ai-search" replace /> },
+          { path: 'bbs', element: <Navigate to="/ai-search" replace /> },
           // 게이머 지도는 랜딩 페이지로, 프로·스트리머 영상은 AI 게임 추천 카드로 옮겼다 (예전 주소로 들어와도 열리게 한다)
           { path: 'gamer-map', element: <Navigate to="/" replace /> },
           { path: 'pro-streamer-play', element: <Navigate to="/ai-recommends" replace /> },
@@ -59,6 +59,7 @@ const router = createBrowserRouter([
             children: [
               { path: 'library', element: <LibraryPage /> },
               { path: 'ai-recommends', element: <AiRecommendsPage /> },
+              { path: 'ai-search', element: <AiSearchPage /> },
               { path: 'wishlist', element: <WishlistPage /> },
               // AI 게임 추천은 /ai-recommends 하나로 합쳐졌다 (예전 주소로 들어와도 열리게 한다)
               { path: 'recommendations', element: <Navigate to="/ai-recommends" replace /> },

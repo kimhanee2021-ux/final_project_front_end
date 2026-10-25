@@ -8,24 +8,24 @@ function toRecommendedGame(item) {
     .filter(Boolean)
   return {
     // id · tags는 위시리스트(하트)가 쓰는 이름이다. 게임 탐색의 스팀 게임처럼 id는 앱 번호라서 어디서 담아도 같은 게임으로 본다.
-    id: item.app_id,
-    appId: item.app_id,
+    id: item.appId,
+    appId: item.appId,
     rank: item.rank,
     score: item.score,
-    name: item.game?.name ?? `게임 #${item.app_id}`,
+    name: item.game?.name ?? `게임 #${item.appId}`,
     genres,
     tags: genres,
-    image: item.game?.thumbnail_url ?? null,
+    image: item.game?.thumbnailUrl ?? null,
     isNew: item.source === 'new',
-    storeUrl: `https://store.steampowered.com/app/${item.app_id}`,
+    storeUrl: `https://store.steampowered.com/app/${item.appId}`,
   }
 }
 
 export function toRecommendations(data) {
   return {
     games: (data?.recommendations ?? []).map(toRecommendedGame),
-    usedGameCount: data?.meta?.used_game_count ?? 0,
-    unplayedGameCount: data?.meta?.unplayed_game_count ?? 0,
+    usedGameCount: data?.meta?.usedGameCount ?? 0,
+    unplayedGameCount: data?.meta?.unplayedGameCount ?? 0,
   }
 }
 
