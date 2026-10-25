@@ -33,6 +33,7 @@ export default defineConfig(({ mode }) => {
       },
       '/api':{
         target:backendUrl,
+        ws:true,
         // Origin 헤더가 남아 있으면 스프링이 CORS 요청으로 보고 허용 목록(기본 5173)과 대조해 403을 낸다
         configure:proxy=>proxy.on('proxyReq',proxyReq=>proxyReq.removeHeader('origin')),
       },

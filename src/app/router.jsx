@@ -5,6 +5,7 @@ import GameSenseLayout from '@/app/layout/GameSenseLayout'
 import LandingPage from '@/pages/landing/LandingPage'
 import StartPage from '@/pages/landing/StartPage'
 import ExplorePage from '@/pages/explore/ExplorePage'
+import BbsPage from '@/pages/bbs/BbsPage'
 import AiCoachPage from '@/pages/ai-coach/AiCoachPage'
 import AnalysisPage from '@/pages/analysis/AnalysisPage'
 import WishlistPage from '@/pages/wishlist/WishlistPage'
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
         children: [
           { path: 'explore', element: <ExplorePage /> },
           { path: 'community', element: <CommunityPage /> },
+          { path: 'bbs', element: <BbsPage /> },
           // 게이머 지도는 랜딩 페이지로, 프로·스트리머 영상은 AI 게임 추천 카드로 옮겼다 (예전 주소로 들어와도 열리게 한다)
           { path: 'gamer-map', element: <Navigate to="/" replace /> },
           { path: 'pro-streamer-play', element: <Navigate to="/ai-recommends" replace /> },

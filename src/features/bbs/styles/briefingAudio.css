@@ -1,0 +1,16 @@
+.bbs-briefing-audio { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--gs-border); }
+.bbs-audio-heading { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-bottom: 14px; }
+.bbs-audio-heading strong { font-size: 13px; font-weight: 600; }
+.bbs-audio-heading > span { color: var(--gs-muted); font-size: 10px; }
+.bbs-audio-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.bbs-audio-controls button { min-height: 42px; font-size: 12px; }
+.bbs-audio-controls button:disabled { opacity: .55; cursor: default; }
+.bbs-audio-stop { border: 1px solid var(--gs-border); background: transparent; color: var(--gs-text); }
+.bbs-audio-time { color: var(--gs-muted); font-size: 11px; font-variant-numeric: tabular-nums; margin-left: auto; white-space: nowrap; }
+.bbs-audio-progress { display: block; width: 100%; height: 4px; border: none; border-radius: 4px; overflow: hidden; margin-top: 16px; background: var(--gs-border); accent-color: var(--gs-mint); }
+.bbs-audio-progress::-webkit-progress-bar { background: var(--gs-border); }
+.bbs-audio-progress::-webkit-progress-value { background: var(--gs-mint); }
+.bbs-audio-progress::-moz-progress-bar { background: var(--gs-mint); }
+.bbs-audio-status, .bbs-audio-error { font-size: 10px; line-height: 1.7; margin: 10px 0 0; color: var(--gs-muted); }
+.bbs-audio-error { color: var(--gs-text); }
+.is-playing .bbs-audio-heading strong { color: var(--gs-mint); }
