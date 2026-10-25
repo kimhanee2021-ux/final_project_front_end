@@ -1,27 +1,48 @@
-import { useId, useRef } from 'react'
+import { useId, useRef, useState } from 'react'
 import NeonWaveCanvas from './NeonWaveCanvas'
 import { useHoldToSpeak } from '../hooks/useHoldToSpeak'
 import '../styles/voiceOrb.css'
 
+// 한 번이라도 음성 검색을 시작한 사람에게는 원 주변의 안내 물결을 더 보여주지 않는다.
+const VOICE_USED_KEY = 'gs-bbs-voice-used'
+function readVoiceUsed() {
+  try { return localStorage.getItem(VOICE_USED_KEY) === '1' } catch { return false }
+}
+function saveVoiceUsed() {
+  try { localStorage.setItem(VOICE_USED_KEY, '1') } catch { /* 저장 못 해도 물결만 계속 보인다 */ }
+}
+
 export default function BbsVoiceOrb({ phase, message, transcript = '', onStart, onCancel }) {
   const guideId = useId()
   const pulseEnergyRef = useRef(0)
+  const [used, setUsed] = useState(readVoiceUsed)
   const busy = ['STARTING', 'LISTENING', 'TRANSCRIBING'].includes(phase)
   const listening = phase === 'LISTENING'
-  const activate = () => {
-    pulseEnergyRef.current = busy ? 0 : 1.5
-    if (busy) onCancel()
-    else onStart()
+  // 시작은 클릭 한 번, 취소는 실수로 끊기지 않게 0.5초 누르기
+  const start = () => {
+    pulseEnergyRef.current = 1.5
+    if (!used) { setUsed(true); saveVoiceUsed() }
+    onStart()
   }
-  const { holding, handlers } = useHoldToSpeak(activate, busy ? 500 : 200)
-  const label = busy ? '0.5초간 눌러 음성 인식 취소' : '0.2초간 눌러 음성으로 게임 검색'
-  const activity = busy ? phase : holding ? 'HOLDING' : phase
+  const cancel = () => {
+    if (!busy) return
+    pulseEnergyRef.current = 0
+    onCancel()
+  }
+  const { holding, handlers: holdHandlers } = useHoldToSpeak(cancel, 500)
+  const handlers = busy ? holdHandlers : { onClick: start }
+  const label = busy ? '0.5초간 눌러 음성 인식 취소' : '눌러서 음성으로 게임 검색'
+  const activity = phase
   return <section className="bbs-voice-panel" aria-label="음성으로 게임 검색" data-state={activity}>
-    <div className={`bbs-voice-orb${holding ? ' is-holding' : ''}${phase === 'STARTING' ? ' is-starting' : ''}${phase === 'LISTENING' ? ' is-listening' : ''}${phase === 'TRANSCRIBING' ? ' is-processing' : ''}${phase === 'ERROR' ? ' has-error' : ''}`}>
-      <button type="button" className="bbs-voice-trigger" {...handlers} aria-label={label} title={message ? `${message} ${label}` : label}
-        aria-pressed={busy} aria-describedby={listening ? guideId : undefined}>
-        <NeonWaveCanvas pulseEnergyRef={pulseEnergyRef} activity={activity} />
-      </button>
+    <div className="bbs-voice-stage" data-invite={!used && !busy ? '' : undefined}>
+      <span className="bbs-voice-ripple" aria-hidden="true" />
+      <span className="bbs-voice-ripple" aria-hidden="true" />
+      <div className={`bbs-voice-orb${holding ? ' is-holding' : ''}${phase === 'STARTING' ? ' is-starting' : ''}${phase === 'LISTENING' ? ' is-listening' : ''}${phase === 'TRANSCRIBING' ? ' is-processing' : ''}${phase === 'ERROR' ? ' has-error' : ''}`}>
+        <button type="button" className="bbs-voice-trigger" {...handlers} aria-label={label} title={message ? `${message} ${label}` : label}
+          aria-pressed={busy} aria-describedby={listening ? guideId : undefined}>
+          <NeonWaveCanvas pulseEnergyRef={pulseEnergyRef} activity={activity} />
+        </button>
+      </div>
     </div>
     {listening && <div className="bbs-voice-guide" id={guideId}>
       <div className="bbs-voice-guide-copy" role="status" aria-live="polite" aria-atomic="true">
@@ -30,7 +51,7 @@ export default function BbsVoiceOrb({ phase, message, transcript = '', onStart, 
         <p>“카운터스트라이크 2 최신 소식 들려줘”<br />“다음 소식 들려줘” · “멈춰” · “계속 읽어줘”</p>
       </div>
       <ol className="bbs-voice-steps" aria-label="음성 검색 순서">
-        {['0.2초 누르기', '원하는 소식 말하기', '검색부터 브리핑까지'].map((text, index) =>
+        {['원 누르기', '원하는 소식 말하기', '검색부터 브리핑까지'].map((text, index) =>
           <li key={text} aria-current={index === 1 ? 'step' : undefined}>
             <span aria-hidden="true">{index + 1}</span>{text}
           </li>)}
