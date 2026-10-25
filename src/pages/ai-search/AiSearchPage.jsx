@@ -13,6 +13,7 @@ import {
   useBbsAudioFocus,
   useBbsResource,
   useBbsVoiceSearch,
+  useOutsideAudioClaims,
   useVoiceBriefingFlow,
 } from '@/features/bbs'
 import '@/features/bbs/styles/bbs.css'
@@ -43,6 +44,8 @@ function VoiceSearch({ onTranscript, onStart }) {
 // 화면 상태(검색 문장 q, 고른 게임 appId, 소식 newsId·분류·쪽)는 주소에 둔다 (브리핑 흐름이 주소로 화면을 움직인다).
 export default function AiSearchPage() {
   const [audioFocus] = useState(createBbsAudioFocus)
+  // 헤더의 음성 버튼을 누르면 이 화면의 낭독·마이크를 멈춘다
+  useOutsideAudioClaims(audioFocus)
   const [voiceVersion, setVoiceVersion] = useState(0)
   // 지금 요청이 음성으로 들어왔는지. 진행 안내 상자("음성 요청 · 말씀하신 문장 · 진행 상황")는 음성 요청일 때만 띄운다
   const [spoken, setSpoken] = useState(false)

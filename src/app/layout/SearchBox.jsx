@@ -5,12 +5,12 @@ import { useGameSense } from '@/shared/state'
 import { useDismiss } from '@/shared/hooks'
 import { useAuth } from '@/features/auth'
 import { MAX_QUERY_LENGTH, QuickSearchResults, useAiSearch } from '@/features/ai-search'
-import { BbsVoiceMiniOrb, useBbsVoiceSearch } from '@/features/bbs'
+import { BbsVoiceMiniOrb, claimBbsAudioFromOutside, useBbsVoiceSearch } from '@/features/bbs'
 
 // 아래 화면들은 검색어로 목록을 걸러 주므로 검색해도 이동하지 않고 그 화면의 결과가 바뀐다. 다른 화면에서는 게임 탐색으로 이동한다.
 const SEARCHABLE_PATHS = ['/wishlist', '/explore']
-// AI 게임 검색 화면에는 큰 음성 버튼이 따로 있어서 헤더의 작은 음성 버튼을 숨긴다
-const OWN_VOICE_PATH = '/ai-search'
+// AI 게임 검색 화면에서 헤더 음성 버튼으로 말하면 드롭다운 대신 그 화면의 검색 결과를 바꾼다
+const AI_SEARCH_PATH = '/ai-search'
 const VOICE_BUSY = ['STARTING', 'LISTENING', 'TRANSCRIBING']
 
 // 헤더 검색: 작은 검색 버튼을 누르면(또는 / 키) 바로 아래로 큰 검색창 하나가 내려와서, 입력 중인 검색어를 편하게 볼 수 있다.
@@ -31,9 +31,13 @@ export default function SearchBox() {
     if (!text) return
     setQuery(text)
     setAiQuery(text)
-    setOpen(true)
+    // AI 게임 검색 화면에서는 드롭다운을 닫고 화면의 검색 결과를 바꾼다
+    if (pathname === AI_SEARCH_PATH) {
+      setOpen(false)
+      navigate(`${AI_SEARCH_PATH}?${new URLSearchParams({ q: text })}`)
+    } else setOpen(true)
   })
-  const showVoice = isAuthenticated && pathname !== OWN_VOICE_PATH
+  const showVoice = isAuthenticated
   const listening = showVoice && VOICE_BUSY.includes(voice.phase)
   const voiceError = showVoice && voice.phase === 'ERROR'
 
@@ -49,9 +53,10 @@ export default function SearchBox() {
   }
   const openInAiSearch = appId => {
     setOpen(false)
-    navigate(`${OWN_VOICE_PATH}?${new URLSearchParams(appId ? { q: aiQuery, appId } : { q: aiQuery })}`)
+    navigate(`${AI_SEARCH_PATH}?${new URLSearchParams(appId ? { q: aiQuery, appId } : { q: aiQuery })}`)
   }
   const startVoice = () => {
+    claimBbsAudioFromOutside()
     setOpen(true)
     voice.start()
   }

@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { LiveVoice } from '../model/liveVoice'
 
 const idle = { phase: 'IDLE', message: '', transcript: '' }
+// 마이크는 한 번에 하나만 쓴다 (헤더의 작은 음성 버튼과 AI 게임 검색 화면의 큰 버튼). 하나가 시작하면 다른 쪽은 취소한다
+const VOICE_START = 'bbs:voice-start'
 
 export function useBbsVoiceSearch(onTranscript) {
   const [state, setState] = useState(idle)
@@ -18,12 +20,15 @@ export function useBbsVoiceSearch(onTranscript) {
   useEffect(() => {
     const visibility = () => { if (document.hidden) cancel() }
     const keyboard = event => { if (event.key === 'Escape') cancel() }
+    const other = event => { if (active.current && event.detail !== active.current) cancel() }
     document.addEventListener('visibilitychange', visibility)
     window.addEventListener('keydown', keyboard)
+    window.addEventListener(VOICE_START, other)
     return () => {
       release()
       document.removeEventListener('visibilitychange', visibility)
       window.removeEventListener('keydown', keyboard)
+      window.removeEventListener(VOICE_START, other)
     }
   }, [release, cancel])
 
@@ -44,6 +49,7 @@ export function useBbsVoiceSearch(onTranscript) {
       },
     })
     active.current = session
+    window.dispatchEvent(new CustomEvent(VOICE_START, { detail: session }))
     setState({ phase: 'STARTING', message: '마이크를 준비하고 있어요.', transcript: '' })
     void session.recorder.start()
   }
