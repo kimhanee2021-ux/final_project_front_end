@@ -15,6 +15,7 @@ import { RequireAuth } from '@/features/auth'
 import LibraryPage from '@/pages/library/LibraryPage'
 import AiRecommendsPage from '@/pages/ai-recommends/AiRecommendsPage'
 import LandingMapPage from '@/pages/landing/LandingMapPage'
+import NaturalSearchPage from '@/pages/natural-search/NaturalSearchPage'
 
 // 같은 컴포넌트를 mode만 바꿔 쓰는 라우트는 key로 구분해 페이지 이동 시 상태를 초기화한다.
 const authRoutes = ['login', 'signup', 'forgot-password'].map(mode => ({
@@ -55,6 +56,7 @@ const router = createBrowserRouter([
             children: [
               { path: 'library', element: <LibraryPage /> },
               { path: 'ai-recommends', element: <AiRecommendsPage /> },
+              { path: 'natural-search', element: <NaturalSearchPage /> },
               { path: 'wishlist', element: <WishlistPage /> },
               // AI 게임 추천은 /ai-recommends 하나로 합쳐졌다 (예전 주소로 들어와도 열리게 한다)
               { path: 'recommendations', element: <Navigate to="/ai-recommends" replace /> },
