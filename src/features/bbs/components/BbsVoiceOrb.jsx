@@ -1,4 +1,5 @@
 import { useId, useRef, useState } from 'react'
+import { GSIcon } from '@/shared/ui'
 import NeonWaveCanvas from './NeonWaveCanvas'
 import { useHoldToSpeak } from '../hooks/useHoldToSpeak'
 import '../styles/voiceOrb.css'
@@ -12,7 +13,8 @@ function saveVoiceUsed() {
   try { localStorage.setItem(VOICE_USED_KEY, '1') } catch { /* 저장 못 해도 물결 간격만 짧게 남는다 */ }
 }
 
-export default function BbsVoiceOrb({ phase, message, transcript = '', onStart, onCancel }) {
+// onFinish: 듣는 중에 "이대로 검색"을 누르면 녹음을 끝내고 지금까지 말한 내용으로 검색한다 (주변이 시끄러워 자동으로 안 끝날 때)
+export default function BbsVoiceOrb({ phase, message, transcript = '', onStart, onCancel, onFinish }) {
   const guideId = useId()
   const pulseEnergyRef = useRef(0)
   const [used, setUsed] = useState(readVoiceUsed)
@@ -60,7 +62,12 @@ export default function BbsVoiceOrb({ phase, message, transcript = '', onStart, 
         <span>지금 하시는 말씀</span>
         <p className={transcript ? '' : 'is-empty'}>{transcript || '말씀하시면 이곳에 표시돼요…'}</p>
       </div>
-      <p className="bbs-voice-guide-tip">말을 마치면 자동 검색 · 원형을 다시 0.5초 누르면 취소 · Esc로도 취소</p>
+      {/* 아직 들린 말이 없으면 검색할 내용이 없으니 누를 수 없다 */}
+      <button type="button" className="bbs-voice-finish" onClick={onFinish} disabled={!transcript} aria-label="녹음을 끝내고 이대로 검색하기">
+        <GSIcon name="search" size={17} />
+        이대로 검색
+      </button>
+      <p className="bbs-voice-guide-tip">말을 마치면 자동 검색 · 주변이 시끄러우면 “이대로 검색” · 원형을 다시 0.5초 누르면 취소 · Esc로도 취소</p>
     </div>}
   </section>
 }

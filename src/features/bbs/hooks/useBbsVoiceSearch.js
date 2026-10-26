@@ -53,5 +53,7 @@ export function useBbsVoiceSearch(onTranscript) {
     setState({ phase: 'STARTING', message: '마이크를 준비하고 있어요.', transcript: '' })
     void session.recorder.start()
   }
-  return { ...state, start, cancel }
+  // 주변 소음 때문에 말이 끝난 걸 알아채지 못할 때, 사용자가 직접 녹음을 끝내고 지금까지 말한 내용으로 검색한다
+  const finish = useCallback(() => { active.current?.recorder.finish() }, [])
+  return { ...state, start, cancel, finish }
 }

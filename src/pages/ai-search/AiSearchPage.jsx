@@ -31,7 +31,7 @@ function VoiceSearch({ onTranscript, onStart }) {
   const voice = useBbsVoiceSearch(onTranscript)
   const claim = useBbsAudioFocus('microphone', voice.cancel)
   return <>
-    <BbsVoiceOrb phase={voice.phase} message={voice.message} transcript={voice.transcript} onStart={() => { onStart(); claim(); voice.start() }} onCancel={voice.cancel} />
+    <BbsVoiceOrb onFinish={voice.finish} phase={voice.phase} message={voice.message} transcript={voice.transcript} onStart={() => { onStart(); claim(); voice.start() }} onCancel={voice.cancel} />
     {voice.phase === 'ERROR' && <div className="bbs-voice-error" role="alert">
       <p>{voice.message}</p><button type="button" className="bbs-text-button" onClick={voice.cancel}>닫기</button>
     </div>}

@@ -121,3 +121,8 @@
 .bbs-live-transcript > span { color: var(--gs-muted); font-size: 10px; font-weight: 700; }
 .bbs-live-transcript p { min-height: 1.6em; max-height: 7em; overflow-y: auto; overflow-wrap: anywhere; margin: 6px 0 0; font-size: 15px; line-height: 1.6; color: var(--gs-text); }
 .bbs-live-transcript p.is-empty { color: var(--gs-muted); font-size: 13px; }
+/* "이대로 검색": 녹음 창 바로 아래, 서비스의 주요 버튼과 같은 강조색 알약 버튼. 들린 말이 없으면 흐리게 막아 둔다 */
+.bbs-voice-finish { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 46px; margin: 0 0 14px; border: 0; border-radius: 999px; background: var(--gs-accent); color: var(--gs-on-accent); font-size: 14px; font-weight: 700; cursor: pointer; transition: filter .15s, transform .15s, opacity .15s; }
+.bbs-voice-finish:hover:not(:disabled) { filter: brightness(1.08); transform: translateY(-1px); }
+.bbs-voice-finish:focus-visible { outline: 2px solid var(--gs-accent); outline-offset: 3px; }
+.bbs-voice-finish:disabled { opacity: .4; cursor: not-allowed; }
