@@ -1,5 +1,11 @@
 import { GSIcon } from '@/shared/ui'
 import { useGameSense } from '@/shared/state'
+import { useAuth } from '@/features/auth'
+import { useInsightOverview } from '@/features/ai-insight'
+import { useTasteGenres } from '@/features/ai-recommends'
+import { useBudget } from '@/features/ai-coach'
+import { money } from '@/shared/utils/formatters'
+import { tagLabel } from '@/shared/utils/gameTags'
 import { profileAvatars, profileCovers } from '../mocks/playerMock'
 
 // 값 하나를 라벨 아래에 보여주는 요약 항목
@@ -12,10 +18,28 @@ function Fact({ label, value }) {
   )
 }
 
-// 마이페이지 맨 위 프로필: 커버 → 아바타·이름·소개 → 요약 세 가지(즐기는 방식 · 월 플레이 목표 · 월 예산). 수정 버튼은 오른쪽에 둘만 둔다.
+// AI 화면과 같은 API 값: 소비 유형(AI 코칭) · 주 플레이 장르(AI 추천) · 이번 달 게임 예산(AI 코치 예산)
+function AiFacts({ userId }) {
+  const { overview, status } = useInsightOverview()
+  const { genres, loading: genresLoading, diagnosed } = useTasteGenres(userId)
+  const { budget, loading: budgetLoading } = useBudget()
+  const type = status === 'loading' ? '불러오는 중...' : overview?.profile?.name ?? '분석 전'
+  const genre = genresLoading ? '불러오는 중...' : genres.length ? genres.map(tagLabel).join(' · ') : diagnosed ? '분석 전' : 'AI 추천을 받아보세요'
+  const limit = budgetLoading ? '불러오는 중...' : budget?.limitAmount != null ? money(budget.limitAmount) : '설정 안 함'
+  return (
+    <div className="grid grid-cols-3 gap-[24px] mt-[32px] pt-[24px] px-[8px] border-t border-border max-[760px]:grid-cols-1">
+      <Fact label="소비 유형" value={type} />
+      <Fact label="주 플레이 장르" value={genre} />
+      <Fact label="월 게임 예산" value={limit} />
+    </div>
+  )
+}
+
+// 마이페이지 맨 위 프로필: 커버 → 아바타·이름 → (로그인 시) AI가 정한 요약 세 가지. 수정 버튼은 오른쪽에 둘만 둔다.
 export default function ProfileHero({ onEdit }) {
   const { player } = useGameSense()
-  const { profile, preferences } = player
+  const { isAuthenticated, user } = useAuth()
+  const { profile } = player
   // 커버 사진은 바꿀 수 없는 고정 이미지다.
   const cover = profileCovers[0]
   const avatar = profileAvatars.find(item => item.id === profile.avatar)
@@ -51,19 +75,7 @@ export default function ProfileHero({ onEdit }) {
           </button>
         </div>
       </div>
-      <p className="mt-[20px] px-[8px] max-w-[640px] text-[15px] leading-[1.8] text-muted whitespace-pre-line [overflow-wrap:anywhere]">
-        {profile.bio || '나만의 게임 이야기를 소개해보세요.'}
-      </p>
-      <div className="flex flex-wrap items-center gap-[8px] mt-[16px] px-[8px]">
-        {preferences.tags.map(tag => (
-          <span key={tag} className="h-[30px] inline-flex items-center px-[14px] rounded-full bg-bg text-muted text-[13px]">{tag}</span>
-        ))}
-      </div>
-      <div className="grid grid-cols-3 gap-[24px] mt-[32px] pt-[24px] px-[8px] border-t border-border max-[760px]:grid-cols-1">
-        <Fact label="주로 즐기는 방식" value={preferences.playStyle} />
-        <Fact label="월 플레이 목표" value={preferences.monthlyHours ? `${preferences.monthlyHours}시간` : '설정 안 함'} />
-        <Fact label="월 게임 예산" value={preferences.budget ? `${preferences.budget.toLocaleString('ko-KR')}원` : '설정 안 함'} />
-      </div>
+      {isAuthenticated && <AiFacts userId={user.id} />}
     </section>
   )
 }

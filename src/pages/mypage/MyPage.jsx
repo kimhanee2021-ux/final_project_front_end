@@ -10,10 +10,12 @@ import GamingEnvironment from './sections/GamingEnvironment'
 export default function MyPage() {
   const [dialog, setDialog] = useState(null)
   const { isAuthenticated } = useAuth()
+  // 수정 창에서 예산을 저장하면 프로필 요약이 새 값을 다시 읽도록 ProfileHero를 새로 그린다.
+  const [heroKey, setHeroKey] = useState(0)
   return (
     <PanelPage>
       <Panel id="profile">
-        <ProfileHero onEdit={type => setDialog({ type })} />
+        <ProfileHero key={heroKey} onEdit={type => setDialog({ type })} />
       </Panel>
       <Panel id="games">
         <GameOverview />
@@ -22,7 +24,7 @@ export default function MyPage() {
         <GamingEnvironment />
       </Panel>
       {isAuthenticated && <AccountSettings />}
-      <PlayerDialog dialog={dialog} onClose={() => setDialog(null)} />
+      <PlayerDialog dialog={dialog} onBudgetSaved={() => setHeroKey(key => key + 1)} onClose={() => setDialog(null)} />
     </PanelPage>
   )
 }

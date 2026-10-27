@@ -2,3 +2,5 @@
 export { default as BudgetCard } from './components/BudgetCard'
 export { default as CoachChat } from './components/CoachChat'
 export { default as CoachEntry } from './components/CoachEntry'
+export { useBudget } from './hooks/useBudget'
+export { parseBudgetInput } from './model/coachModel'
