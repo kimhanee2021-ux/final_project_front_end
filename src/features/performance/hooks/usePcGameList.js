@@ -84,8 +84,9 @@ export function usePcGameList(diagnosis, enabled) {
       if (sequence.current !== id) return
       const list = Array.isArray(response) ? response : (response.games ?? response.items ?? [])
       setOwned(list)
+      // 종합 등급 요청은 플레이타임 상위 5개만 보낸다. 화면 목록(owned)은 그대로 둔다.
       if (list.length && diagnosisRef.current.prepareOwnedOverview)
-        await diagnosisRef.current.prepareOwnedOverview(list)
+        await diagnosisRef.current.prepareOwnedOverview(ownedPage(list, false, 0).games)
       if (sequence.current !== id) return
       setPage(0)
       setLoading(false)
