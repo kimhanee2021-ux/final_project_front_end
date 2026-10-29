@@ -33,14 +33,14 @@ export default function WishlistPage() {
           {!wishlist.length ? (
             <EmptyState
               title="아직 담은 게임이 없어요"
-              description="AI 추천 게임이나 스팀 전체 게임에서 마음에 드는 게임의 하트를 눌러 보세요."
+              description="AI 추천 게임이나 카탈로그에서 마음에 드는 게임의 하트를 눌러 보세요."
               action={
                 <div className="flex gap-[8px]">
                   <Link className={linkClass} to="/ai-recommends">
                     AI 추천 게임 보기
                   </Link>
                   <Link className="gs-secondary-button" to="/explore">
-                    스팀 전체 게임 보기
+                    카탈로그 보기
                   </Link>
                 </div>
               }
