@@ -1,6 +1,8 @@
 import { GameImage } from '@/shared/ui'
 import { resolutionTarget } from '../../model/pcGrade'
 
+const NO_PUBLIC_DATA_LABEL = '성능 자료 미공개'
+
 // 등급 한 칸: 등급 글자와 설명. 추정이 어려우면 이유를 알 수 있게 짧게 적는다.
 function GradeCell({ target }) {
   if (target.grade) {
@@ -15,7 +17,7 @@ function GradeCell({ target }) {
   return (
     <span title={target.reason}>
       <strong>—</strong>
-      <small> {target.label ?? '추정 어려움'}</small>
+      <small> {target.label ?? NO_PUBLIC_DATA_LABEL}</small>
       {target.reason && (
         <small className="block mt-[2px] max-w-[220px] mx-auto text-[11px] text-faint leading-[1.4] line-clamp-2 whitespace-normal">
           {target.reason}

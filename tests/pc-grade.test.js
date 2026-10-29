@@ -28,7 +28,18 @@ test('only new completed AI estimates produce grades', () => {
 })
 test('rate limit is a service state rather than insufficient evidence', () => {
   assert.match(resolutionTarget({ explanationStatus: 'RATE_LIMITED' }, 'FHD').label, /이용 한도/)
-  assert.equal(resolutionTarget(result('UNKNOWN'), 'FHD').label, '추정 어려움')
+  assert.equal(resolutionTarget(result('UNKNOWN'), 'FHD').label, '성능 자료 미공개')
+})
+test('input problems ask the user to check, missing outside data says it is not public', () => {
+  const unknown = (reasonCode, reason) => {
+    const r = result('UNKNOWN')
+    Object.assign(r.resolutions[0].target, { reasonCode, reason })
+    return resolutionTarget(r, 'FHD')
+  }
+  assert.equal(unknown('UNKNOWN_GPU', 'GPU 이름을 확인해 주세요.').label, 'GPU 확인 필요')
+  assert.equal(unknown('MISSING_REQUIREMENTS', 'CPU 모델과 RAM 용량을 확인해야 추정할 수 있어요.').label, '사양 확인 필요')
+  assert.equal(unknown('MISSING_REQUIREMENTS', '공식 최소·권장 사양을 확인하지 못해 추정을 보류했어요.').label, '성능 자료 미공개')
+  assert.equal(unknown('RESOLUTION_GAP', '해상도 비교자료 부족').reason, '이 게임의 해상도별 성능 자료가 아직 공개되지 않았어요.')
 })
 test('missing resolution does not reuse FHD grade for 4K', () => {
   assert.equal(resolutionTarget(result('A'), '4K').grade, null)
